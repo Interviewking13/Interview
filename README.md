@@ -1,8 +1,6 @@
 # 13팀 프로젝트입니다.
 
-This sample project shows how a project in GitLab looks for demonstration purposes. It contains issues, merge requests and Markdown files in many branches,
-named and filled with lorem ipsum.
+프로젝트 구상중...
 
-You can look around to get an idea how to structure your project and, when done, you can safely delete this project.
+[노션 링크](https://www.notion.so/elice/13-f3aabba967fe4fbeb0138da5d788012d)
 
-[Learn more about creating GitLab projects.](https://docs.gitlab.com/ee/gitlab-basics/create-project.html)
