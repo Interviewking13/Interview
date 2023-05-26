@@ -1,4 +1,4 @@
-# Sample GitLab Project
+# 13팀 프로젝트입니다.
 
 This sample project shows how a project in GitLab looks for demonstration purposes. It contains issues, merge requests and Markdown files in many branches,
 named and filled with lorem ipsum.
