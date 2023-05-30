@@ -5,6 +5,7 @@ import { RecoilRoot } from "recoil";
 import HomePage from "./pages/home/Homepage";
 import Mypage from "./pages/mypage/Mypage";
 import Layout from "./components/layout/Layout";
+import Information from "./pages/study/Information";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/mypage" element={<Mypage />} />
+              <Route path="/study/info" element={<Information />} />
             </Routes>
           </Layout>
         </QueryClientProvider>
