@@ -1,23 +1,27 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { RecoilRoot } from "recoil";
+import HomePage from "./pages/home/Homepage";
+import Mypage from "./pages/mypage/Mypage";
+import Layout from "./components/layout/Layout";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>13팀 화이팅 합시다 !</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          면접왕
-        </a>
-      </header>
-    </div>
+    <RecoilRoot>
+      <Router>
+        <QueryClientProvider client={queryClient}>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/mypage" element={<Mypage />} />
+            </Routes>
+          </Layout>
+        </QueryClientProvider>
+      </Router>
+    </RecoilRoot>
   );
 }
 
