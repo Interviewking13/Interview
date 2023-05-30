@@ -3,7 +3,7 @@ const { Schema } = require('mongoose');
 const StudySchema = new Schema({
   // 스터디 정보
   study_id: { type: Number, required: true, unique: true }, // identification value
-  study_name: { type: String, required: true },
+  study_name: { type: String, required: true, unique: true },
   title: { type: String, required: true },
   content: { type: String, required: true },
   deadline: { type: Date, required: true }, // 모집완료날짜
