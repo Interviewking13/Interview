@@ -6,9 +6,9 @@ const StudySchema = new Schema({
   study_name: { type: String, required: true },
   title: { type: String, required: true },
   content: { type: String, required: true },
-  deadline: { type: Date, required: true },
-  headcount: { type: Number, maximum: 10, required: true },
-  category: { type: String, enum: ['개발', '교육'], required: true },
+  deadline: { type: Date, required: true }, // 모집완료날짜
+  headcount: { type: Number, maximum: 10, required: true }, // 최대 모집 인원
+  category: { type: String, enum: ['개발', '교육'], required: true }, // 스터디 분류(직무별)
   chat_link: {
     type: String,
     pattern: '^https?:\\/\\/(?:www\\.)?zoom\\.us\\/(?:j\\/|my\\/|meetings\\/join\\?)[^\\s]+$',
@@ -27,6 +27,7 @@ const StudySchema = new Schema({
   email: { type: String, required: true, unique: true, ref: 'User' }, // reference
   goal: { type: String, required: true }, // 목표 산업 분야 및 기업
   hope: { type: String, required: true }, // 포부 한 마디
+  self_intro: { type: Buffer, required: true }, // 자기소개서
 });
 
 module.exports = StudySchema;
