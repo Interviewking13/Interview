@@ -1,21 +1,17 @@
 const express = require('express');
 const app = express();
+const http = require('http');
+const PORT = process.env.PORT;
 require('dotenv').config();
-
-// Middleware Library Import
-const cors = require('cors');
-const morgan = require('morgan');
 
 // Router
 const indexRouter = require('./src/routes/index');
 
 // Middleware Setting
 app.use(express.json());
-app.use(cors());
-app.use('/', indexRouter);
 app.use(express.static('public'));
+app.use('/', indexRouter);
 
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Server Run http://localhost:${port}`);
+app.listen(8080, () => {
+  console.log(`포트열렸다`);
 });
