@@ -1,0 +1,20 @@
+{
+  "name": "13team",
+  "version": "1.0.0",
+  "description": "프로젝트 구상중...",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.1.1",
+    "express": "^4.18.2",
+    "http": "^0.0.1-security",
+    "mongodb": "^5.5.0",
+    "mongoose": "^7.2.2",
+    "path": "^0.12.7"
+  }
+}

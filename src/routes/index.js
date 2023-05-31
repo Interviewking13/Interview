@@ -1,18 +1,14 @@
-const { Router } = require('express');
-const productRouter = require('./productRouter');
-const orderRouter = require('./orderRouter');
-const cartRouter = require('./cartRouter');
-const userRouter = require('./userRouter');
-const router = Router();
+const express = require("express");
+const router = express.Router();
+const path = require("path");
 
-router.get('/', (req, res) => {
-  // 프로덕트 등록한거 전부다 조회해서 뿌려주기
-  res.send('Server is Good!');
-});
+const userRouter = require('./user');
+const communityRouter = require('./community');
+const indexPath = path.join(__dirname, "../views");
 
-router.use('/api/products', productRouter);
-router.use('/api/cart', cartRouter);
-router.use('/api/order', orderRouter);
+router.use(express.json());
+router.use(express.static(indexPath));
 router.use('/api/user', userRouter);
+router.use('/api/community', communityRouter);
 
 module.exports = router;
