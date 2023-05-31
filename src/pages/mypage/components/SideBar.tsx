@@ -15,7 +15,7 @@ const MenuButton = ({}) =>{
   return (
     <Grid container>
       <Grid item xs= {12}>
-      <Button variant="text">내 정보</Button>
+      <Button variant="text">나의 스터디</Button>
       </Grid >
       <Grid item xs= {12}> 
         <Button variant="text">개인정보수정</Button>
