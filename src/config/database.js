@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 
-// DB ¿¬°á
+// DB ì—°ê²°
 mongoose
   .connect(process.env.DB_Link, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 10000, // 10ÃÊ
-    socketTimeoutMS: 45000, // 45ÃÊ
+    serverSelectionTimeoutMS: 10000, // 10ì´ˆ
+    socketTimeoutMS: 45000, // 45ì´ˆ
     family: 4, // IPv4
   })
   .then(() => console.log('Successfully connected to MongoDB'))
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));
 
 module.exports = mongoose;
