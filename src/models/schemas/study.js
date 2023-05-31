@@ -1,4 +1,5 @@
 const { Schema } = require('mongoose');
+const mongoose = require('mongoose');
 
 const StudySchema = new Schema({
   // 스터디 정보

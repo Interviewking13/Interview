@@ -1,4 +1,5 @@
 const { Schema } = require('mongoose');
+const mongoose = require('mongoose');
 
 const StudyFeedbackSchema = new Schema({
   study_id: { type: mongoose.Types.ObjectId, required: true, unique: true, ref: 'Study' }, // reference
