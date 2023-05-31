@@ -2,7 +2,7 @@ const { Schema } = require('mongoose');
 
 const StudySchema = new Schema({
   // 스터디 정보
-  study_id: { type: Number, required: true, unique: true }, // identification value
+  study_id: { type: mongoose.Types.ObjectId, required: true, unique: true }, // identification value
   study_name: { type: String, required: true, unique: true },
   title: { type: String, required: true },
   content: { type: String, required: true },
@@ -21,7 +21,7 @@ const StudySchema = new Schema({
   },
 
   // 스터디원 신청 정보 (스터디 신청 시, 사용자가 입력)
-  name: { type: String, required: true, ref: 'User' }, // reference
+  user_name: { type: String, required: true, ref: 'User' }, // reference
   phone_number: { type: String, required: true, ref: 'User' }, // reference
   email: { type: String, required: true, unique: true, ref: 'User' }, // reference
   goal: { type: String, required: true }, // 목표 산업 분야 및 기업
