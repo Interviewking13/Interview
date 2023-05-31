@@ -8,9 +8,9 @@ const UserSchema = new Schema({
     password: { type: String, required: true, unique: false },
     privacy_use_yn: { type: String, required: true, unique: false },
     marketing_use_yn: { type: String, required: true, unique: false },
-    intro_yn: { type: String, required: false, unique: false },               // 자기소개서
+    intro_yn: { type: String, required: false, unique: false },
     phone_number: { type: String, required: false, unique: false },
-    admin_yn: { type: boolean, required: false, unique: false },
+    admin_yn: { type: Boolean, required: false, unique: false },
     dts_insert: {type: Date, required: true, unique: false }
 });
 
