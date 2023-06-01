@@ -15,8 +15,12 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <Layout>
             <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/mypage" element={<Mypage />} />
+            <Route path="/" element={<HomePage />} />
+                <Route path="/mypage" element={<Mypage />} >
+                <Route path="userstudy" element='{<Mypage />}' />
+                <Route path="studyapply" element='{<Mypage />}' />
+                <Route path="userinfo" element='{<Mypage />}' />
+                </Route>
             </Routes>
           </Layout>
         </QueryClientProvider>
