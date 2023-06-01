@@ -1,4 +1,5 @@
 import React from 'react'
+import { Outlet } from 'react-router-dom';
 import {
   Typography,
   Grid
@@ -27,9 +28,13 @@ const Info = ()=>{
 }
 
 const Mypage = () => {
+
+
+
   return (
     <div style={{ maxWidth: '1270px', margin: 'auto' }}>
      <Grid container spacing={1}>
+
 
       {/* 타이틀과 서브 타이틀 */}
       <Grid item xs={12}>
@@ -51,6 +56,7 @@ const Mypage = () => {
       {/* 페이지 내용 */}
       <Grid item xs={12}>
         <Info/>
+        <Outlet/>
       </Grid>
     </Grid>
     </div>
