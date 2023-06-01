@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Button,
   Box,
@@ -14,13 +15,13 @@ const MenuButton = ({}) =>{
     <Container maxWidth="xl">
       <Grid container spacing={1} justifyContent='flex-start'>
         <Grid item>
-          <StyledButton  variant="text" sx={{ gap: '5px' }}><Create/>나의 스터디</StyledButton>
+          <StyledButton component={<Mystudy/>} to="userstudy" variant="text" sx={{ gap: '5px' }}><Create/>나의 스터디</StyledButton>
         </Grid >
         <Grid item > 
-          <StyledButton  variant="text" sx={{ gap: '5px' }}><Checklist/>스터디 신청</StyledButton>
+          <StyledButton component={Link} to="/your-path" variant="text" sx={{ gap: '5px' }}><Checklist/>스터디 신청</StyledButton>
         </Grid>
         <Grid item >
-          <StyledButton  variant="text" sx={{ gap: '5px' }}><Person/>내 정보</StyledButton>
+          <StyledButton component={Link} to="/your-path" variant="text" sx={{ gap: '5px' }}><Person/>내 정보</StyledButton>
         </Grid>
       </Grid>
     </Container>
