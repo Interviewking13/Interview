@@ -10,21 +10,12 @@ import { styled } from '@mui/material/styles';
 
 
 
-const MyInfo = ()=>{
+const UserInfo = ()=>{
   return (
     <div>
-      <Container >
-        <Grid>
-          <Grid>
-          
-          </Grid>  
-        
-        
-        </Grid>          
-
-      </Container>
+      유저인포페이지 입니다.솰ㄹ솨로러ㅏㄴ와ㅣ
     </div>
   )
 }
 
-export default MyInfo
+export default UserInfo

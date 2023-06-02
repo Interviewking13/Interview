@@ -1,18 +1,19 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom';
+import { Outlet,Link } from 'react-router-dom';
 import {
+  Button,
   Typography,
-  Grid
+  Container,
+  Grid,
+  Box
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Create,Person, Checklist } from '@mui/icons-material'; //MUI icon import
+
 
 
 
 //각 페이지컴포넌트 호출
-import MenuButton from './components/MenuButton'
-import MyInfo from './components/MyInfo'
-import MyStudy from './components/MyStudy'
-import StudyAP from './components/StudyApplyPage'
 
 const Info = ()=>{
   return (
@@ -27,15 +28,32 @@ const Info = ()=>{
   )
 }
 
+const MenuButton = () =>{
+  return (
+    <Container maxWidth="xl">
+      <Grid container spacing={1} justifyContent='flex-start'>
+        <Grid item>
+          <StyledButton sx={{ gap: '5px' }}><Create/>나의 스터디</StyledButton>
+        </Grid >
+        <Grid item > 
+          <StyledButton sx={{ gap: '5px' }}><Checklist/>스터디 신청</StyledButton>
+        </Grid>
+        <Grid item >
+          <StyledButton sx={{ gap: '5px' }}><Person/>내 정보</StyledButton>
+        </Grid>
+      </Grid>
+    </Container>
+  
+  )
+}
+
 const Mypage = () => {
 
 
 
   return (
-    <div style={{ maxWidth: '1270px', margin: 'auto' }}>
+    <StyledContainer>
      <Grid container spacing={1}>
-
-
       {/* 타이틀과 서브 타이틀 */}
       <Grid item xs={12}>
         <Grid container spacing ={1}>
@@ -59,10 +77,16 @@ const Mypage = () => {
         <Outlet/>
       </Grid>
     </Grid>
-    </div>
+    </StyledContainer>
   );
 };
 export default Mypage;
+
+const StyledContainer = styled(Box)`
+width: 66.1%;
+max-width: 1270px;
+margin-left: 325px;
+`
 
 
 const StyledTitle = styled(Typography )`
@@ -73,4 +97,16 @@ const StyledTitle = styled(Typography )`
 const StyledSubTitle = styled(Typography )`
   /* 여기에 스타일을 작성하세요 */
   color: #8689A3 
+`;
+
+//버튼 스타일
+const StyledButton = styled(Button)`
+  /* 여기에 스타일을 작성하세요 */
+  color: #9FEFD3; /* 적절한 색상으로 변경 */
+  &:hover {
+    color: #00E595; /* 호버 시 변경할 색상 */
+  }
+  &:active {
+    background-color: #0000ff; /* 선택 시 변경할 색상 */
+  }
 `;
