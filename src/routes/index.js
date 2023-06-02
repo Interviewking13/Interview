@@ -13,6 +13,6 @@ router.use(express.static(indexPath));
 router.use('/api/user', userRouter);
 router.use('/api/community', communityRouter);
 router.use('/api/study', studyRouter);
-router.use('/api/study_feedback', studyFeedbackRouter);
+router.use('/api/feedback', studyFeedbackRouter);
 
 module.exports = router;
