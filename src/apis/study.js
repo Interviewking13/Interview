@@ -65,7 +65,7 @@ const studyApi = {
       const study_id = _id;
       const foundStudy = await Study.findOne({ study_id });
 
-      if (!foundStudy) return error;
+      // if (!foundStudy) return error;
 
       res.status(200).json(foundStudy);
     } catch (error) {
