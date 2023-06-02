@@ -19,15 +19,14 @@ const Info = ()=>{
 const Mypage = () => {
   return (
     <div>
-      <p> 마이페이지 </p>
+      <h2> 마이페이지 </h2>
+      <p>나의 정보를 확인하세요</p>
       <Grid container>
-        <Grid item xs = {2}>
+        <Grid item xs = {12} sm={4}>
           <MenuButton />
         </Grid>
-        <Grid item xs ={9}>
+        <Grid item xs ={12} sm={12}>
           <Info/>
-        </Grid>
-        <Grid item xs ={1}>
         </Grid>
       </Grid>
       
