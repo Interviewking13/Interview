@@ -1,4 +1,5 @@
 const { Study } = require('../models/index');
+const { StudyRelation } = require('../models/index');
 
 const studyApi = {
   /**스터디 개설*/
@@ -29,20 +30,27 @@ const studyApi = {
     }
   },
 
-  /**스터디 신청*/ // 유저 아이디 필수로 고려해서 get 메서드 사용해야할 것 같음, post는 db에 새롭게 저장됨
+  /**스터디 신청*/
   async applyStudy(req, res, next) {
     try {
-      const { user_name, email, phone_number, goal, hope } = req.body;
-      const { study_id, study_name } = req.query;
+      const study_relation = await StudyRelation.findOne().exec();
+      const user_id = study_relation.user_id;
+      const study_id = study_relation.study_id;
+      const user_type = study_relation.user_type;
+      req.body.study_relation = { user_id, study_id, user_type }; // 한 번 신청했던 user_id, study_id를 동일하게 사용하면 dumplicate error?
+
+      const { study_name, user_name, email, phone_number, goal, accept } = req.body;
 
       const createInfo = {
         study_id,
         study_name,
+        user_id,
+        user_type,
         user_name,
         email,
         phone_number,
         goal,
-        hope,
+        accept,
       };
 
       const applyedStudy = await Study.create(createInfo);
@@ -51,10 +59,49 @@ const studyApi = {
       res.status(200).json(applyedStudy);
     } catch (error) {
       console.log(error);
-      res.status(400).json({
-        code: 400,
-        message: 'wrong request',
-      });
+      const study_relation = await StudyRelation.findOne().exec();
+      const user_type = study_relation.user_type;
+      if (user_type != 'member') {
+        res.status(422).json({
+          code: 422,
+          message: 'Only member can apply',
+        });
+      }
+    }
+  },
+
+  /**스터디 신청 수락*/
+  async acceptStudy(req, res, next) {
+    try {
+      const study_relation = await StudyRelation.findOne().exec();
+      const user_id = study_relation.user_id;
+      const study_id = study_relation.study_id;
+      const user_type = study_relation.user_type;
+      req.body.study_relation = { user_id, study_id, user_type }; // 한 번 신청했던 user_id, study_id를 동일하게 사용하면 dumplicate error?
+
+      const { accept } = req.body;
+
+      const createInfo = {
+        study_id,
+        user_id,
+        user_type,
+        accept,
+      };
+
+      const acceptedStudy = await Study.create(createInfo);
+      res.study = acceptedStudy;
+
+      res.status(200).json(acceptedStudy);
+    } catch (error) {
+      console.log(error);
+      const study_relation = await StudyRelation.findOne().exec();
+      const user_type = study_relation.user_type;
+      if (user_type === 'member') {
+        res.status(422).json({
+          code: 422,
+          message: 'Only leader can accept',
+        });
+      }
     }
   },
 
@@ -65,7 +112,7 @@ const studyApi = {
       const study_id = _id;
       const foundStudy = await Study.findOne({ study_id });
 
-      // if (!foundStudy) return error;
+      if (!foundStudy) return error;
 
       res.status(200).json(foundStudy);
     } catch (error) {
