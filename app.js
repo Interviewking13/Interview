@@ -12,6 +12,6 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use('/', indexRouter);
 
-app.listen(8080, () => {
+app.listen(3000, () => {
   console.log(`포트열렸다`);
 });
