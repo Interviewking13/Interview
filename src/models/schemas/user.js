@@ -11,7 +11,7 @@ const UserSchema = new Schema({
     intro_yn: { type: String, required: false, unique: false },
     phone_number: { type: String, required: false, unique: false },
     admin_yn: { type: Boolean, required: false, unique: false },
-    dts_insert: {type: Date, required: true, unique: false }
+    dts_insert: { type: Date, required: true, unique: false }
 });
 
 module.exports = UserSchema;
