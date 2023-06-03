@@ -7,7 +7,7 @@ import {
   Grid,
   Box
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material';
 import { Create,Person, Checklist } from '@mui/icons-material'; //MUI icon import
 
 
