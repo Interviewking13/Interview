@@ -1,4 +1,5 @@
 const { Study } = require('../models/index');
+const { User } = require('../models/index');
 const { StudyRelation } = require('../models/index');
 
 const studyApi = {
@@ -33,22 +34,27 @@ const studyApi = {
   /**스터디 신청*/
   async applyStudy(req, res, next) {
     try {
-      const study_relation = await StudyRelation.findOne().exec();
-      const user_id = study_relation.user_id;
-      const study_id = study_relation.study_id;
-      const user_type = study_relation.user_type;
-      req.body.study_relation = { user_id, study_id, user_type }; // 한 번 신청했던 user_id, study_id를 동일하게 사용하면 dumplicate error?
+      const user = await User.findOne().exec();
+      const user_id = user._id;
+      const user_name = user.user_name;
+      const email = user.email;
+      const phone_number = user.phone_number;
+      req.body.user = { user_id, user_name, email, phone_number };
 
-      const { study_name, user_name, email, phone_number, goal, accept } = req.body;
+      const study = await Study.findOne().exec();
+      const study_id = study.study_id;
+      const study_name = study.study_name;
+      req.body.study = { study_id, study_name };
+
+      const { goal, accept } = req.body;
 
       const createInfo = {
-        study_id,
-        study_name,
-        user_id,
-        user_type,
-        user_name,
-        email,
-        phone_number,
+        // study_id,
+        // study_name,
+        user_id: user._id,
+        user_name: user.user_name,
+        email: user.email,
+        phone_number: user.phone_number,
         goal,
         accept,
       };
@@ -59,14 +65,10 @@ const studyApi = {
       res.status(200).json(applyedStudy);
     } catch (error) {
       console.log(error);
-      const study_relation = await StudyRelation.findOne().exec();
-      const user_type = study_relation.user_type;
-      if (user_type != 'member') {
-        res.status(422).json({
-          code: 422,
-          message: 'Only member can apply',
-        });
-      }
+      res.status(400).json({
+        code: 400,
+        message: 'wrong request',
+      });
     }
   },
 
