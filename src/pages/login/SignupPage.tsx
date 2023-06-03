@@ -1,7 +1,6 @@
+import React, { ChangeEvent, useState } from 'react';
 import styled from "@emotion/styled";
-import { Button } from "@mui/base";
-import { TextField } from "@mui/material";
-import { useState } from "react";
+import { Button } from "@mui/material";
 
 const SignupPage = () => {
   const [name, setName] = useState('');
@@ -10,28 +9,69 @@ const SignupPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  //@ts-ignore
-  const onClickSubmit = (e) => {
+  const onClickSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // 회원가입 처리 등의 로직 추가
-    if (password===confirmPassword) {
-      console.log("비밀번호가 일치합니다.")
-    } else {
-      console.log("비밀번호가 일치하지않습니다.")
+
+    const replaceText = "";
+    const nameValidated = name.replace(/[^가-힣a-zA-Z]/g, replaceText);
+    const phoneValidated = phone.replace(/[^0-9]/g, replaceText);
+    const emailValidated = email.replace(/[^a-zA-Z0-9@.]/g, replaceText);
+    const passwordValidated = password.replace(/[^a-zA-Z0-9]/g, replaceText);
+    const confirmPasswordValidated = confirmPassword.replace(/[^a-zA-Z0-9]/g, replaceText);
+
+    if (!name || !phone || !email || !password || !confirmPassword) {
+      console.log("모든 필드를 입력해야 합니다.");
+      return;
     }
-    
+
+    if (nameValidated.length < 2) {
+      console.log("이름은 최소 2자 이상이어야 합니다.");
+      return;
+    }
+
+    if (phoneValidated !== phone) {
+      console.log("전화번호는 숫자로만 입력해야 합니다.");
+      return;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      console.log("유효한 이메일 주소를 입력해야 합니다.");
+      return;
+    }
+
+    if (passwordValidated.length < 6) {
+      console.log("비밀번호는 6자 이상으로 설정해주세요.");
+      return;
+    }
+
+    if (password === confirmPassword) {
+      console.log("비밀번호가 일치합니다.");
+      console.log("회원가입 완료되었습니다.");
+    } else {
+      console.log("비밀번호가 일치하지 않습니다.");
+    }
   };
 
-  //@ts-ignore
-  const onChangePassword = (e) => {
-    setPassword(e.target.value)
-    console.log(password);
-  }
-  //@ts-ignore
-  const onChangePasswordConfirm = (e) => {
-    setConfirmPassword(e.target.value)
-    console.log(confirmPassword);
-  }
+  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
+  const onChangePhone = (e: ChangeEvent<HTMLInputElement>) => {
+    setPhone(e.target.value);
+  };
+
+  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const onChangePasswordConfirm = (e: ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+  };
 
   return (
     <StyledLoginContainer>
@@ -40,23 +80,40 @@ const SignupPage = () => {
         <StyledLoginText>면접왕</StyledLoginText>
         <StyledLoginText>면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요</StyledLoginText>
       </StyledLoginTitleContainer>
-
-      {/* <StyledSignupContainer>
-        <StyledSignupInput label="이름" variant="outlined" />
-        <StyledSignupInput label="연락처" variant="outlined" />
-        <StyledSignupInput label="아이디" variant="outlined" />
-        <StyledSignupInput label="비밀번호" variant="outlined" />
-        <StyledSignupInput label="비밀번호 확인" variant="outlined" />
-        <StyledSignupBtn onClick={onClickSubmit}>신청하기</StyledSignupBtn>
-      </StyledSignupContainer> */}
-
-      <StyledSignupContainer>
-        <StyledSignupInput placeholder="이름" ></StyledSignupInput>
-        <StyledSignupInput placeholder="연락처" ></StyledSignupInput>
-        <StyledSignupInput placeholder="아이디" ></StyledSignupInput>
-        <StyledSignupInput placeholder="비밀번호" onChange={onChangePassword} ></StyledSignupInput>
-        <StyledSignupInput placeholder="비밀번호 확인" onChange={onChangePasswordConfirm} ></StyledSignupInput>
-        <StyledSignupBtn onClick={onClickSubmit}>신청하기</StyledSignupBtn>
+      <StyledSignupContainer onSubmit={onClickSubmit}>
+        <StyledSignupInput
+          type="text"
+          placeholder="이름"
+          value={name}
+          onChange={onChangeName}
+        />
+        <StyledSignupInput
+          type="tel"
+          placeholder="전화번호"
+          value={phone}
+          onChange={onChangePhone}
+        />
+        <StyledSignupInput
+          type="email"
+          placeholder="이메일"
+          value={email}
+          onChange={onChangeEmail}
+        />
+        <StyledSignupInput
+          type="password"
+          placeholder="비밀번호"
+          value={password}
+          onChange={onChangePassword}
+        />
+        <StyledSignupInput
+          type="password"
+          placeholder="비밀번호 확인"
+          value={confirmPassword}
+          onChange={onChangePasswordConfirm}
+        />
+        <StyledSignupBtn variant="contained" color="primary" type="submit">
+          가입하기
+        </StyledSignupBtn>
       </StyledSignupContainer>
     </StyledLoginContainer>
   );
@@ -70,12 +127,12 @@ const StyledLoginContainer = styled.div`
     justify-content: center;
     align-items: center;
   `
-  const StyledLoginTitleContainer = styled.div`
+const StyledLoginTitleContainer = styled.div`
     display: flex;
     flex-direction: column;
     
   `
-  const StyledLoginText = styled.div`
+const StyledLoginText = styled.div`
     color: #00057D; 
     font-size: 64px; 
     font-weight:400;
@@ -92,48 +149,38 @@ const StyledLoginContainer = styled.div`
       margin-top: 50px;
     }
   `
-  const StyledSignupContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-left: 100px;
-  `
-  // styled 함수의 인자로 화살표 함수를 사용해 스타일 속성을 정의
-  // [theme 객체]사용시 MUI 테마 참조 가능
-  // & .MuiInputBase-root는 TextField의 루트 요소를 선택하고, 해당 요소에 css적용하도록 설정
-  // const StyledSignupInput = styled(TextField)(({ theme }) => ({
-  //   "& .MuiInputLabel-root": {
-  //     transform: "translateY(25%)",
-  //     color: "red",
-  //   },
-  //   "& .MuiInputBase-root": {
-  //     height: "45px",
-  //     width: "457px",
-  //     marginTop: "15px",
-  //     borderRadius: "10px",
-  //     color: "#C0C3E5",
-  //   },
-  // }));
+const StyledSignupContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 340px;
+`;
 
-  const StyledSignupInput = styled.input`
-    width: 457px;
-    height: 45px;
-    margin-top: 15px;
-    color: #C0C3E5;
-    border: 1px solid #C0C3E5;
-    border-radius: 10px;
-    padding-left: 18px;
-    font-weight: 300;
-    font-size: 18px; 
-    &:not(:first-child) {
+const StyledSignupInput = styled.input`
+  width: 457px;
+  height: 45px;
+  margin-top: 15px;
+  color: #C0C3E5;
+  border: 1px solid #C0C3E5;
+  border-radius: 10px;
+  padding-left: 18px;
+  font-weight: 300;
+  font-size: 18px; 
+  &:first-of-type {
     margin-top: 15px; 
   }
-    &::placeholder {
-      color: #C0C3E5;
-    }
-  `
-  const StyledSignupBtn = styled(Button)`
+  &::placeholder {
+    color: #C0C3E5;
+  }
+  &:focus {
+    outline: none;
+    border: 1px solid #C0C3E5;
+    box-shadow: none;
+  }
+`;
+
+const StyledSignupBtn = styled(Button)`
   width: 132px;
-  height: 45px;
   height: 45px;
   border-radius: 10px;
   background-color: #2E3057;
@@ -143,5 +190,9 @@ const StyledLoginContainer = styled.div`
   border: 1px solid #2E3057;
   margin-top: 40px;
   margin-left: auto;
-  `
+  &:hover {
+    background-color: #2E3057;
+  }
+`;
+
 export default SignupPage;
