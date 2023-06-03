@@ -26,6 +26,7 @@ const StudySchema = new Schema({
   phone_number: { type: String, ref: 'User' }, // reference
   email: { type: String, unique: true, ref: 'User' }, // reference
   goal: { type: String }, // 목표 산업 분야 및 기업, 포부 등
+  accept: { type: Number, default: 0 }, // 0: 신청 완료, 1: 신청 수락, 2: 신청 거절
 });
 
 module.exports = StudySchema;
