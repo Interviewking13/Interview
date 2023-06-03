@@ -7,7 +7,7 @@ const studyFeedbackApi = {
   async newFeedback(req, res, next) {
     try {
       const user = await User.findOne().exec();
-      const user_id = user.user_id;
+      const user_id = user._id;
       const user_name = user.user_name;
       req.body.user = { user_id, user_name };
 
