@@ -21,4 +21,6 @@ const StudyApply = ()=>{
   )
 }
 
+
+
 export default StudyApply
