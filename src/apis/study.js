@@ -41,20 +41,20 @@ const studyApi = {
       const phone_number = user.phone_number;
       req.body.user = { user_id, user_name, email, phone_number };
 
-      const study = await Study.findOne().exec();
-      const study_id = study.study_id;
-      const study_name = study.study_name;
-      req.body.study = { study_id, study_name };
+      // const study = await Study.findOne().exec();
+      // const study_id = study.study_id;
+      // const study_name = study.study_name;
+      // req.body.study = { study_id, study_name };
 
       const { goal, accept } = req.body;
 
       const createInfo = {
         // study_id,
         // study_name,
-        user_id: user._id,
-        user_name: user.user_name,
-        email: user.email,
-        phone_number: user.phone_number,
+        user_id,
+        user_name,
+        email,
+        phone_number,
         goal,
         accept,
       };
