@@ -15,7 +15,7 @@ router.post('/register', userApi.registerUser);
 router.post('/login', userApi.loginUser);
 router.get('/mypage/:user_id', userApi.getUserInfo);
 router.put('/mypage', userApi.modifyUserInfo);
-router.delete('/:user_id', userApi.deleteUser);
+router.delete('/mypage', userApi.deleteUser);
 
 module.exports = router;
 
