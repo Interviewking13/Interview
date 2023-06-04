@@ -74,24 +74,44 @@ const userApi = {
     /** 회원가입 */
     async registerUser(req, res, next) {
         try {
-            const { user_name, phone_number, email, password } = req.body;
 
-            console.log(req.body);
+            // const { user_name, email, password } = req.body;
+            const { user_id, user_name, email, password } = req.body;
 
-            const newUser = {
-                user_id,
+            // 기존 사용자 유무 검사
+            const findUser = await User.findOne({ "email": email });
+
+            console.log(findUser);
+
+            if (findUser) {
+                return res.status(200).json({
+                    resultCode: "200",
+                    message: "기존에 이미 가입되어 있는 회원입니다."
+                    // data: newUser
+                })
+            }
+            
+            // dts_insert 필드 내용에 삽입할 변수 값 설정
+            const currentDate = new Date();
+            const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, ""); // 현재 날짜를 "yyyymmdd" 형식으로 가져옵니다
+            const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, ""); // 현재 시간을 "hhmmss" 형식으로 가져옵니다
+            
+            const newUserInfo = {
+                user_id,        //값이 자동부여인데.. 왜 user_id 정의가 필요하징? 음..
                 user_name,
-                phone_number,  
                 email,
                 password,
-                admin_yn: false
+                dts_insert: dateString + timeString
             }
 
-            User.create(newUser);
+            console.log(newUserInfo);
+
+            const newUser = await User.create(newUserInfo);
             
             res.status(200).json({
-
-                message: "회원가입 성공"
+                resultCode: "200",
+                message: "회원가입 성공",
+                data: newUser
             })
         } catch (err) {
             console.error(err);
@@ -251,32 +271,27 @@ const userApi = {
     /** 회원탈퇴 */
     async deleteUser(req, res, next) {
         try {
-            const { user_id } = req.body;
+            const { user_id, password } = req.body; //user_id 를 받아와야해...!
 
-            // TO-DO
-            const findUser = await User.findOne(
-                { "_id": user_id },
-                {
-                    "_id": true,
-                    "user_name": true,
-                    "email": true,
-                    "intro_yn": true,
-                    "phone_number": true
-                }
-            )
+            console.log(req.body);
+
+            // await User.deleteOne({ "_id": user_id });
+            const findUser = await User.findOneAndDelete({"_id": user_id, "password": password });
+            
+            console.log(req.body);
             
             if(!findUser) {
                 return res.status(400).json({
                     resultCode: "400",
-                    message: "해당 사용자를 찾을 수 없습니다."
-                })
+                    message: "해당 사용자를 찾을 수 없거나 비밀번호가 일치하지 않습니다."
+                });
             }
             
-            // res.send('회원탈퇴 성공');
             res.status(200).json({
                 resultCode: "200",
                 message: "회원탈퇴 성공"
-            })
+            });
+
         } catch (err) {
             console.error(err);
             res.status(500).json({
