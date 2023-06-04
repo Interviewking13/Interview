@@ -6,12 +6,13 @@ const UserSchema = new Schema({
     user_name: { type: String, required: true, unique: false },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, unique: false },
-    privacy_use_yn: { type: String, required: true, unique: false },
-    marketing_use_yn: { type: String, required: true, unique: false },
-    intro_yn: { type: String, required: false, unique: false },
+    privacy_use_yn: { type: String, required: true, unique: false, default: true },
+    marketing_use_yn: { type: String, required: true, unique: false, default: false },
+    intro_yn: { type: String, required: false, unique: false, default: "" },
     phone_number: { type: String, required: false, unique: false },
-    admin_yn: { type: Boolean, required: false, unique: false },
-    dts_insert: { type: Date, required: true, unique: false }
+    admin_yn: { type: Boolean, required: false, unique: false, default: false },
+    dts_insert: { type: Date, required: true, unique: false },
+    // dts_update: { type: Date, required: true, unique: false }
 });
 
 module.exports = UserSchema;
