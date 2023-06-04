@@ -6,6 +6,7 @@ import HomePage from "./pages/home/Homepage";
 import Mypage from "./pages/mypage/Mypage";
 import Layout from "./components/layout/Layout";
 import Information from "./pages/study/Information";
+import { Feedback } from "./pages/study/Feedback";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/mypage" element={<Mypage />} />
               <Route path="/study/info" element={<Information />} />
+              <Route path="/study/feedback" element={<Feedback />} />
             </Routes>
           </Layout>
         </QueryClientProvider>
