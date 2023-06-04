@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
+import axios from 'axios';
 
 const SignupPage = () => {
   const [name, setName] = useState('');
@@ -9,12 +10,22 @@ const SignupPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const onClickSubmit = (e: React.FormEvent) => {
+  // 테스트 데이터
+  const testData: { name: string; email: string; password: string; phone_number: string; }[] = [
+    {
+      name: "박세진",
+      email: "cobaltcyan.park@gmail.com",
+      password: "tpwls1234",
+      phone_number: "010-4916-4244",
+    },
+  ];
+
+  const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const replaceText = "";
     const nameValidated = name.replace(/[^가-힣a-zA-Z]/g, replaceText);
-    const phoneValidated = phone.replace(/[^0-9]/g, replaceText);
+    const phoneValidated = phone.replace(/[^0-9-]/g, replaceText);
     const emailValidated = email.replace(/[^a-zA-Z0-9@.]/g, replaceText);
     const passwordValidated = password.replace(/[^a-zA-Z0-9]/g, replaceText);
     const confirmPasswordValidated = confirmPassword.replace(/[^a-zA-Z0-9]/g, replaceText);
@@ -30,7 +41,7 @@ const SignupPage = () => {
     }
 
     if (phoneValidated !== phone) {
-      console.log("전화번호는 숫자로만 입력해야 합니다.");
+      console.log("전화번호는 숫자와 - 기호로만 입력해야 합니다.");
       return;
     }
 
@@ -45,11 +56,41 @@ const SignupPage = () => {
       return;
     }
 
-    if (password === confirmPassword) {
-      console.log("비밀번호가 일치합니다.");
-      console.log("회원가입 완료되었습니다.");
-    } else {
+    if (password !== confirmPassword) {
       console.log("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    // 테스트 데이터에서 이름, 이메일, 비밀번호, 전화번호가 일치하는지 확인
+    const matchedUser = testData.find(
+      (user: { name: string; email: string; password: string; phone_number: string; }) =>
+        user.name === name &&
+        user.email === email &&
+        user.password === password &&
+        user.phone_number === phone
+    );
+
+    if (matchedUser) {
+      console.log("회원가입 성공");
+      console.log(matchedUser);
+    } else {
+      console.log("테스트 데이터와 일치하지 않습니다.");
+      return;
+    }
+
+    try {
+      const response = await axios.post('/api/user/register', {
+        name,
+        phone,
+        email,
+        password,
+      });
+
+      console.log("회원가입 성공");
+      console.log(response.data);
+    } catch (error) {
+      console.log("회원가입 실패");
+      console.error(error);
     }
   };
 
@@ -121,7 +162,6 @@ const SignupPage = () => {
 
 const StyledLoginContainer = styled.div`
     background-color: #f1f4ff;
-    align-items: center; /* 수직 가운데 정렬 */
     height: 100vh;
     display: flex;
     justify-content: center;

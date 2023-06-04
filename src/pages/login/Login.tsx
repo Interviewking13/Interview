@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ const LoginPage = () => {
     },
   ];
 
-  const onClickSubmit = (e: React.FormEvent) => {
+  const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -25,16 +26,25 @@ const LoginPage = () => {
     }
 
     try {
-      // 테스트데이터에서 이메일과 비밀번호가 일치하는지 확인
+      // 테스트 데이터에서 이메일과 비밀번호가 일치하는지 확인
       const matchedUser = testData.find(user => user.email === email && user.password === password);
 
       if (matchedUser) {
         console.log("로그인 성공");
+
+        // 로그인 성공 시에만 Axios를 사용하여 POST 요청을 보냄
+        const response = await axios.post('/api/user/login', {
+          email,
+          password
+        });
+
+        console.log(response.data); // 응답 데이터에 접근
+
       } else {
         console.log("로그인 실패");
       }
     } catch (error) {
-      console.log("error");
+      console.log("에러 발생:", error);
     }
   };
 
@@ -174,7 +184,5 @@ const StyledLoginBtn = styled(Button)`
     background-color: #2E3057;
   }
 `;
-
-
 
 export default LoginPage;
