@@ -66,12 +66,24 @@ const userApi = {
     /** 회원가입 */
     async registerUser(req, res, next) {
         try {
+            const { user_name, phone_number, email, password } = req.body;
 
-            const { title } = req.body;
+            console.log(req.body);
+
+            const newUser = {
+                user_id,
+                user_name,
+                phone_number,  
+                email,
+                password,
+                admin_yn: false
+            }
+
+            User.create(newUser);
             
             res.status(200).json({
-                message: "회원가입 성공",
-                data: title
+
+                message: "회원가입 성공"
             })
         } catch (err) {
             console.log(err);
@@ -94,19 +106,18 @@ const userApi = {
         try {
             const { user_id } = req.params;
             // const { user_id } = req.body;
-
+            console.log(user_id);
             // const findUser = await User.findOne({ "user_id": user_id }); //확인완료
             const findUser = await User.findOne(
-                { "user_id": user_id },
+                { "_id": user_id },
                 {
-                    "user_id": true,
+                    "_id": true,
                     "user_name": true,
                     "email": true,
                     "intro_yn": true,
                     "phone_number": true
                 }
             )
-
             if (!findUser) {
                 return res.status(400).json({
                     resultCode: "400",
@@ -115,9 +126,9 @@ const userApi = {
             }
             res.status(200).json({
                 // data: findUser
-                user_id: findUser.user_id,
+                user_id: findUser._id,
                 user_name: findUser.user_name,
-                email: findUser.user_id,
+                email: findUser.email,
                 intro_yn: findUser.intro_yn,
                 phone_number: findUser.phone_number
             });
@@ -135,7 +146,7 @@ const userApi = {
         try {
             const { user_id, email, password, intro_yn, phone_number } = req.body;
             const findUser = await User.findOne({ user_id });
-            const findInfo = User.update({ "email": "cobaltcyan.park@gmail.com" },
+            const findInfo = User.update({ "email": email },
                                 {
                                     $set: {
                                         "email": email, 
