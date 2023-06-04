@@ -5,6 +5,8 @@ import { RecoilRoot } from "recoil";
 import HomePage from "./pages/home/Homepage";
 import Mypage from "./pages/mypage/Mypage";
 import Layout from "./components/layout/Layout";
+import CommunityCreatePage from "./pages/community/CommunityCreatePage";
+import CommunityPage from "./pages/community/CommunityPage";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +19,9 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/mypage" element={<Mypage />} />
+              <Route path="/Community/CommunityPage" element={<CommunityPage />} />
+              <Route path="/Community/CommunityCreatePage" element={<CommunityCreatePage />} />
+              CommunityCreatePage
             </Routes>
           </Layout>
         </QueryClientProvider>
