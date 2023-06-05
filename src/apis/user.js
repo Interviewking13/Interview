@@ -20,7 +20,7 @@ const userApi = {
             res.status(500).json({
                 resultCode: "500",
                 message: "서버오류"
-            })
+            });
         }
     },
 
@@ -32,14 +32,14 @@ const userApi = {
             res.status(200).json({
                 message: "post 방식 성공",
                 data: title
-            })
+            });
             
         } catch (err) {
             console.error(err);
             res.status(500).json({
                 resultCode: "500",
                 message: "서버오류"
-            })
+            });
         }
     },
 
@@ -67,7 +67,7 @@ const userApi = {
             res.status(500).json({
                 resultCode: "500",
                 message: "서버오류"
-            })
+            });
         }
     },
 
@@ -88,7 +88,7 @@ const userApi = {
                     resultCode: "200",
                     message: "기존에 이미 가입되어 있는 회원입니다.",
                     data: findUser
-                })
+                });
             }
             
             // dts_insert 필드 내용에 삽입할 변수 값 설정
@@ -112,22 +112,47 @@ const userApi = {
                 resultCode: "200",
                 message: "회원가입 성공",
                 data: newUser
-            })
+            });
         } catch (err) {
             console.error(err);
             res.status(500).json({
                 resultCode: "500",
                 message: "서버오류"
-            })
+            });
         }
     },
 
     /** 로그인 */
     async loginUser(req, res, next) {
         try {
-            res.send('로그인');
+            
+            const { email, password } = req.body;
+
+            // 기존 사용자 유무 검사
+            const findUser = await User.findOne({ "email": email, "password": password });
+
+            console.log(findUser);
+
+            if (!findUser) {
+                return res.status(200).json({
+                    resultCode: "200",
+                    message: "이메일 또는 비밀번호가 맞지 않습니다.",
+                    data: findUser
+                })
+            }
+            
+            res.status(200).json({
+                resultCode: "200",
+                message: "로그인 성공",
+                data: findUser
+            });
+            
         } catch (err) {
-            throw new Error(err);
+            console.error(err);
+            res.status(500).json({
+                resultCode: "500",
+                message: "서버오류"
+            });
         }
     },
 
@@ -167,7 +192,7 @@ const userApi = {
             res.status(500).json({
                 resultCode: "500",
                 message: "서버오류"
-            })
+            });
         }
     },
 
@@ -184,7 +209,7 @@ const userApi = {
                 return res.status(400).json({
                     resultCode: "400",
                     message: "해당 사용자를 찾을 수 없습니다."
-                })
+                });
             }
             
             // 기존 사용자 정보
@@ -262,7 +287,7 @@ const userApi = {
             res.status(500).json({
                 resultCode: "500",
                 message: "서버오류"
-            })
+            });
         }
     },
 
@@ -296,7 +321,7 @@ const userApi = {
             res.status(500).json({
                 resultCode: "500",
                 message: "서버오류"
-            })
+            });
         }
     }
 
