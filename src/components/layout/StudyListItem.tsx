@@ -1,9 +1,66 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { Link } from "@mui/material";
+import StyledIcon from "./Img";
+import PeopleIconSrc from "../../img/people.svg";
 
-import StyledIcon from "./Img"
-import PeopleIconSrc from './img/people.svg';
+type StudyListProps = {
+  id: number,
+  title: string,
+  currentParticipants: number,
+  maxParticipants: number,
+  startDate: string,
+  endDate: string,
+  recruitDeadline: string,
+  master: string
+}
+
+const StudyListItem: React.FC<StudyListProps> = ({
+  id,
+  title,
+  currentParticipants,
+  maxParticipants,
+  startDate,
+  endDate,
+  recruitDeadline,
+  master,
+}) => {
+  return (
+        <StyledStudyListContainer key={id}>
+          <StyledStudyListNavyArea>
+            <StyledStudyTagArea>
+              <StyledStudyRecruitTag>모집 중</StyledStudyRecruitTag>
+              <StyledStudyNewTag>NEW</StyledStudyNewTag>
+            </StyledStudyTagArea>
+            <StyledStudyName>{title}</StyledStudyName>
+          </StyledStudyListNavyArea>
+  
+          <StyledStudyListWhiteText>
+            <StyledStudyPeopleArea>
+              <StyledIcon src={PeopleIconSrc} />
+              <StyledStudyListPeopleText>
+                {currentParticipants} / {maxParticipants} 명
+              </StyledStudyListPeopleText>
+            </StyledStudyPeopleArea>
+  
+            <StyledStudyDateArea>
+              <StyledStudyListDateText>
+                진행 기간 | {startDate} ~ {endDate}
+              </StyledStudyListDateText>
+              <StyledStudyListDateText>
+                모집 마감 | {recruitDeadline}
+              </StyledStudyListDateText>
+            </StyledStudyDateArea>
+  
+            <StyledStudyMaster>{master}</StyledStudyMaster>
+          </StyledStudyListWhiteText>
+        </StyledStudyListContainer>
+  );
+
+  
+};
+
+export default StudyListItem
 
 const StyledStudyListContainer = styled.div`
   width: 295px;
@@ -93,40 +150,3 @@ const StyledStudyMaster = styled.p`
  color: black;
  margin: 20px 0 0 0;
 `;
-
-const StudyListItem = (): JSX.Element => {
-  return (
-    <>
-      <StyledStudyListContainer>
-
-        <StyledStudyListNavyArea>
-            <StyledStudyTagArea>
-                <StyledStudyRecruitTag>모집 중</StyledStudyRecruitTag>
-                <StyledStudyNewTag>NEW</StyledStudyNewTag>
-            </StyledStudyTagArea>
-            <StyledStudyName>
-              SAFFY 면접 스터디
-            </StyledStudyName>
-        </StyledStudyListNavyArea>
-
-        <StyledStudyListWhiteText>
-            <StyledStudyPeopleArea>
-                <StyledIcon src={PeopleIconSrc} />
-                <StyledStudyListPeopleText>3 / 20 명</StyledStudyListPeopleText>
-            </StyledStudyPeopleArea>
-
-            <StyledStudyDateArea>
-                <StyledStudyListDateText>진행 기간 | 23.06.01 ~ 23.08.01</StyledStudyListDateText>
-                <StyledStudyListDateText>모집 마감 | 23.05.28</StyledStudyListDateText>
-            </StyledStudyDateArea>
-
-            <StyledStudyMaster>정채진</StyledStudyMaster>
-
-        </StyledStudyListWhiteText>
-            
-      </StyledStudyListContainer>
-    </>
-  );
-};
-
-export default StudyListItem;
