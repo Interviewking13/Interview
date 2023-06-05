@@ -9,40 +9,6 @@ const ObjectId = mongoose.Types.ObjectId;
 
 const userApi = {
 
-    /** userApi get 방식 테스트 */
-    async userTest(req, res, next) {
-        try {
-            //userApi 테스트
-            res.send('userApi GET 방식 테스트');
-            console.log('userApi 테스트1');        
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({
-                resultCode: "500",
-                message: "서버오류"
-            });
-        }
-    },
-
-    /** userApi post 방식 테스트 */
-    async postUserTest(req, res, next) {
-        try {
-            const { title } = req.body;
-
-            res.status(200).json({
-                message: "post 방식 성공",
-                data: title
-            });
-            
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({
-                resultCode: "500",
-                message: "서버오류"
-            });
-        }
-    },
-
     /** user 정보 전체 DB 조회 테스트 */
     async getAllUserInfo(req, res, next) {
         try {
@@ -61,7 +27,6 @@ const userApi = {
                 data: findAllUser
             })
             // res.send(findAllUser);
-
         } catch (err) {
             console.error(err);
             res.status(500).json({
@@ -75,7 +40,6 @@ const userApi = {
     async registerUser(req, res, next) {
         try {
 
-            // const { user_name, email, password } = req.body;
             const { user_id, user_name, email, password } = req.body;
 
             // 기존 사용자 유무 검사
@@ -97,7 +61,7 @@ const userApi = {
             const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, ""); // 현재 시간을 "hhmmss" 형식으로 가져옵니다
             
             const newUserInfo = {
-                // user_id,        //값이 자동부여인데.. 왜 user_id 정의가 필요하징? 음..
+                user_id,
                 user_name,
                 email,
                 password,

@@ -6,8 +6,6 @@ const router = express.Router();
 const userApi = require("../apis/user");
 
 //user API 테스트
-router.get('/userTest', userApi.userTest);
-router.post('/postUserTest', userApi.postUserTest);
 router.get('/userInfo', userApi.getAllUserInfo);
 
 //user API 실제 기능
