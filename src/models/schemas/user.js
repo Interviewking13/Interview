@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
-    user_id: { type: mongoose.Types.ObjectId, required: true, unique: true }, // identification value
+    // user_id: { type: mongoose.Types.ObjectId, required: true, unique: true },    // identification value
+    user_id: { type: mongoose.Types.ObjectId, unique: true },                       // identification value   //회원가입 테스트
     user_name: { type: String, required: true, unique: false },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, unique: false },
