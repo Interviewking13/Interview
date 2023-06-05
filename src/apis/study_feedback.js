@@ -3,7 +3,7 @@ const { Study } = require('../models/index');
 const { User } = require('../models/index');
 
 const studyFeedbackApi = {
-  /**ÇÇµå¹é, ´ñ±Û ÀÛ¼º*/
+  /**í”¼ë“œë°±, ëŒ“ê¸€ ìž‘ì„±*/
   async newFeedback(req, res, next) {
     try {
       const user = await User.findOne().exec();
@@ -41,7 +41,7 @@ const studyFeedbackApi = {
     }
   },
 
-  /**ÇÇµå¹é, ´ñ±Û Á¶È¸*/
+  /**í”¼ë“œë°±, ëŒ“ê¸€ ì¡°íšŒ*/
   async getStudyFeedback(req, res, next) {
     try {
       const user = await User.findOne().exec();
@@ -62,7 +62,7 @@ const studyFeedbackApi = {
     }
   },
 
-  /**ÇÇµå¹é, ´ñ±Û ¼öÁ¤*/
+  /**í”¼ë“œë°±, ëŒ“ê¸€ ìˆ˜ì •*/
   async updateStudyFeedback(req, res, next) {
     try {
       const user = await User.findOne().exec();
@@ -90,7 +90,7 @@ const studyFeedbackApi = {
     }
   },
 
-  /**ÇÇµå¹é, ´ñ±Û »èÁ¦*/
+  /**í”¼ë“œë°±, ëŒ“ê¸€ ì‚­ì œ*/
   async deleteStudyFeedback(req, res, next) {
     try {
       const user = await User.findOne().exec();

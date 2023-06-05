@@ -3,7 +3,7 @@ const { Study } = require('../models/index');
 const { User } = require('../models/index');
 
 const studyRelationApi = {
-  /**½ºÅÍµğÀå ±ÇÇÑ µî·Ï*/
+  /**ìŠ¤í„°ë””ì¥ ê¶Œí•œ ë“±ë¡*/
   async newLeader(req, res, next) {
     try {
       //   const user = await User.findOne({ user_id }).exec();

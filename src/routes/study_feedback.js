@@ -3,9 +3,9 @@ const router = Router();
 
 const studyFeedbackApi = require('../apis/study_feedback');
 
-router.post('/create', studyFeedbackApi.newFeedback); // ½ºÅÍµð °³¼³
-router.get('/', studyFeedbackApi.getStudyFeedback); // ½ºÅÍµð Á¤º¸ Á¶È¸
-router.put('/', studyFeedbackApi.updateStudyFeedback); // ½ºÅÍµð Á¤º¸ ¼öÁ¤(Àå)
-router.delete('/', studyFeedbackApi.deleteStudyFeedback); // ½ºÅÍµð Á¤º¸ »èÁ¦(Àå)
+router.post('/create', studyFeedbackApi.newFeedback); // ìŠ¤í„°ë”” ê°œì„¤
+router.get('/', studyFeedbackApi.getStudyFeedback); // ìŠ¤í„°ë”” ì •ë³´ ì¡°íšŒ
+router.put('/', studyFeedbackApi.updateStudyFeedback); // ìŠ¤í„°ë”” ì •ë³´ ìˆ˜ì •(ìž¥)
+router.delete('/', studyFeedbackApi.deleteStudyFeedback); // ìŠ¤í„°ë”” ì •ë³´ ì‚­ì œ(ìž¥)
 
 module.exports = router;
