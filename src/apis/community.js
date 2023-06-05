@@ -251,7 +251,7 @@ const communityApi = {
             console.log(err);
             throw new Error(err);
         }
-    }  
+    },
 }
 
 module.exports = communityApi;

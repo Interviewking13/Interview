@@ -1,0 +1,8 @@
+.DS_Store
+/node_modules/**
+/.cache/**
+/build/**
+/dist/**
+/models/dist/**
+/package-lock.json
+.env
