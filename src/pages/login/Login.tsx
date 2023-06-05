@@ -60,41 +60,47 @@ const LoginPage = () => {
   };
 
   return (
-    <StyledLoginContainer>
-      <StyledLoginTitleContainer>
-        <StyledLoginText>면접을 면접답게</StyledLoginText>
-        <StyledLoginText>면접왕</StyledLoginText>
-        <StyledLoginText>면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요</StyledLoginText>
-      </StyledLoginTitleContainer>
-      <StyledSignupContainer onSubmit={onClickSubmit}>
-        <StyledSignupInput
-          type="email"
-          placeholder="이메일"
-          value={email}
-          onChange={onChangeEmail}
-        />
-        <StyledSignupInput
-          type="password"
-          placeholder="비밀번호"
-          value={password}
-          onChange={onChangePassword}
-        />
-        <StyledBtnWrapper>
-          <StyledSignupBtn variant="contained" color="primary" type="button" onClick={onClickSignup}>
-            회원가입
-          </StyledSignupBtn>
-          <StyledLoginBtn variant="contained" color="primary" type="submit">
-            로그인
-          </StyledLoginBtn>
-        </StyledBtnWrapper>
-      </StyledSignupContainer>
-    </StyledLoginContainer>
+    <StyledLoginWrapper>
+      <StyledLoginContainer>
+        <StyledLoginTitleContainer>
+          <StyledLoginText>면접을 면접답게</StyledLoginText>
+          <StyledLoginText>면접왕</StyledLoginText>
+          <StyledLoginText>면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요</StyledLoginText>
+        </StyledLoginTitleContainer>
+        <StyledSignupContainer onSubmit={onClickSubmit}>
+          <StyledSignupInput
+            type="email"
+            placeholder="이메일"
+            value={email}
+            onChange={onChangeEmail}
+          />
+          <StyledSignupInput
+            type="password"
+            placeholder="비밀번호"
+            value={password}
+            onChange={onChangePassword}
+          />
+          <StyledBtnWrapper>
+            <StyledSignupBtn variant="contained" color="primary" type="button" onClick={onClickSignup}>
+              회원가입
+            </StyledSignupBtn>
+            <StyledLoginBtn variant="contained" color="primary" type="submit">
+              로그인
+            </StyledLoginBtn>
+          </StyledBtnWrapper>
+        </StyledSignupContainer>
+      </StyledLoginContainer>
+      <StyledSignupCopyright>
+        Copyright © 2023 INTERVIEWKING All Rights Reserved.
+      </StyledSignupCopyright>
+    </StyledLoginWrapper>
   );
 };
-
+const StyledLoginWrapper = styled.div`
+  background-color: #f1f4ff;
+  padding-bottom: 30px;
+`;
 const StyledLoginContainer = styled.div`
-    background-color: #f1f4ff;
-    align-items: center;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -183,6 +189,11 @@ const StyledLoginBtn = styled(Button)`
   &:hover {
     background-color: #2E3057;
   }
+`;
+const StyledSignupCopyright = styled.div`
+  text-align: center;
+  font-size: 14px;
+  color: #C0C3E5;
 `;
 
 export default LoginPage;
