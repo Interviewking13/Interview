@@ -3,11 +3,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import HomePage from "./pages/home/Homepage";
+import Mypage from "./pages/mypage/Mypage";
+import StudyList from "./pages/studylist/StudyList";
 import Layout from "./components/layout/Layout";
 import LoginPage from "./pages/login/Login";
 import SignupPage from "./pages/login/SignupPage";
-
-import Mypage from "./pages/mypage/Mypage";
 import StudyApply from "./pages/mypage/components/StudyApply";
 import UserInfo from "./pages/mypage/components/UserInfo";
 import UserStudy from "./pages/mypage/components/UserStudy";
@@ -29,6 +29,7 @@ function App() {
                 </Route>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/login/signup" element={<SignupPage />} />
+                <Route path="/studylist" element={<StudyList />} />
             </Routes>
           </Layout>
         </QueryClientProvider>
