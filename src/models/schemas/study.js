@@ -2,31 +2,31 @@ const { Schema } = require('mongoose');
 const mongoose = require('mongoose');
 
 const StudySchema = new Schema({
-  // ½ºÅÍµğ Á¤º¸
+  // ìŠ¤í„°ë”” ì •ë³´
   study_id: { type: mongoose.Types.ObjectId, unique: true }, // identification value
   study_name: { type: String, unique: true },
   title: { type: String },
   content: { type: String },
   start: { type: Date },
   end: { type: Date },
-  deadline: { type: Date }, // ¸ğÁı¿Ï·á³¯Â¥
-  headcount: { type: Number, maximum: 10 }, // ÃÖ´ë ¸ğÁı ÀÎ¿ø
+  deadline: { type: Date }, // ëª¨ì§‘ì™„ë£Œë‚ ì§œ
+  headcount: { type: Number, maximum: 10 }, // ìµœëŒ€ ëª¨ì§‘ ì¸ì›
   chat_link: {
     type: String,
     // pattern: '^https?:\\/\\/(?:www\\.)?zoom\\.us\\/(?:j\\/|my\\/|meetings\\/join\\?)[^\\s]+$',
   },
   status: {
-    // ¸ğÁı Áß: 0, ¸ğÁı ¿Ï·á: 1
+    // ëª¨ì§‘ ì¤‘: 0, ëª¨ì§‘ ì™„ë£Œ: 1
     type: Number,
     default: 0,
   },
 
-  // ½ºÅÍµğ¿ø ½ÅÃ» Á¤º¸ (½ºÅÍµğ ½ÅÃ» ½Ã, »ç¿ëÀÚ°¡ ÀÔ·Â)
+  // ìŠ¤í„°ë””ì› ì‹ ì²­ ì •ë³´ (ìŠ¤í„°ë”” ì‹ ì²­ ì‹œ, ì‚¬ìš©ìê°€ ì…ë ¥)
   user_name: { type: String, ref: 'User' }, // reference
   phone_number: { type: String, ref: 'User' }, // reference
   email: { type: String, unique: true, ref: 'User' }, // reference
-  goal: { type: String }, // ¸ñÇ¥ »ê¾÷ ºĞ¾ß ¹× ±â¾÷, Æ÷ºÎ µî
-  accept: { type: Number, default: 0 }, // 0: ½ÅÃ» ¿Ï·á, 1: ½ÅÃ» ¼ö¶ô, 2: ½ÅÃ» °ÅÀı
+  goal: { type: String }, // ëª©í‘œ ì‚°ì—… ë¶„ì•¼ ë° ê¸°ì—…, í¬ë¶€ ë“±
+  accept: { type: Number, default: 0 }, // 0: ì‹ ì²­ ì™„ë£Œ, 1: ì‹ ì²­ ìˆ˜ë½, 2: ì‹ ì²­ ê±°ì ˆ
 });
 
 module.exports = StudySchema;

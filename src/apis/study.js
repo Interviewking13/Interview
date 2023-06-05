@@ -3,9 +3,11 @@ const { User } = require('../models/index');
 const { StudyRelation } = require('../models/index');
 
 const studyApi = {
-  /**½ºÅÍµğ °³¼³*/
+  /**ìŠ¤í„°ë”” ê°œì„¤*/
   async newStudy(req, res, next) {
     try {
+      // ìŠ¤í„°ë”” ê°œì„¤
+      const user_id = req.user._id;
       const { study_name, title, content, deadline, headcount, chat_link, status } = req.body;
 
       const createInfo = {
@@ -19,9 +21,22 @@ const studyApi = {
       };
 
       const createdStudy = await Study.create(createInfo);
-      res.study = createdStudy;
 
+      res.study = createdStudy;
       res.status(200).json(createdStudy);
+
+      // ìŠ¤í„°ë”” ê´€ê³„ ìƒì„±
+      const study_id = createdStudy._id;
+      console.log(study_id);
+
+      const createRelation = {
+        user_id,
+        study_id,
+        user_type: 1,
+      };
+
+      const createdRelation = await StudyRelation.create(createRelation);
+      res.study_relation = createdRelation;
     } catch (error) {
       console.log(error);
       res.status(400).json({
@@ -31,7 +46,7 @@ const studyApi = {
     }
   },
 
-  /**½ºÅÍµğ ½ÅÃ»*/
+  /**ìŠ¤í„°ë”” ì‹ ì²­*/
   async applyStudy(req, res, next) {
     try {
       const user = await User.findOne().exec();
@@ -72,14 +87,14 @@ const studyApi = {
     }
   },
 
-  /**½ºÅÍµğ ½ÅÃ» ¼ö¶ô*/
+  /**ìŠ¤í„°ë”” ì‹ ì²­ ìˆ˜ë½*/
   async acceptStudy(req, res, next) {
     try {
       const study_relation = await StudyRelation.findOne().exec();
       const user_id = study_relation.user_id;
       const study_id = study_relation.study_id;
       const user_type = study_relation.user_type;
-      req.body.study_relation = { user_id, study_id, user_type }; // ÇÑ ¹ø ½ÅÃ»Çß´ø user_id, study_id¸¦ µ¿ÀÏÇÏ°Ô »ç¿ëÇÏ¸é dumplicate error?
+      req.body.study_relation = { user_id, study_id, user_type }; // í•œ ë²ˆ ì‹ ì²­í–ˆë˜ user_id, study_idë¥¼ ë™ì¼í•˜ê²Œ ì‚¬ìš©í•˜ë©´ dumplicate error?
 
       const { accept } = req.body;
 
@@ -107,7 +122,7 @@ const studyApi = {
     }
   },
 
-  /**½ºÅÍµğ Á¤º¸ Á¶È¸*/ // ÇöÀç À¯Àú Á¤º¸ Á¶È¸´Â ¾È µÊ
+  /**ìŠ¤í„°ë”” ì •ë³´ ì¡°íšŒ*/ // í˜„ì¬ ìœ ì € ì •ë³´ ì¡°íšŒëŠ” ì•ˆ ë¨
   async getStudy(req, res, next) {
     try {
       const { study_id } = req.params;
@@ -125,7 +140,7 @@ const studyApi = {
     }
   },
 
-  /**½ºÅÍµğ Á¤º¸ ¼öÁ¤*/
+  /**ìŠ¤í„°ë”” ì •ë³´ ìˆ˜ì •*/
   async updateStudy(req, res, next) {
     try {
       const { userId } = req.params;
@@ -155,16 +170,16 @@ const studyApi = {
       const relation = await StudyRelation.findOne({ user_id: userId });
       if (!relation) {
         res.status(422).json({
-          // ¿¡·¯ ÀÀ´ä ÄÚµå¸¦ 401(Unauthorized)À¸·Î ¼³Á¤
+          // ì—ëŸ¬ ì‘ë‹µ ì½”ë“œë¥¼ 401(Unauthorized)ìœ¼ë¡œ ì„¤ì •
           code: 422,
-          message: 'Only leader can update', // ¿¡·¯ ¸Ş½ÃÁö¸¦ Å¬¶óÀÌ¾ğÆ®¿¡°Ô ¹İÈ¯
+          message: 'Only leader can update', // ì—ëŸ¬ ë©”ì‹œì§€ë¥¼ í´ë¼ì´ì–¸íŠ¸ì—ê²Œ ë°˜í™˜
         });
       }
     }
   },
 
-  /**½ºÅÍµğ È¸¿ø °ü¸®*/ // ÇöÀç ½ºÅÍµğÀå ±ÇÇÑ °í·ÁX, À¯Àú ¾ÆÀÌµğ ºÒ·¯¿Í¼­ À¯Àú »èÁ¦ ±â´É ±¸ÇöX
-  /**½ºÅÍµğ »èÁ¦*/
+  /**ìŠ¤í„°ë”” íšŒì› ê´€ë¦¬*/ // í˜„ì¬ ìŠ¤í„°ë””ì¥ ê¶Œí•œ ê³ ë ¤X, ìœ ì € ì•„ì´ë”” ë¶ˆëŸ¬ì™€ì„œ ìœ ì € ì‚­ì œ ê¸°ëŠ¥ êµ¬í˜„X
+  /**ìŠ¤í„°ë”” ì‚­ì œ*/
   async deleteStudy(req, res, next) {
     try {
       const { _id } = req.params;

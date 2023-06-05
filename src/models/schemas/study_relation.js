@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const StudyRelationSchema = new Schema({
   study_id: { type: mongoose.Types.ObjectId, unique: true, ref: 'Study' }, // reference
   user_id: { type: mongoose.Types.ObjectId, unique: true, ref: 'User' }, // reference
-  user_type: { type: String, defalut: 'member' }, // leader: ½ºÅÍµğÀå, member: ½ºÅÍµğ¿ø
+  user_type: { type: Boolean, defalut: 0 }, // 1: ìŠ¤í„°ë””ì¥, 0: ìŠ¤í„°ë””ì›
 });
 
 module.exports = StudyRelationSchema;
