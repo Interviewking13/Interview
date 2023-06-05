@@ -1,8 +1,110 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { Link } from "@mui/material";
-
 import StudyListItem from "../../components/layout/StudyListItem";
+
+const StudyList = (): JSX.Element => {
+  const studyData = [{
+      id: 1,
+      title: "면접 스터디 1",
+      currentParticipants: 3,
+      maxParticipants: 8,
+      startDate: "23.07.01",
+      endDate: "23.07.31",
+      recruitDeadline: "23.06.30",
+      master: "정채진"
+    },
+    {
+      id: 2,
+      title: "면접 스터디 2",
+      currentParticipants: 3,
+      maxParticipants: 8,
+      startDate: "23.07.01",
+      endDate: "23.07.31",
+      recruitDeadline: "23.06.30",
+      master: "정채진"
+    },
+    {
+      id: 3,
+      title: "면접 스터디 3",
+      currentParticipants: 3,
+      maxParticipants: 8,
+      startDate: "23.07.01",
+      endDate: "23.07.31",
+      recruitDeadline: "23.06.30",
+      master: "정채진"
+    },
+    {
+      id: 4,
+      title: "면접 스터디 4",
+      currentParticipants: 3,
+      maxParticipants: 8,
+      startDate: "23.07.01",
+      endDate: "23.07.31",
+      recruitDeadline: "23.06.30",
+      master: "정채진"
+    },
+    {
+      id: 5,
+      title: "면접 스터디 5",
+      currentParticipants: 3,
+      maxParticipants: 8,
+      startDate: "23.07.01",
+      endDate: "23.07.31",
+      recruitDeadline: "23.06.30",
+      master: "정채진"
+    },
+    {
+      id: 6,
+      title: "면접 스터디 6",
+      currentParticipants: 3,
+      maxParticipants: 8,
+      startDate: "23.07.01",
+      endDate: "23.07.31",
+      recruitDeadline: "23.06.30",
+      master: "정채진"
+    }
+  ];
+  return (
+      <CommonContainer>
+          <StudyListTopArea>
+            
+              <TitleText>스터디 찾기</TitleText>
+              <SubTextThin>원하는 스터디를 찾고 가입해보세요.</SubTextThin>
+
+              <StudyListInputArea>
+                  <select name="" id="StudyListSort">
+                      최신순
+                  </select>
+                  <input type="text" name="" id="" placeholder="검색하기" />
+                  <CommonButton>
+                      <ButtonText>스터디 만들기</ButtonText>
+                  </CommonButton>
+              </StudyListInputArea>
+              
+          </StudyListTopArea>
+
+          <StudyListItemArea>
+          {studyData.map((study) => (
+              <StudyListItem
+               id={study.id}
+               title={study.title}
+               currentParticipants={study.currentParticipants}
+               maxParticipants={study.maxParticipants}
+               startDate={study.startDate}
+               endDate={study.endDate}
+               recruitDeadline={study.recruitDeadline}
+               master={study.master}
+               />
+
+          ))}
+          </StudyListItemArea>
+            
+      </CommonContainer>
+  );
+};
+
+export default StudyList;
 
 const CommonContainer = styled.div`
   width: 1270px;
@@ -60,41 +162,3 @@ const StudyListItemArea = styled.p`
   grid-row-gap: 30px;
   grid-column-gap: 25px;
 `;
-
-const StudyList = (): JSX.Element => {
-    return (
-        <CommonContainer>
-            <StudyListTopArea>
-
-                <TitleText>스터디 찾기</TitleText>
-                <SubTextThin>원하는 스터디를 찾고 가입해보세요.</SubTextThin>
-
-                <StudyListInputArea>
-                    <select name="" id="StudyListSort">
-                        최신순
-                    </select>
-                    <input type="text" name="" id="" placeholder="검색하기" />
-                    <CommonButton>
-                        <ButtonText>스터디 만들기</ButtonText>
-                    </CommonButton>
-                </StudyListInputArea>
-                
-            </StudyListTopArea>
-
-            <StudyListItemArea>
-                <StudyListItem />
-                <StudyListItem />
-                <StudyListItem />
-                <StudyListItem />
-                <StudyListItem />
-                <StudyListItem />
-                <StudyListItem />
-                <StudyListItem />
-                <StudyListItem />
-            </StudyListItemArea>
-
-        </CommonContainer>
-    );
-};
-
-export default StudyList;
