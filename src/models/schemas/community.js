@@ -8,10 +8,10 @@ const CommunitySchema = new Schema(
         }, 
         author: [{
             user_id:  {
-                type: mongoose.Types.ObjectId, 
+                type: Number, //mongoose.Types.ObjectId
                 ref: "User",
             },  
-            name: {
+            user_name: {
                 type: String,
                 ref: "User",
             },  
@@ -30,27 +30,15 @@ const CommunitySchema = new Schema(
             type: Number,
         },
         reply : [{
+            _id:  {
+                type: mongoose.Types.ObjectId, 
+                ref: "Community",
+            },  
             reply_no: {
                 type: Number,
-            },
-            reply_author: [{  //댓글 작성자
-                user_id: {
-                     type: mongoose.Types.ObjectId,
-                     ref: "User",
-                },
-                name: {
-                     type: String,
-                     ref: "User",
-                },
-            }],
-            reply_content : { //댓글 내용
-                type: String,
-            },
-            updatedAt: {
-                type: Date,
-                default: Date.now,
-              },
-        }],
+                ref: "Community",
+            },  
+        }], 
     },
     {
         timestamps: true,
