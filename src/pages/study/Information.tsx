@@ -1,9 +1,7 @@
 import styled from "@emotion/styled";
 import { Link } from "@mui/material";
-import CreateIcon from "@mui/icons-material/Create";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { DetailTitle } from "./common/DetailTitle";
-import { Navigate, useNavigate } from "react-router-dom";
 import { StudyTaps } from "./common/StudyTap";
 
 ///더미데이터
@@ -65,22 +63,6 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const StydyTap = styled.div`
-  margin-top: 10px;
-  display: flex;
-`;
-
-const StydyTapText = styled.button`
-  display: flex;
-  font-size: 20px;
-  font-weight: 600;
-  color: #00e595;
-  border: none;
-  background: none;
-  &:not(:first-child) {
-    margin-left: 30px;
-  }
-`;
 const Title = styled.span`
   margin-top: 10px;
   color: #00057d;
