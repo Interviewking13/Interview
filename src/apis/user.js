@@ -39,8 +39,7 @@ const userApi = {
     /** 회원가입 */
     async registerUser(req, res, next) {
         try {
-
-            const { user_id, user_name, email, password } = req.body;
+            const { user_name, email, password } = req.body;
 
             // 기존 사용자 유무 검사
             const findUser = await User.findOne({ "email": email });
@@ -61,7 +60,6 @@ const userApi = {
             const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, ""); // 현재 시간을 "hhmmss" 형식으로 가져옵니다
             
             const newUserInfo = {
-                user_id,
                 user_name,
                 email,
                 password,
