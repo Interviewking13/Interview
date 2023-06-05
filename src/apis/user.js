@@ -86,8 +86,8 @@ const userApi = {
             if (findUser) {
                 return res.status(200).json({
                     resultCode: "200",
-                    message: "기존에 이미 가입되어 있는 회원입니다."
-                    // data: newUser
+                    message: "기존에 이미 가입되어 있는 회원입니다.",
+                    data: findUser
                 })
             }
             
@@ -97,7 +97,7 @@ const userApi = {
             const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, ""); // 현재 시간을 "hhmmss" 형식으로 가져옵니다
             
             const newUserInfo = {
-                user_id,        //값이 자동부여인데.. 왜 user_id 정의가 필요하징? 음..
+                // user_id,        //값이 자동부여인데.. 왜 user_id 정의가 필요하징? 음..
                 user_name,
                 email,
                 password,
@@ -125,7 +125,6 @@ const userApi = {
     /** 로그인 */
     async loginUser(req, res, next) {
         try {
-
             res.send('로그인');
         } catch (err) {
             throw new Error(err);
