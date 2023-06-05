@@ -1,5 +1,5 @@
 import React from 'react'
-import { Outlet,Link } from 'react-router-dom';
+import { Outlet,useNavigate  } from 'react-router-dom';
 import {
   Button,
   Typography,
@@ -14,20 +14,30 @@ import { Create,Person, Checklist } from '@mui/icons-material'; //MUI icon impor
 
 
 //각 페이지컴포넌트 호출
-
-
 const MenuButton = () =>{
+  const navigate = useNavigate();
+
+  const onClickUserStudy = () => {
+    navigate('/mypage/userstudy'); // useNavigate 사용하여 페이지 이동
+  };
+  const onClickStudyApply = () => {
+    navigate('/mypage/studyapply'); // useNavigate 사용하여 페이지 이동
+  };
+  const onClickUserInfo= () => {
+    navigate('/mypage/userInfo'); // useNavigate 사용하여 페이지 이동
+  };
+
   return (
     <Container maxWidth="xl">
       <Grid container spacing={1} justifyContent='flex-start'>
         <Grid item>
-          <StyledButton sx={{ gap: '5px' }}><Create/>나의 스터디</StyledButton>
+          <StyledButton sx={{ gap: '5px' }} onClick={onClickUserStudy} ><Create/>나의 스터디</StyledButton>
         </Grid >
         <Grid item > 
-          <StyledButton sx={{ gap: '5px' }}><Checklist/>스터디 신청</StyledButton>
+          <StyledButton sx={{ gap: '5px' }} onClick={onClickStudyApply} ><Checklist/>스터디 신청</StyledButton>
         </Grid>
         <Grid item >
-          <StyledButton sx={{ gap: '5px' }}><Person/>내 정보</StyledButton>
+          <StyledButton sx={{ gap: '5px' }} onClick={onClickUserInfo}><Person/>내 정보</StyledButton>
         </Grid>
       </Grid>
     </Container>
