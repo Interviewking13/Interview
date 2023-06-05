@@ -7,7 +7,6 @@ import { useState } from "react";
 
 export const StudyTaps = () => {
   const navigate = useNavigate();
-  const [a, seta] = useState("red");
   const onClickTap = (event: any) => {
     if (event.target.id == "info") navigate("/study/info");
     else navigate("/study/feedback");
@@ -41,5 +40,10 @@ const StydyTapText = styled.button`
   background: none;
   &:not(:first-child) {
     margin-left: 30px;
+  }
+
+  color: #9fefd3; /* 적절한 색상으로 변경 */
+  &:hover {
+    color: #00e595; /* 호버 시 변경할 색상 */
   }
 `;

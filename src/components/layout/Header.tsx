@@ -1,6 +1,5 @@
-import React from "react";
 import styled from "@emotion/styled";
-import { Link, TextField } from "@mui/material";
+import { Link } from "@mui/material";
 
 const Divider = styled.div`
   margin: 15px 0px;
@@ -18,7 +17,9 @@ const StyledLogo = styled(Link)`
   font-weight: bold;
   color: #00057d;
 `;
-const StyledNavItemContainer = styled.div``;
+const StyledNavItemContainer = styled.div`
+  margin-left: -200px;
+`;
 
 const StyledNavItem = styled(Link)`
   font-size: 20px;
