@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import StudyApplyForm from "./StudyApplyForm";
-import NestedModal from "./NestedModal";
+import StudyApplyModal from "./StudyApplyModal";
 
 const TestPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,10 +12,15 @@ const TestPage: React.FC = () => {
     setIsModalOpen(false);
   };
 
+  const data = { studyId: 123213 };
+
+  // 스터디 아이디 더미데이터 (스터디 아이디로 api 요청해야 해서)
+  const { studyId } = data;
+
   return (
     <div>
       <p>TestPage!</p>
-      <NestedModal />
+      <StudyApplyModal studyId={studyId} />
 
       {/* 신청하기 하드코딩 예시 */}
       {/* <button onClick={handleOpenModal}>신청하기</button>
