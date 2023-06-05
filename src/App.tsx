@@ -22,23 +22,22 @@ function App() {
     <RecoilRoot>
       <Router>
         <QueryClientProvider client={queryClient}>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/mypage" element={<Mypage />}>
-                <Route path="userstudy" element={<UserStudy />} />
-                <Route path="studyapply" element={<StudyApply />} />
-                <Route path="userinfo" element={<UserInfo />} />
-              </Route>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/login/signup" element={<SignupPage />} />
-              <Route path="/studylist" element={<StudyList />} />
-              <Route path="/feedback" element={<Feedback />} />
-              <Route path="/study/info" element={<Information />} />
-              {/* test 페이지 */}
-              <Route path="/testpage" element={<TestPage />} />
-            </Routes>
-          </Layout>
+          <Routes>
+            <Route path="/" element={<Layout><HomePage /></Layout>} />
+            <Route path="/mypage/*" element={<Layout><Mypage /></Layout>}>
+              <Route path="userstudy" element={<UserStudy />} />
+              <Route path="studyapply" element={<StudyApply />} />
+              <Route path="userinfo" element={<UserInfo />} />
+            </Route>
+            <Route path="/studylist" element={<Layout><StudyList /></Layout>} />
+            <Route path="/feedback" element={<Layout><Feedback /></Layout>} />
+            <Route path="/study/info" element={<Layout><Information /></Layout>} />
+            {/* test 페이지 */}
+            <Route path="/testpage" element={<TestPage />} />
+            {/* 로그인 페이지와 회원가입 페이지는 레이아웃을 제외 */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/login/signup" element={<SignupPage />} />
+          </Routes>
         </QueryClientProvider>
       </Router>
     </RecoilRoot>
