@@ -25,7 +25,7 @@ type ApplyListProps = {
   studyLeader: string;
 };
 
-const ApplyList: React.FC<ApplyListProps> = ({
+const StudyApplyList: React.FC<ApplyListProps> = ({
   period,
   deadline,
   currentCount,
@@ -58,7 +58,7 @@ const ApplyList: React.FC<ApplyListProps> = ({
   );
 };
 
-export default ApplyList;
+export default StudyApplyList;
 
 const StyledListItem = styled.div`
   display: flex;

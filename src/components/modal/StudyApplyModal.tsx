@@ -3,11 +3,14 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import styled from "styled-components";
-import ApplyList from "./Applylist";
+import StudyApplyList from "./StudyApplyList";
 import { Link } from "react-router-dom";
 import { dateFomatting } from "../../utils/dateFomatting";
-
-export default function NestedModal() {
+type StudyApplyModalProps = {
+  studyId: number;
+};
+const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
+  // 스터디 더미데이터인데 studyId로 aixos.get 요청 보내야함.
   const studyData = {
     title: "SAFFY 면접 스터디",
     period: "2023-05-30 ~ 2023-06-08",
@@ -23,6 +26,7 @@ export default function NestedModal() {
     studyLeader: "채진짱",
   };
 
+  //받아온 스터디의 데이터 분해구조 할당
   const {
     title,
     period,
@@ -43,6 +47,8 @@ export default function NestedModal() {
   const handleOpen = () => {
     setOpen(true);
   };
+
+  /** 모달을 닫는 함수인데 preventDefault로 event 내용 다 없애야 하는지..? */
   const handleClose = () => {
     setOpen(false);
   };
@@ -58,7 +64,7 @@ export default function NestedModal() {
               <StyledCancleImg src={imageSrc} alt="Cancel Button" />
             </StyledTopContainer>
             <StyledTitle>{title}</StyledTitle>
-            <ApplyList
+            <StudyApplyList
               period={dateFomatting(period)}
               deadline={dateFomatting(deadline)}
               currentCount={currentCount}
@@ -86,8 +92,9 @@ export default function NestedModal() {
       </Modal>
     </div>
   );
-}
+};
 
+export default StudyApplyModal;
 const StyledBox = styled(Box)`
   height: 594px;
   width: 1004px;

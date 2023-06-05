@@ -3,6 +3,7 @@ interface StudyApplyFormProps {
   onClose: () => void;
 }
 
+//test 신청폼 ( 나중에 삭제 할 컴포넌트 )
 const StudyApplyForm: React.FC<StudyApplyFormProps> = ({ onClose }) => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
