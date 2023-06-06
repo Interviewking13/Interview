@@ -15,6 +15,8 @@ const StyledContainer = styled.div`
 `;
 
 const StyledLogo = styled(Link)`
+  height: fit-content;
+  font-family: 'establish Retrosans';
   font-size: 32px;
   font-weight: 400;
   color: #00057D;
@@ -50,7 +52,7 @@ const Header = (): JSX.Element => {
           <StyledNavItem href="/studylist" underline="none">
             스터디
           </StyledNavItem>
-          <StyledNavItem href="/community" underline="none">
+          <StyledNavItem href="/community/communityPage" underline="none">
             커뮤니티
           </StyledNavItem>
           <StyledNavItem href="/userstudy" underline="none">
