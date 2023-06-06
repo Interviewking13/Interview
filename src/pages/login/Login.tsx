@@ -101,33 +101,35 @@ const StyledLoginWrapper = styled.div`
   padding-bottom: 30px;
 `;
 const StyledLoginContainer = styled.div`
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const StyledLoginTitleContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    
-  `
+  display: flex;
+  flex-direction: column;
+`;
 const StyledLoginText = styled.div`
-    color: #00057D; 
-    font-size: 64px; 
-    font-weight:400;
+  height: fit-content;
+  font-family: 'establish Retrosans';
+  color: #00057D; 
+  font-size: 64px; 
+  font-weight:400;
 
-    &:nth-of-type(2) {
-      color: #00E595;
-      margin-top: 20px;
-    }
+  &:nth-of-type(2) {
+    color: #00E595;
+    margin-top: 20px;
+  }
 
-    &:nth-of-type(3) {
-      color: #8689A3;
-      font-size: 18px;
-      font-weight:300;
-      margin-top: 50px;
-    }
-  `
+  &:nth-of-type(3) {
+    font-family: none;
+    color: #8689A3;
+    font-size: 18px;
+    font-weight:300;
+    margin-top: 50px;
+  }
+`;
 const StyledSignupContainer = styled.form`
   display: flex;
   flex-direction: column;

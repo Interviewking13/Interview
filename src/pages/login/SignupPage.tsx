@@ -182,6 +182,8 @@ const StyledSignupTitleContainer = styled.div`
     
 `;
 const StyledSignupText = styled.div`
+    height: fit-content;
+    font-family: 'establish Retrosans';
     color: #00057D; 
     font-size: 64px; 
     font-weight:400;
@@ -192,6 +194,7 @@ const StyledSignupText = styled.div`
     }
 
     &:nth-of-type(3) {
+      font-family: none;
       color: #8689A3;
       font-size: 18px;
       font-weight:300;
