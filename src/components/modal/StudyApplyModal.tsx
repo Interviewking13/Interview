@@ -6,10 +6,15 @@ import styled from "styled-components";
 import StudyApplyList from "./StudyApplyList";
 import { Link } from "react-router-dom";
 import { dateFomatting } from "../../utils/dateFomatting";
+import { TitleText } from "../../constants/fonts";
+import { getStudyData } from "../../api/api-study";
+import 
 type StudyApplyModalProps = {
   studyId: number;
 };
 const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
+  console.log(getStudyData());
+
   // 스터디 더미데이터인데 studyId로 aixos.get 요청 보내야함.
   const studyData = {
     title: "SAFFY 면접 스터디",
@@ -60,7 +65,7 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
         <StyledBox>
           <StyledContainer>
             <StyledTopContainer>
-              <StyledH2>스터디 신청하기</StyledH2>
+              <StyledTitleText>스터디 신청하기</StyledTitleText>
               <StyledCancleImg src={imageSrc} alt="Cancel Button" />
             </StyledTopContainer>
             <StyledTitle>{title}</StyledTitle>
@@ -124,11 +129,8 @@ const StyledContainer = styled.div`
   flex-direction: column;
 `;
 
-const StyledH2 = styled.h2`
-  font-size: 24px;
-  margin: 0px;
-  margin-bottom: 22px;
-  color: #00e595;
+const StyledTitleText = styled.h1`
+  ${TitleText}
 `;
 
 const StyledTitle = styled.h2`
