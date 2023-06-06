@@ -1,17 +1,22 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from "react";
 import styled from "@emotion/styled";
 import { Button } from "@mui/material";
-import axios from 'axios';
+import axios from "axios";
 
 const SignupPage = () => {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   // 테스트 데이터
-  const testData: { name: string; email: string; password: string; phone_number: string; }[] = [
+  const testData: {
+    name: string;
+    email: string;
+    password: string;
+    phone_number: string;
+  }[] = [
     {
       name: "박세진",
       email: "cobaltcyan.park@gmail.com",
@@ -28,7 +33,10 @@ const SignupPage = () => {
     const phoneValidated = phone.replace(/[^0-9-]/g, replaceText);
     const emailValidated = email.replace(/[^a-zA-Z0-9@.]/g, replaceText);
     const passwordValidated = password.replace(/[^a-zA-Z0-9]/g, replaceText);
-    const confirmPasswordValidated = confirmPassword.replace(/[^a-zA-Z0-9]/g, replaceText);
+    const confirmPasswordValidated = confirmPassword.replace(
+      /[^a-zA-Z0-9]/g,
+      replaceText
+    );
 
     if (!name || !phone || !email || !password || !confirmPassword) {
       console.log("모든 필드를 입력해야 합니다.");
@@ -63,7 +71,12 @@ const SignupPage = () => {
 
     // 테스트 데이터에서 이름, 이메일, 비밀번호, 전화번호가 일치하는지 확인
     const matchedUser = testData.find(
-      (user: { name: string; email: string; password: string; phone_number: string; }) =>
+      (user: {
+        name: string;
+        email: string;
+        password: string;
+        phone_number: string;
+      }) =>
         user.name === name &&
         user.email === email &&
         user.password === password &&
@@ -79,7 +92,7 @@ const SignupPage = () => {
     }
 
     try {
-      const response = await axios.post('/api/user/register', {
+      const response = await axios.post("/api/user/register", {
         name,
         phone,
         email,
@@ -119,7 +132,9 @@ const SignupPage = () => {
       <StyledLoginTitleContainer>
         <StyledLoginText>면접을 면접답게</StyledLoginText>
         <StyledLoginText>면접왕</StyledLoginText>
-        <StyledLoginText>면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요</StyledLoginText>
+        <StyledLoginText>
+          면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요
+        </StyledLoginText>
       </StyledLoginTitleContainer>
       <StyledSignupContainer onSubmit={onClickSubmit}>
         <StyledSignupInput
@@ -161,34 +176,33 @@ const SignupPage = () => {
 };
 
 const StyledLoginContainer = styled.div`
-    background-color: #f1f4ff;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `
+  background-color: #f1f4ff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const StyledLoginTitleContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    
-  `
+  display: flex;
+  flex-direction: column;
+`;
 const StyledLoginText = styled.div`
-    color: #00057D; 
-    font-size: 64px; 
-    font-weight:400;
+  color: #00057d;
+  font-size: 64px;
+  font-weight: 400;
 
-    &:nth-of-type(2) {
-      color: #00E595;
-      margin-top: 20px;
-    }
+  &:nth-of-type(2) {
+    color: #00e595;
+    margin-top: 20px;
+  }
 
-    &:nth-of-type(3) {
-      color: #8689A3;
-      font-size: 18px;
-      font-weight:300;
-      margin-top: 50px;
-    }
-  `
+  &:nth-of-type(3) {
+    color: #8689a3;
+    font-size: 18px;
+    font-weight: 300;
+    margin-top: 50px;
+  }
+`;
 const StyledSignupContainer = styled.form`
   display: flex;
   flex-direction: column;
@@ -200,21 +214,21 @@ const StyledSignupInput = styled.input`
   width: 457px;
   height: 45px;
   margin-top: 15px;
-  color: #C0C3E5;
-  border: 1px solid #C0C3E5;
+  color: #c0c3e5;
+  border: 1px solid #c0c3e5;
   border-radius: 10px;
   padding-left: 18px;
   font-weight: 300;
-  font-size: 18px; 
+  font-size: 18px;
   &:first-of-type {
-    margin-top: 15px; 
+    margin-top: 15px;
   }
   &::placeholder {
-    color: #C0C3E5;
+    color: #c0c3e5;
   }
   &:focus {
     outline: none;
-    border: 1px solid #C0C3E5;
+    border: 1px solid #c0c3e5;
     box-shadow: none;
   }
 `;
@@ -223,15 +237,15 @@ const StyledSignupBtn = styled(Button)`
   width: 132px;
   height: 45px;
   border-radius: 10px;
-  background-color: #2E3057;
+  background-color: #2e3057;
   color: #ffffff;
   font-weight: 600;
   font-size: 18px;
-  border: 1px solid #2E3057;
+  border: 1px solid #2e3057;
   margin-top: 40px;
   margin-left: auto;
   &:hover {
-    background-color: #2E3057;
+    background-color: #2e3057;
   }
 `;
 

@@ -1,99 +1,155 @@
-import React from 'react'
-import { Outlet,Link } from 'react-router-dom';
-import {
-  Button,
-  Typography,
-  Container,
-  Grid,
-  Box
-} from '@mui/material';
-import { styled } from '@mui/material';
-import { Create,Person, Checklist } from '@mui/icons-material'; //MUI icon import
-
-
-
+import React from "react";
+import { Button, Typography, TextField, Grid, Box } from "@mui/material";
+import { styled } from "@mui/material";
 
 //각 페이지컴포넌트 호출
 
-
-const MenuButton = () =>{
+const MenuButton = () => {
   return (
-    <Container maxWidth="xl">
-      <Grid container spacing={1} justifyContent='flex-start'>
-        <Grid item>
-          <StyledButton sx={{ gap: '5px' }}><Create/>나의 스터디</StyledButton>
-        </Grid >
-        <Grid item > 
-          <StyledButton sx={{ gap: '5px' }}><Checklist/>스터디 신청</StyledButton>
-        </Grid>
-        <Grid item >
-          <StyledButton sx={{ gap: '5px' }}><Person/>내 정보</StyledButton>
-        </Grid>
+    <Grid container spacing={1} justifyContent="flex-end">
+      <Grid item>
+        <StyledDeleteButton variant="contained" sx={{ gap: "5px" }}>
+          회원탈퇴
+        </StyledDeleteButton>
       </Grid>
-    </Container>
-  
-  )
-}
-
-const Mypage = () => {
-
-  return (
-    <StyledContainer>
-     <Grid container spacing={1}>
-      {/* 타이틀과 서브 타이틀 */}
-      <Grid item xs={12}>
-        <Grid container spacing ={1}>
-          <Grid item>
-            <StyledTitle variant="h5">마이페이지</StyledTitle>
-          </Grid>
-          <Grid item>
-            <StyledSubTitle variant="subtitle1">나의 정보를 확인하세요</StyledSubTitle>
-          </Grid>
-        </Grid>
-      </Grid>
-
-      {/* 버튼1, 버튼2, 버튼3 */}
-      <Grid item xs={12}>
-          <MenuButton/>
-      </Grid>
-
-      {/* 페이지 내용 */}
-      <Grid item xs={12}>
-        <Outlet/>
+      <Grid item>
+        <StyledModifyButton variant="contained">수정하기</StyledModifyButton>
       </Grid>
     </Grid>
+  );
+};
+
+const InfoChange = () => {
+  return (
+    <StyledContainer>
+      <Grid container spacing={2}>
+        <Grid item>
+          <StyledTitle variant="h5">내 정보수정</StyledTitle>
+        </Grid>
+        <Grid item>
+          <StyledSubTitle variant="subtitle1">
+            나의 회원정보를 수정합니다.
+          </StyledSubTitle>
+        </Grid>
+      </Grid>
+      {/**  페이지내용 */}
+      <form>
+        <Grid container rowSpacing={2} alignItems="center">
+          <Grid item xs={2}>
+            <StyledInfoName>이름</StyledInfoName>
+          </Grid>
+          <Grid item xs={10}>
+            <StyledTextField variant="outlined" fullWidth />
+          </Grid>
+          <Grid item xs={2}>
+            <StyledInfoName>연락처</StyledInfoName>
+          </Grid>
+          <Grid item xs={10}>
+            <StyledTextField variant="outlined" fullWidth />
+          </Grid>
+          <Grid item xs={2}>
+            <StyledInfoName>아이디</StyledInfoName>
+          </Grid>
+          <Grid item xs={10}>
+            <StyledTextField variant="outlined" fullWidth />
+          </Grid>
+          <Grid item xs={2}>
+            <StyledInfoName>비밀번호</StyledInfoName>
+          </Grid>
+          <Grid item xs={10}>
+            <StyledTextField variant="outlined" fullWidth />
+          </Grid>
+          <Grid item xs={2}>
+            <StyledInfoName>비밀번호확인</StyledInfoName>
+          </Grid>
+          <Grid item xs={10}>
+            <StyledTextField variant="outlined" fullWidth />
+          </Grid>
+
+          <Grid item xs={2}>
+            <StyledInfoName>자기소개서첨부</StyledInfoName>
+          </Grid>
+          <Grid item xs={8.5}>
+            <StyledTextField variant="outlined" fullWidth />
+          </Grid>
+          <Grid item xs={1.5} container justifyContent="flex-end">
+            <StyledFindButton variant="contained">수정하기</StyledFindButton>
+          </Grid>
+
+          {/* 버튼1, 버튼2 */}
+          <MenuButton />
+        </Grid>
+      </form>
     </StyledContainer>
   );
 };
-export default Mypage;
+export default InfoChange;
 
 const StyledContainer = styled(Box)`
-width: 66.1%;
-max-width: 1270px;
-margin-left: 325px;
-padding-left: 0;
-`
-
-
-const StyledTitle = styled(Typography )`
-  /* 여기에 스타일을 작성하세요 */
-  color: #00057D 
+  width: 66.1%;
+  max-width: 1270px;
+  margin-left: 325px;
+  padding-left: 0;
 `;
-
-const StyledSubTitle = styled(Typography )`
-  /* 여기에 스타일을 작성하세요 */
-  color: #8689A3 
+// 내정보수정 타이틀 스타일
+const StyledTitle = styled(Typography)`
+  color: #00e595;
 `;
+// 내정보를 수정하세요 서브타이틀 스타일
+const StyledSubTitle = styled(Typography)`
+  color: #8689a3;
+`;
+//각정보타이틀 스타일지정
+const StyledInfoName = styled(Typography)`
+  color: #0e0e0e;
+  font-size: 20px;
+  font-weight: 600;
+`;
+//텍스트필드 스타일지정
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  "& .MuiInputBase-root": {
+    height: "45px",
+    borderRadius: "10px",
+  },
+}));
 
 //버튼 스타일
-const StyledButton = styled(Button)`
+const StyledFindButton = styled(Button)`
   /* 여기에 스타일을 작성하세요 */
-  padding-left: 0;
-  color: #9FEFD3; /* 적절한 색상으로 변경 */
+  font-size: 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  padding: auto;
+  background-color: #2e3057;
+  color: #f1f4ff;
   &:hover {
-    color: #00E595; /* 호버 시 변경할 색상 */
+    background-color: #f1f4ff;
+    color: #2e3057;
   }
-  &:active {
-    background-color: #0000ff; /* 선택 시 변경할 색상 */
+`;
+const StyledModifyButton = styled(Button)`
+  /* 여기에 스타일을 작성하세요 */
+  font-size: 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  padding: auto;
+  background-color: #00e595;
+  color: #00057d;
+  &:hover {
+    background-color: #00057d;
+    color: #00e595;
+  }
+`;
+const StyledDeleteButton = styled(Button)`
+  /* 여기에 스타일을 작성하세요 */
+  font-size: 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  padding: auto;
+  background-color: #ff4f4f;
+  color: #f1f4ff;
+  &:hover {
+    background-color: #f1f4ff;
+    color: #ff4f4f;
   }
 `;
