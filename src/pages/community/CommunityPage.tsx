@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -21,6 +22,8 @@ const StyledSearchContainer = styled.form`
 `;
 
 const StyledTitle = styled.h2`
+  height: fit-content;
+  font-family: 'establish Retrosans';
   font-size: 32px;
   font-weight: 400;
   color: #00057D;
@@ -90,11 +93,16 @@ const StyledPostAuthor = styled.p`
 `;
 
 const CommunityPage: React.FC = () => {
+  const navigate = useNavigate(); // useNavigate 훅 사용
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // 검색하기 버튼 클릭 시 처리 로직
     // 입력된 검색어 활용 등
     console.log('Search');
+  };
+
+  const handleCreatePost = () => {
+    navigate('/community/communityCreatePage');
   };
 
   const posts = [
@@ -108,7 +116,7 @@ const CommunityPage: React.FC = () => {
       title: '두 번째 글',
       author: 'Jane Smith',
     },
-    // 추가적인 글 데이터를 여기에 추가할 수 있습니다.
+    // 추가데이터
   ];
 
   return (
@@ -126,7 +134,7 @@ const CommunityPage: React.FC = () => {
         <StyledSearchContainer onSubmit={handleSearch}>
           <StyledSearchInput type="text" placeholder="검색하기" />
         </StyledSearchContainer>
-        <StyledPostButton>글쓰기</StyledPostButton>
+        <StyledPostButton onClick={handleCreatePost}>글쓰기</StyledPostButton>
       </StyledHeadContainer>
       <StyledPostList>
         {/* 글 목록 렌더링 */}

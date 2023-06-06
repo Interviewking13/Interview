@@ -20,6 +20,8 @@ const StyledFooterContainer = styled.div`
 `;
 
 const StyledFooterLogo = styled.div`
+  height: fit-content;
+  font-family: 'establish Retrosans';
   font-size: 32px;
   font-weight: 400;
   color: #C0C3E5;

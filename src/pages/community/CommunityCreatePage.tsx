@@ -1,43 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  padding: 20px;
-  border: 1px solid #ccc;
-`;
-
-const Title = styled.h2`
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
-
-const Subtitle = styled.p`
-  font-size: 14px;
-  margin-bottom: 20px;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-`;
-
-const Button = styled.button`
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-`;
-
-const FileInput = styled.input`
-  margin-bottom: 10px;
-`;
-
 const CommunityCreatePage: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -70,16 +33,95 @@ const CommunityCreatePage: React.FC = () => {
   };
 
   return (
-    <Container>
-      <Title>커뮤니티 글쓰기</Title>
-      <Subtitle>설명입니다</Subtitle>
-      <Input type="text" placeholder="제목" value={title} onChange={handleTitleChange} />
-      <Input type="text" placeholder="내용" value={content} onChange={handleContentChange} />
-      <FileInput type="file" onChange={handleFileChange} />
-      <Button onClick={handleSubmit}>글쓰기</Button>
-      <Button onClick={handleDelete}>글삭제</Button>
-    </Container>
+    <StyledCreatePageContainer>
+      <StyledCreatePageTitle>커뮤니티 글 쓰기</StyledCreatePageTitle>
+      <StyledCreatePageSubtitle>회원들과 정보를 공유해보세요.</StyledCreatePageSubtitle>
+      <StyledTitleInputWrapper>
+        <StyledTitle>제목</StyledTitle>
+        <Input type="text" placeholder="스터디 이름을 입력하세요." value={title} onChange={handleTitleChange} />
+
+      </StyledTitleInputWrapper>
+
+      <StyledTextInputWrapper>
+        <StyledTitle>내용</StyledTitle>
+        <Input type="text" value={content} onChange={handleContentChange} placeholder="스터디 설명을 입력하세요." />
+
+      </StyledTextInputWrapper>
+
+      <StyledFileInputWrapper>
+        <StyledTitle>파일 첨부</StyledTitle>
+        <FileInput type="file" onChange={handleFileChange} placeholder="파일을 첨부하세요." />
+      </StyledFileInputWrapper>
+      <StyledDelButton onClick={handleDelete}>삭제</StyledDelButton>
+      <StyledCreateButton onClick={handleSubmit}>글쓰기</StyledCreateButton>
+
+    </StyledCreatePageContainer>
   );
 };
+
+const StyledCreatePageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 요소들을 가운데 정렬합니다 */
+  align-items: center;
+`;
+
+const StyledCreatePageTitle = styled.h2`
+  height: fit-content;
+  font-family: 'establish Retrosans';
+  color: #00E595;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+
+const StyledCreatePageSubtitle = styled.p`
+  font-size: 14px;
+  margin-bottom: 20px;
+`;
+
+const StyledTitle = styled.div`
+  
+`;
+
+const StyledFileInputWrapper = styled.div`
+`;
+const StyledTextInputWrapper = styled.div`
+`;
+
+const StyledTitleInputWrapper = styled.div`
+    
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+`;
+
+const StyledCreateButton = styled.button`
+  padding: 10px 20px;
+  background-color: #00E595 ;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #00057D;
+  border: none;
+  cursor: pointer;
+`;
+
+const StyledDelButton = styled.button`
+  color: #FF4F4F;
+  font-size: 16px;
+  font-weight: 300;
+  border: none;
+  background-color: #ffffff;
+  
+`
+
+const FileInput = styled.input`
+  margin-bottom: 10px;
+`;
+
 
 export default CommunityCreatePage;
