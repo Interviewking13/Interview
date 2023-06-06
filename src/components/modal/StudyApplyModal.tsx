@@ -8,12 +8,14 @@ import { Link } from "react-router-dom";
 import { dateFomatting } from "../../utils/dateFomatting";
 import { TitleText } from "../../constants/fonts";
 import { getStudyData } from "../../api/api-study";
-import 
+import { colors } from "../../constants/colors";
+
 type StudyApplyModalProps = {
   studyId: number;
 };
 const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
-  console.log(getStudyData());
+  // 데이터 불러오는 부분
+  // console.log(getStudyData());
 
   // 스터디 더미데이터인데 studyId로 aixos.get 요청 보내야함.
   const studyData = {
@@ -68,7 +70,7 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
               <StyledTitleText>스터디 신청하기</StyledTitleText>
               <StyledCancleImg src={imageSrc} alt="Cancel Button" />
             </StyledTopContainer>
-            <StyledTitle>{title}</StyledTitle>
+            <StyledTitleTextNavy>{title}</StyledTitleTextNavy>
             <StudyApplyList
               period={dateFomatting(period)}
               deadline={dateFomatting(deadline)}
@@ -129,15 +131,18 @@ const StyledContainer = styled.div`
   flex-direction: column;
 `;
 
-const StyledTitleText = styled.h1`
-  ${TitleText}
-`;
-
-const StyledTitle = styled.h2`
-  font-size: 24px;
+const StyledTitleText = styled.p`
   margin: 0px;
   margin-bottom: 22px;
-  color: #00057d;
+  ${TitleText}
+  color: ${colors.main_mint}
+`;
+
+const StyledTitleTextNavy = styled.p`
+  margin: 0px;
+  margin-bottom: 22px;
+  ${TitleText}
+  color: ${colors.main_navy}
 `;
 
 const TextInput = styled.textarea`
