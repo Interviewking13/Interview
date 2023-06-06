@@ -15,20 +15,20 @@ import { Create,Person, Checklist } from '@mui/icons-material'; //MUI icon impor
 
 //각 페이지컴포넌트 호출
 const MenuButton = () =>{
+  //페이지 이동
   const navigate = useNavigate();
 
   const onClickUserStudy = () => {
-    navigate('/mypage/userstudy'); // useNavigate 사용하여 페이지 이동
+    navigate('/mypage/userstudy'); 
   };
   const onClickStudyApply = () => {
-    navigate('/mypage/studyapply'); // useNavigate 사용하여 페이지 이동
+    navigate('/mypage/studyapply'); 
   };
   const onClickUserInfo= () => {
-    navigate('/mypage/userInfo'); // useNavigate 사용하여 페이지 이동
+    navigate('/mypage/userInfo'); 
   };
 
   return (
-    <Container maxWidth="xl">
       <Grid container spacing={1} justifyContent='flex-start'>
         <Grid item>
           <StyledButton sx={{ gap: '5px' }} onClick={onClickUserStudy} ><Create/>나의 스터디</StyledButton>
@@ -40,21 +40,25 @@ const MenuButton = () =>{
           <StyledButton sx={{ gap: '5px' }} onClick={onClickUserInfo}><Person/>내 정보</StyledButton>
         </Grid>
       </Grid>
-    </Container>
   
   )
 }
 
 const Mypage = () => {
+  
+  const navigate = useNavigate();
+  const onClickMypageMain = () => {
+    navigate('/mypage'); // useNavigate 사용하여 페이지 이동
+  };
 
   return (
     <StyledContainer>
-     <Grid container spacing={1}>
+     <StyledContent container spacing={1} >
       {/* 타이틀과 서브 타이틀 */}
       <Grid item xs={12}>
-        <Grid container spacing ={1}>
+        <Grid container spacing ={1.5} alignItems="baseline">
           <Grid item>
-            <StyledTitle variant="h5">마이페이지</StyledTitle>
+            <StyledTitle variant="text" onClick={onClickMypageMain}>마이페이지</StyledTitle>
           </Grid>
           <Grid item>
             <StyledSubTitle variant="subtitle1">나의 정보를 확인하세요</StyledSubTitle>
@@ -71,27 +75,34 @@ const Mypage = () => {
       <Grid item xs={12}>
         <Outlet/>
       </Grid>
-    </Grid>
+    </StyledContent>
     </StyledContainer>
   );
 };
 export default Mypage;
 
 const StyledContainer = styled(Box)`
+width: 100%;
+max-width: 1920px;
+`
+const StyledContent = styled(Grid)`
 width: 66.1%;
 max-width: 1270px;
-margin-left: 325px;
+margin: 0 auto;
 padding-left: 0;
 `
 
 
-const StyledTitle = styled(Typography )`
+const StyledTitle = styled(Button)`
   /* 여기에 스타일을 작성하세요 */
+  font-size: 32px;
+  font-weight: 800;
   color: #00057D 
 `;
 
 const StyledSubTitle = styled(Typography )`
   /* 여기에 스타일을 작성하세요 */
+  font-size: 18px;
   color: #8689A3 
 `;
 
