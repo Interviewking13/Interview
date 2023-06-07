@@ -7,6 +7,9 @@ const app = express();
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
+// 비밀번호 암호화
+const bcrypt = require('bcrypt');
+
 const userApi = {
 
     /** user 정보 전체 DB 조회 테스트 */
@@ -24,7 +27,7 @@ const userApi = {
             res.status(200).json({
                 resultCode: "200",
                 message: "조회 성공",
-                data: findAllUser
+                // data: findAllUser    //보안 상 나중에 제거
             })
             // res.send(findAllUser);
         } catch (err) {
@@ -43,17 +46,22 @@ const userApi = {
 
             // 기존 사용자 유무 검사
             const findUser = await User.findOne({ "email": email });
-
-            console.log(findUser);
+            // console.log(findUser);
 
             if (findUser) {
                 return res.status(200).json({
                     resultCode: "200",
                     message: "기존에 이미 가입되어 있는 회원입니다.",
-                    data: findUser
+                    data: {
+                        user_id: findUser._id,
+                        email: findUser.email
+                    }
                 });
             }
             
+            // 비밀번호 암호화
+            const hashedPassword = await bcrypt.hash(password, 10);
+
             // dts_insert 필드 내용에 삽입할 변수 값 설정
             const currentDate = new Date();
             const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, ""); // 현재 날짜를 "yyyymmdd" 형식으로 가져옵니다
@@ -62,18 +70,21 @@ const userApi = {
             const newUserInfo = {
                 user_name,
                 email,
-                password,
-                dts_insert: dateString + timeString
+                password: hashedPassword,
+                dts_insert: dateString + timeString,
+                dts_update: null
             }
-
-            console.log(newUserInfo);
 
             const newUser = await User.create(newUserInfo);
             
             res.status(200).json({
                 resultCode: "200",
                 message: "회원가입 성공",
-                data: newUser
+                data: newUser,
+                data: {
+                    user_id: newUser._id,
+                    email: newUser.email
+                }
             });
         } catch (err) {
             console.error(err);
@@ -90,23 +101,39 @@ const userApi = {
             
             const { email, password } = req.body;
 
-            // 기존 사용자 유무 검사
-            const findUser = await User.findOne({ "email": email, "password": password });
+            // 비밀번호 암호화
+            // const hashedPassword = await bcrypt.hash(password, 10);
+            // console.log(hashedPassword);
 
-            console.log(findUser);
+            // 기존 사용자 유무 검사
+            const findUser = await User.findOne({ "email": email });
+
+            // console.log(findUser);
 
             if (!findUser) {
                 return res.status(200).json({
                     resultCode: "200",
-                    message: "이메일 또는 비밀번호가 맞지 않습니다.",
-                    data: findUser
+                    message: "사용자가 존재하지 않습니다."
                 })
             }
-            
+
+            // 비밀번호 검증
+            const isPasswordValid = await bcrypt.compare(password, findUser.password);      // 평문값과 암호화값 비교
+
+            if (!isPasswordValid) {
+                return res.status(200).json({
+                resultCode: "200",
+                message: "비밀번호가 맞지 않습니다."
+                });
+            }
+
             res.status(200).json({
                 resultCode: "200",
                 message: "로그인 성공",
-                data: findUser
+                data: {
+                    user_id: findUser._id,
+                    email
+                }
             });
             
         } catch (err) {
@@ -257,14 +284,9 @@ const userApi = {
     /** 회원탈퇴 */
     async deleteUser(req, res, next) {
         try {
-            const { user_id, password } = req.body; //user_id 를 받아와야해...!
+            const { user_id, password } = req.body;
 
-            console.log(req.body);
-
-            // await User.deleteOne({ "_id": user_id });
             const findUser = await User.findOneAndDelete({"_id": user_id, "password": password });
-            
-            console.log(req.body);
             
             if(!findUser) {
                 return res.status(400).json({
