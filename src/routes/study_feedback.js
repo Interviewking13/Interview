@@ -1,11 +1,13 @@
 const { Router } = require('express');
 const router = Router();
+const tokenValidate = require('../middlewares/tokenValidate');
 
 const studyFeedbackApi = require('../apis/study_feedback');
 
-router.post('/create', studyFeedbackApi.newFeedback); // 피드백 게시글, 댓글 작성
-router.get('/:study_id/:user_id', studyFeedbackApi.getFeedback); // 피드백 게시글, 댓글 조회
-router.put('/:study_id/:user_id', studyFeedbackApi.updateFeedback); // 피드백 게시글, 댓글 수정
-router.delete('/:study_id/:user_id', studyFeedbackApi.deleteFeedback); // 피드백 게시글, 댓글 삭제
+router.post('/create', tokenValidate, studyFeedbackApi.newFeedback); // 피드백 게시글, 댓글 작성
+router.get('/:content_type', studyFeedbackApi.getFeedback); // 피드백 게시글, 댓글 조회(전체)
+router.get('/', tokenValidate, studyFeedbackApi.getFeedbackOne); // 피드백 게시글, 댓글 조회(개별)
+router.put('/', tokenValidate, studyFeedbackApi.updateFeedback); // 피드백 게시글, 댓글 수정
+router.delete('/', tokenValidate, studyFeedbackApi.deleteFeedback); // 피드백 게시글, 댓글 삭제
 
 module.exports = router;
