@@ -1,15 +1,17 @@
 const { Study } = require('../models/index');
 const { User } = require('../models/index');
 const { StudyRelation } = require('../models/index');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 // const { ObjectId } = require('mongodb');
 
 const studyApi = {
-  /**ě¤í°ë ę°ě¤*/
+  /**스터디 개설*/
   async newStudy(req, res, next) {
     try {
       // 스터디 개설
       const user_id = req.user._id;
+      console.log(user_id);
+      res.end();
       const { study_name, title, content, deadline, headcount, chat_link, status } = req.body;
 
       const createInfo = {
@@ -47,7 +49,7 @@ const studyApi = {
     }
   },
 
-  /**ě¤í°ë ě ě˛­*/
+  /**스터디 신청*/
   async applyStudy(req, res, next) {
     try {
       const user_id = req.user._id;
@@ -74,7 +76,7 @@ const studyApi = {
     }
   },
 
-  /**ě¤í°ë ě ě˛­ ěë˝*/
+  /**스터디 신청 수락*/
   async acceptStudy(req, res, next) {
     try {
       const { user_id, study_id } = req.params;
@@ -107,8 +109,8 @@ const studyApi = {
   /**스터디 정보 조회*/
   async getStudy(req, res, next) {
     try {
-      // const { study_id } = req.params;
-      const foundStudy = await Study.find({});
+      const { study_id } = req.params;
+      const foundStudy = await Study.findOne({ _id: study_id });
       if (!foundStudy) throw new Error('Not found');
 
       res.status(200).json(foundStudy);
@@ -121,6 +123,7 @@ const studyApi = {
     }
   },
 
+  /**스터디 정보 수정*/
   async updateStudy(req, res, next) {
     try {
       const { study_id } = req.params;

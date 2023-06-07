@@ -9,18 +9,18 @@ const studyRouter = require('./study');
 const studyFeedbackRouter = require('./study_feedback');
 const indexPath = path.join(__dirname, '../views');
 
-router.use(cors({
-    origin: "http://localhost:3000",
-    credentials: "true",
-    optionsSuccessStatus: 200,
-    exposedHeaders: ['Access-Control-Allow-Origin'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-}));
+// router.use(cors({
+//     origin: "http://localhost:3000",
+//     credentials: "true",
+//     optionsSuccessStatus: 200,
+//     exposedHeaders: ['Access-Control-Allow-Origin'],
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+// }));
 
 router.use(express.json());
 router.use(express.static(indexPath));
 router.use('/api/user', userRouter);
-router.use('/api/community',communityRouter);
+router.use('/api/community', communityRouter);
 router.use('/api/study', studyRouter);
 router.use('/api/feedback', studyFeedbackRouter);
 
