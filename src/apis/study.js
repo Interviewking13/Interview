@@ -107,8 +107,8 @@ const studyApi = {
   /**스터디 정보 조회*/
   async getStudy(req, res, next) {
     try {
-      const { study_id } = req.params;
-      const foundStudy = await Study.findOne({ _id: study_id });
+      // const { study_id } = req.params;
+      const foundStudy = await Study.find({});
       if (!foundStudy) throw new Error('Not found');
 
       res.status(200).json(foundStudy);
