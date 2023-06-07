@@ -9,7 +9,7 @@ router.put('/accept/:study_id', tokenValidate, studyApi.acceptStudy); // 스터�
 router.get('/info', studyApi.getStudy); // 스터디 정보 조회(전체)
 router.get('/info/:study_id', studyApi.getStudyOne); // 스터디 정보 조회(개별)
 router.put('/info/:study_id', tokenValidate, studyApi.updateStudy); // 스터디 정보 수정(장)
-router.delete('/', tokenValidate, studyApi.deleteUser); // 스터디 회원 관리(장)
+router.delete('/:member_id', tokenValidate, studyApi.deleteUser); // 스터디 회원 관리(장)
 router.delete('/info/:study_id', tokenValidate, studyApi.deleteStudy); // 스터디 정보 삭제(장)
 
 module.exports = router;
