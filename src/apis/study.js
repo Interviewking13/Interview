@@ -1,11 +1,15 @@
 const { Study } = require('../models/index');
 const { User } = require('../models/index');
 const { StudyRelation } = require('../models/index');
+const mongoose = require('mongoose');
+// const { ObjectId } = require('mongodb');
 
 const studyApi = {
-  /**½ºÅÍµğ °³¼³*/
+  /**Ä›ÂŠÂ¤Ã­Â„Â°Ã«Â”Â” Ä™Â°ÂœÄ›Â„Â¤*/
   async newStudy(req, res, next) {
     try {
+      // ìŠ¤í„°ë”” ê°œì„¤
+      const user_id = req.user._id;
       const { study_name, title, content, deadline, headcount, chat_link, status } = req.body;
 
       const createInfo = {
@@ -20,8 +24,20 @@ const studyApi = {
 
       const createdStudy = await Study.create(createInfo);
       res.study = createdStudy;
-
       res.status(200).json(createdStudy);
+
+      // ìŠ¤í„°ë”” ê´€ê³„ ìƒì„±
+      const study_id = createdStudy._id;
+      console.log(study_id);
+
+      const createRelation = {
+        user_id,
+        study_id,
+        is_leader: 1,
+      };
+
+      const createdRelation = await StudyRelation.create(createRelation);
+      res.study_relation = createdRelation;
     } catch (error) {
       console.log(error);
       res.status(400).json({
@@ -31,37 +47,23 @@ const studyApi = {
     }
   },
 
-  /**½ºÅÍµğ ½ÅÃ»*/
+  /**Ä›ÂŠÂ¤Ã­Â„Â°Ã«Â”Â” Ä›Â‹Â Ä›Ë›Â­*/
   async applyStudy(req, res, next) {
     try {
-      const user = await User.findOne().exec();
-      const user_id = user._id;
-      const user_name = user.user_name;
-      const email = user.email;
-      const phone_number = user.phone_number;
-      req.body.user = { user_id, user_name, email, phone_number };
-
-      const study = await Study.findOne().exec();
-      const study_id = study.study_id;
-      const study_name = study.study_name;
-      req.body.study = { study_id, study_name };
-
-      const { goal, accept } = req.body;
-
+      const user_id = req.user._id;
+      // const studyId = req.query;
+      // const study_id = mongoose.Types.ObjectId(studyId);
+      // console.log(typeof study_id);
+      const { study_id, goal } = req.body;
       const createInfo = {
-        study_id,
-        study_name,
         user_id,
-        user_name,
-        email,
-        phone_number,
+        study_id,
+        is_leader: 0,
         goal,
-        accept,
+        accept: 0,
       };
-
-      const applyedStudy = await Study.create(createInfo);
-      res.study = applyedStudy;
-
+      const applyedStudy = await StudyRelation.create(createInfo);
+      res.study_relation = applyedStudy;
       res.status(200).json(applyedStudy);
     } catch (error) {
       console.log(error);
@@ -72,48 +74,42 @@ const studyApi = {
     }
   },
 
-  /**½ºÅÍµğ ½ÅÃ» ¼ö¶ô*/
+  /**Ä›ÂŠÂ¤Ã­Â„Â°Ã«Â”Â” Ä›Â‹Â Ä›Ë›Â­ Ä›ÂˆÂ˜Ã«ÂË*/
   async acceptStudy(req, res, next) {
     try {
-      const study_relation = await StudyRelation.findOne().exec();
-      const user_id = study_relation.user_id;
-      const study_id = study_relation.study_id;
-      const user_type = study_relation.user_type;
-      req.body.study_relation = { user_id, study_id, user_type }; // ÇÑ ¹ø ½ÅÃ»Çß´ø user_id, study_id¸¦ µ¿ÀÏÇÏ°Ô »ç¿ëÇÏ¸é dumplicate error?
+      const { user_id, study_id } = req.params;
+      // const member = StudyRelation.findOne({ user_id: member_id });
+      // if (!member || member.is_leader === 0)
+      //   throw new Error('You do not have authorization to accept study applications.');
+
+      // const leader_id = req.user._id;
+      // const leader = StudyRelation.findOne({ user_id: leader_id });
+      // if (!leader || leader.is_leader === 1) throw new Error('Only leader can accept');
+
+      // const foundRelation = await StudyRelation.findOne({ study_id, user_id });
+      // if (!foundRelation) {
+      //   throw new Error('Relation not found');
+      // }
 
       const { accept } = req.body;
-
-      const createInfo = {
-        study_id,
-        user_id,
-        user_type,
-        accept,
-      };
-
-      const acceptedStudy = await Study.create(createInfo);
-      res.study = acceptedStudy;
-
-      res.status(200).json(acceptedStudy);
+      const updateInfo = { accept };
+      const updatedStudy = await StudyRelation.updateOne({ user_id, study_id }, updateInfo);
+      console.log(updateInfo);
+      res.status(200).json(updatedStudy);
     } catch (error) {
-      console.log(error);
-      const study_relation = await StudyRelation.findOne().exec();
-      const user_type = study_relation.user_type;
-      if (user_type === 'member') {
-        res.status(422).json({
-          code: 422,
-          message: 'Only leader can accept',
-        });
-      }
+      res.status(422).json({
+        code: 422,
+        message: 'Not authorization',
+      });
     }
   },
 
-  /**½ºÅÍµğ Á¤º¸ Á¶È¸*/ // ÇöÀç À¯Àú Á¤º¸ Á¶È¸´Â ¾È µÊ
+  /**ìŠ¤í„°ë”” ì •ë³´ ì¡°íšŒ*/
   async getStudy(req, res, next) {
     try {
-      const { study_id } = req.params;
-      const foundStudy = await Study.findOne({ _id: study_id });
-
-      if (!foundStudy) return error;
+      // const { study_id } = req.params;
+      const foundStudy = await Study.find({});
+      if (!foundStudy) throw new Error('Not found');
 
       res.status(200).json(foundStudy);
     } catch (error) {
@@ -125,18 +121,11 @@ const studyApi = {
     }
   },
 
-  /**½ºÅÍµğ Á¤º¸ ¼öÁ¤*/
   async updateStudy(req, res, next) {
     try {
-      const { userId } = req.params;
-      const user = await User.findOne({ _id: userId });
       const { study_id } = req.params;
-      const study = await Study.findOne({ _id: study_id });
-      if (!user) return console.error(error);
-      if (!study) return console.error(error);
-
+      // ìŠ¤í„°ë””ì¥ì¸ì§€ íŒë‹¨
       const { study_name, title, content, deadline, headcount, chat_link, status } = req.body;
-
       const updateInfo = {
         study_name,
         title,
@@ -146,35 +135,45 @@ const studyApi = {
         chat_link,
         status,
       };
-
-      const updatedStudy = await Study.updateOne({ user_id }, updateInfo);
-
+      const updatedStudy = await Study.updateOne({ _id: study_id }, updateInfo);
       res.status(200).json(updatedStudy);
     } catch (error) {
-      const { userId } = req.params;
-      const relation = await StudyRelation.findOne({ user_id: userId });
-      if (!relation) {
-        res.status(422).json({
-          // ¿¡·¯ ÀÀ´ä ÄÚµå¸¦ 401(Unauthorized)À¸·Î ¼³Á¤
-          code: 422,
-          message: 'Only leader can update', // ¿¡·¯ ¸Ş½ÃÁö¸¦ Å¬¶óÀÌ¾ğÆ®¿¡°Ô ¹İÈ¯
-        });
-      }
+      console.log(error);
+      res.status(426).json({
+        code: 426,
+        message: 'wrong request',
+      });
     }
   },
 
-  /**½ºÅÍµğ È¸¿ø °ü¸®*/ // ÇöÀç ½ºÅÍµğÀå ±ÇÇÑ °í·ÁX, À¯Àú ¾ÆÀÌµğ ºÒ·¯¿Í¼­ À¯Àú »èÁ¦ ±â´É ±¸ÇöX
-  /**½ºÅÍµğ »èÁ¦*/
+  /**ìŠ¤í„°ë”” íšŒì› ê´€ë¦¬*/ // ê·¸ ìœ ì €ê°€ ì“´ í”¼ë“œë°±ë„ ëª¨ë‘ ì‚­ì œ í•´ì•¼í•¨
+  async deleteUser(req, res, next) {
+    try {
+      const { user_id } = req.user._id;
+      const foundRelation = await StudyRelation.findOne({ user_id });
+      if (!foundRelation) throw new Error('Not found');
+
+      const deletedRelation = await StudyRelation.deleteOne({ user_id }); // íŠ¹ì • ìœ ì € ìŠ¤í„°ë””ì—ì„œ ì‚­ì œ
+      res.study_relation = deletedRelation;
+      res.status(200).json(deletedRelation);
+    } catch (error) {
+      console.log(error);
+      res.status(426).json({
+        code: 426,
+        message: 'cannot delete study',
+      });
+    }
+  },
+  /**ìŠ¤í„°ë”” ì‚­ì œ*/
   async deleteStudy(req, res, next) {
     try {
-      const { _id } = req.params;
-      const study_id = _id;
-      const foundStudy = await Study.findOne({ study_id });
+      const { study_id } = req.user._id;
+      const foundStudy = await Study.findOne({ _id: study_id });
+      if (!foundStudy) throw new Error('Not found');
 
-      if (!foundStudy) return console.error(error);
-
-      const deletedStudy = await Study.deleteOne({ study_id });
-
+      const deletedStudy = await Study.deleteOne({ _id: study_id }); // ìŠ¤í„°ë”” ì‚­ì œ
+      const deletedRelation = await StudyRelation.deleteMany({ study_id }); // í•´ë‹¹ ìŠ¤í„°ë”” ì•„ì´ë”” ê´€ê³„ ëª¨ë‘ ì‚­ì œ
+      res.study_relation = deletedRelation;
       res.status(200).json(deletedStudy);
     } catch (error) {
       console.log(error);

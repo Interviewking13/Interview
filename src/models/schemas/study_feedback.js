@@ -4,14 +4,12 @@ const mongoose = require('mongoose');
 const StudyFeedbackSchema = new Schema(
   {
     study_id: { type: mongoose.Types.ObjectId, unique: true, ref: 'Study' }, // reference
-    study_name: { type: String, ref: 'Study' }, // reference
     user_id: { type: mongoose.Types.ObjectId, unique: true, ref: 'User' }, // reference
-    user_name: { type: String, ref: 'User' }, // reference
-    content_type: { type: String, defalut: 'feedback', required: true }, // feedback: ÇÇµå¹é º»¹®, reply: ÇÇµå¹é ´ñ±Û
+    content_type: { type: Boolean }, // 0: í”¼ë“œë°± ë³¸ë¬¸, 1: í”¼ë“œë°± ëŒ“ê¸€
     content: { type: String },
   },
   {
-    timestamps: true, // ´ñ±ÛÀÛ¼ºÀÏ½Ã: date
+    timestamps: true, // ëŒ“ê¸€ì‘ì„±ì¼ì‹œ: date
   },
 );
 

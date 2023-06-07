@@ -2,31 +2,24 @@ const { Schema } = require('mongoose');
 const mongoose = require('mongoose');
 
 const StudySchema = new Schema({
-  // ½ºÅÍµğ Á¤º¸
-  study_id: { type: mongoose.Types.ObjectId, unique: true }, // identification value
+  // ìŠ¤í„°ë”” ì •ë³´
+  study_id: { type: mongoose.Types.ObjectId }, // identification value
   study_name: { type: String, unique: true },
   title: { type: String },
   content: { type: String },
   start: { type: Date },
   end: { type: Date },
-  deadline: { type: Date }, // ¸ğÁı¿Ï·á³¯Â¥
-  headcount: { type: Number, maximum: 10 }, // ÃÖ´ë ¸ğÁı ÀÎ¿ø
+  deadline: { type: Date }, // ëª¨ì§‘ì™„ë£Œë‚ ì§œ
+  headcount: { type: Number, maximum: 10 }, // ìµœëŒ€ ëª¨ì§‘ ì¸ì›
   chat_link: {
     type: String,
     // pattern: '^https?:\\/\\/(?:www\\.)?zoom\\.us\\/(?:j\\/|my\\/|meetings\\/join\\?)[^\\s]+$',
   },
   status: {
-    // ¸ğÁı Áß: 0, ¸ğÁı ¿Ï·á: 1
+    // ëª¨ì§‘ ì¤‘: 0, ëª¨ì§‘ ì™„ë£Œ: 1
     type: Number,
     default: 0,
   },
-
-  // ½ºÅÍµğ¿ø ½ÅÃ» Á¤º¸ (½ºÅÍµğ ½ÅÃ» ½Ã, »ç¿ëÀÚ°¡ ÀÔ·Â)
-  user_name: { type: String, ref: 'User' }, // reference
-  phone_number: { type: String, ref: 'User' }, // reference
-  email: { type: String, unique: true, ref: 'User' }, // reference
-  goal: { type: String }, // ¸ñÇ¥ »ê¾÷ ºĞ¾ß ¹× ±â¾÷, Æ÷ºÎ µî
-  accept: { type: Number, default: 0 }, // 0: ½ÅÃ» ¿Ï·á, 1: ½ÅÃ» ¼ö¶ô, 2: ½ÅÃ» °ÅÀı
 });
 
 module.exports = StudySchema;
