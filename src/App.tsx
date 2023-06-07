@@ -12,7 +12,7 @@ import SignupPage from "./pages/login/SignupPage";
 import StudyApply from "./pages/mypage/components/StudyApply";
 import UserInfo from "./pages/mypage/components/UserInfo";
 import UserStudy from "./pages/mypage/components/UserStudy";
-import InfoChange from "./pages/mypage/components/InfoChange";
+import Modify from "./pages/mypage/components/Modify";
 
 import { Feedback } from "./pages/study/Feedback";
 import Information from "./pages/study/Information";
@@ -32,10 +32,7 @@ function App() {
                 <Route path="studyapply" element={<StudyApply />} />
                 <Route path="userinfo" element={<UserInfo />} />
               </Route>
-              <Route
-                path="/mypage/userinfo/infochange"
-                element={<InfoChange />}
-              />
+              <Route path="/mypage/userinfo/modify" element={<Modify />} />
 
               <Route path="/login" element={<LoginPage />} />
               <Route path="/login/signup" element={<SignupPage />} />
