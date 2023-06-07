@@ -42,7 +42,7 @@ const studyFeedbackApi = {
   },
 
   /**피드백, 댓글 조회*/
-  async getStudyFeedback(req, res, next) {
+  async getFeedback(req, res, next) {
     try {
       const user = await User.findOne().exec();
       const user_name = user.user_name;
@@ -63,7 +63,7 @@ const studyFeedbackApi = {
   },
 
   /**피드백, 댓글 수정*/
-  async updateStudyFeedback(req, res, next) {
+  async updateFeedback(req, res, next) {
     try {
       const user = await User.findOne().exec();
       const user_name = user.user_name;
@@ -91,7 +91,7 @@ const studyFeedbackApi = {
   },
 
   /**피드백, 댓글 삭제*/
-  async deleteStudyFeedback(req, res, next) {
+  async deleteFeedback(req, res, next) {
     try {
       const user = await User.findOne().exec();
       const user_name = user.user_name;
