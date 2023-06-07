@@ -10,6 +10,13 @@ const ObjectId = mongoose.Types.ObjectId;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
+const secretKey = process.env.SECRET_KEY;
+
+// dts_insert, dts_update 필드에 삽입할 변수 값 설정
+const currentDate = new Date();
+const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, "");    // 현재 날짜를 "yyyymmdd" 형식으로 가져옵니다
+const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    // 현재 시간을 "hhmmss" 형식으로 가져옵니다
+
 const userApi = {
 
     /** user 정보 전체 DB 조회 테스트 */
@@ -27,9 +34,8 @@ const userApi = {
             res.status(200).json({
                 resultCode: "200",
                 message: "조회 성공",
-                // data: findAllUser    //보안 상 나중에 제거
             })
-            // res.send(findAllUser);
+
         } catch (err) {
             console.error(err);
             res.status(500).json({
@@ -42,11 +48,26 @@ const userApi = {
     /** 회원가입 */
     async registerUser(req, res, next) {
         try {
-            const { user_name, email, password } = req.body;
+            const { user_name, email, password, passwordCheck } = req.body;
+
+            // 입력값 검사
+            if (user_name === "" || email === "" || password === "" || passwordCheck === "") {
+                return res.status(200).json({
+                    resultCode: 200,
+                    message: "정보를 모두 입력하세요."
+                });
+            }
+
+            // 비밀번호, 비밀번호 확인 값 검사
+            if (password !== passwordCheck) {
+                return res.status(200).json({
+                    resultCode: 200,
+                    message: "비밀번호가 일치하지 않습니다."
+                });
+            }
             
             // 기존 사용자(이메일) 유무 검사
             const findUser = await User.findOne({ "email": email });
-            // console.log(findUser);
 
             if (findUser) {
                 return res.status(200).json({
@@ -62,11 +83,6 @@ const userApi = {
             // 비밀번호 암호화
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            // dts_insert 필드 내용에 삽입할 변수 값 설정
-            const currentDate = new Date();
-            const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, ""); // 현재 날짜를 "yyyymmdd" 형식으로 가져옵니다
-            const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, ""); // 현재 시간을 "hhmmss" 형식으로 가져옵니다
-            
             const newUserInfo = {
                 user_name,
                 email,
@@ -104,8 +120,6 @@ const userApi = {
             // 기존 사용자 유무 검사
             const findUser = await User.findOne({ "email": email });
 
-            // console.log(findUser);
-
             if (!findUser) {
                 return res.status(200).json({
                     resultCode: "200",
@@ -123,15 +137,22 @@ const userApi = {
                 });
             }
 
+            // JWT 토큰 생성
+            const payload = {
+                email
+            }
+            const token = jwt.sign(payload, secretKey, { expiresIn: "5m" });
+            
             res.status(200).json({
                 resultCode: "200",
                 message: "로그인 성공",
                 data: {
                     user_id: findUser._id,
-                    email
+                    email,
+                    token
                 }
             });
-            
+
         } catch (err) {
             console.error(err);
             res.status(500).json({
@@ -143,11 +164,25 @@ const userApi = {
 
     /** 내 정보 조회 */
     async getUserInfo(req, res) {
+        
+        // const secretKey = 'your_test_key';
+        const token = req.headers.authorization;    // 클라이언트로부터 전달된 토큰 값
+            
         try {
+            
             const { user_id } = req.params;
             // const { user_id } = req.body;
 
-            // const findUser = await User.findOne({ "user_id": user_id }); //확인완료
+            const decoded = jwt.verify(token, secretKey);
+            
+            if (!decoded) {
+                return res.status(401).json({
+                resultCode: "401",
+                message: "유효하지 않은 토큰입니다.",
+                token: token
+                });
+            }
+
             const findUser = await User.findOne(
                 { "_id": user_id },
                 {
@@ -157,27 +192,50 @@ const userApi = {
                     "intro_yn": true,
                     "phone_number": true
                 }
-            )
-            if (!findUser) {
+            );
+            
+            if (!findUser) {        // 여기로 안들어오네?
                 return res.status(400).json({
                     resultCode: "400",
                     message: "조회 실패"
                 });
             }
+            
             res.status(200).json({
                 // data: findUser
+                resultCode: "200",
+                message: "인증된 토큰입니다.",
                 user_id: findUser._id,
                 user_name: findUser.user_name,
                 email: findUser.email,
                 intro_yn: findUser.intro_yn,
-                phone_number: findUser.phone_number
+                phone_number: findUser.phone_number,
+                token: token
             });
         } catch (err) {
             console.error(err);
-            res.status(500).json({
-                resultCode: "500",
-                message: "서버오류"
-            });
+            if (err.name === 'JsonWebTokenError') {
+                // 토큰이 유효하지 않은 경우
+                return res.status(401).json({
+                    resultCode: "401",
+                    message: "유효하지 않은 토큰입니다.",
+                    token: token
+                });
+            }
+            else if (err.name === 'TokenExpiredError') {
+                // 토큰이 만료되었을 경우
+                return res.status(401).json({
+                    resultCode: "401",
+                    message: "만료된 토큰입니다.",
+                    token: token
+                });
+            } else {
+                //기타 토큰 검증 실패
+                return res.status(500).json({
+                    resultCode: "500",
+                    message: "서버오류"
+                });
+            }
         }
     },
 
@@ -237,11 +295,6 @@ const userApi = {
             // 비밀번호 암호화
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            // dts_insert 필드 내용에 삽입할 변수 값 설정
-            const currentDate = new Date();
-            const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, ""); // 현재 날짜를 "yyyymmdd" 형식으로 가져옵니다
-            const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, ""); // 현재 시간을 "hhmmss" 형식으로 가져옵니다
-                    
             // 변경사항이 있을 경우 처리 로직
             const changeUserInfo = await User.updateOne({ "email": email },
             {
