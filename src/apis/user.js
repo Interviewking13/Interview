@@ -7,7 +7,7 @@ const app = express();
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
-// 비밀번호 암호화
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const userApi = {
@@ -43,8 +43,8 @@ const userApi = {
     async registerUser(req, res, next) {
         try {
             const { user_name, email, password } = req.body;
-
-            // 기존 사용자 유무 검사
+            
+            // 기존 사용자(이메일) 유무 검사
             const findUser = await User.findOne({ "email": email });
             // console.log(findUser);
 
