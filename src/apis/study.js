@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 // const { ObjectId } = require('mongodb');
 
 const studyApi = {
-  /**스터디 개설*/
+  /**ě¤í°ë ę°ě¤*/
   async newStudy(req, res, next) {
     try {
       // 스터디 개설
@@ -47,7 +47,7 @@ const studyApi = {
     }
   },
 
-  /**스터디 신청*/
+  /**ě¤í°ë ě ě˛­*/
   async applyStudy(req, res, next) {
     try {
       const user_id = req.user._id;
@@ -74,7 +74,7 @@ const studyApi = {
     }
   },
 
-  /**스터디 신청 수락*/
+  /**ě¤í°ë ě ě˛­ ěë˝*/
   async acceptStudy(req, res, next) {
     try {
       const { user_id, study_id } = req.params;
@@ -121,7 +121,6 @@ const studyApi = {
     }
   },
 
-  /**스터디 정보 수정*/
   async updateStudy(req, res, next) {
     try {
       const { study_id } = req.params;

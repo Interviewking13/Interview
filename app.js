@@ -12,6 +12,7 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use('/', indexRouter);
 
-app.listen(3000, () => { /** [QA] PORT 기재 시 연결안됨 */
+app.listen(5000, () => { /** [QA] PORT 기재 시 연결안됨 */
   console.log(`포트열렸다`);
 });
+
