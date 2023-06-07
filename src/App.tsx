@@ -9,10 +9,10 @@ import Layout from "./components/layout/Layout";
 import TestPage from "./components/modal/TestPage";
 import LoginPage from "./pages/login/Login";
 import SignupPage from "./pages/login/SignupPage";
-import StudyApply from "./pages/mypage/components/StudyApply";
-import UserInfo from "./pages/mypage/components/UserInfo";
-import UserStudy from "./pages/mypage/components/UserStudy";
-import Modify from "./pages/mypage/components/Modify";
+import StudyApply from "./components/mypage/StudyApply";
+import UserInfo from "./components/mypage/UserInfo";
+import UserStudy from "./components/mypage/UserStudy";
+import Modify from "./components/mypage/Modify";
 
 import { Feedback } from "./pages/study/Feedback";
 import Information from "./pages/study/Information";
