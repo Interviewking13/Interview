@@ -6,7 +6,7 @@ const communityApi = {
     async getAllList(req, res) {
 
         try {
-            // TODO: 권장사항 => GET => query
+
             const findContent = await Community.find({ });
             // console.log('getAllList findContent: ', findContent);
       
@@ -74,8 +74,8 @@ const communityApi = {
             const reqContent = req.query.community_no;
             // console.log('reqContent: ', reqContent);
 
-            const findContent = await Community.findOne({ community_no: reqContent });
-            const findReply = await CommunityReply.findOne({ community_no: reqContent });
+            const findContent = await Community.find({ community_no: reqContent });
+            const findReply = await CommunityReply.find({ community_no: reqContent });
             // console.log('getContent findReply: ', findReply);
 
             if (!findContent) {
