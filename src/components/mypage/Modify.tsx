@@ -1,6 +1,10 @@
 import React from "react";
+import { useQuery } from "react-query";
 import { Button, Typography, TextField, Grid, Box } from "@mui/material";
 import { styled } from "@mui/material";
+// import styled from "styled-components";
+import { TitleText, SubText } from "../../constants/fonts";
+import { colors } from "../../constants/colors";
 
 //각 페이지컴포넌트 호출
 
@@ -46,7 +50,6 @@ const Modify = () => {
           <Grid item xs={10}>
             <StyledTextField
               variant="outlined"
-              label="Read Only"
               defaultValue="Hello World"
               InputProps={{
                 readOnly: true,
@@ -64,7 +67,14 @@ const Modify = () => {
             <StyledInfoName>아이디</StyledInfoName>
           </Grid>
           <Grid item xs={10}>
-            <StyledTextField variant="outlined" fullWidth />
+            <StyledTextField
+              variant="outlined"
+              defaultValue="Hello World"
+              InputProps={{
+                readOnly: true,
+              }}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={2}>
             <StyledInfoName>비밀번호</StyledInfoName>
@@ -83,10 +93,15 @@ const Modify = () => {
             <StyledInfoName>자기소개서첨부</StyledInfoName>
           </Grid>
           <Grid item xs={8.5}>
-            <StyledTextField variant="outlined" fullWidth />
+            <StyledTextField
+              variant="outlined"
+              type="file"
+              placeholder="파일을 선택해주세온마우ㅠㅁ나,ㅓ움나"
+              fullWidth
+            />
           </Grid>
           <Grid item xs={1.5} container justifyContent="flex-end">
-            <StyledFindButton variant="contained">수정하기</StyledFindButton>
+            <StyledFindButton variant="contained">파일찾기</StyledFindButton>
           </Grid>
 
           {/* 버튼1, 버튼2 */}
@@ -119,6 +134,7 @@ const StyledSubTitle = styled(Typography)`
 `;
 //각정보타이틀 스타일지정
 const StyledInfoName = styled(Typography)`
+  ${SubText}
   color: #0e0e0e;
   font-size: 20px;
   font-weight: 600;
@@ -146,17 +162,19 @@ const StyledFindButton = styled(Button)`
     color: #2e3057;
   }
 `;
+
 const StyledModifyButton = styled(Button)`
   /* 여기에 스타일을 작성하세요 */
   font-size: 18px;
   border-radius: 10px;
   font-weight: 700;
   padding: auto;
-  background-color: #00e595;
+  background-color: ${colors.main_mint};
   color: #00057d;
+  ${TitleText}
   &:hover {
     background-color: #00057d;
-    color: #00e595;
+    color: ${colors.main_mint};
   }
 `;
 const StyledDeleteButton = styled(Button)`

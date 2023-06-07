@@ -11,6 +11,9 @@ import { styled } from "@mui/material/styles";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
 
+import { TitleText } from "../../constants/fonts";
+import { colors } from "../../constants/colors";
+
 const UserInfo = () => {
   const navigate = useNavigate();
   const onClickModify = () => {
