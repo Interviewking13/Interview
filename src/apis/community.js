@@ -6,6 +6,7 @@ const communityApi = {
     async getAllList(req, res) {
 
         try {
+            // TODO: 권장사항 => GET => query
             const findContent = await Community.find({ });
             // console.log('getAllList findContent: ', findContent);
       
@@ -32,17 +33,11 @@ const communityApi = {
             /** 게시글번호 순차부여 */
             async function getLastCommunityNo() {
 
-                /** [QA] trycatch 중복사용 문의 */
-                try {
-                    const lastCommunity = await Community.findOne().sort({ community_no: -1 }).limit(1).exec();
-                    if (lastCommunity) {
-                      return lastCommunity.community_no;
-                    }
-                    return 1;
-                } catch (err) {
-                console.log(err);
-                throw new Error(err);
+                const lastCommunity = await Community.findOne().sort({ community_no: -1 }).limit(1).exec();
+                if (lastCommunity) {
+                  return lastCommunity.community_no;
                 }
+                return 1;
             };  
 
             /** 게시글번호 생성 */
@@ -75,6 +70,7 @@ const communityApi = {
     async getContent(req, res) {
 
         try {
+            // TODO: 권장사항 => GET => query
             const reqContent = req.body.community_no;
             // console.log('reqContent: ', reqContent);
 
@@ -88,7 +84,7 @@ const communityApi = {
 
             res.status(200).json({
                 message: "게시글조회 성공",
-                data: { findContent, findReply } /** [QA] 여러개의 응답데이터를 보낼 때 */
+                data: { findContent, findReply } 
             });
         } catch (err) {
           console.log(err);
@@ -114,7 +110,7 @@ const communityApi = {
                 title,
                 content,
                 attach,
-            });
+            }); // {new: true} 옵션 재문의
             
             if (!updateContent){
                 return res.status(400).json({ message: "게시글수정 실패" });
@@ -123,7 +119,7 @@ const communityApi = {
             // console.log('updateContent: ', updateContent);
             res.status(200).json({
                 message: "게시글수정 성공",
-                data: updateContent, /** [QA] 응답데이터 */
+                data: updateContent,
             });
         } catch (err) {
             console.log(err);
@@ -135,7 +131,7 @@ const communityApi = {
     async deleteContent(req, res) {
 
         try {
-
+            // TODO: 권장사항 => GET => query
             const reqNo = req.body.community_no;
             const findContent = await Community.findOne({ community_no: reqNo });
     
@@ -148,7 +144,6 @@ const communityApi = {
             
             res.status(200).json({
                 message: "게시글삭제 성공",
-                data: deleteContent,
             });
         } catch (err) {
             console.log(err);
@@ -165,14 +160,9 @@ const communityApi = {
             /** 댓글번호 순차부여 */
             async function getLastCommunityNo() {
 
-                /** [QA] trycatch 중복사용 문의 */
-                try {
-                    const lastCommunity = await CommunityReply.findOne().sort({ reply_no: -1 }).limit(1).exec();
-                    if (lastCommunity) return lastCommunity.reply_no;
-                    return 1;
-                } catch (err) {
-                    throw new Error(err);
-                }
+                const lastCommunity = await CommunityReply.findOne().sort({ reply_no: -1 }).limit(1).exec();
+                if (lastCommunity) return lastCommunity.reply_no;
+                return 1;
             };  
 
             /** 댓글번호 생성 */
@@ -202,7 +192,7 @@ const communityApi = {
         }
     },      
 
-    /** 댓글수정 : 수정필요 */
+    /** 댓글수정 */
     async modifyReply(req, res) {
         try {
 
@@ -217,7 +207,7 @@ const communityApi = {
 
             const updateContent = await CommunityReply.updateOne({ reply_no: findNo }, {
                 reply_content,
-            });
+            }); // {new: true} 옵션 재문의
                 
             res.status(200).json({
                 message: "댓글수정 성공",
