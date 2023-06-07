@@ -3,7 +3,7 @@ const { Study } = require('../models/index');
 const { User } = require('../models/index');
 
 const studyFeedbackApi = {
-  /**ÇÇµå¹é, ´ñ±Û ÀÛ¼º*/
+  /**í”¼ë“œë°±, ëŒ“ê¸€ ìž‘ì„±*/
   async newFeedback(req, res, next) {
     try {
       const user = await User.findOne().exec();
@@ -41,8 +41,8 @@ const studyFeedbackApi = {
     }
   },
 
-  /**ÇÇµå¹é, ´ñ±Û Á¶È¸*/
-  async getStudyFeedback(req, res, next) {
+  /**í”¼ë“œë°±, ëŒ“ê¸€ ì¡°íšŒ*/
+  async getFeedback(req, res, next) {
     try {
       const user = await User.findOne().exec();
       const user_name = user.user_name;
@@ -62,8 +62,8 @@ const studyFeedbackApi = {
     }
   },
 
-  /**ÇÇµå¹é, ´ñ±Û ¼öÁ¤*/
-  async updateStudyFeedback(req, res, next) {
+  /**í”¼ë“œë°±, ëŒ“ê¸€ ìˆ˜ì •*/
+  async updateFeedback(req, res, next) {
     try {
       const user = await User.findOne().exec();
       const user_name = user.user_name;
@@ -90,8 +90,8 @@ const studyFeedbackApi = {
     }
   },
 
-  /**ÇÇµå¹é, ´ñ±Û »èÁ¦*/
-  async deleteStudyFeedback(req, res, next) {
+  /**í”¼ë“œë°±, ëŒ“ê¸€ ì‚­ì œ*/
+  async deleteFeedback(req, res, next) {
     try {
       const user = await User.findOne().exec();
       const user_name = user.user_name;
