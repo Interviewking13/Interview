@@ -44,7 +44,15 @@ const Modify = () => {
             <StyledInfoName>이름</StyledInfoName>
           </Grid>
           <Grid item xs={10}>
-            <StyledTextField variant="outlined" fullWidth />
+            <StyledTextField
+              variant="outlined"
+              label="Read Only"
+              defaultValue="Hello World"
+              InputProps={{
+                readOnly: true,
+              }}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={2}>
             <StyledInfoName>연락처</StyledInfoName>
