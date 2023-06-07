@@ -70,8 +70,8 @@ const communityApi = {
     async getContent(req, res) {
 
         try {
-            // TODO: 권장사항 => GET => query
-            const reqContent = req.body.community_no;
+
+            const reqContent = req.query.community_no;
             // console.log('reqContent: ', reqContent);
 
             const findContent = await Community.findOne({ community_no: reqContent });
@@ -106,11 +106,17 @@ const communityApi = {
                 return res.status(400).json({ message: "게시글찾기 실패" });
             }
 
-            const updateContent = await Community.updateOne({ community_no: findNo }, {
+            
+            const updateContent = await Community.findOneAndUpdate({ community_no: findNo }, {
                 title,
                 content,
                 attach,
-            }); // {new: true} 옵션 재문의
+            }, { new: true });
+            // console.log('updateContent: ', updateContent);
+
+            // const updateContent = new Community({ community_no: findNo });
+            // const newContent = await updateContent.save();
+            // console.log("newContent: ", newContent);
             
             if (!updateContent){
                 return res.status(400).json({ message: "게시글수정 실패" });
@@ -131,8 +137,8 @@ const communityApi = {
     async deleteContent(req, res) {
 
         try {
-            // TODO: 권장사항 => GET => query
-            const reqNo = req.body.community_no;
+
+            const reqNo = req.query.community_no;
             const findContent = await Community.findOne({ community_no: reqNo });
     
             if (!findContent) {
@@ -205,9 +211,9 @@ const communityApi = {
                 return res.status(400).json({ message: "댓글수정 실패" });
             }
 
-            const updateContent = await CommunityReply.updateOne({ reply_no: findNo }, {
+            const updateContent = await CommunityReply.findOneAndUpdate({ reply_no: findNo }, {
                 reply_content,
-            }); // {new: true} 옵션 재문의
+            }, { new: true });
                 
             res.status(200).json({
                 message: "댓글수정 성공",
@@ -234,8 +240,7 @@ const communityApi = {
             console.log('deleteContent: ', deleteContent);
                 
             res.status(200).json({
-                message: "댓글삭제 성공",
-                data: deleteContent,
+                message: "댓글삭제 성공"
             });
         } catch (err) {
             console.log(err);
