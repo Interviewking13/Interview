@@ -3,7 +3,7 @@
 import { css } from "styled-components";
 
 export const TitleText = css`
-  font-family: "Establish Retrosans", sans-serif;
+  font-family: "TitleText", sans-serif;
   font-size: 32px;
 `;
 

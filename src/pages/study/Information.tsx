@@ -3,6 +3,8 @@ import { Link } from "@mui/material";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { DetailTitle } from "./common/DetailTitle";
 import { StudyTaps } from "./common/StudyTap";
+import axios from "axios";
+import { useEffect } from "react";
 
 ///더미데이터
 const data = {
@@ -25,8 +27,21 @@ const data = {
   phone_number: "010-7296-2003",
   goal: "금융, 인공지능",
 };
-
+function fetchData() {
+  return axios
+    .get("http://34.22.79.51:8080/api/study/info")
+    .then((response) => response.data);
+}
 const Information = () => {
+  useEffect(() => {
+    fetchData()
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
   return (
     <Container>
       <Mystudy>{data.status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
