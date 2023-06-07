@@ -6,7 +6,7 @@ import { styled } from "@mui/material";
 
 const MenuButton = () => {
   return (
-    <Grid container spacing={1} justifyContent="flex-end">
+    <>
       <Grid item>
         <StyledDeleteButton variant="contained" sx={{ gap: "5px" }}>
           회원탈퇴
@@ -15,11 +15,11 @@ const MenuButton = () => {
       <Grid item>
         <StyledModifyButton variant="contained">수정하기</StyledModifyButton>
       </Grid>
-    </Grid>
+    </>
   );
 };
 
-const InfoChange = () => {
+const Modify = () => {
   return (
     <StyledContainer>
       <Grid container spacing={2}>
@@ -34,7 +34,12 @@ const InfoChange = () => {
       </Grid>
       {/**  페이지내용 */}
       <form>
-        <Grid container rowSpacing={2} alignItems="center">
+        <Grid
+          container
+          rowSpacing={2}
+          alignItems="center"
+          sx={{ marginTop: "7px" }}
+        >
           <Grid item xs={2}>
             <StyledInfoName>이름</StyledInfoName>
           </Grid>
@@ -77,13 +82,20 @@ const InfoChange = () => {
           </Grid>
 
           {/* 버튼1, 버튼2 */}
-          <MenuButton />
+          <Grid
+            container
+            spacing={1}
+            sx={{ marginTop: "7px" }}
+            justifyContent="flex-end"
+          >
+            <MenuButton />
+          </Grid>
         </Grid>
       </form>
     </StyledContainer>
   );
 };
-export default InfoChange;
+export default Modify;
 
 const StyledContainer = styled(Box)`
   width: 66.1%;
@@ -92,9 +104,7 @@ const StyledContainer = styled(Box)`
   padding-left: 0;
 `;
 // 내정보수정 타이틀 스타일
-const StyledTitle = styled(Typography)`
-  color: #00e595;
-`;
+const StyledTitle = styled(Typography)``;
 // 내정보를 수정하세요 서브타이틀 스타일
 const StyledSubTitle = styled(Typography)`
   color: #8689a3;
@@ -110,6 +120,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   "& .MuiInputBase-root": {
     height: "45px",
     borderRadius: "10px",
+    border: "1px #00057D solid",
   },
 }));
 

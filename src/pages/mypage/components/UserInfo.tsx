@@ -13,8 +13,8 @@ import { useNavigate } from "react-router-dom";
 
 const UserInfo = () => {
   const navigate = useNavigate();
-  const onClickMypageMain = () => {
-    navigate("/mypage/userinfo/infochange"); // useNavigate 사용하여 페이지 이동
+  const onClickModify = () => {
+    navigate("/mypage/userinfo/Modify"); // useNavigate 사용하여 페이지 이동
   };
 
   return (
@@ -24,7 +24,7 @@ const UserInfo = () => {
           <Typography> 면접왕 준영님, 어서오세요. </Typography>
         </Grid>
         <Grid item>
-          <IconButton onClick={onClickMypageMain}>
+          <IconButton onClick={onClickModify}>
             <SettingsIcon />
           </IconButton>
         </Grid>
