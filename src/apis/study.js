@@ -1,6 +1,8 @@
 const { Study } = require('../models/index');
 const { User } = require('../models/index');
 const { StudyRelation } = require('../models/index');
+const mongoose = require('mongoose');
+// const { ObjectId } = require('mongodb');
 
 const studyApi = {
   /**스터디 개설*/
@@ -21,7 +23,6 @@ const studyApi = {
       };
 
       const createdStudy = await Study.create(createInfo);
-
       res.study = createdStudy;
       res.status(200).json(createdStudy);
 
@@ -32,7 +33,7 @@ const studyApi = {
       const createRelation = {
         user_id,
         study_id,
-        user_type: 1,
+        is_leader: 1,
       };
 
       const createdRelation = await StudyRelation.create(createRelation);
@@ -49,34 +50,20 @@ const studyApi = {
   /**스터디 신청*/
   async applyStudy(req, res, next) {
     try {
-      const user = await User.findOne().exec();
-      const user_id = user._id;
-      const user_name = user.user_name;
-      const email = user.email;
-      const phone_number = user.phone_number;
-      req.body.user = { user_id, user_name, email, phone_number };
-
-      const study = await Study.findOne().exec();
-      const study_id = study.study_id;
-      const study_name = study.study_name;
-      req.body.study = { study_id, study_name };
-
-      const { goal, accept } = req.body;
-
+      const user_id = req.user._id;
+      // const studyId = req.query;
+      // const study_id = mongoose.Types.ObjectId(studyId);
+      // console.log(typeof study_id);
+      const { study_id, goal } = req.body;
       const createInfo = {
-        study_id,
-        study_name,
         user_id,
-        user_name,
-        email,
-        phone_number,
+        study_id,
+        is_leader: 0,
         goal,
-        accept,
+        accept: 0,
       };
-
-      const applyedStudy = await Study.create(createInfo);
-      res.study = applyedStudy;
-
+      const applyedStudy = await StudyRelation.create(createInfo);
+      res.study_relation = applyedStudy;
       res.status(200).json(applyedStudy);
     } catch (error) {
       console.log(error);
@@ -90,45 +77,39 @@ const studyApi = {
   /**스터디 신청 수락*/
   async acceptStudy(req, res, next) {
     try {
-      const study_relation = await StudyRelation.findOne().exec();
-      const user_id = study_relation.user_id;
-      const study_id = study_relation.study_id;
-      const user_type = study_relation.user_type;
-      req.body.study_relation = { user_id, study_id, user_type }; // 한 번 신청했던 user_id, study_id를 동일하게 사용하면 dumplicate error?
+      const { user_id, study_id } = req.params;
+      // const member = StudyRelation.findOne({ user_id: member_id });
+      // if (!member || member.is_leader === 0)
+      //   throw new Error('You do not have authorization to accept study applications.');
+
+      // const leader_id = req.user._id;
+      // const leader = StudyRelation.findOne({ user_id: leader_id });
+      // if (!leader || leader.is_leader === 1) throw new Error('Only leader can accept');
+
+      // const foundRelation = await StudyRelation.findOne({ study_id, user_id });
+      // if (!foundRelation) {
+      //   throw new Error('Relation not found');
+      // }
 
       const { accept } = req.body;
-
-      const createInfo = {
-        study_id,
-        user_id,
-        user_type,
-        accept,
-      };
-
-      const acceptedStudy = await Study.create(createInfo);
-      res.study = acceptedStudy;
-
-      res.status(200).json(acceptedStudy);
+      const updateInfo = { accept };
+      const updatedStudy = await StudyRelation.updateOne({ user_id, study_id }, updateInfo);
+      console.log(updateInfo);
+      res.status(200).json(updatedStudy);
     } catch (error) {
-      console.log(error);
-      const study_relation = await StudyRelation.findOne().exec();
-      const user_type = study_relation.user_type;
-      if (user_type === 'member') {
-        res.status(422).json({
-          code: 422,
-          message: 'Only leader can accept',
-        });
-      }
+      res.status(422).json({
+        code: 422,
+        message: 'Not authorization',
+      });
     }
   },
 
-  /**스터디 정보 조회*/ // 현재 유저 정보 조회는 안 됨
+  /**스터디 정보 조회*/
   async getStudy(req, res, next) {
     try {
       const { study_id } = req.params;
       const foundStudy = await Study.findOne({ _id: study_id });
-
-      if (!foundStudy) return error;
+      if (!foundStudy) throw new Error('Not found');
 
       res.status(200).json(foundStudy);
     } catch (error) {
@@ -143,15 +124,9 @@ const studyApi = {
   /**스터디 정보 수정*/
   async updateStudy(req, res, next) {
     try {
-      const { userId } = req.params;
-      const user = await User.findOne({ _id: userId });
       const { study_id } = req.params;
-      const study = await Study.findOne({ _id: study_id });
-      if (!user) return console.error(error);
-      if (!study) return console.error(error);
-
+      // 스터디장인지 판단
       const { study_name, title, content, deadline, headcount, chat_link, status } = req.body;
-
       const updateInfo = {
         study_name,
         title,
@@ -161,35 +136,45 @@ const studyApi = {
         chat_link,
         status,
       };
-
-      const updatedStudy = await Study.updateOne({ user_id }, updateInfo);
-
+      const updatedStudy = await Study.updateOne({ _id: study_id }, updateInfo);
       res.status(200).json(updatedStudy);
     } catch (error) {
-      const { userId } = req.params;
-      const relation = await StudyRelation.findOne({ user_id: userId });
-      if (!relation) {
-        res.status(422).json({
-          // 에러 응답 코드를 401(Unauthorized)으로 설정
-          code: 422,
-          message: 'Only leader can update', // 에러 메시지를 클라이언트에게 반환
-        });
-      }
+      console.log(error);
+      res.status(426).json({
+        code: 426,
+        message: 'wrong request',
+      });
     }
   },
 
-  /**스터디 회원 관리*/ // 현재 스터디장 권한 고려X, 유저 아이디 불러와서 유저 삭제 기능 구현X
+  /**스터디 회원 관리*/ // 그 유저가 쓴 피드백도 모두 삭제 해야함
+  async deleteUser(req, res, next) {
+    try {
+      const { user_id } = req.user._id;
+      const foundRelation = await StudyRelation.findOne({ user_id });
+      if (!foundRelation) throw new Error('Not found');
+
+      const deletedRelation = await StudyRelation.deleteOne({ user_id }); // 특정 유저 스터디에서 삭제
+      res.study_relation = deletedRelation;
+      res.status(200).json(deletedRelation);
+    } catch (error) {
+      console.log(error);
+      res.status(426).json({
+        code: 426,
+        message: 'cannot delete study',
+      });
+    }
+  },
   /**스터디 삭제*/
   async deleteStudy(req, res, next) {
     try {
-      const { _id } = req.params;
-      const study_id = _id;
-      const foundStudy = await Study.findOne({ study_id });
+      const { study_id } = req.user._id;
+      const foundStudy = await Study.findOne({ _id: study_id });
+      if (!foundStudy) throw new Error('Not found');
 
-      if (!foundStudy) return console.error(error);
-
-      const deletedStudy = await Study.deleteOne({ study_id });
-
+      const deletedStudy = await Study.deleteOne({ _id: study_id }); // 스터디 삭제
+      const deletedRelation = await StudyRelation.deleteMany({ study_id }); // 해당 스터디 아이디 관계 모두 삭제
+      res.study_relation = deletedRelation;
       res.status(200).json(deletedStudy);
     } catch (error) {
       console.log(error);
