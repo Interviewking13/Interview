@@ -117,58 +117,65 @@ const SignupPage = () => {
   };
 
   return (
-    <StyledSignupWrapper>
-      <StyledSignupContainer>
-        <StyledSignupTitleContainer>
-          <StyledSignupText>면접을 면접답게</StyledSignupText>
-          <StyledSignupText>면접왕</StyledSignupText>
-          <StyledSignupText>면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요</StyledSignupText>
-        </StyledSignupTitleContainer>
-        <StyledSignupInputContainer onSubmit={onClickSubmit}>
-          <StyledSignupInput
-            type="text"
-            placeholder="이름"
-            value={name}
-            onChange={onChangeName}
-          />
-          <StyledSignupInput
-            type="tel"
-            placeholder="전화번호"
-            value={phone}
-            onChange={onChangePhone}
-          />
-          <StyledSignupInput
-            type="email"
-            placeholder="이메일"
-            value={email}
-            onChange={onChangeEmail}
-          />
-          <StyledSignupInput
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onChange={onChangePassword}
-          />
-          <StyledSignupInput
-            type="password"
-            placeholder="비밀번호 확인"
-            value={confirmPassword}
-            onChange={onChangePasswordConfirm}
-          />
-          <StyledSignupBtn variant="contained" color="primary" type="submit">
-            가입하기
-          </StyledSignupBtn>
-        </StyledSignupInputContainer>
-      </StyledSignupContainer>
-      <StyledSignupCopyright>
-        Copyright © 2023 INTERVIEWKING All Rights Reserved.
-      </StyledSignupCopyright>
-    </StyledSignupWrapper>
+    <StyledCommonContainer>
+      <StyledSignupWrapper>
+        <StyledSignupContainer>
+          <StyledSignupTitleContainer>
+            <StyledSignupText>면접을 면접답게</StyledSignupText>
+            <StyledSignupText>면접왕</StyledSignupText>
+            <StyledSignupText>면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요</StyledSignupText>
+          </StyledSignupTitleContainer>
+          <StyledSignupInputContainer onSubmit={onClickSubmit}>
+            <StyledSignupInput
+              type="text"
+              placeholder="이름"
+              value={name}
+              onChange={onChangeName}
+            />
+            <StyledSignupInput
+              type="tel"
+              placeholder="전화번호"
+              value={phone}
+              onChange={onChangePhone}
+            />
+            <StyledSignupInput
+              type="email"
+              placeholder="이메일"
+              value={email}
+              onChange={onChangeEmail}
+            />
+            <StyledSignupInput
+              type="password"
+              placeholder="비밀번호"
+              value={password}
+              onChange={onChangePassword}
+            />
+            <StyledSignupInput
+              type="password"
+              placeholder="비밀번호 확인"
+              value={confirmPassword}
+              onChange={onChangePasswordConfirm}
+            />
+            <StyledSignupBtn variant="contained" color="primary" type="submit">
+              가입하기
+            </StyledSignupBtn>
+          </StyledSignupInputContainer>
+        </StyledSignupContainer>
+        <StyledSignupCopyright>
+          Copyright © 2023 INTERVIEWKING All Rights Reserved.
+        </StyledSignupCopyright>
+      </StyledSignupWrapper>
+    </StyledCommonContainer>
   );
 };
 
+const StyledCommonContainer = styled.div`
+  background-color: ${colors.back_navy};
+`;
+
 const StyledSignupWrapper = styled.div`
-  background-color: #f1f4ff;
+  width: 1270px;
+  margin: 0 auto;
   padding-bottom: 30px;
 `;
 
@@ -207,15 +214,15 @@ const StyledSignupInputContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 340px;
+  margin-left: 330px;
 `;
 
 const StyledSignupInput = styled.input`
   width: 457px;
   height: 45px;
   margin-top: 15px;
-  color: #C0C3E5;
-  border: 1px solid #C0C3E5;
+  color: ${colors.main_black};
+  border: 1px solid ${colors.gray_navy};
   border-radius: 10px;
   padding-left: 18px;
   font-weight: 300;
@@ -224,11 +231,11 @@ const StyledSignupInput = styled.input`
     margin-top: 15px; 
   }
   &::placeholder {
-    color: #C0C3E5;
+    color: ${colors.gray_navy};
   }
   &:focus {
     outline: none;
-    border: 1px solid #C0C3E5;
+    border: 1px solid ${colors.gray_navy};
     box-shadow: none;
   }
 `;
@@ -238,15 +245,15 @@ const StyledSignupBtn = styled(Button)`
     width: 132px;
     height: 45px;
     border-radius: 10px;
-    background-color: #2E3057;
-    color: #ffffff;
+    background-color: ${colors.dark_navy};
+    color: ${colors.back_navy};
     font-weight: 600;
     font-size: 18px;
-    border: 1px solid #2E3057;
+    border: 1px solid ${colors.dark_navy};
     margin-top: 40px;
     margin-left: auto;
     &:hover {
-      background-color: #2E3057;
+      background-color: ${colors.dark_navy};
     }
   }
   
