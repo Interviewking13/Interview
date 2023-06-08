@@ -39,11 +39,11 @@ const Header = (): JSX.Element => {
   return (
     <>
       <StyledContainer>
-        <StyledLogo href="#" underline="none">
+        <StyledLogo href="/" underline="none">
           면접왕
         </StyledLogo>
         <StyledNavItemContainer>
-          <StyledNavItem href="#" underline="none">
+          <StyledNavItem href="/studylist" underline="none">
             스터디
           </StyledNavItem>
           <StyledNavItem href="#" underline="none">

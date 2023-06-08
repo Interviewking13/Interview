@@ -1,7 +1,11 @@
 import React from "react";
-import styled from "@emotion/styled";
+import styled from "styled-components";
 import { Link } from "@mui/material";
 import StudyListItem from "../../components/layout/StudyListItem";
+
+import { colors } from "../../constants/colors";
+import * as fonts from "../../constants/fonts";
+import PencilIconSrc from "../../img/pencil_mint.svg";
 
 const StudyList = (): JSX.Element => {
   const studyData = [{
@@ -65,18 +69,24 @@ const StudyList = (): JSX.Element => {
       master: "정채진"
     }
   ];
+
   return (
       <CommonContainer>
           <StudyListTopArea>
             
-              <TitleText>스터디 찾기</TitleText>
-              <SubTextThin>원하는 스터디를 찾고 가입해보세요.</SubTextThin>
+              <StyledTitleText>스터디 찾기</StyledTitleText>
+              <StyledSubTextThin>원하는 스터디를 찾고 가입해보세요.</StyledSubTextThin>
 
               <StudyListInputArea>
-                  <select name="" id="StudyListSort">
-                      최신순
-                  </select>
-                  <input type="text" name="" id="" placeholder="검색하기" />
+                  <StyledSelect name="" id="StudyListSort">
+                    <option value="recent">최신순</option>
+                    <option value="ing">모집중</option>
+                    <option value="done">모집완료</option>
+                  </StyledSelect>
+                  <StyledInput type="text" name="" id="" placeholder="검색하기" />
+                  <StyledInputBtn>
+                    <StyledIcon src={PencilIconSrc} />
+                  </StyledInputBtn>
                   <CommonButton>
                       <ButtonText>스터디 만들기</ButtonText>
                   </CommonButton>
@@ -121,19 +131,18 @@ const StudyListInputArea = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-const TitleText = styled.p`
+const StyledTitleText = styled.p`
   height: fit-content;
-  font-family: 'establish Retrosans';
-  font-size: 32px;
-  color: navy;
+  ${fonts.TitleText}
+  color: ${colors.main_navy};
   margin: 0 30px 0 0;
-`;
-const SubTextThin = styled.p`
+  `;
+const StyledSubTextThin = styled.p`
   width: 439px;
   height: fit-content;
   font-size: 18px;
   font-weight: light;
-  color: gray;
+  color: ${colors.main_gray};
   margin: 0;
 `;
 
@@ -144,7 +153,7 @@ const CommonButton = styled.div`
   justify-content: center;
   align-content: center;
   border-radius: 10px;
-  background-color: lightgreen;
+  background-color: ${colors.main_mint};
 `;
 const ButtonText = styled.p`
   font-size: 18px;
@@ -162,3 +171,34 @@ const StudyListItemArea = styled.p`
   grid-row-gap: 30px;
   grid-column-gap: 25px;
 `;
+
+const StyledSelect = styled.select`
+  width: 133px;
+  height: 45px;
+  margin: 0;
+  border: solid 1px ${colors.main_navy};
+  border-radius: 10px;
+  padding-left: 15px;
+  color: ${colors.main_navy};
+  ${fonts.SubTextThin}
+`
+const StyledInput = styled.input`
+  width: 325px;
+  height: 45px;
+  margin: 0;
+  border: solid 1px ${colors.main_navy};
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding-left: 15px;
+  color: ${colors.back_navy};
+  ${fonts.SubTextThin}
+`
+const StyledInputBtn = styled.button`
+  background: none;
+  border: none;
+  margin-left: -50px;
+`
+const StyledIcon = styled.img`
+  width: 27px;
+  height: 27px;
+`
