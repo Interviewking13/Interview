@@ -23,6 +23,7 @@ const StyledFooterContainer = styled.div`
 
 const StyledFooterLogoContainer = styled.div`
   ${TitleText}
+  white-space: none;
 `;
 
 const StyledFooterLogo = styled.div`
