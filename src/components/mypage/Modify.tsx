@@ -120,25 +120,33 @@ const Modify = () => {
 export default Modify;
 
 const StyledContainer = styled(Box)`
-  width: 66.1%;
-  max-width: 1270px;
-  margin-left: 325px;
-  padding-left: 0;
+  && {
+    width: 66.1%;
+    max-width: 1270px;
+    margin-left: 325px;
+    padding-left: 0;
+  }
 `;
 // 내정보수정 타이틀 스타일
 const StyledTitle = styled(Typography)`
-  ${fonts.TitleText}
-  color:${colors.main_mint}
+  && {
+    ${fonts.TitleText}
+    color:${colors.main_mint}
+  }
 `;
 // 내정보를 수정하세요 서브타이틀 스타일
 const StyledSubTitle = styled(Typography)`
-  ${fonts.SubTextThin}
-  color: ${colors.darkgray_navy};
+  && {
+    ${fonts.SubTextThin}
+    color: ${colors.darkgray_navy};
+  }
 `;
 //각정보타이틀 스타일지정
 const StyledInfoName = styled(Typography)`
-  ${fonts.SubTextBig}
-  color:${colors.main_black}
+  && {
+    ${fonts.SubTextBig}
+    color:${colors.main_black}
+  }
 `;
 //텍스트필드 스타일지정
 const StyledTextField = styled(TextField)(({ theme }) => ({
@@ -151,44 +159,48 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 
 //버튼 스타일
 const StyledFindButton = styled(Button)`
-  border-radius: 10px;
-  width: 132px;
-  height: 45px;
-  padding: auto;
-  ${fonts.SubText}
-  background-color: ${colors.dark_navy};
-  color: ${colors.back_navy};
-  &:hover {
-    background-color: ${colors.back_navy};
-    color: ${colors.dark_navy};
+  && {
+    border-radius: 10px;
+    width: 132px;
+    height: 45px;
+    padding: auto;
+    ${fonts.SubText}
+    background-color: ${colors.dark_navy};
+    color: ${colors.back_navy};
+    &:hover {
+      background-color: ${colors.back_navy};
+      color: ${colors.dark_navy};
+    }
   }
 `;
 
 const StyledModifyButton = styled(Button)`
-  /* 여기에 스타일을 작성하세요 */
-  border-radius: 10px;
-  width: 132px;
-  height: 45px;
-  ${fonts.SubText}
-  padding: auto;
-  background-color: ${colors.main_mint};
-  color: ${colors.main_navy};
-  &:hover {
-    background-color: ${colors.main_navy};
-    color: ${colors.main_mint};
+  && {
+    border-radius: 10px;
+    width: 132px;
+    height: 45px;
+    ${fonts.SubText}
+    padding: auto;
+    background-color: ${colors.main_mint};
+    color: ${colors.main_navy};
+    &:hover {
+      background-color: ${colors.main_navy};
+      color: ${colors.main_mint};
+    }
   }
 `;
 const StyledDeleteButton = styled(Button)`
-  /* 여기에 스타일을 작성하세요 */
-  border-radius: 10px;
-  width: 132px;
-  height: 45px;
-  ${fonts.SubText}
-  padding: auto;
-  background-color: ${colors.main_red};
-  color: ${colors.back_navy};
-  &:hover {
-    background-color: ${colors.back_navy};
-    color: ${colors.main_red};
+  && {
+    border-radius: 10px;
+    width: 132px;
+    height: 45px;
+    ${fonts.SubText}
+    padding: auto;
+    background-color: ${colors.main_red};
+    color: ${colors.back_navy};
+    &:hover {
+      background-color: ${colors.back_navy};
+      color: ${colors.main_red};
+    }
   }
 `;

@@ -70,19 +70,29 @@ const UserInfo = () => {
 export default UserInfo;
 
 const StyledSayHello = styled(Typography)`
-  ${fonts.SubTextBig}
+  && {
+    ${fonts.SubTextBig}
+  }
 `;
 
 const StyledDiv = styled(Box)`
-  border: 1px solid ${colors.main_navy};
-  border-radius: 7px;
+  && {
+    border: 1px solid ${colors.main_navy};
+    border-radius: 7px;
+  }
 `;
 const StyledTitle = styled(Grid)`
-  align-items: center;
+  && {
+    align-items: center;
+  }
 `;
 const StyledInfo = styled(Grid)`
-  margin: 24px;
+  && {
+    margin: 24px;
+  }
 `;
 const StyledLine = styled(Divider)`
-  border: 1px solid ${colors.main_navy};
+  && {
+    border: 1px solid ${colors.main_navy};
+  }
 `;
