@@ -2,17 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
+const StyledCommonContainer = styled.div`
+  width: 1270px;
+  margin: 0 auto;
+`;
+
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items:center;
   border-bottom: 1px solid #ccc;
   justify-content: center;
 `;
 
 const StyledHeadContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
 `
 
@@ -30,7 +34,7 @@ const StyledTitle = styled.h2`
 `;
 
 const StyledText = styled.h2`
-  margin: 0 120px 0 40px;
+  margin: 0 85px 0 40px;
   font-size: 18px;
   font-weight: 300;
   color: #8689A3;
@@ -120,32 +124,36 @@ const CommunityPage: React.FC = () => {
   ];
 
   return (
-    <StyledContainer>
-      <StyledHeadContainer>
-        <StyledTitle>커뮤니티</StyledTitle>
-        <StyledText>회원들과 정보를 공유해보세요.</StyledText>
-        <StyledSelect>
-          <option value="all">전체</option>
-          <option value="mypost">내가쓴글</option>
-        </StyledSelect>
-        <StyledSelect>
-          <option value="popular">인기순</option>
-        </StyledSelect>
-        <StyledSearchContainer onSubmit={handleSearch}>
-          <StyledSearchInput type="text" placeholder="검색하기" />
-        </StyledSearchContainer>
-        <StyledPostButton onClick={handleCreatePost}>글쓰기</StyledPostButton>
-      </StyledHeadContainer>
-      <StyledPostList>
-        {/* 글 목록 렌더링 */}
-        {posts.map((post) => (
-          <StyledPostItem key={post.id}>
-            <StyledPostTitle>{post.title}</StyledPostTitle>
-            <StyledPostAuthor>작성자: {post.author}</StyledPostAuthor>
-          </StyledPostItem>
-        ))}
-      </StyledPostList>
-    </StyledContainer>
+    <StyledCommonContainer>
+
+      <StyledContainer>
+        <StyledHeadContainer>
+          <StyledTitle>커뮤니티</StyledTitle>
+          <StyledText>회원들과 정보를 공유해보세요.</StyledText>
+          <StyledSelect>
+            <option value="all">전체</option>
+            <option value="mypost">내가쓴글</option>
+          </StyledSelect>
+          <StyledSelect>
+            <option value="popular">인기순</option>
+          </StyledSelect>
+          <StyledSearchContainer onSubmit={handleSearch}>
+            <StyledSearchInput type="text" placeholder="검색하기" />
+          </StyledSearchContainer>
+          <StyledPostButton onClick={handleCreatePost}>글쓰기</StyledPostButton>
+        </StyledHeadContainer>
+        <StyledPostList>
+          {/* 글 목록 렌더링 */}
+          {posts.map((post) => (
+            <StyledPostItem key={post.id}>
+              <StyledPostTitle>{post.title}</StyledPostTitle>
+              <StyledPostAuthor>작성자: {post.author}</StyledPostAuthor>
+            </StyledPostItem>
+          ))}
+        </StyledPostList>
+      </StyledContainer>
+
+    </StyledCommonContainer>
   );
 };
 
