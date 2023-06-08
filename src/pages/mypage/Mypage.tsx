@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { Button, Typography, Container, Grid, Box } from "@mui/material";
+import { Button, Typography, Grid, Box } from "@mui/material";
 import { Create, Person, Checklist } from "@mui/icons-material"; //MUI icon import
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
@@ -85,37 +85,45 @@ const Mypage = () => {
 export default Mypage;
 
 const StyledContainer = styled(Box)`
-  width: 100%;
-  max-width: 1920px;
+  && {
+    width: 100%;
+    max-width: 1920px;
+  }
 `;
 const StyledContent = styled(Grid)`
-  width: 66.1%;
-  max-width: 1270px;
-  margin: 0 auto;
-  padding-left: 0;
+  && {
+    width: 66.1%;
+    max-width: 1270px;
+    margin: 0 auto;
+    padding-left: 0;
+  }
 `;
 
 const StyledTitle = styled(Button)`
-  /* 여기에 스타일을 작성하세요 */
-  ${fonts.TitleText}
-  color: ${colors.main_mint};
+  && {
+    ${fonts.TitleText}
+    color: ${colors.main_mint};
+  }
 `;
 
 const StyledSubTitle = styled(Typography)`
-  ${fonts.SubTextThin}
-  color: ${colors.darkgray_navy};
+  && {
+    ${fonts.SubTextThin}
+    color: ${colors.darkgray_navy};
+  }
 `;
 
 //버튼 스타일
 const StyledButton = styled(Button)`
-  /* 여기에 스타일을 작성하세요 */
-  padding-left: 0;
-  ${fonts.SubTextBig}
-  color: ${colors.gray_mint}; /* 적절한 색상으로 변경 */
-  &:hover {
-    color: ${colors.main_mint}; /* 호버 시 변경할 색상 */
-  }
-  &:active {
-    background-color: #0000ff; /* 선택 시 변경할 색상 */
+  && {
+    padding-left: 0;
+    ${fonts.SubTextBig}
+    color: ${colors.gray_mint}; /* 적절한 색상으로 변경 */
+    &:hover {
+      color: ${colors.main_mint}; /* 호버 시 변경할 색상 */
+    }
+    &:active {
+      background-color: #0000ff; /* 선택 시 변경할 색상 */
+    }
   }
 `;
