@@ -1,6 +1,8 @@
 import React, { ChangeEvent, useState } from 'react';
-import styled from "@emotion/styled";
-import { Button } from "@mui/material";
+import styled from "styled-components";
+import { colors } from '../../constants/colors';
+import { TitleText } from '../../constants/fonts';
+import Button from "@mui/material/Button";
 import axios from 'axios';
 
 const SignupPage = () => {
@@ -183,8 +185,8 @@ const StyledSignupTitleContainer = styled.div`
 `;
 const StyledSignupText = styled.div`
     height: fit-content;
-    font-family: 'establish Retrosans';
-    color: #00057D; 
+    ${TitleText}
+    color: ${colors.main_navy};
     font-size: 64px; 
     font-weight:400;
 
@@ -232,19 +234,22 @@ const StyledSignupInput = styled.input`
 `;
 
 const StyledSignupBtn = styled(Button)`
-  width: 132px;
-  height: 45px;
-  border-radius: 10px;
-  background-color: #2E3057;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 18px;
-  border: 1px solid #2E3057;
-  margin-top: 40px;
-  margin-left: auto;
-  &:hover {
+  && {
+    width: 132px;
+    height: 45px;
+    border-radius: 10px;
     background-color: #2E3057;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 18px;
+    border: 1px solid #2E3057;
+    margin-top: 40px;
+    margin-left: auto;
+    &:hover {
+      background-color: #2E3057;
+    }
   }
+  
 `;
 
 const StyledSignupCopyright = styled.div`
