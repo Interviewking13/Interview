@@ -39,7 +39,7 @@ const studyApi = {
       const createdRelation = await StudyRelation.create(createRelation);
       res.study_relation = createdRelation;
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
       res.status(400).json({
         code: 400,
         message: 'wrong request',
@@ -107,7 +107,7 @@ const studyApi = {
   async getStudy(req, res, next) {
     try {
       const foundStudy = await Study.find({});
-      if (!foundStudy) throw new Error('Not found');
+      if (!foundStudy) return console.error(error);
       res.status(200).json(foundStudy);
     } catch (error) {
       console.log(error);
