@@ -8,7 +8,9 @@ const Divider = styled.div`
   border-bottom: 1px solid ${colors.gray_stroke};
 `;
 const StyledContainer = styled.div`
-  margin: 15px 100px;
+  margin: 0 auto; /* 가운데 정렬을 위한 수정 */
+  padding-top: 40px;
+  width: 1270px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -55,15 +57,9 @@ const Header = (): JSX.Element => {
           <StyledNavItem to="/userstudy">나의 스터디</StyledNavItem>
         </StyledNavItemContainer>
         <StyledLoginItemContainer>
-          <StyledLoginItem href="/login" underline="none">
-            로그인
-          </StyledLoginItem>
-          <StyledLoginItem href="/login/signup" underline="none">
-            회원가입
-          </StyledLoginItem>
-          <StyledLoginItem href="/mypage" underline="none">
-            마이페이지
-          </StyledLoginItem>
+          <StyledLoginItem to="/login">로그인</StyledLoginItem>
+          <StyledLoginItem to="/login/signup">회원가입</StyledLoginItem>
+          <StyledLoginItem to="/mypage">마이페이지</StyledLoginItem>
         </StyledLoginItemContainer>
       </StyledContainer>
       <Divider></Divider>
