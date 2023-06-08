@@ -13,3 +13,15 @@ export const getStudyData = async () => {
     throw error;
   }
 };
+
+export function fetchStudyData() {
+  return axios
+    .get("http://34.22.79.51:5000/api/study/info")
+    .then((response) => response.data);
+}
+
+export function fetchStudyDatas() {
+  return axios
+    .get("http://34.22.79.51:5000/api/study/info/6480f55eaec49c9eef6ea6ef")
+    .then((response) => response.data);
+}
