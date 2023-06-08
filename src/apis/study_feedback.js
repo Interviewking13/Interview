@@ -83,7 +83,7 @@ const studyFeedbackApi = {
   },
 
   /**피드백, 댓글 삭제*/
-  async deleteStudy(req, res, next) {
+  async deleteFeedback(req, res, next) {
     try {
       // 유저 권한 판단
       const user_id = req.user._id;
@@ -92,7 +92,7 @@ const studyFeedbackApi = {
 
       // 피드백, 댓글 삭제
       const deletedFeedback = await StudyFeedback.deleteOne({ user_id }); // 피드백, 댓글 삭제
-      res.studyFeedback = deletedFeedback;
+      res.study_feedback = deletedFeedback;
       res.status(200).json(deletedFeedback);
     } catch (error) {
       console.log(error);
