@@ -1,72 +1,67 @@
-import styled from "@emotion/styled";
+import styled from "styled-components";
 import { Link } from "@mui/material";
+import { TitleText } from "../../constants/fonts";
+import { colors } from "../../constants/colors";
 
 const Divider = styled.div`
-  margin-top: 15px;
-  border-bottom: 1px solid #909090;
+  margin: 15px 0px;
+  border-bottom: 1px solid #000;
 `;
 const StyledContainer = styled.div`
-  margin: 0 auto; /* 가운데 정렬을 위한 수정 */
-  padding-top: 40px;
-  width: 1270px;
+  margin: 15px 100px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
 const StyledLogo = styled(Link)`
-  height: fit-content;
-  font-family: 'establish Retrosans';
-  font-size: 32px;
-  font-weight: 400;
-  color: #00057D;
-  margin-right: 95px;
+  ${TitleText}
+  color: ${colors.main_navy}
 `;
 const StyledNavItemContainer = styled.div`
+  margin-left: -200px;
 `;
 
 const StyledNavItem = styled(Link)`
-  font-size: 18px;
-  font-weight: 600;
-  color: #0E0E0E;
-  margin-left: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  margin-left: 20px;
 `;
-const StyledLoginItemContainer = styled.div`
-
-`;
+const StyledLoginItemContainer = styled.div``;
 
 const StyledLoginItem = styled(Link)`
-  font-size: 16px;
-  font-weight: 300;
-  color: #7E7E7E;
-  margin-left: 35px;
+  font-size: 15px;
+  font-weight: bold;
+  color: grey;
+  margin-left: 10px;
 `;
 const Header = (): JSX.Element => {
   return (
     <>
       <StyledContainer>
-        <StyledLogo href="/" underline="none">
+        <StyledLogo href="#" underline="none">
           면접왕
         </StyledLogo>
         <StyledNavItemContainer>
-          <StyledNavItem href="/studylist" underline="none">
+          <StyledNavItem href="#" underline="none">
             스터디
           </StyledNavItem>
-          <StyledNavItem href="/community/communityPage" underline="none">
+          <StyledNavItem href="#" underline="none">
             커뮤니티
           </StyledNavItem>
-          <StyledNavItem href="/userstudy" underline="none">
+          <StyledNavItem href="#" underline="none">
             나의 스터디
           </StyledNavItem>
         </StyledNavItemContainer>
         <StyledLoginItemContainer>
-          <StyledLoginItem href="/login" underline="none">
+          <StyledLoginItem href="#" underline="none">
             로그인
           </StyledLoginItem>
-          <StyledLoginItem href="/login/signup" underline="none">
+          <StyledLoginItem href="#" underline="none">
             회원가입
           </StyledLoginItem>
-          <StyledLoginItem href="/mypage" underline="none">
+          <StyledLoginItem href="#" underline="none">
             마이페이지
           </StyledLoginItem>
         </StyledLoginItemContainer>
