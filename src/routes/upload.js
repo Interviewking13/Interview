@@ -2,61 +2,53 @@ require("dotenv").config({ path: "../../env" });
 
 const { Router } = require('express');
 const router = Router();
-
+const fs = require('fs');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const multer = require('multer');
 const { Readable } = require('stream');
 const moment = require('moment');
 
-/** S3연결 */
-const s3Client = new S3Client({
+/** S3 연결 */
+const s3 = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS,
     secretAccessKey: process.env.AWS_SECRET,
   },
-  endpoint: 'https://s3.ap-northeast-2.amazonaws.com/13team/community/',
+  endpoint: 'https://s3.ap-northeast-2.amazonaws.com'
 });
 
 /** 파일 업로드 */
-const upload = async (stream, filename, dir) => {
-  const datetime = moment().format('YYYYMMDDHHmmss');
-  const key = `${dir}/${datetime}_${filename}`;
-
-  const params = {
-    Bucket: '13team',
-    Key: key,
-    Body: stream,
-    ACL: 'public-read-write',
-    ContentEncoding: 'base64',
-  };
-
-  const command = new PutObjectCommand(params);
-
-  try {
-    await s3Client.send(command);
-    return key;
-  } catch (error) {
-    console.log(error);
-    throw new Error('파일업로드 실패');
-  }
-};
-
 const storage = multer.memoryStorage();
 const uploadMiddleware = multer({ storage }).single('file');
-console.log('uploadMiddleware: ', uploadMiddleware);
 
-router.post('/', uploadMiddleware, async (req, res) => {
+router.post('/', async (req, res) => {
   try {
+    // 파일 업로드 처리
+    uploadMiddleware(req, res, async (err) => {
+      if (err) {
+        console.log(err);
+        res.status(400).json({ message: '파일업로드 실패' });
+        return;
+      }
 
-    const file = req.file;
-    const fileData = file.buffer || file.data; // 버퍼 데이터 또는 일반 데이터 선택
-    const fileStream = Readable.from(fileData); // 데이터에서 Readable 스트림 생성
-    const uploadedKey = await upload(fileStream, file.originalname, req.body.dir);
+      const fileStream = Readable.from(req.file.buffer);
+      const datetime = moment().format('YYYYMMDDHHmmss');
+      const key = `${req.body.dir}/${datetime}_${req.file.originalname}`;
 
-    console.log('upload router: ', file);
+      const params = {
+        Bucket: '13team',
+        Key: key,
+        Body: fileStream,
+        ContentLength: req.file.size,
+      };
 
-    res.status(200).json({ message: '파일업로드 성공' });
+      const command = new PutObjectCommand(params);
+      const response = await s3.send(command);
+      console.log('upload router response: ', response);
+
+      res.status(200).json({ message: '파일업로드 성공', data: response });
+    });
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: '파일업로드 실패' });
