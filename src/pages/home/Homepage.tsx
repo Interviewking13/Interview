@@ -5,7 +5,10 @@ import StudyListItem from "../../components/layout/StudyListItem";
 import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
 import PencilIconSrc from "../../img/pencil_mint.svg";
-import { Style } from "@mui/icons-material";
+import Slider from "react-slick";
+import './slick/slick-theme.css';
+import './slick/slick.css';
+
 
 const HomePage = (): JSX.Element => {
   const studyData = [{
@@ -50,74 +53,90 @@ const HomePage = (): JSX.Element => {
   }]
 
   return (
-    <StyledCommonContainer>
+    <>
+      <StyledCarouselArea>
+        <Slider
+        dots= {true}
+        infinite= {true}
+        speed= {500}
+        fade= {true}
+        cssEase= {"linear"}
+        autoplay= {true}
+        autoplaySpeed= {3000}
+        >
+          <StyledCarouselOne></StyledCarouselOne>
+          <StyledCarouselTwo></StyledCarouselTwo>
+        </Slider>
+      </StyledCarouselArea>
 
-      <StyledItemNameArea>
-        <StyledTitleText>새로 올라온 스터디</StyledTitleText>
-      </StyledItemNameArea>
+      <StyledCommonContainer>
 
-      <StudyListItemArea>
-      {studyData.map((study) => (
-          <StudyListItem
-           id={study.id}
-           title={study.title}
-           currentParticipants={study.currentParticipants}
-           maxParticipants={study.maxParticipants}
-           startDate={study.startDate}
-           endDate={study.endDate}
-           recruitDeadline={study.recruitDeadline}
-           master={study.master}
-           />
-      ))}
-      </StudyListItemArea>
-      
-      <StyledMainStudyBtnArea>      
-        <StyledMainStudyBtn>
+        <StyledItemNameArea>
+          <StyledTitleText>새로 올라온 스터디</StyledTitleText>
+        </StyledItemNameArea>
 
-          <StyeldBtnTextArea>
+        <StudyListItemArea>
+        {studyData.map((study) => (
+            <StudyListItem
+             id={study.id}
+             title={study.title}
+             currentParticipants={study.currentParticipants}
+             maxParticipants={study.maxParticipants}
+             startDate={study.startDate}
+             endDate={study.endDate}
+             recruitDeadline={study.recruitDeadline}
+             master={study.master}
+             />
+        ))}
+        </StudyListItemArea>
+        
+        <StyledMainStudyBtnArea>      
+          <StyledMainStudyBtn>
 
-            <StyeldBtnTitleArea>
-              <StyledIcon src={PencilIconSrc} />
-              <StyledMainBtnTitle>스터디 참여하기</StyledMainBtnTitle>
-            </StyeldBtnTitleArea>
+            <StyeldBtnTextArea>
 
-            <StyledMainBtnSub>
-              참여하고 싶은 스터디를 찾고, 자신있는 면접을 준비해보세요!
-            </StyledMainBtnSub>
-          </StyeldBtnTextArea>
+              <StyeldBtnTitleArea>
+                <StyledIcon src={PencilIconSrc} />
+                <StyledMainBtnTitle>스터디 참여하기</StyledMainBtnTitle>
+              </StyeldBtnTitleArea>
+
+              <StyledMainBtnSub>
+                참여하고 싶은 스터디를 찾고, 자신있는 면접을 준비해보세요!
+              </StyledMainBtnSub>
+            </StyeldBtnTextArea>
 
 
-        </StyledMainStudyBtn>
+          </StyledMainStudyBtn>
 
-        <StyledMainStudyBtn>
+          <StyledMainStudyBtn>
 
-          <StyeldBtnTextArea>
+            <StyeldBtnTextArea>
 
-            <StyeldBtnTitleArea>
-              <StyledIcon src={PencilIconSrc} />
-              <StyledMainBtnTitle>
-                스터디 만들기
-              </StyledMainBtnTitle>
-            </StyeldBtnTitleArea>
+              <StyeldBtnTitleArea>
+                <StyledIcon src={PencilIconSrc} />
+                <StyledMainBtnTitle>
+                  스터디 만들기
+                </StyledMainBtnTitle>
+              </StyeldBtnTitleArea>
 
-            <StyledMainBtnSub>
-              알맞는 스터디가 없다면 직접 스터디를 개설해보세요!
-            </StyledMainBtnSub>
-          </StyeldBtnTextArea>
+              <StyledMainBtnSub>
+                알맞는 스터디가 없다면 직접 스터디를 개설해보세요!
+              </StyledMainBtnSub>
+            </StyeldBtnTextArea>
 
-        </StyledMainStudyBtn>
-      </StyledMainStudyBtnArea>    
+          </StyledMainStudyBtn>
+        </StyledMainStudyBtnArea>    
 
-      <StyledItemNameArea>
-        <StyledTitleText>커뮤니티 소식</StyledTitleText>
-      </StyledItemNameArea>
+        <StyledItemNameArea>
+          <StyledTitleText>커뮤니티 소식</StyledTitleText>
+        </StyledItemNameArea>
 
-      <StyledMainCommunityArea>
+        <StyledMainCommunityArea>
 
-      </StyledMainCommunityArea>
+        </StyledMainCommunityArea>
 
-    </StyledCommonContainer>
-
+      </StyledCommonContainer>
+    </>
     
   );
 };
@@ -129,6 +148,26 @@ const StyledCommonContainer = styled.div`
   width: 1270px;
   margin: 0 auto;
 `;
+
+const StyledCarouselArea = styled.div`
+  overflow: hidden;
+  height: 346px;
+`
+const StyledCarouselOne = styled.div`
+  width: 1920px;
+  height: 346px;
+  margin: 0 auto;
+  background-color: ${colors.back_navy};
+  cursor: pointer;
+`
+const StyledCarouselTwo = styled.div`
+  width: 1920px;
+  height: 346px;
+  margin: 0 auto;
+  cursor: pointer;
+  background-color: #F2FFFA;
+`
+
 const StyledItemNameArea = styled.div`
   margin: 50px 0 0 0;
   display: flex;
@@ -156,36 +195,36 @@ const StudyListItemArea = styled.p`
 const StyledMainStudyBtnArea = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 const StyledMainStudyBtn = styled.div`
   width: 620px;
   height: 134px;
   border: solid 1px ${colors.main_mint};
   border-radius: 15px;
-`
+`;
 const StyeldBtnTextArea  = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 35px 0 0 40px;
-`
+`;
 const StyeldBtnTitleArea = styled.p`
   height: fit-content;
   display: flex;
   margin: 0;
-`
+`;
 const StyledIcon = styled.img`
   width: 27px;
   height: 27px;
-`
+`;
 const StyledMainBtnTitle = styled.p`
   margin: 2px 0 20px 20px;
   ${fonts.SubText}
   font-size: 20px;
-`
+`;
 const StyledMainBtnSub = styled.p`
   ${fonts.SubTextThinSmall}
   margin: 0 0 0 0;
-`
+`;
 
 const StyledMainCommunityArea = styled.div`
   height: 300px;
