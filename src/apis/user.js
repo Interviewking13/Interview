@@ -330,26 +330,13 @@ const userApi = {
                 resultCode: "200", 
                 message: "내 정보 수정 성공",
                 data: {
-                    // user_id: findUser._id,
-                    // email: findUser._id,
-                    // intro_yn: findUser.intro_yn,
-                    // phone_number: findUser.phone_number, 
                     user_id: updatedUser._id,
-                    email: updatedUser._id,
+                    email: updatedUser.email,
                     intro_yn: updatedUser.intro_yn,
                     phone_number: updatedUser.phone_number, 
                 }
                 
             });
-
-        // } catch (err) {
-        //     console.error(err);
-        //     res.status(500).json({
-        //         resultCode: "500",
-        //         message: "서버오류"
-        //     });
-        // }
-
         } catch (err) {
                 console.error(err);
                 if (err.name === 'JsonWebTokenError') {
