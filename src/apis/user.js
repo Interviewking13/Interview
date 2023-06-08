@@ -1,4 +1,4 @@
-const { User }  = require('../models/');
+const { User }  = require('../models/index');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -96,7 +96,6 @@ const userApi = {
             res.status(200).json({
                 resultCode: "200",
                 message: "회원가입 성공",
-                data: newUser,
                 data: {
                     user_id: newUser._id,
                     email: newUser.email
@@ -241,6 +240,9 @@ const userApi = {
 
     /** 내 정보 수정 */
     async modifyUserInfo(req, res, next) {
+        // const secretKey = 'your_test_key';
+        const token = req.headers.authorization;    // 클라이언트로부터 전달된 토큰 값
+            
         try {
             const { user_id, email, password, intro_yn, phone_number } = req.body;
             // const { email, password, intro_yn, phone_number } = req.body;
@@ -255,14 +257,22 @@ const userApi = {
                 });
             }
             
+            const decoded = jwt.verify(token, secretKey);
+            
+            if (!decoded) {
+                return res.status(401).json({
+                resultCode: "401",
+                message: "유효하지 않은 토큰입니다.",
+                token: token
+                });
+            }
+
             // 기존 사용자 정보
             const findUserId = findUser._id;
             const findUserEmail = findUser.email;
             const findUserPassword = findUser.password;
             const findUserIntro_yn = findUser.intro_yn;
             const findUserPhoneNumber = findUser.phone_number;
-
-            console.log(findUser);
 
             // 변경사항 있는지 확인
             let isModified = false;
@@ -287,7 +297,7 @@ const userApi = {
             // 변경사항이 없는 경우의 처리 로직
             if(!isModified) {
                 return res.status(200).json({
-                    status: "200", 
+                    resultCode: "200", 
                     message: "변경사항이 없습니다."
                 });
             }   
@@ -306,7 +316,7 @@ const userApi = {
                 }
             });
 
-            const changeFindUser = await User.findOne(
+            const updatedUser = await User.findOne(
                 { "_id": findUser._id },
                 {
                     "_id": true,
@@ -317,31 +327,73 @@ const userApi = {
                 });
 
             return res.status(200).json({
-                status: "200", 
+                resultCode: "200", 
                 message: "내 정보 수정 성공",
-                // data: changeUserInfo    // 안나와서 아래와 같이 수정
                 data: {
-                    user_id: findUser._id,
-                    email: findUser._id,
-                    intro_yn: findUser.intro_yn,
-                    phone_number: findUser.phone_number, 
+                    // user_id: findUser._id,
+                    // email: findUser._id,
+                    // intro_yn: findUser.intro_yn,
+                    // phone_number: findUser.phone_number, 
+                    user_id: updatedUser._id,
+                    email: updatedUser._id,
+                    intro_yn: updatedUser.intro_yn,
+                    phone_number: updatedUser.phone_number, 
                 }
                 
             });
 
+        // } catch (err) {
+        //     console.error(err);
+        //     res.status(500).json({
+        //         resultCode: "500",
+        //         message: "서버오류"
+        //     });
+        // }
+
         } catch (err) {
-            console.error(err);
-            res.status(500).json({
-                resultCode: "500",
-                message: "서버오류"
-            });
-        }
+                console.error(err);
+                if (err.name === 'JsonWebTokenError') {
+                    // 토큰이 유효하지 않은 경우
+                    return res.status(401).json({
+                        resultCode: "401",
+                        message: "유효하지 않은 토큰입니다.",
+                        token: token
+                    });
+                }
+                else if (err.name === 'TokenExpiredError') {
+                    // 토큰이 만료되었을 경우
+                    return res.status(401).json({
+                        resultCode: "401",
+                        message: "만료된 토큰입니다.",
+                        token: token
+                    });
+                } else {
+                    //기타 토큰 검증 실패
+                    return res.status(500).json({
+                        resultCode: "500",
+                        message: "서버오류"
+                    });
+                }
+            }
     },
 
 
     /** 회원탈퇴 */
     async deleteUser(req, res, next) {
+        
+        const token = req.headers.authorization;    // 클라이언트로부터 전달된 토큰 값
+
         try {
+            const decoded = jwt.verify(token, secretKey);
+            
+            if (!decoded) {
+                return res.status(401).json({
+                resultCode: "401",
+                message: "유효하지 않은 토큰입니다.",
+                token: token
+                });
+            }
+            
             const { user_id, email, password } = req.body;
 
             const findUser = await User.findOne({ "_id": user_id });
