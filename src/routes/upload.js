@@ -7,6 +7,7 @@ const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const multer = require('multer');
 const { Readable } = require('stream');
 const moment = require('moment');
+const { Community } = require('../models');
 
 /** S3 연결 */
 const s3 = new S3Client({
@@ -52,6 +53,37 @@ router.post('/', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: '파일업로드 실패' });
+  }
+});
+
+/** 파일 다운로드 API */
+router.get('/:fileId', async (req, res) => {
+  try {
+    const fileId = req.params.fileId;
+
+    // 파일의 S3 키를 생성하거나 가져옴
+    const key = `${req.body.dir}/${datetime}_${req.file.originalname}`;
+
+    // S3에서 파일 가져오기
+    const params = {
+      Bucket: '13team',
+      Key: key,
+    };
+    const command = new GetObjectCommand(params);
+    const response = await s3.send(command);
+    
+    // 클라이언트에게 파일 전달
+    const fileStream = response.Body;
+    const contentType = response.ContentType;
+    const contentDisposition = `attachment; filename=${response.Metadata.filename}`;
+    
+    res.set('Content-Type', contentType);
+    res.set('Content-Disposition', contentDisposition);
+    
+    fileStream.pipe(res);
+  } catch (error) {
+    console.error('파일 다운로드 실패:', error);
+    res.status(500).json({ message: '파일 다운로드 실패' });
   }
 });
 
