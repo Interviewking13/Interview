@@ -10,9 +10,9 @@ const UserSchema = new Schema({
     privacy_use_yn: { type: String, required: true, unique: false, default: true },
     marketing_use_yn: { type: String, required: true, unique: false, default: false },
     intro_yn: { type: String, required: false, unique: false, default: "" },
-    phone_number: { type: String, required: false, unique: false },
+    phone_number: { type: String, required: false, unique: false, default: "" },
     admin_yn: { type: Boolean, required: false, unique: false, default: false },
-    dts_insert: { type: String, required: true, unique: false },
+    dts_insert: { type: String, required: true, unique: false, default: "" },
     dts_update: { type: String, unique: false, default: "" }
 }, {
     versionKey : false
