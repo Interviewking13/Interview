@@ -119,7 +119,7 @@ const LoginPage = () => {
 
 
 const StyledCommonContainer = styled.div`
-  background-color: #f1f4ff;
+  background-color: ${colors.back_navy};
 `;
 const StyledLoginWrapper = styled.div`
   width: 1270px;
@@ -150,7 +150,7 @@ const StyledLoginText = styled.div`
 
   &:nth-of-type(3) {
     font-family: none;
-    color: #8689A3;
+    color: ${colors.darkgray_navy};
     font-size: 18px;
     font-weight:300;
     margin-top: 50px;
@@ -167,8 +167,8 @@ const StyledSignupInput = styled.input`
   width: 457px;
   height: 45px;
   margin-top: 15px;
-  color: #C0C3E5;
-  border: 1px solid #C0C3E5;
+  color: ${colors.main_black};
+  border: 1px solid ${colors.gray_navy};
   border-radius: 10px;
   padding-left: 18px;
   font-weight: 300;
@@ -177,11 +177,11 @@ const StyledSignupInput = styled.input`
     margin-top: 15px; 
   }
   &::placeholder {
-    color: #C0C3E5;
+    color: ${colors.gray_navy};
   }
   &:focus {
     outline: none;
-    border: 1px solid #C0C3E5;
+    border: 1px solid ${colors.gray_navy};
     box-shadow: none;
   }
 `;
@@ -197,11 +197,11 @@ const StyledSignupBtn = styled(Button)`
     border-radius: 10px;
     font-weight: 600;
     font-size: 18px;
-    background-color: #00E595;
-    color: #0E0E0E;
-    border: 1px solid #00E595;
+    background-color: ${colors.main_mint};
+    color: ${colors.main_black};
+    border: 1px solid ${colors.main_mint};
     &:hover {
-      background-color: #00E595;
+      background-color: ${colors.main_mint};
     }
   }
 `;
@@ -210,22 +210,21 @@ const StyledLoginBtn = styled(Button)`
     width: 132px;
     height: 45px;
     border-radius: 10px;
-    color: #ffffff;
+    color: ${colors.back_navy};
     font-weight: 600;
     font-size: 18px;
-    background-color: #2E3057;
-    color: #ffffff;
-    border: 1px solid #2E3057;
+    background-color: ${colors.dark_navy};
+    border: 1px solid ${colors.dark_navy};
     margin-left: 40px;
     &:hover {
-      background-color: #2E3057;
+      background-color: ${colors.dark_navy};
     }
   }
 `;
 const StyledSignupCopyright = styled.div`
   text-align: center;
   font-size: 14px;
-  color: #C0C3E5;
+  color: ${colors.gray_navy};
 `;
 
 export default LoginPage;
