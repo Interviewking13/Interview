@@ -1,9 +1,8 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { Button, Typography, TextField, Grid, Box } from "@mui/material";
-import { styled } from "@mui/material";
-// import styled from "styled-components";
-import { TitleText, SubText } from "../../constants/fonts";
+import styled from "styled-components";
+import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 
 //각 페이지컴포넌트 호출
@@ -92,7 +91,7 @@ const Modify = () => {
           <Grid item xs={2}>
             <StyledInfoName>자기소개서첨부</StyledInfoName>
           </Grid>
-          <Grid item xs={8.5}>
+          <Grid item xs={8}>
             <StyledTextField
               variant="outlined"
               type="file"
@@ -100,7 +99,7 @@ const Modify = () => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={1.5} container justifyContent="flex-end">
+          <Grid item xs={2} container justifyContent="flex-end">
             <StyledFindButton variant="contained">파일찾기</StyledFindButton>
           </Grid>
 
@@ -127,17 +126,19 @@ const StyledContainer = styled(Box)`
   padding-left: 0;
 `;
 // 내정보수정 타이틀 스타일
-const StyledTitle = styled(Typography)``;
+const StyledTitle = styled(Typography)`
+  ${fonts.TitleText}
+  color:${colors.main_mint}
+`;
 // 내정보를 수정하세요 서브타이틀 스타일
 const StyledSubTitle = styled(Typography)`
-  color: #8689a3;
+  ${fonts.SubTextThin}
+  color: ${colors.darkgray_navy};
 `;
 //각정보타이틀 스타일지정
 const StyledInfoName = styled(Typography)`
-  ${SubText}
-  color: #0e0e0e;
-  font-size: 20px;
-  font-weight: 600;
+  ${fonts.SubTextBig}
+  color:${colors.main_black}
 `;
 //텍스트필드 스타일지정
 const StyledTextField = styled(TextField)(({ theme }) => ({
@@ -150,43 +151,44 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 
 //버튼 스타일
 const StyledFindButton = styled(Button)`
-  /* 여기에 스타일을 작성하세요 */
-  font-size: 18px;
   border-radius: 10px;
-  font-weight: 700;
+  width: 132px;
+  height: 45px;
   padding: auto;
-  background-color: #2e3057;
-  color: #f1f4ff;
+  ${fonts.SubText}
+  background-color: ${colors.dark_navy};
+  color: ${colors.back_navy};
   &:hover {
-    background-color: #f1f4ff;
-    color: #2e3057;
+    background-color: ${colors.back_navy};
+    color: ${colors.dark_navy};
   }
 `;
 
 const StyledModifyButton = styled(Button)`
   /* 여기에 스타일을 작성하세요 */
-  font-size: 18px;
   border-radius: 10px;
-  font-weight: 700;
+  width: 132px;
+  height: 45px;
+  ${fonts.SubText}
   padding: auto;
   background-color: ${colors.main_mint};
-  color: #00057d;
-  ${TitleText}
+  color: ${colors.main_navy};
   &:hover {
-    background-color: #00057d;
+    background-color: ${colors.main_navy};
     color: ${colors.main_mint};
   }
 `;
 const StyledDeleteButton = styled(Button)`
   /* 여기에 스타일을 작성하세요 */
-  font-size: 18px;
   border-radius: 10px;
-  font-weight: 700;
+  width: 132px;
+  height: 45px;
+  ${fonts.SubText}
   padding: auto;
-  background-color: #ff4f4f;
-  color: #f1f4ff;
+  background-color: ${colors.main_red};
+  color: ${colors.back_navy};
   &:hover {
-    background-color: #f1f4ff;
-    color: #ff4f4f;
+    background-color: ${colors.back_navy};
+    color: ${colors.main_red};
   }
 `;

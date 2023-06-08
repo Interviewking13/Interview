@@ -1,17 +1,11 @@
 import React from "react";
-import {
-  Typography,
-  Grid,
-  Container,
-  Box,
-  Divider,
-  IconButton,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Typography, Grid, Box, Divider, IconButton } from "@mui/material";
+
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-import { TitleText } from "../../constants/fonts";
+import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 
 const UserInfo = () => {
@@ -22,20 +16,22 @@ const UserInfo = () => {
 
   return (
     <StyledDiv>
-      <StyledTitle container xs={12}>
+      <Grid container xs={12}>
         <Grid item xs={11}>
-          <Typography> 면접왕 준영님, 어서오세요. </Typography>
+          <StyledSayHello> 면접왕 준영님, 어서오세요. </StyledSayHello>
         </Grid>
-        <Grid item>
+        <Grid item xs={1}>
           <IconButton onClick={onClickModify}>
             <SettingsIcon />
-          </IconButton>
+          </IconButton>{" "}
+          {/* 설정 버튼 UI */}
         </Grid>
-      </StyledTitle>
+      </Grid>
       <StyledLine></StyledLine>
+      {/* 구분선 */}
       <StyledInfo container>
         <Grid item xs={12}>
-          <Grid container>
+          <Grid container rowSpacing={2}>
             <Grid item xs={1}>
               아이디
             </Grid>
@@ -73,18 +69,20 @@ const UserInfo = () => {
 
 export default UserInfo;
 
+const StyledSayHello = styled(Typography)`
+  ${fonts.SubTextBig}
+`;
+
 const StyledDiv = styled(Box)`
-  border: 1px solid #00057d;
+  border: 1px solid ${colors.main_navy};
   border-radius: 7px;
 `;
 const StyledTitle = styled(Grid)`
-  padding: 24px;
   align-items: center;
 `;
 const StyledInfo = styled(Grid)`
   margin: 24px;
-  font-size: 12pt;
 `;
 const StyledLine = styled(Divider)`
-  border: 1px solid #00057d;
+  border: 1px solid ${colors.main_navy};
 `;
