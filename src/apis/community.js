@@ -75,7 +75,7 @@ const communityApi = {
     async getContent(req, res) {
 
         try {
-            const reqContent = req.body.community_no;
+            const reqContent = req.query.community_no;
             // console.log('reqContent: ', reqContent);
 
             const findContent = await Community.findOne({ community_no: reqContent });
@@ -136,7 +136,7 @@ const communityApi = {
 
         try {
 
-            const reqNo = req.body.community_no;
+            const reqNo = req.query.community_no;
             const findContent = await Community.findOne({ community_no: reqNo });
     
             if (!findContent) {
@@ -233,7 +233,7 @@ const communityApi = {
     async deleteReply(req, res) {
         try {
 
-            const reqNo = req.body.reply_no;
+            const reqNo = req.query.reply_no;
             const findContent = await CommunityReply.findOne({ reply_no: reqNo });
     
             if (!findContent) {
