@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import styled from "@emotion/styled";
-import { Link } from "@mui/material";
+import styled from "styled-components";
+
 import StyledIcon from "./Img";
-import PeopleIconSrc from "../../img/people.svg";
+import PeopleIconSrc from "../../img/people_navy.svg";
+
 
 type StudyListProps = {
   id: number,
@@ -150,3 +151,4 @@ const StyledStudyMaster = styled.p`
  color: black;
  margin: 20px 0 0 0;
 `;
+
