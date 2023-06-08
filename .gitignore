@@ -4,5 +4,3 @@
 /build/**
 /dist/**
 /models/dist/**
-/package-lock.json
-.env

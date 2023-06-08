@@ -1,14 +1,16 @@
 const { Schema } = require('mongoose');
 const mongoose = require('mongoose');
 
-const StudyFeedbackSchema = new Schema({
-  study_id: { type: mongoose.Types.ObjectId, required: true, unique: true, ref: 'Study' }, // reference
-  study_name: { type: String, required: true, ref: 'Study' }, // reference
-  user_id: { type: mongoose.Types.ObjectId, required: true, unique: true, ref: 'User' }, // reference
-  user_name: { type: String, required: true, ref: 'User' }, // reference
-  content_type: { type: String, defalut: 'feedback', required: true }, // feedback: ÇÇµå¹é º»¹®, reply: ÇÇµå¹é ´ñ±Û
-  content: { type: String, required: true },
-  date: { type: Date, required: true, defalut: Date.now }, // ´ñ±ÛÀÛ¼ºÀÏ½Ã
-});
+const StudyFeedbackSchema = new Schema(
+  {
+    study_id: { type: mongoose.Types.ObjectId, unique: true, ref: 'Study' }, // reference
+    user_id: { type: mongoose.Types.ObjectId, unique: true, ref: 'User' }, // reference
+    content_type: { type: Boolean }, // 0: í”¼ë“œë°± ë³¸ë¬¸, 1: í”¼ë“œë°± ëŒ“ê¸€
+    content: { type: String },
+  },
+  {
+    timestamps: true, // ëŒ“ê¸€ì‘ì„±ì¼ì‹œ: date
+  },
+);
 
 module.exports = StudyFeedbackSchema;

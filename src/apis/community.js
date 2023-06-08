@@ -14,7 +14,7 @@ const communityApi = {
                 return res.status(400).json({ message: "목록조회 실패" });
             } 
 
-            res.status(200).json({
+            res.status(200).setHeader('Access-Control-Allow-Origin', 'http://localhost:3000').json({
                 message: "목록조회 성공",
                 data: findContent,
             });

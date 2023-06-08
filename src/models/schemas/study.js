@@ -2,32 +2,24 @@ const { Schema } = require('mongoose');
 const mongoose = require('mongoose');
 
 const StudySchema = new Schema({
-  // ½ºÅÍµğ Á¤º¸
-  study_id: { type: mongoose.Types.ObjectId, required: true, unique: true }, // identification value
-  study_name: { type: String, required: true, unique: true },
-  title: { type: String, required: true },
-  content: { type: String, required: true },
-  deadline: { type: Date, required: true }, // ¸ğÁı¿Ï·á³¯Â¥
-  headcount: { type: Number, maximum: 10, required: true }, // ÃÖ´ë ¸ğÁı ÀÎ¿ø
+  // ìŠ¤í„°ë”” ì •ë³´
+  study_id: { type: mongoose.Types.ObjectId }, // identification value
+  study_name: { type: String, unique: true },
+  title: { type: String },
+  content: { type: String },
+  start: { type: Date },
+  end: { type: Date },
+  deadline: { type: Date }, // ëª¨ì§‘ì™„ë£Œë‚ ì§œ
+  headcount: { type: Number, maximum: 10 }, // ìµœëŒ€ ëª¨ì§‘ ì¸ì›
   chat_link: {
     type: String,
-    pattern: '^https?:\\/\\/(?:www\\.)?zoom\\.us\\/(?:j\\/|my\\/|meetings\\/join\\?)[^\\s]+$',
-    required: true,
+    // pattern: '^https?:\\/\\/(?:www\\.)?zoom\\.us\\/(?:j\\/|my\\/|meetings\\/join\\?)[^\\s]+$',
   },
   status: {
-    // ¸ğÁı ÀÌÀü: 1, ¸ğÁı Áß: 2, ½ºÅÍµğ Á¾·á: 3
+    // ëª¨ì§‘ ì¤‘: 0, ëª¨ì§‘ ì™„ë£Œ: 1
     type: Number,
-    required: true,
-    default: 1,
+    default: 0,
   },
-
-  // ½ºÅÍµğ¿ø ½ÅÃ» Á¤º¸ (½ºÅÍµğ ½ÅÃ» ½Ã, »ç¿ëÀÚ°¡ ÀÔ·Â)
-  user_name: { type: String, required: true, ref: 'User' }, // reference
-  phone_number: { type: String, required: true, ref: 'User' }, // reference
-  email: { type: String, required: true, unique: true, ref: 'User' }, // reference
-  goal: { type: String, required: true }, // ¸ñÇ¥ »ê¾÷ ºĞ¾ß ¹× ±â¾÷
-  hope: { type: String, required: true }, // Æ÷ºÎ ÇÑ ¸¶µğ
-  //   self_intro: { type: Buffer, required: true }, // ÀÚ±â¼Ò°³¼­
 });
 
 module.exports = StudySchema;
