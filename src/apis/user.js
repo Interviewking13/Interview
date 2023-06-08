@@ -344,7 +344,7 @@ const userApi = {
         try {
             const { user_id, email, password } = req.body;
 
-            const findUser = await User.findOne({"_id": user_id });
+            const findUser = await User.findOne({ "_id": user_id });
 
             if (!findUser) {
                 return res.status(400).json({
