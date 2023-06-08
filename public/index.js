@@ -2,8 +2,7 @@ const fileInput = document.querySelector('input[type="file"]');
 const fileUploadBtn = document.querySelector('button');
 
 const fileUpload = async (uploadFile, dir) => {
-  console.log('여기여기');
-  
+
   if (uploadFile) {
     const formData = new FormData();
     formData.append('dir', dir);
@@ -12,7 +11,7 @@ const fileUpload = async (uploadFile, dir) => {
     try {
       const response = await fetch('/api/upload', {
         method: 'POST',
-        credentials: 'include',
+        withCredentials: true,
         body: formData,
       });
 
@@ -30,9 +29,10 @@ const fileUpload = async (uploadFile, dir) => {
 
 fileUploadBtn.addEventListener('click', async () => {
   const uploadFile = fileInput.files[0];
-  await fileUpload(uploadFile, '/profile');
+  console.log('client uploadFile: ', uploadFile);
+  await fileUpload(uploadFile, '/community');
 });
 
 fileInput.addEventListener('change', () => {
-  // 파일 선택 후의 추가 로직
+  alert('파일첨부 완료');
 });
