@@ -1,14 +1,16 @@
 import React from "react";
-import styled from "@emotion/styled";
+import styled from "styled-components";
+import { colors } from "../../constants/colors";
+import { TitleText } from "../../constants/fonts";
 
 const StyledFooterWrapper = styled.div`
   width: 100%;
-  background-color: #F1F4FF;
+  background-color: ${colors.back_navy};
   padding-bottom: 50px;
 `
 const Divider = styled.div`
   margin-bottom: 40px;
-  border-bottom: 1px solid #909090;
+  border-bottom: 1px solid ${colors.gray_stroke};
 `;
 
 const StyledFooterContainer = styled.div`
@@ -19,12 +21,12 @@ const StyledFooterContainer = styled.div`
   justify-content: space-between;
 `;
 
+const StyledFooterLogoContainer = styled.div`
+  ${TitleText}
+`;
+
 const StyledFooterLogo = styled.div`
-  height: fit-content;
-  font-family: 'establish Retrosans';
-  font-size: 32px;
-  font-weight: 400;
-  color: #C0C3E5;
+  color: ${colors.gray_navy};
 `;
 
 const StyledFooterInfoContainer = styled.div`
@@ -51,9 +53,11 @@ const Footer = () => {
     <StyledFooterWrapper>
       <Divider></Divider>
       <StyledFooterContainer>
-        <StyledFooterLogo>
-          면접왕
-        </StyledFooterLogo>
+        <StyledFooterLogoContainer>
+          <StyledFooterLogo>
+            면접왕
+          </StyledFooterLogo>
+        </StyledFooterLogoContainer>
         <StyledFooterInfoContainer>
           <StyledFooterInfo>
             footerfooterfooterfooter<br />
