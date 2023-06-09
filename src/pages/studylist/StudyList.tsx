@@ -44,7 +44,6 @@ const StudyList = (): JSX.Element => {
                   <StyledSelect name="" id="StudyListSort">
                     <option value="recent">최신순</option>
                     <option value="ing">모집중</option>
-                    <option value="done">모집완료</option>
                   </StyledSelect>
                   <StyledInput type="text" name="" id="" placeholder="검색하기" />
                   <StyledInputBtn>
@@ -58,7 +57,7 @@ const StudyList = (): JSX.Element => {
           </StudyListTopArea>
 
           <StudyListItemArea>
-          {studyData.map((study,index) => (
+          {studyData.slice(0, 12).map((study,index) => (
               <StudyListItem
                key={index}
                id={study.id}
