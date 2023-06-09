@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StudyApplyModal from "./StudyApplyModal";
 
 // {/* 디자인 적용 예시 */}
@@ -8,6 +8,21 @@ import { colors } from "../../constants/colors";
 // {/* 디자인 적용 예시 */}
 
 const TestPage: React.FC = () => {
+  // const { data: studyData, isLoading } = useQuery(["orders"], () =>
+  //   getStudyData()
+  // );
+
+  const handleFetchStudyData = async () => {
+    try {
+      // const studyData = await getStudyData();
+      // console.log(studyData);
+      // 여기서 studyData를 원하는 방식으로 활용할 수 있습니다.
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  handleFetchStudyData();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
