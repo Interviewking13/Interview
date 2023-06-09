@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from "react";
-import styled from "@emotion/styled";
-import { Link } from "@mui/material";
-import StyledIcon from "./Img";
-import PeopleIconSrc from "../../img/people.svg";
+import styled from "styled-components";
+
+import StyledIcon from "../layout/Img";
+import PeopleIconSrc from "../../img/people_navy.svg";
+
 
 type StudyListProps = {
-  id: number;
-  title: string;
-  currentParticipants: number;
-  maxParticipants: number;
-  startDate: string;
-  endDate: string;
-  recruitDeadline: string;
-  master: string;
-};
+  id: number,
+  title: string,
+  // currentParticipants: number,
+  maxParticipants: number,
+  startDate: string,
+  endDate: string,
+  recruitDeadline: string,
+  master: string
+}
+
 
 const StudyListItem: React.FC<StudyListProps> = ({
   id,
   title,
-  currentParticipants,
+  // currentParticipants,
   maxParticipants,
   startDate,
   endDate,
@@ -39,7 +41,7 @@ const StudyListItem: React.FC<StudyListProps> = ({
         <StyledStudyPeopleArea>
           <StyledIcon src={PeopleIconSrc} />
           <StyledStudyListPeopleText>
-            {currentParticipants} / {maxParticipants} 명
+            0 / {maxParticipants} 명
           </StyledStudyListPeopleText>
         </StyledStudyPeopleArea>
 
@@ -148,3 +150,4 @@ const StyledStudyMaster = styled.p`
   color: black;
   margin: 20px 0 0 0;
 `;
+
