@@ -1,5 +1,7 @@
 import axios from "axios";
 
+/* 인스턴스 네이밍 컨벤션 : 요청방식(ex get) + 해당 내용 + (by) + (파라미터/인자/쿼리) */
+
 /** 스터디 정보 수정 (장)  get */
 export const putInfoStudy = async (
   study_id: string,
