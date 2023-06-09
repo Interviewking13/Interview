@@ -5,7 +5,6 @@ import { DetailTitle } from "./common/DetailTitle";
 import { StudyTaps } from "./common/StudyTap";
 import axios from "axios";
 import { useEffect } from "react";
-import { fetchData } from "../../api/api-community";
 
 ///더미데이터
 const data = {
@@ -30,15 +29,7 @@ const data = {
 };
 
 const Information = () => {
-  useEffect(() => {
-    fetchData()
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
+
   return (
     <Container>
       <Mystudy>{data.status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
