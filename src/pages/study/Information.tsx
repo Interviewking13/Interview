@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { fetchData, postData } from "../../api/api-community";
 import { colors } from "../../constants/colors";
 import { SubTextBig, TitleText } from "../../constants/fonts";
-import { fetchStudyData, fetchStudyDatas } from "../../api/api-study";
+import { getInfoAllStudyData, getInfoStudyData } from "../../api/api-study";
 
 // const data = {
 //   // 스터디 정보
@@ -33,13 +33,12 @@ import { fetchStudyData, fetchStudyDatas } from "../../api/api-study";
 // };
 
 const Information = () => {
-  const [adata, setData] = useState("");
+  const [studyData, setStudyData] = useState(null);
 
   useEffect(() => {
-    fetchStudyData()
-      // postData()
-      .then((data) => {
-        setData(data.data);
+    getInfoStudyData()
+      .then((response) => {
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -47,7 +46,7 @@ const Information = () => {
   }, []);
   return (
     <Container>
-      <div>{adata}</div>
+      <div>{}</div>
       {/* <Mystudy>{data.status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
       <StudyTaps></StudyTaps>
       <Title>{data.title}</Title>
