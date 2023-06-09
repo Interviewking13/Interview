@@ -1,13 +1,16 @@
-import styled from "@emotion/styled";
+import styled from "styled-components";
 import { Link } from "@mui/material";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { DetailTitle } from "./common/DetailTitle";
 import { StudyTaps } from "./common/StudyTap";
+import { useEffect, useState } from "react";
+import { colors } from "../../constants/colors";
+import { SubTextBig, TitleText } from "../../constants/fonts";
+import { getInfoAllStudyData, getInfoStudyData } from "../../api/api-study";
+import { SubmitButton } from "./common/SubmitButton";
 import axios from "axios";
-import { useEffect } from "react";
+import { dateSplice } from "../../utils/dateFomatting";
 
-
-///더미데이터
 const data = {
   // 스터디 정보
   study_id: 1,
@@ -29,25 +32,47 @@ const data = {
   goal: "금융, 인공지능",
 };
 
-const Information = () => {
-  
+const Information: React.FC = () => {
+  const [studyData, setStudyData] = useState({
+    title: "",
+    study_name: "",
+    status: 0,
+    content: 0,
+    start: "",
+    end: "",
+    chat_link: "",
+  });
+
+  useEffect(() => {
+    getInfoStudyData()
+      .then((response) => {
+        console.log(response.data);
+        setStudyData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
   return (
     <Container>
-      <Mystudy>{data.status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
+      <div>{}</div>
+      <Mystudy>{studyData.status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
       <StudyTaps></StudyTaps>
-      <Title>{data.title}</Title>
+      <Title>{studyData.title}</Title>
       <SubTitle>
         <DetailTitle
           name="&nbsp;회의링크"
           content={
             <Link color="#00e595;" href="http://naver.com">
-              {data.chat_link}
+              {studyData.chat_link}
             </Link>
           }
         ></DetailTitle>
         <DetailTitle
           name="&nbsp;진행 기간"
-          content="23.06.01 ~ 23.08.01"
+          content={`${dateSplice(studyData.start)} ~ ${dateSplice(
+            studyData.end
+          )}`}
         ></DetailTitle>
         <DetailTitle name="&nbsp;인원" content={data.headcount}></DetailTitle>
         <DetailTitle name="&nbsp;스터디장" content="이용섭"></DetailTitle>
@@ -57,7 +82,8 @@ const Information = () => {
         <PeopleAltIcon />
         &nbsp;스터디 소개
       </StudyIntro>
-      <p>{data.content}</p>
+      <p>{studyData.content}</p>
+      <SubmitButton />
     </Container>
   );
 };
@@ -67,17 +93,17 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.span`
+export const Title = styled.span`
   margin-top: 10px;
-  color: #00057d;
+  ${TitleText};
+  color: ${colors.main_navy};
   font-size: 48px;
-  font-weight: 800;
 `;
-const Mystudy = styled.span`
-  margin-top: 30px;
-  color: #00057d;
+export const Mystudy = styled.span`
+  margin-top: 20px;
+  ${TitleText};
+  color: ${colors.main_navy};
   font-size: 32px;
-  font-weight: 700;
 `;
 const SubTitle = styled.div`
   display: flex;
@@ -91,9 +117,8 @@ const Divider = styled.div`
 const StudyIntro = styled.div`
   display: flex;
   margin: 10px 0px;
-  color: #00057d;
-  font-size: 20px;
-  font-weight: 600;
+  ${SubTextBig};
+  color: ${colors.main_navy};
 `;
 
 export default Information;
