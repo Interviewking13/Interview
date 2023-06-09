@@ -35,12 +35,18 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/login/signup" element={<SignupPage />} />
               <Route path="/studylist" element={<StudyList />} />
-              <Route path="/feedback" element={<Feedback />} />
+              <Route path="/study/feedback" element={<Feedback />} />
               <Route path="/study/info" element={<Information />} />
               {/* test 페이지 */}
               <Route path="/testpage" element={<TestPage />} />
-              <Route path="/Community/CommunityPage" element={<CommunityPage />} />
-              <Route path="/Community/CommunityCreatePage" element={<CommunityCreatePage />} />
+              <Route
+                path="/Community/CommunityPage"
+                element={<CommunityPage />}
+              />
+              <Route
+                path="/Community/CommunityCreatePage"
+                element={<CommunityCreatePage />}
+              />
             </Routes>
           </Layout>
         </QueryClientProvider>
