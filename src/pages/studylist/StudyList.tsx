@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { Link } from "@mui/material";
 import React from 'react';
-import StudyListItem from "../../components/layout/StudyListItem";
+import StudyListItem from "../../components/study/StudyListItem";
 
 import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
 import PencilIconSrc from "../../img/pencil_mint.svg";
 import { getInfoAllStudyData } from "../../api/api-study";
+import { dateSplice } from "../../utils/dateFomatting";
 
 const StudyList = (): JSX.Element => {
   type StudyData = {
@@ -64,9 +65,9 @@ const StudyList = (): JSX.Element => {
                title={study.title}
                // currentParticipants={study.currentParticipants}
                maxParticipants={study.headcount}
-               startDate={study.start}
-               endDate={study.end}
-               recruitDeadline={study.deadline}
+               startDate={dateSplice(study.start)}
+               endDate={dateSplice(study.end)}
+               recruitDeadline={dateSplice(study.deadline)}
                master={study.master}
                />
           ))}

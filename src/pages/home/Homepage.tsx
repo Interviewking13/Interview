@@ -1,16 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import StudyListItem from "../../components/layout/StudyListItem";
+import StudyListItem from "../../components/study/StudyListItem";
 
 import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
 import PencilIconSrc from "../../img/pencil_mint.svg";
+import CarouselImgSrc from "../../img/carousel_hand_img.svg";
 import Slider from "react-slick";
 import './slick/slick-theme.css';
 import './slick/slick.css';
 
 import { getInfoAllStudyData } from "../../api/api-study";
-
+import { dateSplice } from "../../utils/dateFomatting";
 
 const HomePage = (): JSX.Element => {
 
@@ -49,8 +50,42 @@ const HomePage = (): JSX.Element => {
         autoplay= {true}
         autoplaySpeed= {3000}
         >
-          <StyledCarouselOne></StyledCarouselOne>
-          <StyledCarouselTwo></StyledCarouselTwo>
+          <StyledCarouselOne>
+
+            <StyledCarouselContainer>
+
+              <StyledCarouselTextArea>
+                <StyledCarouselTitleTextNavy>
+                  면접을 <br/>
+                  면접답게
+                </StyledCarouselTitleTextNavy>
+                <StyledCarouselSubText>
+                  면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요
+                </StyledCarouselSubText>
+              </StyledCarouselTextArea>
+
+              <StyledCarouselImg src={CarouselImgSrc} />
+
+            </StyledCarouselContainer>
+
+          </StyledCarouselOne>
+          <StyledCarouselTwo>
+          <StyledCarouselContainer>
+
+            <StyledCarouselTextArea>
+              <StyledCarouselTitleTextMint>
+                면접을 <br/>
+                면접답게
+              </StyledCarouselTitleTextMint>
+              <StyledCarouselSubText>
+                면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요
+              </StyledCarouselSubText>
+            </StyledCarouselTextArea>
+
+            <StyledCarouselImg src={CarouselImgSrc} />
+
+          </StyledCarouselContainer>
+          </StyledCarouselTwo>
         </Slider>
       </StyledCarouselArea>
 
@@ -61,20 +96,18 @@ const HomePage = (): JSX.Element => {
         </StyledItemNameArea>
 
         <StudyListItemArea>
-        {studyData.map((study,index) => (
+        {studyData.slice(0, 4).map((study, index) => (
           <StudyListItem
-           key={index}
-           id={study.id}
-           title={study.title}
-           // currentParticipants={study.currentParticipants}
-           maxParticipants={study.headcount}
-           startDate={study.start}
-           endDate={study.end}
-           recruitDeadline={study.deadline}
-           master={study.master}
-           />
+            key={index}
+            id={study.id}
+            title={study.title}
+            maxParticipants={study.headcount}
+            startDate={dateSplice(study.start)}
+            endDate={dateSplice(study.end)}
+            recruitDeadline={dateSplice(study.deadline)}
+            master={study.master}
+          />
         ))}
-
         </StudyListItemArea>
         
         <StyledMainStudyBtnArea>      
@@ -139,6 +172,19 @@ const StyledCommonContainer = styled.div`
 const StyledCarouselArea = styled.div`
   overflow: hidden;
   height: 346px;
+  margin-top: 25px;
+`
+const StyledCarouselContainer = styled.div`
+  width: 1270px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+`;
+const StyledCarouselTextArea = styled.div`
+  margin-top: 87px;
+`
+const StyledCarouselImg = styled.img`
+  margin-top: 44px;
 `
 const StyledCarouselOne = styled.div`
   width: 1920px;
@@ -154,7 +200,6 @@ const StyledCarouselTwo = styled.div`
   cursor: pointer;
   background-color: #F2FFFA;
 `
-
 const StyledItemNameArea = styled.div`
   margin: 50px 0 0 0;
   display: flex;
@@ -167,6 +212,26 @@ const StyledTitleText = styled.p`
   margin: 0 30px 0 0;
   ${fonts.TitleText}
 `;
+const StyledCarouselTitleTextNavy = styled.p`
+  width: 322px;
+  height: fit-content;
+  color: ${colors.main_navy};
+  margin: 0 30px 0 0;
+  ${fonts.TitleText}
+  font-size: 56px;
+`;
+const StyledCarouselTitleTextMint = styled.p`
+  width: 322px;
+  height: fit-content;
+  color: ${colors.main_mint};
+  margin: 0 30px 0 0;
+  ${fonts.TitleText}
+  font-size: 56px;
+`;
+const StyledCarouselSubText = styled.p`
+  ${fonts.SubTextThinSmall}
+  margin: 34 0 0 0;
+`
 const StudyListItemArea = styled.p`
   width: 1270px;
   height: 295px;
@@ -210,7 +275,7 @@ const StyledMainBtnTitle = styled.p`
 `;
 const StyledMainBtnSub = styled.p`
   ${fonts.SubTextThinSmall}
-  margin: 0 0 0 0;
+  margin: 0;
 `;
 
 const StyledMainCommunityArea = styled.div`
