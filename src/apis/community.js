@@ -29,6 +29,7 @@ const communityApi = {
     
         try {
             const { author, title, content, attach } = req.body;
+            const ETag = req.ETag;
 
             /** 게시글번호 순차부여 */
             async function getLastCommunityNo() {
@@ -49,9 +50,9 @@ const communityApi = {
                 author,
                 title,
                 content,
-                attach,
+                attach: ETag,
             });
-    
+
             if (!newContent) {
                 return res.status(400).json({ message: "게시글생성 실패" });
             } 
@@ -66,16 +67,16 @@ const communityApi = {
         }
     },
 
-    /** 게시글조회 */
+    /** 게시글조회(개별) : 게시글+댓글+첨부파일 */
     async getContent(req, res) {
 
         try {
 
-            const reqContent = req.query.community_no;
+            const reqNo = req.query.community_no;
             // console.log('reqContent: ', reqContent);
 
-            const findContent = await Community.find({ community_no: reqContent });
-            const findReply = await CommunityReply.find({ community_no: reqContent });
+            const findContent = await Community.find({ community_no: reqNo });
+            const findReply = await CommunityReply.find({ community_no: reqNo });
             // console.log('getContent findReply: ', findReply);
 
             if (!findContent) {
