@@ -5,7 +5,6 @@ import StudyApplyModal from "./StudyApplyModal";
 import styled from "styled-components";
 import { TitleText } from "../../constants/fonts";
 import { colors } from "../../constants/colors";
-import { useQuery } from "react-query";
 // {/* 디자인 적용 예시 */}
 
 const TestPage: React.FC = () => {
