@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const StudyRelationSchema = new Schema({
   study_id: { type: mongoose.Types.ObjectId, unique: true, ref: 'Study' }, // reference
   user_id: { type: mongoose.Types.ObjectId, unique: true, ref: 'User' }, // reference
-  user_type: { type: String, defalut: 'member' }, // leader: ���͵���, member: ���͵��
+  is_leader: { type: Boolean, defalut: 0 }, // 1: 스터디장, 0: 스터디원
+  goal: { type: String }, // 목표 산업 분야 및 기업, 포부 등
+  accept: { type: Number }, // 0: 신청 완료, 1: 신청 수락, 2: 신청 거절, 3: 신청 반려
 });
 
 module.exports = StudyRelationSchema;

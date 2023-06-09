@@ -1,11 +1,13 @@
 const { Router } = require('express');
 const router = Router();
+const tokenValidate = require('../middlewares/tokenValidate');
 
 const studyFeedbackApi = require('../apis/study_feedback');
 
-router.post('/create', studyFeedbackApi.newFeedback); // ½ºÅÍµð °³¼³
-router.get('/', studyFeedbackApi.getStudyFeedback); // ½ºÅÍµð Á¤º¸ Á¶È¸
-router.put('/', studyFeedbackApi.updateStudyFeedback); // ½ºÅÍµð Á¤º¸ ¼öÁ¤(Àå)
-router.delete('/', studyFeedbackApi.deleteStudyFeedback); // ½ºÅÍµð Á¤º¸ »èÁ¦(Àå)
+router.post('/create', tokenValidate, studyFeedbackApi.newFeedback); // í”¼ë“œë°± ê²Œì‹œê¸€, ëŒ“ê¸€ ìž‘ì„±
+router.get('/:content_type', studyFeedbackApi.getFeedback); // í”¼ë“œë°± ê²Œì‹œê¸€, ëŒ“ê¸€ ì¡°íšŒ(ì „ì²´)
+router.get('/', tokenValidate, studyFeedbackApi.getFeedbackOne); // í”¼ë“œë°± ê²Œì‹œê¸€, ëŒ“ê¸€ ì¡°íšŒ(ê°œë³„)
+router.put('/', tokenValidate, studyFeedbackApi.updateFeedback); // í”¼ë“œë°± ê²Œì‹œê¸€, ëŒ“ê¸€ ìˆ˜ì •
+router.delete('/', tokenValidate, studyFeedbackApi.deleteFeedback); // í”¼ë“œë°± ê²Œì‹œê¸€, ëŒ“ê¸€ ì‚­ì œ
 
 module.exports = router;
