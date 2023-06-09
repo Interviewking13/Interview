@@ -8,9 +8,7 @@ const Divider = styled.div`
   border-bottom: 1px solid ${colors.gray_stroke};
 `;
 const StyledContainer = styled.div`
-  margin: 0 auto; /* 가운데 정렬을 위한 수정 */
-  padding-top: 40px;
-  width: 1270px;
+  margin: 15px 100px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,9 +35,7 @@ const StyledNavItem = styled(Link)`
   margin-left: 40px;
   text-decoration: none;
 `;
-const StyledLoginItemContainer = styled.div`
-
-`;
+const StyledLoginItemContainer = styled.div``;
 
 const StyledLoginItem = styled(Link)`
   font-size: 16px;
