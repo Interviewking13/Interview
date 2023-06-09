@@ -4,20 +4,21 @@ import { colors } from "../../constants/colors";
 import Button from "@mui/material/Button";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { TitleText } from '../../constants/fonts';
+import LeftSignContainer from '../../components/auth/LeftSignContainer';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const [error, setError] = useState('');
 
   // 테스트데이터
-  const testData = [
-    {
-      email: 'cobaltcyan.park@gmail.com',
-      password: 'tpwls1234',
-    },
-  ];
+  // const testData = [
+  //   {
+  //     email: 'cobaltcyan.park@gmail.com',
+  //     password: 'tpwls1234',
+  //   },
+  // ];
 
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,25 +29,20 @@ const LoginPage = () => {
     }
 
     try {
-      // 테스트 데이터에서 이메일과 비밀번호가 일치하는지 확인
-      const matchedUser = testData.find(user => user.email === email && user.password === password);
+      const response = await axios.post('http://34.22.79.51:5000/api/user/login', {
+        email,
+        password
+      });
 
-      if (matchedUser) {
+      if (response.data.success) {
         console.log("로그인 성공");
-
-        // 로그인 성공 시에만 Axios를 사용하여 POST 요청을 보냄
-        const response = await axios.post('/api/user/login', {
-          email,
-          password
-        });
-
-        console.log(response.data); // 응답 데이터에 접근
-
+        navigate('/homepage'); // 로그인 성공 시 홈페이지로 이동
       } else {
         console.log("로그인 실패");
+
       }
     } catch (error) {
-      console.log("에러 발생:", error);
+      setError("에러 발생: " + String(error));
     }
   };
 
@@ -71,9 +67,24 @@ const LoginPage = () => {
       });
   }, []);
 
+  // const fetchData = () => {
+  //   const user_id = "6478073927182b326a1ced5c"; // 원하는 임의의 user_id 값
+  //   const user_password ="$2b$10$pAm1KetUgiKxto4Hd8oUV.QqHXhKtBq9gAnPktMytb7lY4LmpGjly" // 원하는 임의의 user_password 값
+  //   return axios
+  //     .get(`http://34.22.79.51:5000/api/user/mypage/${user_id}`)
+  //     .then((response) => response.data);
+  // };
+
   const fetchData = () => {
+    const user_id = "6478073927182b326a1ced5c"; // 원하는 임의의 user_id 값
+    const user_password = "$2b$10$pAm1KetUgiKxto4Hd8oUV.QqHXhKtBq9gAnPktMytb7lY4LmpGjly"; // "원하는_임의의_비밀번호" 부분을 원하는 비밀번호로 대체하세요.
+
     return axios
-      .get("http://34.22.79.51:5000/api/community/list")
+      .get(`http://34.22.79.51:5000/api/user/mypage/${user_id}`, {
+        headers: {
+          Authorization: `Bearer ${user_password}`,
+        },
+      })
       .then((response) => response.data);
   };
 
@@ -81,11 +92,7 @@ const LoginPage = () => {
     <StyledCommonContainer>
       <StyledLoginWrapper>
         <StyledLoginContainer>
-          <StyledLoginTitleContainer>
-            <StyledLoginText>면접을 면접답게</StyledLoginText>
-            <StyledLoginText>면접왕</StyledLoginText>
-            <StyledLoginText>면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요</StyledLoginText>
-          </StyledLoginTitleContainer>
+          <LeftSignContainer />
           <StyledSignupContainer onSubmit={onClickSubmit}>
             <StyledSignupInput
               type="email"
@@ -107,6 +114,7 @@ const LoginPage = () => {
                 로그인
               </StyledLoginBtn>
             </StyledBtnWrapper>
+            {error && <StyledErrorMessage>{error.toString()}</StyledErrorMessage>}
           </StyledSignupContainer>
         </StyledLoginContainer>
         <StyledSignupCopyright>
@@ -119,7 +127,7 @@ const LoginPage = () => {
 
 
 const StyledCommonContainer = styled.div`
-  background-color: #f1f4ff;
+  background-color: ${colors.back_navy};
 `;
 const StyledLoginWrapper = styled.div`
   width: 1270px;
@@ -132,43 +140,20 @@ const StyledLoginContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const StyledLoginTitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const StyledLoginText = styled.div`
-  height: fit-content;
-  ${TitleText}
-  color: ${colors.main_navy};
-  font-size: 64px; 
-  font-weight:400;
-  
-  &:nth-of-type(2) {
-    color: ${colors.main_mint};
-    margin-top: 20px;
-  }
 
-  &:nth-of-type(3) {
-    font-family: none;
-    color: #8689A3;
-    font-size: 18px;
-    font-weight:300;
-    margin-top: 50px;
-  }
-`;
 const StyledSignupContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 330px;
+  margin-left: auto;
 `;
 
 const StyledSignupInput = styled.input`
   width: 457px;
   height: 45px;
   margin-top: 15px;
-  color: #C0C3E5;
-  border: 1px solid #C0C3E5;
+  color: ${colors.main_black};
+  border: 1px solid ${colors.gray_navy};
   border-radius: 10px;
   padding-left: 18px;
   font-weight: 300;
@@ -177,11 +162,11 @@ const StyledSignupInput = styled.input`
     margin-top: 15px; 
   }
   &::placeholder {
-    color: #C0C3E5;
+    color: ${colors.gray_navy};
   }
   &:focus {
     outline: none;
-    border: 1px solid #C0C3E5;
+    border: 1px solid ${colors.gray_navy};
     box-shadow: none;
   }
 `;
@@ -197,11 +182,11 @@ const StyledSignupBtn = styled(Button)`
     border-radius: 10px;
     font-weight: 600;
     font-size: 18px;
-    background-color: #00E595;
-    color: #0E0E0E;
-    border: 1px solid #00E595;
+    background-color: ${colors.main_mint};
+    color: ${colors.main_black};
+    border: 1px solid ${colors.main_mint};
     &:hover {
-      background-color: #00E595;
+      background-color: ${colors.main_mint};
     }
   }
 `;
@@ -210,22 +195,28 @@ const StyledLoginBtn = styled(Button)`
     width: 132px;
     height: 45px;
     border-radius: 10px;
-    color: #ffffff;
+    color: ${colors.back_navy};
     font-weight: 600;
     font-size: 18px;
-    background-color: #2E3057;
-    color: #ffffff;
-    border: 1px solid #2E3057;
-    margin-left: 40px;
+    background-color: ${colors.dark_navy};
+    border: 1px solid ${colors.dark_navy};
+    margin-left: 15px;
     &:hover {
-      background-color: #2E3057;
+      background-color: ${colors.dark_navy};
     }
   }
 `;
+
+const StyledErrorMessage = styled.p`
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+`;
+
 const StyledSignupCopyright = styled.div`
   text-align: center;
   font-size: 14px;
-  color: #C0C3E5;
+  color: ${colors.gray_navy};
 `;
 
 export default LoginPage;
