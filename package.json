@@ -21,10 +21,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
-<<<<<<< HEAD
-=======
     "react-icons": "^4.9.0",
->>>>>>> f429405bcc9643926cd00dbb3525439560045b96
     "react-router-dom": "^6.11.2",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
