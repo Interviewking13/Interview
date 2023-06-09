@@ -1,4 +1,3 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
@@ -8,15 +7,15 @@ import { Link } from "react-router-dom";
 import { dateFomatting } from "../../utils/dateFomatting";
 import { TitleText } from "../../constants/fonts";
 import { colors } from "../../constants/colors";
+import React, { useEffect } from "react";
 
 type StudyApplyModalProps = {
   studyId: number;
 };
-const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
-  // 데이터 불러오는 부분
-  // console.log(getStudyData());
 
-  // 스터디 더미데이터인데 studyId로 aixos.get 요청 보내야함.
+const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
+  //console.log(getStudyData());
+
   const studyData = {
     title: "SAFFY 면접 스터디",
     period: "2023-05-30 ~ 2023-06-08",
