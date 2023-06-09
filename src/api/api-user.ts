@@ -3,7 +3,7 @@ import axios from "axios";
 
 /* 인스턴스 네이밍 컨벤션 : 요청방식(ex get) + 해당 내용 + (by) + (파라미터/인자/쿼리) */
 
-/** 회원가입 POST */
+/** 1. 회원가입 POST */
 export const postSignUp = async (
   user_name: string,
   email: string,
@@ -16,7 +16,7 @@ export const postSignUp = async (
   return response;
 };
 
-/** 로그인 POST */
+/** 2. 로그인 POST */
 export const postSignIn = async (email: string, password: string) => {
   const response = await axios.post("http://34.22.79.51:5000/api/user/login", {
     email,
@@ -25,7 +25,7 @@ export const postSignIn = async (email: string, password: string) => {
   return response;
 };
 
-/** 내 정보 조회 GET */
+/** 3. 내 정보 조회 GET */
 export const getUserData = async (user_id: string) => {
   const response = await axios.get(
     `http://34.22.79.51:5000/api/user/mypage/${user_id}`
@@ -33,7 +33,7 @@ export const getUserData = async (user_id: string) => {
   return response;
 };
 
-/** 내 정보 수정 PUT */
+/** 4. 내 정보 수정 PUT */
 export const putUserData = async (
   email: string,
   password: string,
@@ -49,7 +49,7 @@ export const putUserData = async (
   return response;
 };
 
-/** 회원탈퇴 DELETE */
+/** 5. 회원탈퇴 DELETE */
 export const deleteUser = async (email: string, password: string) => {
   const response = await axios.delete(
     "http://34.22.79.51:5000/api/user/mypage",
