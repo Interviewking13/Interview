@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { colors } from '../../constants/colors';
+import { TitleText, SubTextThin } from '../../constants/fonts';
+import axios from 'axios';
 
 const CommunityCreatePage: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -21,6 +23,13 @@ const CommunityCreatePage: React.FC = () => {
   };
 
   const handleSubmit = () => {
+    postData()
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
     // 글쓰기 버튼 클릭 시 처리 로직
     // API 호출 또는 상태 업데이트 등
     console.log('Submit');
@@ -32,13 +41,33 @@ const CommunityCreatePage: React.FC = () => {
     console.log('Delete');
   };
 
+  const postData = () => {
+    return axios
+      .post("http://34.22.79.51:5000/api/community/detl", {
+        title: title,
+        content: content,
+        attach: "",
+      })
+      .then((response) => {
+        // 응답 데이터를 JSON 파일로 파싱하여 반환
+        return response.data;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   return (
     <StyledCommonContainer>
 
       <StyledCreatePageContainer>
         <StyledTitleWrapper>
-          <StyledCreatePageTitle>커뮤니티 글 쓰기</StyledCreatePageTitle>
-          <StyledCreatePageSubtitle>회원들과 정보를 공유해보세요.</StyledCreatePageSubtitle>
+          <StyledTitleContainer>
+            <StyledCreatePageTitle>커뮤니티 글 쓰기</StyledCreatePageTitle>
+          </StyledTitleContainer>
+          <StyledSubTitleContainer>
+            <StyledCreatePageSubtitle>회원들과 정보를 공유해보세요.</StyledCreatePageSubtitle>
+          </StyledSubTitleContainer>
         </StyledTitleWrapper>
         <StyledInputWrapper>
           <StyledTitle>제목</StyledTitle>
@@ -97,23 +126,27 @@ const StyledTitleWrapper = styled.div`
   align-items: flex-end; /* 폰트를 바닥에 같은 높이로 위치 */
 `;
 
+const StyledTitleContainer = styled.div`
+  ${TitleText}
+`;
+
 const StyledCreatePageTitle = styled.p`
-  height: fit-content;
-  font-family: 'establish Retrosans';
   color: ${colors.main_mint};
-  font-size: 32px;
-  font-weight: 400;
   margin: 0;
   margin-right: 40px;
 `;
 
+const StyledSubTitleContainer = styled.div`
+  ${SubTextThin}
+`;
+
 const StyledCreatePageSubtitle = styled.p`
-  font-weight: 300;
-  font-size: 18px;
   margin: 0;
+  color: ${colors.darkgray_navy};
 `;
 
 const StyledTitle = styled.div`
+  color: ${colors.main_black};
   height: fit-content;
   font-size: 20px;
   font-weight: 600;
@@ -131,7 +164,7 @@ const StyledInput = styled.input`
   padding-left: 20px;
 
   &::placeholder {
-    color: #C0C3E5;
+    color: ${colors.gray_navy};
   }
 `;
 const StyledTextarea = styled.textarea`
@@ -146,7 +179,7 @@ const StyledTextarea = styled.textarea`
   resize: none;
 
   &::placeholder {
-    color: #C0C3E5;
+    color: ${colors.gray_navy};
   }
 `;
 
