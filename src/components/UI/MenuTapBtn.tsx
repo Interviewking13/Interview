@@ -1,37 +1,31 @@
 import { ReactNode } from "react";
 import { Button, Grid } from "@mui/material";
-import { Create, Person, Checklist } from "@mui/icons-material"; //MUI icon import
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
-
+//프롭스타입지정
 type props = {
   children: ReactNode;
-  className?: string;
   onClick: () => void;
 };
-
-const MenuTapBtn = () => {
-  //페이지 이동
-  const navigate = useNavigate();
-  const onClickUserStudy = () => {
-    navigate("/mypage/userstudy");
+//MenuTapBtn 함수
+const MenuTapBtn = ({ children, onClick }: props) => {
+  const clickHandler = (): void => {
+    onClick();
   };
-
   return (
-    <Grid container spacing={1} justifyContent="flex-start">
-      <Grid item>
-        <StyledButton sx={{ gap: "5px" }} onClick={onClickUserStudy}>
-          <Create />
-          나의 스터디
-        </StyledButton>
-      </Grid>
+    <Grid item>
+      <StyledButtonMui sx={{ gap: "5px" }} onClick={clickHandler}>
+        {children}
+      </StyledButtonMui>
     </Grid>
   );
 };
+
 export default MenuTapBtn;
-const StyledButton = styled(Button)`
+
+//버튼 스타일
+const StyledButtonMui = styled(Button)`
   && {
     padding-left: 0;
     ${fonts.SubTextBig}
@@ -44,3 +38,18 @@ const StyledButton = styled(Button)`
     }
   }
 `;
+{
+  /* <MenuTapBtn OnClick={}
+>얄리얄리얄라셩 얄라리 얄라<MenuTapBtn/> */
+}
+// //사용형태
+// *layout이 MUI Grid 로 짜여져있습니다.
+
+// *<Grid container spacing={1} justifyContent="flex-start"> 이걸로 감싸주셔야합니다.
+
+// <MenuTapBtn onClick={useNavigator를 이용한 경로 클릭 이벤트}>
+//  <아이콘/>
+//  버튼 내용
+// </MenuTapBtn>
+
+// </Grid>
