@@ -1,6 +1,51 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import BoardListItemContainer from '../community/components/BoardListItemContainer';
+import BestBoardListItemContainer from '../community/components/BestBoardListItemContainer';
+
+const CommunityPage: React.FC = () => {
+  const navigate = useNavigate(); // useNavigate 훅 사용
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // 검색하기 버튼 클릭 시 처리 로직
+    // 입력된 검색어 활용 등
+    console.log('Search');
+  };
+
+  const handleCreatePost = () => {
+    navigate('/community/communityCreatePage');
+  };
+
+
+  return (
+    <StyledCommonContainer>
+
+      <StyledContainer>
+        <StyledHeadContainer>
+          <StyledTitle>커뮤니티</StyledTitle>
+          <StyledText>회원들과 정보를 공유해보세요.</StyledText>
+          <StyledSelect>
+            <option value="all">전체</option>
+            <option value="mypost">내가쓴글</option>
+          </StyledSelect>
+          <StyledSelect>
+            <option value="popular">인기순</option>
+          </StyledSelect>
+          <StyledSearchContainer onSubmit={handleSearch}>
+            <StyledSearchInput type="text" placeholder="검색하기" />
+          </StyledSearchContainer>
+          <StyledPostButton onClick={handleCreatePost}>글쓰기</StyledPostButton>
+        </StyledHeadContainer>
+        {/* 게시판 목록 컨테이너, 아이템 컴포넌트 불러오기 */}
+        <BestBoardListItemContainer />
+        <BoardListItemContainer />
+      </StyledContainer>
+
+    </StyledCommonContainer>
+  );
+};
 
 const StyledCommonContainer = styled.div`
   width: 1270px;
@@ -10,7 +55,6 @@ const StyledCommonContainer = styled.div`
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #ccc;
   justify-content: center;
 `;
 
@@ -76,85 +120,6 @@ const StyledPostButton = styled.button`
   cursor: pointer;
 `;
 
-const StyledPostList = styled.ul`
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-`;
 
-const StyledPostItem = styled.li`
-  margin-bottom: 10px;
-`;
-
-const StyledPostTitle = styled.h3`
-  font-size: 16px;
-  margin-bottom: 5px;
-`;
-
-const StyledPostAuthor = styled.p`
-  font-size: 14px;
-  color: #777;
-`;
-
-const CommunityPage: React.FC = () => {
-  const navigate = useNavigate(); // useNavigate 훅 사용
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // 검색하기 버튼 클릭 시 처리 로직
-    // 입력된 검색어 활용 등
-    console.log('Search');
-  };
-
-  const handleCreatePost = () => {
-    navigate('/community/communityCreatePage');
-  };
-
-  const posts = [
-    {
-      id: 1,
-      title: '첫 번째 글',
-      author: 'John Doe',
-    },
-    {
-      id: 2,
-      title: '두 번째 글',
-      author: 'Jane Smith',
-    },
-    // 추가데이터
-  ];
-
-  return (
-    <StyledCommonContainer>
-
-      <StyledContainer>
-        <StyledHeadContainer>
-          <StyledTitle>커뮤니티</StyledTitle>
-          <StyledText>회원들과 정보를 공유해보세요.</StyledText>
-          <StyledSelect>
-            <option value="all">전체</option>
-            <option value="mypost">내가쓴글</option>
-          </StyledSelect>
-          <StyledSelect>
-            <option value="popular">인기순</option>
-          </StyledSelect>
-          <StyledSearchContainer onSubmit={handleSearch}>
-            <StyledSearchInput type="text" placeholder="검색하기" />
-          </StyledSearchContainer>
-          <StyledPostButton onClick={handleCreatePost}>글쓰기</StyledPostButton>
-        </StyledHeadContainer>
-        <StyledPostList>
-          {/* 글 목록 렌더링 */}
-          {posts.map((post) => (
-            <StyledPostItem key={post.id}>
-              <StyledPostTitle>{post.title}</StyledPostTitle>
-              <StyledPostAuthor>작성자: {post.author}</StyledPostAuthor>
-            </StyledPostItem>
-          ))}
-        </StyledPostList>
-      </StyledContainer>
-
-    </StyledCommonContainer>
-  );
-};
 
 export default CommunityPage;
