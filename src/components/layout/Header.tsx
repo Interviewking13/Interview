@@ -8,7 +8,9 @@ const Divider = styled.div`
   border-bottom: 1px solid ${colors.gray_stroke};
 `;
 const StyledContainer = styled.div`
-  margin: 15px 100px;
+  margin: 0 auto; /* 가운데 정렬을 위한 수정 */
+  padding-top: 40px;
+  width: 1270px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -24,9 +26,7 @@ const StyledLogo = styled(Link)`
   text-decoration: none;
 `;
 
-const StyledNavItemContainer = styled.div`
-
-`;
+const StyledNavItemContainer = styled.div``;
 
 const StyledNavItem = styled(Link)`
   font-size: 18px;
@@ -49,31 +49,17 @@ const Header = (): JSX.Element => {
     <>
       <StyledContainer>
         <StyledLogoContainer>
-          <StyledLogo to="/" >
-            면접왕
-          </StyledLogo>
+          <StyledLogo to="/">면접왕</StyledLogo>
         </StyledLogoContainer>
         <StyledNavItemContainer>
-          <StyledNavItem to="/studylist" >
-            스터디
-          </StyledNavItem>
-          <StyledNavItem to="/community/communityPage" >
-            커뮤니티
-          </StyledNavItem>
-          <StyledNavItem to="/userstudy" >
-            나의 스터디
-          </StyledNavItem>
+          <StyledNavItem to="/studylist">스터디</StyledNavItem>
+          <StyledNavItem to="/community/communityPage">커뮤니티</StyledNavItem>
+          <StyledNavItem to="/userstudy">나의 스터디</StyledNavItem>
         </StyledNavItemContainer>
         <StyledLoginItemContainer>
-          <StyledLoginItem to="/login" >
-            로그인
-          </StyledLoginItem>
-          <StyledLoginItem to="/login/signup" >
-            회원가입
-          </StyledLoginItem>
-          <StyledLoginItem to="/mypage" >
-            마이페이지
-          </StyledLoginItem>
+          <StyledLoginItem to="/login">로그인</StyledLoginItem>
+          <StyledLoginItem to="/login/signup">회원가입</StyledLoginItem>
+          <StyledLoginItem to="/mypage">마이페이지</StyledLoginItem>
         </StyledLoginItemContainer>
       </StyledContainer>
       <Divider></Divider>
