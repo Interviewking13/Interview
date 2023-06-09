@@ -3,35 +3,22 @@ const { Study } = require('../models/index');
 const { User } = require('../models/index');
 
 const studyFeedbackApi = {
-  /**�ǵ��, ��� �ۼ�*/
+  /**피드백, 댓글 작성*/
   async newFeedback(req, res, next) {
     try {
-      const user = await User.findOne().exec();
-      const user_id = user._id;
-      const user_name = user.user_name;
-      req.body.user = { user_id, user_name };
-
-      const study = await Study.findOne().exec();
-      const study_id = study.study_id;
-      const study_name = study.study_name;
-      req.body.study = { study_id, study_name };
-
+      const user_id = req.user._id;
+      const { study_id } = req.params;
       const { content_type, content } = req.body;
-
       const createInfo = {
-        study_id,
-        study_name,
         user_id,
-        user_name,
+        study_id,
         content_type,
         content,
-        // date: Timestamp,
       };
 
-      const createdStudyFeedback = await StudyFeedback.create(createInfo);
-      res.studyFeedback = createdStudyFeedback;
-
-      res.status(200).json(createdStudyFeedback);
+      const createdFeedback = await StudyFeedback.create(createInfo);
+      res.study_feedback = createdFeedback;
+      res.status(200).json(createdFeedback);
     } catch (error) {
       console.log(error);
       res.status(400).json({
@@ -41,73 +28,77 @@ const studyFeedbackApi = {
     }
   },
 
-  /**�ǵ��, ��� ��ȸ*/
-  async getStudyFeedback(req, res, next) {
+  /**피드백, 댓글 조회(전체)*/
+  async getFeedback(req, res, next) {
     try {
-      const user = await User.findOne().exec();
-      const user_name = user.user_name;
-      req.body.user = { user_name };
-      // const { content_type } = req.params;
-
-      const foundStudyFeedback = await StudyFeedback.findOne({ user_name });
-      // if (!foundStudyFeedback) return error;
-
-      res.status(200).json(foundStudyFeedback);
+      const { content_type } = req.params;
+      const foundFeedback = await StudyFeedback.find({ content_type });
+      if (!foundFeedback) throw new Error('Not found');
+      res.status(200).json(foundFeedback);
     } catch (error) {
       console.log(error);
       res.status(426).json({
         code: 426,
-        message: 'error',
+        message: 'wrong request',
       });
     }
   },
 
-  /**�ǵ��, ��� ����*/
-  async updateStudyFeedback(req, res, next) {
+  /**피드백, 댓글 조회 (개별) */
+  async getFeedbackOne(req, res, next) {
     try {
-      const user = await User.findOne().exec();
-      const user_name = user.user_name;
-      req.body.user = { user_name };
-
-      const { content_type, content } = req.body;
-
-      const updateInfo = {
-        content_type,
-        content,
-      };
-      const foundStudyFeedback = await StudyFeedback.findOne({ user_name });
-      if (!foundStudyFeedback) return console.error(error);
-
-      const updatedStudyFeedback = await StudyFeedback.updateOne({ user_name }, updateInfo);
-
-      res.status(200).json(updatedStudyFeedback);
-    } catch (error) {
-      console.log(error);
-      res.status(425).json({
-        code: 425,
-        message: 'wrong update info',
-      });
-    }
-  },
-
-  /**�ǵ��, ��� ����*/
-  async deleteStudyFeedback(req, res, next) {
-    try {
-      const user = await User.findOne().exec();
-      const user_name = user.user_name;
-      req.body.user = { user_name };
-
-      const foundStudyFeedback = await StudyFeedback.findOne({ user_name });
-      if (!foundStudyFeedback) return console.error(error);
-
-      const deletedStudyFeedback = await StudyFeedback.deleteOne({ user_name });
-
-      res.status(200).json(deletedStudyFeedback);
+      const user_id = req.user._id;
+      const foundFeedback = await StudyFeedback.findOne({ user_id });
+      if (!foundFeedback) throw new Error('Not found');
+      res.status(200).json(foundStudy);
     } catch (error) {
       console.log(error);
       res.status(426).json({
         code: 426,
-        message: 'cannot delete study feedback',
+        message: 'study_id',
+      });
+    }
+  },
+
+  /**피드백, 댓글 수정*/
+  async updateFeedback(req, res, next) {
+    try {
+      // 유저 권한 판단
+      const user_id = req.user._id;
+      const foundFeedback = await StudyFeedback.findOne({ user_id });
+      if (!foundFeedback) throw new Error('Not found');
+
+      // 피드백, 댓글 수정
+      const { content } = req.body;
+      const updateInfo = { content };
+      const updatedFeedback = await StudyFeedback.updateOne({ user_id }, updateInfo);
+      res.status(200).json(updatedFeedback);
+    } catch (error) {
+      console.log(error);
+      res.status(426).json({
+        code: 426,
+        message: 'wrong request',
+      });
+    }
+  },
+
+  /**피드백, 댓글 삭제*/
+  async deleteFeedback(req, res, next) {
+    try {
+      // 유저 권한 판단
+      const user_id = req.user._id;
+      const foundFeedback = await StudyFeedback.findOne({ user_id });
+      if (!foundFeedback) throw new Error('Not found');
+
+      // 피드백, 댓글 삭제
+      const deletedFeedback = await StudyFeedback.deleteOne({ user_id }); // 피드백, 댓글 삭제
+      res.study_feedback = deletedFeedback;
+      res.status(200).json(deletedFeedback);
+    } catch (error) {
+      console.log(error);
+      res.status(426).json({
+        code: 426,
+        message: 'cannot delete feedback',
       });
     }
   },

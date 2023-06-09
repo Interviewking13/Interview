@@ -140,7 +140,7 @@ const userApi = {
             const payload = {
                 email
             }
-            const token = jwt.sign(payload, secretKey, { expiresIn: "5m" });
+            const token = jwt.sign(payload, secretKey, { expiresIn: "5m" });//  만료시간 
             
             res.status(200).json({
                 resultCode: "200",
@@ -170,7 +170,6 @@ const userApi = {
         try {
             
             const { user_id } = req.params;
-            // const { user_id } = req.body;
 
             const decoded = jwt.verify(token, secretKey);
             

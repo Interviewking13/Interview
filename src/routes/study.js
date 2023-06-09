@@ -1,13 +1,15 @@
 const { Router } = require('express');
 const router = Router();
-
 const studyApi = require('../apis/study');
+const tokenValidate = require('../middlewares/tokenValidate');
 
-router.post('/create', studyApi.newStudy); // ½ºÅÍµğ °³¼³
-router.post('/apply', studyApi.applyStudy); // ½ºÅÍµğ ½ÅÃ»
-router.post('/accept', studyApi.acceptStudy); // ½ºÅÍµğ ½ÅÃ» ¼ö¶ô
-router.get('/info', studyApi.getStudy); // ½ºÅÍµğ Á¤º¸ Á¶È¸
-router.put('/info', studyApi.updateStudy); // ½ºÅÍµğ Á¤º¸ ¼öÁ¤(Àå)
-router.delete('/info', studyApi.deleteStudy); // ½ºÅÍµğ Á¤º¸ »èÁ¦(Àå)
+router.post('/create', tokenValidate, studyApi.newStudy); // ìŠ¤í„°ë”” ê°œì„¤
+router.post('/apply', tokenValidate, studyApi.applyStudy); // ìŠ¤í„°ë”” ì‹ ì²­
+router.put('/accept/:study_id', tokenValidate, studyApi.acceptStudy); // ìŠ¤í„°ë”” ì‹ ì²­ ìˆ˜ë½
+router.get('/info', studyApi.getStudy); // ìŠ¤í„°ë”” ì •ë³´ ì¡°íšŒ(ì „ì²´)
+router.get('/info/:study_id', studyApi.getStudyOne); // ìŠ¤í„°ë”” ì •ë³´ ì¡°íšŒ(ê°œë³„)
+router.put('/info/:study_id', tokenValidate, studyApi.updateStudy); // ìŠ¤í„°ë”” ì •ë³´ ìˆ˜ì •(ì¥)
+router.delete('/:member_id', tokenValidate, studyApi.deleteUser); // ìŠ¤í„°ë”” íšŒì› ê´€ë¦¬(ì¥)
+router.delete('/info/:study_id', tokenValidate, studyApi.deleteStudy); // ìŠ¤í„°ë”” ì •ë³´ ì‚­ì œ(ì¥)
 
 module.exports = router;
