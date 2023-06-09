@@ -9,6 +9,8 @@ const ObjectId = mongoose.Types.ObjectId;
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+// const cookieParser = require('cookie-parser')
+// app.use(cookieParser());    // 미들웨어이므로.. app.use(express.json()); 전에 위치해야함. // TO-DO: 미들웨어 만들면 console.log(req.cookies.token); 로 확인 가능. 
 
 const secretKey = process.env.SECRET_KEY;
 
@@ -83,7 +85,7 @@ const userApi = {
             // 비밀번호 암호화
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            // 계정생성 정보
+            // 계정 생성 정보
             const newUserInfo = {
                 user_name,
                 email,
@@ -139,10 +141,24 @@ const userApi = {
 
             // JWT 토큰 생성
             const payload = {
-                email
+                user_id: findUser._id, // 사용자의 MongoDB ObjectID
             }
-            const token = jwt.sign(payload, secretKey, { expiresIn: "5m" });//  만료시간 
+
+            const token = jwt.sign(payload, secretKey, { expiresIn: "15m" });   // 토큰 만료시간 
             
+            // JWT 토큰 쿠키에 담아주기
+            res.cookie('token', token);         
+
+            // 설정된 쿠키 값 출력 (미들웨어로 생성해야 확인 가능)
+            // console.log(req.cookies.token);  // Cannot read properties of undefined (reading 'token') -> cookie-parser 설치
+
+            // res.cookie('token', token, {
+            //     httpOnly: true,
+            //     maxAge: 3600000, // 1시간 (단위: 밀리초)
+            //     secure: true, // HTTPS 프로토콜을 사용하는 경우에만 설정
+            //     // 다른 옵션들도 필요에 따라 추가할 수 있습니다.
+            // });
+
             res.status(200).json({
                 resultCode: "200",
                 message: "로그인 성공",
@@ -204,12 +220,14 @@ const userApi = {
                 // data: findUser
                 resultCode: "200",
                 message: "인증된 토큰입니다.",
-                user_id: findUser._id,
-                user_name: findUser.user_name,
-                email: findUser.email,
-                intro_yn: findUser.intro_yn,
-                phone_number: findUser.phone_number,
-                token: token
+                data: {
+                    user_id: findUser._id,
+                    user_name: findUser.user_name,
+                    email: findUser.email,
+                    intro_yn: findUser.intro_yn,
+                    phone_number: findUser.phone_number,
+                    token: token
+                }
             });
         } catch (err) {
             console.error(err);
