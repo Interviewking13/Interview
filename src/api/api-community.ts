@@ -19,3 +19,20 @@ export const putInfoStudy = async (
   );
   return result;
 };
+
+// export function postData() {
+//   return axios
+//     .post("http://34.22.79.51:5000/api/community/detl",
+//     {
+//       title: "게시글 제목 이용섭테스트",
+//       content: "게시글 내용 이용섭테스트",
+//       attach: "",
+//     }
+//     )
+//     .then((response) => {
+//       console.log(response.data);
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//     });
+// }

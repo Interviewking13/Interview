@@ -4,12 +4,12 @@ import { colors } from "../../constants/colors";
 import { TitleText } from "../../constants/fonts";
 
 const StyledFooterWrapper = styled.div`
-  position: sticky;
+  position: relative;
   bottom: 0;
   width: 100%;
   background-color: ${colors.back_navy};
   padding-bottom: 50px;
-`
+`;
 const Divider = styled.div`
   margin-top: 35px;
   margin-bottom: 40px;
@@ -26,7 +26,7 @@ const StyledFooterContainer = styled.div`
 
 const StyledFooterLogoContainer = styled.div`
   ${TitleText}
-  white-space: none;
+  white-space: nowrap;
 `;
 
 const StyledFooterLogo = styled.div`
@@ -47,7 +47,7 @@ const StyledFooterInfo = styled.div`
 const StyledFooterCopyright = styled.div`
   font-size: 14px;
   font-weight: 300;
-  color: #909090; 
+  color: #909090;
   margin-left: 80px;
   text-align: right;
 `;
@@ -58,25 +58,30 @@ const Footer = () => {
       <Divider></Divider>
       <StyledFooterContainer>
         <StyledFooterLogoContainer>
-          <StyledFooterLogo>
-            면접왕
-          </StyledFooterLogo>
+          <StyledFooterLogo>면접왕</StyledFooterLogo>
         </StyledFooterLogoContainer>
         <StyledFooterInfoContainer>
           <StyledFooterInfo>
-            footerfooterfooterfooter<br />
-            footerfooterfooterfooterfooterfooterfooter<br />
+            footerfooterfooterfooter
+            <br />
+            footerfooterfooterfooterfooterfooterfooter
+            <br />
             footerfooterfooter
           </StyledFooterInfo>
           <StyledFooterInfo>
-            footerfooterfooterfooter<br />
-            footerfooterfooterfooterfooterfooterfooter<br />
+            footerfooterfooterfooter
+            <br />
+            footerfooterfooterfooterfooterfooterfooter
+            <br />
             footerfooterfooter
           </StyledFooterInfo>
         </StyledFooterInfoContainer>
         <StyledFooterCopyright>
-          footerfooterfooterfooter<br />
-          footerfooterfooter<br /><br />
+          footerfooterfooterfooter
+          <br />
+          footerfooterfooter
+          <br />
+          <br />
           Copyright © 2023 SW4.CARCAR All Rights Reserved.
         </StyledFooterCopyright>
       </StyledFooterContainer>
