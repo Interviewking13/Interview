@@ -5,12 +5,14 @@ import { Create, Person, Checklist } from "@mui/icons-material"; //MUI icon impo
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
+import MenuTapBtn from "../../components/UI/MenuTapBtn";
 
-//각 페이지컴포넌트 호출
-const MenuButton = () => {
-  //페이지 이동
+const Mypage = () => {
   const navigate = useNavigate();
 
+  const onClickMypageMain = () => {
+    navigate("/mypage"); // useNavigate 사용하여 페이지 이동
+  };
   const onClickUserStudy = () => {
     navigate("/mypage/userstudy");
   };
@@ -19,35 +21,6 @@ const MenuButton = () => {
   };
   const onClickUserInfo = () => {
     navigate("/mypage/userInfo");
-  };
-
-  return (
-    <Grid container spacing={1} justifyContent="flex-start">
-      <Grid item>
-        <StyledButton sx={{ gap: "5px" }} onClick={onClickUserStudy}>
-          <Create />
-          나의 스터디
-        </StyledButton>
-      </Grid>
-      <Grid item>
-        <StyledButton sx={{ gap: "5px" }} onClick={onClickStudyApply}>
-          <Checklist />
-          스터디 신청
-        </StyledButton>
-      </Grid>
-      <Grid item>
-        <StyledButton sx={{ gap: "5px" }} onClick={onClickUserInfo}>
-          <Person />내 정보
-        </StyledButton>
-      </Grid>
-    </Grid>
-  );
-};
-
-const Mypage = () => {
-  const navigate = useNavigate();
-  const onClickMypageMain = () => {
-    navigate("/mypage"); // useNavigate 사용하여 페이지 이동
   };
 
   return (
@@ -71,7 +44,19 @@ const Mypage = () => {
 
         {/* 버튼1, 버튼2, 버튼3 */}
         <Grid item xs={12}>
-          <MenuButton />
+          <Grid container spacing={1} justifyContent="flex-start">
+            <MenuTapBtn onClick={onClickUserStudy}>
+              <Create />
+              나의 스터디
+            </MenuTapBtn>
+            <MenuTapBtn onClick={onClickStudyApply}>
+              <Checklist />
+              스터디 신청
+            </MenuTapBtn>
+            <MenuTapBtn onClick={onClickUserInfo}>
+              <Person />내 정보
+            </MenuTapBtn>
+          </Grid>
         </Grid>
 
         {/* 페이지 내용 */}
