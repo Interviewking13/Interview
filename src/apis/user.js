@@ -83,6 +83,7 @@ const userApi = {
             // 비밀번호 암호화
             const hashedPassword = await bcrypt.hash(password, 10);
 
+            // 계정생성 정보
             const newUserInfo = {
                 user_name,
                 email,
