@@ -9,48 +9,33 @@ import Slider from "react-slick";
 import './slick/slick-theme.css';
 import './slick/slick.css';
 
+import { getInfoAllStudyData } from "../../api/api-study";
+
 
 const HomePage = (): JSX.Element => {
-  const studyData = [{
-    id: 1,
-    title: "면접 스터디 1",
-    currentParticipants: 3,
-    maxParticipants: 8,
-    startDate: "23.07.01",
-    endDate: "23.07.31",
-    recruitDeadline: "23.06.30",
-    master: "정채진"
-  },
-  {
-    id: 2,
-    title: "면접 스터디 2",
-    currentParticipants: 3,
-    maxParticipants: 8,
-    startDate: "23.07.01",
-    endDate: "23.07.31",
-    recruitDeadline: "23.06.30",
-    master: "정채진"
-  },
-  {
-    id: 3,
-    title: "면접 스터디 3",
-    currentParticipants: 3,
-    maxParticipants: 8,
-    startDate: "23.07.01",
-    endDate: "23.07.31",
-    recruitDeadline: "23.06.30",
-    master: "정채진"
-  },
-  {
-    id: 4,
-    title: "면접 스터디 4",
-    currentParticipants: 3,
-    maxParticipants: 8,
-    startDate: "23.07.01",
-    endDate: "23.07.31",
-    recruitDeadline: "23.06.30",
-    master: "정채진"
-  }]
+
+  type StudyData = {
+    id: number,
+    title: string,
+    headcount: number,
+    start: string,
+    end: string,
+    deadline: string,
+    master: string
+  }
+
+  const [studyData, setStudyData] = React.useState<StudyData[]>([]);
+
+  React.useEffect(() => {
+    getInfoAllStudyData()
+      .then((response) => {
+        console.log(response.data);
+        setStudyData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
 
   return (
     <>
@@ -76,18 +61,20 @@ const HomePage = (): JSX.Element => {
         </StyledItemNameArea>
 
         <StudyListItemArea>
-        {studyData.map((study) => (
-            <StudyListItem
-             id={study.id}
-             title={study.title}
-             currentParticipants={study.currentParticipants}
-             maxParticipants={study.maxParticipants}
-             startDate={study.startDate}
-             endDate={study.endDate}
-             recruitDeadline={study.recruitDeadline}
-             master={study.master}
-             />
+        {studyData.map((study,index) => (
+          <StudyListItem
+           key={index}
+           id={study.id}
+           title={study.title}
+           // currentParticipants={study.currentParticipants}
+           maxParticipants={study.headcount}
+           startDate={study.start}
+           endDate={study.end}
+           recruitDeadline={study.deadline}
+           master={study.master}
+           />
         ))}
+
         </StudyListItemArea>
         
         <StyledMainStudyBtnArea>      
