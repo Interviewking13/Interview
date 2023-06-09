@@ -4,7 +4,7 @@ import { colors } from "../../constants/colors";
 import { TitleText } from "../../constants/fonts";
 
 const StyledFooterWrapper = styled.div`
-  position: sticky;
+  position: relative;
   bottom: 0;
   width: 100%;
   background-color: ${colors.back_navy};
