@@ -7,6 +7,10 @@ const PORT = process.env.PORT;
 // Router
 const indexRouter = require('./src/routes/index');
 
+// JWT token Middleware 
+const cookieParser = require('cookie-parser')
+app.use(cookieParser());
+
 // Middleware Setting
 app.use(express.json());
 app.use(express.static('public'));
