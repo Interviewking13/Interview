@@ -3,41 +3,34 @@ const { Schema } = mongoose;
 
 const CommunitySchema = new Schema(
     {
-        community_no: {
+        community_id: {
             type: Number,
         }, 
-        author: [{
-            user_id:  {
-                type: Number, //mongoose.Types.ObjectId
-                ref: "User",
-            },  
-            user_name: {
-                type: String,
-                ref: "User",
-            },  
-        }], 
+        /** 게시글 작성자 */
+        user_id:  {
+            type: mongoose.Types.ObjectId,
+            ref: "User",
+        },
+        /** 해당 게시글을 조회한 회원 : 한 회원은 조회수 하나만 카운트 */
+        read_users: [{
+            type: mongoose.Types.ObjectId,
+            ref: "User",
+        }],
         title: {
             type: String,
         }, 
         content: {
             type: String,
         },
-        attach: {
+        fileKey: {
             type: String,
         }, 
-        count: {
-            type: Number,
-        },
-        reply : [{
-            _id:  {
-                type: mongoose.Types.ObjectId, 
-                ref: "Community",
-            },  
-            reply_no: {
-                type: Number,
-                ref: "Community",
-            },  
-        }], 
+        fileETag: {
+            type: String,
+        }, 
+        fileName: {
+            type: String,
+        }   
     },
     {
         timestamps: true,
