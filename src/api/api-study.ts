@@ -53,9 +53,9 @@ export const getInfoAllStudyData = async () => {
 };
 
 /** 5. 스터디 정보 조회 (개별)  get */
-export const getInfoStudyData = async (study_id: string) => {
+export const getInfoStudyData = async () => {
   const response = await axios.get(
-    `http://34.22.79.51:5000/api/study/info/${study_id}`
+    `http://34.22.79.51:5000/api/study/info/6481c6cf73e7175d6c31e18d`
   );
   return response;
 };
