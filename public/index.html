@@ -17,9 +17,18 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
       <h1>프론트 테스트</h1>
-        <input type="file" id="fileInput">
+      <div style="margin-bottom: 10px;">
+        파일 업로드 : <input type="file" id="fileInput">
         <button id="upload">전송</button>
-        <button id="download">다운로드</button>
+      </div>
+      <div style="margin-bottom: 10px;">
+        파일 수정 : <input type="file" id="fileModify">
+        <button id="modify">수정</button>
+      </div>
+      <div>
+        <button id="readBtn">파일 조회</button><span id="read"></span>
+        <p id="download">파일 다운로드 : filename.md</p>
+      </div>
     </div>
     <script type="module" src="./index.js"></script>
   </body>
