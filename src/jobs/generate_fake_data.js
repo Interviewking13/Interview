@@ -4,14 +4,14 @@ const Cart = require('../models/index');
 const Order = require('../models/index');
 const User = require('../models/index');
 
-// DB ÃÊ±âÈ­ÇÏ´Â ÄÚµå ³Ö±â
+// DB ì´ˆê¸°í™”í•˜ëŠ” ì½”ë“œ ë„£ê¸°
 
 Product.deleteMany({});
 Cart.deleteMany({});
 Order.deleteMany({});
 User.deleteMany({});
 
-// DB ÀúÀå
+// DB ì €ìž¥
 
 Product.create(FakeProduct)
   .then(products => {
