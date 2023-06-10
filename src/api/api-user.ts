@@ -3,20 +3,21 @@ import axios from "axios";
 
 /* 인스턴스 네이밍 컨벤션 : 요청방식(ex get) + 해당 내용 + (by) + (파라미터/인자/쿼리) */
 
-/** 회원가입 POST */
+/** 1. 회원가입 POST */
 export const postSignUp = async (
   user_name: string,
   email: string,
-  password: string
+  password: string,
+  passwordCheck: string
 ) => {
   const response = await axios.post(
     "http://34.22.79.51:5000/api/user/register",
-    { user_name, email, password }
+    { user_name, email, password, passwordCheck }
   );
   return response;
 };
 
-/** 로그인 POST */
+/** 2. 로그인 POST */
 export const postSignIn = async (email: string, password: string) => {
   const response = await axios.post("http://34.22.79.51:5000/api/user/login", {
     email,
@@ -25,36 +26,50 @@ export const postSignIn = async (email: string, password: string) => {
   return response;
 };
 
-/** 내 정보 조회 GET */
-export const getUserData = async (user_id: string) => {
+/** 3. 내 정보 조회 GET */
+export const getUserData = async (user_id: string, token: string) => {
   const response = await axios.get(
-    `http://34.22.79.51:5000/api/user/mypage/${user_id}`
+    `http://34.22.79.51:5000/api/user/mypage/${user_id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   return response;
 };
 
-/** 내 정보 수정 PUT */
+/** 4. 내 정보 수정 PUT */
 export const putUserData = async (
   email: string,
   password: string,
   intro_yn: string,
-  phone_number: string
+  phone_number: string,
+  token: string
 ) => {
   const response = await axios.put("http://34.22.79.51:5000/api/user/mypage", {
-    email,
-    password,
-    intro_yn,
-    phone_number,
+    data: { email, password, intro_yn, phone_number },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
   return response;
 };
 
-/** 회원탈퇴 DELETE */
-export const deleteUser = async (email: string, password: string) => {
+/** 5. 회원탈퇴 DELETE */
+export const deleteUser = async (
+  user_id: string,
+  email: string,
+  password: string,
+  token: string
+) => {
   const response = await axios.delete(
     "http://34.22.79.51:5000/api/user/mypage",
     {
-      data: { email, password },
+      data: { user_id, email, password },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }
   );
   return response;
