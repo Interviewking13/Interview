@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LeftSignContainer from '../../components/auth/LeftSignContainer';
-import { postSignIn } from '../../api/api-user';
+import { storeTokenInCookie } from '../../components/auth/loginUtils';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -21,8 +21,63 @@ const LoginPage = () => {
       return;
     }
 
-    postSignIn(email, password);
+    try {
+      const response = await axios.post("http://34.22.79.51:5000/api/user/login", {
+        email,
+        password,
+      });
+      // response값 확인
+      console.log(response);
 
+      if (response.status === 200) {
+        const { resultCode, message, data } = response.data;
+
+        if (resultCode === '200') {
+          const { user_id, token } = data || {}; // 데이터가 undefined인 경우 빈 객체를 기본값으로 사용
+
+          if (user_id && token) {
+            storeTokenInCookie(token);
+
+            console.log("User ID:", user_id);
+            console.log("Token:", token);
+
+            fetchUserData(token, user_id);
+            // navigate('/'); // 로그인 성공시 홈으로 이동
+          }
+        } else {
+          setError(message);
+        }
+      } else {
+        setError("네트워크 오류가 발생했습니다.");
+      }
+
+
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+  };
+
+  const fetchUserData = async (token: string, userId: string) => {
+    console.log("Token:", token); // 토큰 값 확인
+
+    try {
+      const response = await axios.get(`http://34.22.79.51:5000/api/user/mypage/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // response 활용가능
+      // 1. 응답 데이터 상태로 설정
+      // const userData = response.data;
+      // setUser(userData);
+
+      // 2. 다른 함수에 전달하기
+      // processUserData(response.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
@@ -35,31 +90,6 @@ const LoginPage = () => {
   const onClickSignup = () => {
     navigate('./signup'); // useNavigate 사용하여 페이지 이동
   };
-
-  // useEffect(() => {
-  //   fetchData()
-  //     .then((data) => {
-  //       console.log(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-  // }, []);
-
-  // const fetchData = () => {
-  //   const user_id = email; // 원하는 임의의 user_id 값
-  //   const user_password = password; // "원하는_임의의_비밀번호" 부분을 원하는 비밀번호로 대체하세요.
-
-  //   return axios
-  //     .get(`http://34.22.79.51:5000/api/user/mypage/${user_id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${user_password}`,
-  //       },
-  //     })
-  //     .then((response) => response.data);
-  // };
-
-
 
   return (
     <StyledCommonContainer>
@@ -102,11 +132,13 @@ const LoginPage = () => {
 const StyledCommonContainer = styled.div`
   background-color: ${colors.back_navy};
 `;
+
 const StyledLoginWrapper = styled.div`
   width: 1270px;
   margin: 0 auto;
   padding-bottom: 30px;
 `;
+
 const StyledLoginContainer = styled.div`
   height: 100vh;
   display: flex;
@@ -143,11 +175,13 @@ const StyledSignupInput = styled.input`
     box-shadow: none;
   }
 `;
+
 const StyledBtnWrapper = styled.div`
   display: flex;
   margin-top: 40px;
   margin-left: auto;
 `
+
 const StyledSignupBtn = styled(Button)`
   &&{
     width: 132px;
@@ -163,6 +197,7 @@ const StyledSignupBtn = styled(Button)`
     }
   }
 `;
+
 const StyledLoginBtn = styled(Button)`
   && {
     width: 132px;
