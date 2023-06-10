@@ -23,6 +23,12 @@ async function fileModify(req, res, next) {
                 return;
             }
         
+            /** 첨부파일이 없는 경우 */
+            if (!req.file) {
+                next();
+                return;
+            }
+            
             const fileStream = Readable.from(req.file.buffer);
             const datetime = moment().format('YYYYMMDDHHmmss');
             const key = `${req.body.dir}/${datetime}_${req.file.originalname}`;
@@ -42,6 +48,8 @@ async function fileModify(req, res, next) {
                 req.fileName = req.file.originalname;
                 req.fileKey = key; 
                 next();
+            } else {
+                res.end();
             }
         });
     } catch (err) {
