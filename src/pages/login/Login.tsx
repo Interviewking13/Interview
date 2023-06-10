@@ -5,20 +5,13 @@ import Button from "@mui/material/Button";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LeftSignContainer from '../../components/auth/LeftSignContainer';
+import { postSignIn } from '../../api/api-user';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const [error, setError] = useState('');
-
-  // 테스트데이터
-  // const testData = [
-  //   {
-  //     email: 'cobaltcyan.park@gmail.com',
-  //     password: 'tpwls1234',
-  //   },
-  // ];
 
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,22 +21,8 @@ const LoginPage = () => {
       return;
     }
 
-    try {
-      const response = await axios.post('http://34.22.79.51:5000/api/user/login', {
-        email,
-        password
-      });
+    postSignIn(email, password);
 
-      if (response.data.success) {
-        console.log("로그인 성공");
-        navigate('/homepage'); // 로그인 성공 시 홈페이지로 이동
-      } else {
-        console.log("로그인 실패");
-
-      }
-    } catch (error) {
-      setError("에러 발생: " + String(error));
-    }
   };
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,36 +36,30 @@ const LoginPage = () => {
     navigate('./signup'); // useNavigate 사용하여 페이지 이동
   };
 
-  useEffect(() => {
-    fetchData()
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetchData()
+  //     .then((data) => {
+  //       console.log(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
+  // }, []);
 
   // const fetchData = () => {
-  //   const user_id = "6478073927182b326a1ced5c"; // 원하는 임의의 user_id 값
-  //   const user_password ="$2b$10$pAm1KetUgiKxto4Hd8oUV.QqHXhKtBq9gAnPktMytb7lY4LmpGjly" // 원하는 임의의 user_password 값
+  //   const user_id = email; // 원하는 임의의 user_id 값
+  //   const user_password = password; // "원하는_임의의_비밀번호" 부분을 원하는 비밀번호로 대체하세요.
+
   //   return axios
-  //     .get(`http://34.22.79.51:5000/api/user/mypage/${user_id}`)
+  //     .get(`http://34.22.79.51:5000/api/user/mypage/${user_id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${user_password}`,
+  //       },
+  //     })
   //     .then((response) => response.data);
   // };
 
-  const fetchData = () => {
-    const user_id = "6478073927182b326a1ced5c"; // 원하는 임의의 user_id 값
-    const user_password = "$2b$10$pAm1KetUgiKxto4Hd8oUV.QqHXhKtBq9gAnPktMytb7lY4LmpGjly"; // "원하는_임의의_비밀번호" 부분을 원하는 비밀번호로 대체하세요.
 
-    return axios
-      .get(`http://34.22.79.51:5000/api/user/mypage/${user_id}`, {
-        headers: {
-          Authorization: `Bearer ${user_password}`,
-        },
-      })
-      .then((response) => response.data);
-  };
 
   return (
     <StyledCommonContainer>
