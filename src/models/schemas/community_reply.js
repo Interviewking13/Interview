@@ -3,17 +3,17 @@ const { Schema } = mongoose;
 
 const CommunityReplySchema = new Schema(
     {
-        reply_no: {
+        reply_id: {
             type: Number,
         },
         reply_user_id: {
-                 type: mongoose.Types.ObjectId,
-                 ref: "User",
+            type: mongoose.Types.ObjectId,
+            ref: "User",
         },
-        reply_content : { //댓글 내용
+        reply_content : { 
             type: String,
         },
-        community_no: {
+        community_id: {
             type: Number,
             ref: "Community",
         }

@@ -37,6 +37,7 @@ const fileUpload = async (uploadFile, dir) => {
     formData.append('dir', dir);
     formData.append('file', uploadFile);
 
+    console.log('formData:', formData);
     try {
       const response = await fetch('/api/community/detl', {
         method: 'POST',
@@ -116,7 +117,7 @@ async function downloadFile() {
       // 다운로드 링크 생성
       const downloadLink = document.createElement('a');
       downloadLink.href = url;
-      downloadLink.download = '다운로드 테스트'; // 파일 이름 설정
+      downloadLink.download = '면접왕_파일다운로드'; // 파일 이름 설정
       downloadLink.click();
 
       // 리소스 해제

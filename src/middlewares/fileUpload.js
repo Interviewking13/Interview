@@ -22,6 +22,12 @@ async function fileUpload(req, res, next) {
                 res.status(400).json({ message: '파일업로드 실패' });
                 return;
             }
+
+            /** 첨부파일이 없는 경우 */
+            if (!req.file) {
+                next();
+                return;
+            }
         
             const fileStream = Readable.from(req.file.buffer);
             const datetime = moment().format('YYYYMMDDHHmmss');
@@ -42,6 +48,8 @@ async function fileUpload(req, res, next) {
                 req.fileName = req.file.originalname;
                 req.fileKey = key; 
                 next();
+            } else {
+                res.end();
             }
         });
     } catch (err) {
