@@ -21,6 +21,14 @@ const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    
 
 const userApi = {
 
+    /** user API middleware 테스트 */
+    async userMiddlewareApiTest(req, res, next) {
+        console.log('미들웨어 실행! userApi 도착!');
+        // 미들웨어 로직 처리
+        console.log(req.cookies.token);
+        next();
+    },
+    
     /** user 정보 전체 DB 조회 테스트 */
     async getAllUserInfo(req, res, next) {
         try {
@@ -124,7 +132,7 @@ const userApi = {
 
             if (!findUser) {
                 return res.status(200).json({
-                    resultCode: "200",
+                    resultCode: "400",
                     message: "사용자가 존재하지 않습니다."
                 })
             }
@@ -133,8 +141,8 @@ const userApi = {
             const isPasswordValid = await bcrypt.compare(password, findUser.password);      // 평문값과 암호화값 비교
 
             if (!isPasswordValid) {
-                return res.status(200).json({
-                resultCode: "200",
+                return res.status(400).json({
+                resultCode: "400",
                 message: "비밀번호가 맞지 않습니다."
                 });
             }
@@ -147,17 +155,13 @@ const userApi = {
             const token = jwt.sign(payload, secretKey, { expiresIn: "15m" });   // 토큰 만료시간 
             
             // JWT 토큰 쿠키에 담아주기
-            res.cookie('token', token);         
-
+            res.cookie('token', token, {
+                httpOnly: true,
+                maxAge: 3600000, // 1시간 (단위: 밀리초)
+            });
+    
             // 설정된 쿠키 값 출력 (미들웨어로 생성해야 확인 가능)
-            // console.log(req.cookies.token);  // Cannot read properties of undefined (reading 'token') -> cookie-parser 설치
-
-            // res.cookie('token', token, {
-            //     httpOnly: true,
-            //     maxAge: 3600000, // 1시간 (단위: 밀리초)
-            //     secure: true, // HTTPS 프로토콜을 사용하는 경우에만 설정
-            //     // 다른 옵션들도 필요에 따라 추가할 수 있습니다.
-            // });
+            console.log('로그인' + req.cookies.token);  // Cannot read properties of undefined (reading 'token') -> cookie-parser 설치
 
             res.status(200).json({
                 resultCode: "200",
@@ -182,8 +186,11 @@ const userApi = {
     async getUserInfo(req, res) {
         
         // const secretKey = 'your_test_key';
-        const token = req.headers.authorization;    // 클라이언트로부터 전달된 토큰 값
-            
+        // const headerToken = req.headers.authorization;    // 클라이언트로부터 전달된 토큰 값(헤더에서 가져온 토큰값)
+        const token = req.cookies.token;                // 쿠키에서 가져온 토큰값(미들웨어 생성해야 사용 가능..)
+        
+        console.log('내정보조회' + req.cookies.token);  // Cannot read properties of undefined (reading 'token') -> cookie-parser 설치
+
         try {
             
             const { user_id } = req.params;
@@ -259,8 +266,11 @@ const userApi = {
     /** 내 정보 수정 */
     async modifyUserInfo(req, res, next) {
         // const secretKey = 'your_test_key';
-        const token = req.headers.authorization;    // 클라이언트로부터 전달된 토큰 값
-            
+        // const headerToken = req.headers.authorization;    // 클라이언트로부터 전달된 토큰 값(헤더에서 가져온 토큰값)
+        const token = req.cookies.token;                // 쿠키에서 가져온 토큰값(미들웨어 생성해야 사용 가능..)
+
+        console.log('내정보수정' + req.cookies.token);  // Cannot read properties of undefined (reading 'token') -> cookie-parser 설치
+
         try {
             const { user_id, email, password, intro_yn, phone_number } = req.body;
             // const { email, password, intro_yn, phone_number } = req.body;
@@ -386,9 +396,14 @@ const userApi = {
     /** 회원탈퇴 */
     async deleteUser(req, res, next) {
         
-        const token = req.headers.authorization;    // 클라이언트로부터 전달된 토큰 값
+        // const headerToken = req.headers.authorization;    // 클라이언트로부터 전달된 토큰 값(헤더에서 가져온 토큰값)
+        const token = req.cookies.token;                // 쿠키에서 가져온 토큰값(미들웨어 생성해야 사용 가능..)
+        
+        console.log('회원탈퇴' + req.cookies.token);  // Cannot read properties of undefined (reading 'token') -> cookie-parser 설치
+
 
         try {
+
             const decoded = jwt.verify(token, secretKey);
             
             if (!decoded) {
@@ -422,6 +437,13 @@ const userApi = {
 
             // 회원 탈퇴
             await User.deleteOne({ "_id": user_id });
+                        
+            // 회원탈퇴시 토큰도 지워주자
+            // 헤더에 저장된 토큰 삭제
+            res.setHeader('Authorization', '');
+
+            // 토큰 쿠키 삭제
+            res.clearCookie('token');
 
             res.status(200).json({
                 resultCode: "200",
