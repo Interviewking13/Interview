@@ -1,11 +1,14 @@
 const fileInput = document.querySelector('input[type="file"]');
 const fileUploadBtn = document.querySelector('#upload');
 const fileDownloadText = document.querySelector('#download');
+const fileInputModify = document.querySelector('input[id="fileModify"]');
+const fileModifyBtn = document.querySelector('#modify');
+const fileReadBtn = document.querySelector('#readBtn');
+const fileReadText = document.querySelector('#read');
 
 fileUploadBtn.addEventListener('click', async () => {
   const uploadFile = fileInput.files[0];
-  console.log('client uploadFile: ', uploadFile);
-  await fileUpload(uploadFile, '/community');
+  await fileUpload(uploadFile, 'community');
 });
 
 fileInput.addEventListener('change', () => {
@@ -13,10 +16,20 @@ fileInput.addEventListener('change', () => {
 });
 
 fileDownloadText.addEventListener('click', async () => {
-  await downloadFile('b4340c822d88e525bc82b8a93731aa6e');
+  await downloadFile();
 });
 
-//파일업로드
+fileReadBtn.addEventListener('click', async () => {
+  await readFile();
+});
+
+fileModifyBtn.addEventListener('click', async () => {
+  const uploadFile = fileInputModify.files[0];
+  console.log('client uploadFile: ', uploadFile);
+  await fileModify(uploadFile, 'community');
+});
+
+/** 파일업로드 */
 const fileUpload = async (uploadFile, dir) => {
 
   if (uploadFile) {
@@ -34,32 +47,86 @@ const fileUpload = async (uploadFile, dir) => {
       if (response.ok) {
         const data = await response.json();
         console.log('client data: ', data);
-      } else {
-        console.log('파일전송 실패');
-      }
+      } 
     } catch (err) {
       console.log(err);
     }
   }
 };
 
-//다운로드
-async function downloadFile(fileId) {
-  const fileName = '20230609165522_README.md';
+/** 파일수정 */
+const fileModify = async (uploadFile, dir) => {
 
-  // 서버로 파일 다운로드 요청을 보내고 파일 URL을 받아옴
-  const response = await fetch(`/api/community/detl?community_no=`, {
-    method: 'GET',
-    withCredentials: true,
-    body: fileId, fileName
-  }).then(response => {
-    // 파일 다운로드 링크 생성
-    const downloadLink = document.createElement('a');
-    downloadLink.href = response.data.url;
-    downloadLink.download = response.data.filename;
-    downloadLink.click();
-  })
-  .catch(error => {
-    console.error('파일 다운로드 실패:', error);
-  });
+  if (uploadFile) {
+    const formData = new FormData();
+    formData.append('dir', dir);
+    formData.append('file', uploadFile);
+
+    try {
+      const response = await fetch('/api/community/detl?community_no=49', {
+        method: 'PUT',
+        withCredentials: true,
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('client data: ', data);
+      } 
+    } catch (err) {
+      console.log(err);
+    }
+  }
+};
+
+/** 파일조회 */
+async function readFile() {
+  try {
+    const response = await fetch(`/api/community/detl?community_no=48`, {
+      method: 'GET',
+      withCredentials: true,
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      const findContent = responseData.data.findContent;
+      
+      if (findContent) {
+        const fileName = findContent[0].fileName;
+        fileReadText.innerHTML = ` 파일명 ${fileName}`;
+      }
+    } 
+  } catch (err) {
+    console.error('클라이언트 파일 다운로드 실패:', err);
+  }
 }
+
+/** 파일다운로드 */
+async function downloadFile() {
+  try {
+    const response = await fetch(`/api/community/download?community_no=48`, {
+      method: 'GET',
+      withCredentials: true,
+    });
+
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+
+      // 다운로드 링크 생성
+      const downloadLink = document.createElement('a');
+      downloadLink.href = url;
+      downloadLink.download = '다운로드 테스트'; // 파일 이름 설정
+      downloadLink.click();
+
+      // 리소스 해제
+      URL.revokeObjectURL(url);
+    } 
+  } catch (err) {
+    console.error('클라이언트 파일 다운로드 실패:', err);
+  }
+}
+
+
+
+

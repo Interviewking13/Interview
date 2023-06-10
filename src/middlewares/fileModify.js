@@ -8,7 +8,7 @@ const moment = require('moment');
 const s3 = require('../config/s3');
 
 /** 파일 업로드 */
-async function fileUpload(req, res, next) {
+async function fileModify(req, res, next) {
     try {
 
         /** 서버로 업로드 */
@@ -50,4 +50,4 @@ async function fileUpload(req, res, next) {
     }
 }
 
-module.exports = fileUpload;
+module.exports = fileModify;
