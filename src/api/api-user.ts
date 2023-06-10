@@ -1,4 +1,4 @@
-import axios from "axios";
+import { axiosInstance } from "./axiosInstance";
 // axios.defaults.withCredentials = true;
 
 /* 인스턴스 네이밍 컨벤션 : 요청방식(ex get) + 해당 내용 + (by) + (파라미터/인자/쿼리) */
@@ -10,16 +10,18 @@ export const postSignUp = async (
   password: string,
   passwordCheck: string
 ) => {
-  const response = await axios.post(
-    "http://34.22.79.51:5000/api/user/register",
-    { user_name, email, password, passwordCheck }
-  );
+  const response = await axiosInstance.post("user/register", {
+    user_name,
+    email,
+    password,
+    passwordCheck,
+  });
   return response;
 };
 
 /** 2. 로그인 POST */
 export const postSignIn = async (email: string, password: string) => {
-  const response = await axios.post("http://34.22.79.51:5000/api/user/login", {
+  const response = await axiosInstance.post("user/login", {
     email,
     password,
   });
@@ -28,14 +30,11 @@ export const postSignIn = async (email: string, password: string) => {
 
 /** 3. 내 정보 조회 GET */
 export const getUserData = async (user_id: string, token: string) => {
-  const response = await axios.get(
-    `http://34.22.79.51:5000/api/user/mypage/${user_id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await axiosInstance.get(`user/mypage/${user_id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response;
 };
 
@@ -47,7 +46,7 @@ export const putUserData = async (
   phone_number: string,
   token: string
 ) => {
-  const response = await axios.put("http://34.22.79.51:5000/api/user/mypage", {
+  const response = await axiosInstance.put("user/mypage", {
     data: { email, password, intro_yn, phone_number },
     headers: {
       Authorization: `Bearer ${token}`,
@@ -63,14 +62,11 @@ export const deleteUser = async (
   password: string,
   token: string
 ) => {
-  const response = await axios.delete(
-    "http://34.22.79.51:5000/api/user/mypage",
-    {
-      data: { user_id, email, password },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const response = await axiosInstance.delete("user/mypage", {
+    data: { user_id, email, password },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response;
 };
