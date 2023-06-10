@@ -9,15 +9,13 @@ const ObjectId = mongoose.Types.ObjectId;
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-// const cookieParser = require('cookie-parser')
-// app.use(cookieParser());    // 미들웨어이므로.. app.use(express.json()); 전에 위치해야함. // TO-DO: 미들웨어 만들면 console.log(req.cookies.token); 로 확인 가능. 
 
 const secretKey = process.env.SECRET_KEY;
 
 // dts_insert, dts_update 필드에 삽입할 변수 값 설정
 const currentDate = new Date();
-const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, "");    // 현재 날짜를 "yyyymmdd" 형식으로 가져옵니다
-const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    // 현재 시간을 "hhmmss" 형식으로 가져옵니다
+const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, "");    // 현재 날짜를 "yyyymmdd" 형식으로 설정
+const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    // 현재 시간을 "hhmmss" 형식으로 설정
 
 const userApi = {
 
@@ -138,7 +136,7 @@ const userApi = {
             }
 
             // 비밀번호 검증
-            const isPasswordValid = await bcrypt.compare(password, findUser.password);      // 평문값과 암호화값 비교
+            const isPasswordValid = await bcrypt.compare(password, findUser.password);
 
             if (!isPasswordValid) {
                 return res.status(400).json({
@@ -149,7 +147,7 @@ const userApi = {
 
             // JWT 토큰 생성
             const payload = {
-                user_id: findUser._id, // 사용자의 MongoDB ObjectID
+                user_id: findUser._id,          // 사용자의 MongoDB ObjectID
             }
 
             const token = jwt.sign(payload, secretKey, { expiresIn: "15m" });   // 토큰 만료시간 
@@ -160,8 +158,8 @@ const userApi = {
                 maxAge: 3600000, // 1시간 (단위: 밀리초)
             });
     
-            // 설정된 쿠키 값 출력 (미들웨어로 생성해야 확인 가능)
-            console.log('로그인' + req.cookies.token);  // Cannot read properties of undefined (reading 'token') -> cookie-parser 설치
+            // 설정된 쿠키 값 출력
+            console.log('로그인' + req.cookies.token);
 
             res.status(200).json({
                 resultCode: "200",
@@ -186,10 +184,10 @@ const userApi = {
     async getUserInfo(req, res) {
         
         // const secretKey = 'your_test_key';
-        // const headerToken = req.headers.authorization;    // 클라이언트로부터 전달된 토큰 값(헤더에서 가져온 토큰값)
-        const token = req.cookies.token;                // 쿠키에서 가져온 토큰값(미들웨어 생성해야 사용 가능..)
-        
-        console.log('내정보조회' + req.cookies.token);  // Cannot read properties of undefined (reading 'token') -> cookie-parser 설치
+        // const headerToken = req.headers.authorization;
+        const token = req.cookies.token;
+
+        console.log('내정보조회' + req.cookies.token);
 
         try {
             
@@ -266,10 +264,10 @@ const userApi = {
     /** 내 정보 수정 */
     async modifyUserInfo(req, res, next) {
         // const secretKey = 'your_test_key';
-        // const headerToken = req.headers.authorization;    // 클라이언트로부터 전달된 토큰 값(헤더에서 가져온 토큰값)
-        const token = req.cookies.token;                // 쿠키에서 가져온 토큰값(미들웨어 생성해야 사용 가능..)
+        // const headerToken = req.headers.authorization;
+        const token = req.cookies.token;
 
-        console.log('내정보수정' + req.cookies.token);  // Cannot read properties of undefined (reading 'token') -> cookie-parser 설치
+        console.log('내정보수정' + req.cookies.token);
 
         try {
             const { user_id, email, password, intro_yn, phone_number } = req.body;
@@ -396,11 +394,10 @@ const userApi = {
     /** 회원탈퇴 */
     async deleteUser(req, res, next) {
         
-        // const headerToken = req.headers.authorization;    // 클라이언트로부터 전달된 토큰 값(헤더에서 가져온 토큰값)
-        const token = req.cookies.token;                // 쿠키에서 가져온 토큰값(미들웨어 생성해야 사용 가능..)
+        // const headerToken = req.headers.authorization;
+        const token = req.cookies.token;
         
-        console.log('회원탈퇴' + req.cookies.token);  // Cannot read properties of undefined (reading 'token') -> cookie-parser 설치
-
+        console.log('회원탈퇴' + req.cookies.token);
 
         try {
 
