@@ -14,7 +14,7 @@ const communityApi = {
                 return res.status(400).json({ message: "목록조회 실패" });
             } 
 
-            res.status(200).setHeader('Access-Control-Allow-Origin', 'http://localhost:3000').json({
+            return res.status(200).json({
                 message: "목록조회 성공",
                 data: findContent,
             });
@@ -28,8 +28,10 @@ const communityApi = {
     async postContent(req, res) {
     
         try {
-            const { author, title, content, attach } = req.body;
+            const { user_id, title, content  } = req.body;
             const ETag = req.ETag;
+            const fileName = req.fileName;
+            const fileKey = req.fileKey;
 
             /** 게시글번호 순차부여 */
             async function getLastCommunityNo() {
@@ -47,18 +49,20 @@ const communityApi = {
     
             const newContent = await Community.create({
                 community_no: newCommunityNo,
-                author,
+                user_id,
                 title,
                 content,
-                attach: ETag,
+                fileKey: fileKey,
+                fileETag: ETag,
+                fileName: fileName,
             });
 
             if (!newContent) {
                 return res.status(400).json({ message: "게시글생성 실패" });
             } 
 
-            // console.log('newContent: ', newContent);
-            res.status(200).json({ 
+            console.log('newContent: ', newContent);
+            return res.status(200).json({ 
                 message: "게시글등록 성공",
                 data: newContent,
             });
@@ -69,62 +73,81 @@ const communityApi = {
 
     /** 게시글조회(개별) : 게시글+댓글+첨부파일 */
     async getContent(req, res) {
-
         try {
-
             const reqNo = req.query.community_no;
-            // console.log('reqContent: ', reqContent);
-
             const findContent = await Community.find({ community_no: reqNo });
             const findReply = await CommunityReply.find({ community_no: reqNo });
-            // console.log('getContent findReply: ', findReply);
 
             if (!findContent) {
                 return res.status(400).json({ message: "게시글조회 실패" });
-            }
+            } 
 
-            res.status(200).json({
+            return res.status(200).json({
                 message: "게시글조회 성공",
-                data: { findContent, findReply } 
+                data: { findContent, findReply }
             });
+            
         } catch (err) {
-          console.log(err);
-          throw new Error(err);
+        console.log(err);
+        throw new Error(err);
+        }
+    },
+
+    /** 첨부파일 다운로드 */
+    async fileDownload(req, res) {
+        try {
+            const reqNo = req.query.community_no;
+            const fileStream = req.fileStream;        
+            const findContent = await Community.find({ community_no: reqNo });
+
+            if (!findContent) {
+                return res.status(400).json({ message: "파일 다운로드 실패" });
+            }
+        
+            /** 다운로드 파일 전달 */
+            if (fileStream) {
+                res.set('Content-Type', fileStream.contentType);
+                res.set('Content-Disposition', fileStream.contentDisposition);
+                fileStream.fileStream.pipe(res);
+
+                return res.status(200).json({
+                    message: "파일 다운로드 성공"
+                });
+            }
+        } catch (err) {
+        console.log(err);
+        throw new Error(err);
         }
     },
 
     /** 게시글수정 */
     async modifyContent(req, res) {
         try {
+            const { title, content } = req.body;
+            const reqNo = req.query.community_no;
+            const findContent = await Community.findOne({ community_no: reqNo });
 
-            const { community_no, title, content, attach } = req.body;
-            const findContent = await Community.findOne({ community_no });
-            const findNo = findContent.community_no;
-            // console.log('findNo: ', findNo);
-            // console.log('findContent: ', findContent);
+            const ETag = req.ETag;
+            const fileName = req.fileName;
+            const fileKey = req.fileKey;
 
             if(!findContent) {
                 return res.status(400).json({ message: "게시글찾기 실패" });
             }
 
-            
-            const updateContent = await Community.findOneAndUpdate({ community_no: findNo }, {
+            const updateContent = await Community.findOneAndUpdate({ community_no: reqNo }, {
                 title,
                 content,
-                attach,
+                fileKey: fileKey,
+                fileETag: ETag,
+                fileName: fileName,
             }, { new: true });
-            // console.log('updateContent: ', updateContent);
-
-            // const updateContent = new Community({ community_no: findNo });
-            // const newContent = await updateContent.save();
-            // console.log("newContent: ", newContent);
             
             if (!updateContent){
                 return res.status(400).json({ message: "게시글수정 실패" });
             }
 
-            // console.log('updateContent: ', updateContent);
-            res.status(200).json({
+            return res.status(200).json({
                 message: "게시글수정 성공",
                 data: updateContent,
             });
@@ -147,9 +170,8 @@ const communityApi = {
             }
 
             const deleteContent = await Community.deleteOne({ community_no: reqNo });
-            // console.log('deleteContent: ', deleteContent);
             
-            res.status(200).json({
+            return res.status(200).json({
                 message: "게시글삭제 성공",
             });
         } catch (err) {
@@ -162,7 +184,7 @@ const communityApi = {
     async postReply(req, res) {
 
         try {
-            const { reply_author, reply_content, community_no } = req.body;
+            const { reply_user_id, reply_content, community_no } = req.body;
 
             /** 댓글번호 순차부여 */
             async function getLastCommunityNo() {
@@ -175,12 +197,10 @@ const communityApi = {
             /** 댓글번호 생성 */
             const lastCommunityNo = await getLastCommunityNo();
             const newCommunityNo = lastCommunityNo + 1;
-
-            // const findContent = await Community.findOne({ community_no });
     
             const newContent = await CommunityReply.create({
                 reply_no: newCommunityNo,
-                reply_author,
+                reply_user_id,
                 reply_content,
                 community_no,
             });
@@ -189,7 +209,7 @@ const communityApi = {
                 return res.status(400).json({ message: "댓글등록 실패" });
             }
 
-            res.status(200).json({ 
+            return res.status(200).json({ 
                 message: "댓글등록 성공",
                 data: newContent,
             });
@@ -216,7 +236,7 @@ const communityApi = {
                 reply_content,
             }, { new: true });
                 
-            res.status(200).json({
+            return res.status(200).json({
                 message: "댓글수정 성공",
                 data: updateContent,
             });
@@ -240,7 +260,7 @@ const communityApi = {
             const deleteContent = await CommunityReply.deleteOne({ reply_no: reqNo });
             console.log('deleteContent: ', deleteContent);
                 
-            res.status(200).json({
+            return res.status(200).json({
                 message: "댓글삭제 성공"
             });
         } catch (err) {

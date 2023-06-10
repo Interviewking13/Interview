@@ -6,38 +6,38 @@ const CommunitySchema = new Schema(
         community_no: {
             type: Number,
         }, 
-        author: [{
-            user_id:  {
-                type: Number, //mongoose.Types.ObjectId
-                ref: "User",
-            },  
-            user_name: {
-                type: String,
-                ref: "User",
-            },  
-        }], 
+        /** 게시글 작성자 */
+        user_id:  {
+            type: mongoose.Types.ObjectId,
+            ref: "User",
+        },
+        /** 해당 게시글을 조회한 회원 : 한 회원은 조회수 하나만 카운트 */
+        readUsers: [{
+            type: mongoose.Types.ObjectId,
+            ref: "User",
+        }],
         title: {
             type: String,
         }, 
         content: {
             type: String,
         },
-        attach: {
+        fileKey: {
+            type: String,
+        }, 
+        fileETag: {
+            type: String,
+        }, 
+        fileName: {
             type: String,
         }, 
         count: {
             type: Number,
         },
-        reply : [{
-            _id:  {
+        reply_id:  {
                 type: mongoose.Types.ObjectId, 
                 ref: "Community",
-            },  
-            reply_no: {
-                type: Number,
-                ref: "Community",
-            },  
-        }], 
+        },    
     },
     {
         timestamps: true,
