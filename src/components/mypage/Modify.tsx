@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Button, Typography, TextField, Grid, Box } from "@mui/material";
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
+import axios from "axios";
 
 //각 페이지컴포넌트 호출
+
+const Users = () => {
+  // const [users, setUsers] = useState([])
+  useEffect(() => {
+    axios
+      .get("http://34.22.79.51:5000/api/user/mypage/:user_id")
+      .then((response) => {
+        console.log(response);
+      });
+  }, []);
+};
+Users();
 
 const MenuButton = () => {
   return (
