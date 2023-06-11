@@ -9,18 +9,17 @@ import { TitleText } from "../../../constants/fonts";
 
 export const StudyTaps = () => {
   const navigate = useNavigate();
-  const onClickTap = (event: any) => {
-    if (event.target.id == "info") navigate("/study/info");
-    else navigate("/study/feedback");
+  const onClickTap = (value: string) => {
+    navigate(`/study/${value}`);
   };
 
   return (
     <StydyTap>
-      <StydyTapText onClick={onClickTap} id="info">
+      <StydyTapText onClick={() => onClickTap("info")}>
         <CreateIcon />
         &nbsp;스터디정보
       </StydyTapText>
-      <StydyTapText onClick={onClickTap} id="feedback">
+      <StydyTapText onClick={() => onClickTap("feedback")}>
         <PeopleAltIcon />
         &nbsp;피드백
       </StydyTapText>
