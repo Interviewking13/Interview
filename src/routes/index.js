@@ -12,7 +12,7 @@ const studyFeedbackRouter = require('./study_feedback');
 router.use(
   cors({
     origin: 'http://localhost:3000',
-    credentials: 'true',
+    credentials: true,
     optionsSuccessStatus: 200,
     exposedHeaders: ['Access-Control-Allow-Origin'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],

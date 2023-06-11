@@ -14,12 +14,16 @@ const bcrypt = require('bcrypt');
 
 const secretKey = process.env.SECRET_KEY;
 
+// const userPayload = {
+//   user_id: 'user123',
+//   username: 'john_doe',
+// };
+
 
 const userTokenValidate = async (req, res, next) => {
   console.log('미들웨어 실행!');
 
   // 미들웨어 로직 처리
-
 
   next();
 };
