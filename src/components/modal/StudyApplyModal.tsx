@@ -1,4 +1,3 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
@@ -6,11 +5,17 @@ import styled from "styled-components";
 import StudyApplyList from "./StudyApplyList";
 import { Link } from "react-router-dom";
 import { dateFomatting } from "../../utils/dateFomatting";
+import { TitleText } from "../../constants/fonts";
+import { colors } from "../../constants/colors";
+import React, { useEffect } from "react";
+
 type StudyApplyModalProps = {
   studyId: number;
 };
+
 const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
-  // 스터디 더미데이터인데 studyId로 aixos.get 요청 보내야함.
+  //console.log(getStudyData());
+
   const studyData = {
     title: "SAFFY 면접 스터디",
     period: "2023-05-30 ~ 2023-06-08",
@@ -60,10 +65,10 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
         <StyledBox>
           <StyledContainer>
             <StyledTopContainer>
-              <StyledH2>스터디 신청하기</StyledH2>
+              <StyledTitleText>스터디 신청하기</StyledTitleText>
               <StyledCancleImg src={imageSrc} alt="Cancel Button" />
             </StyledTopContainer>
-            <StyledTitle>{title}</StyledTitle>
+            <StyledTitleTextNavy>{title}</StyledTitleTextNavy>
             <StudyApplyList
               period={dateFomatting(period)}
               deadline={dateFomatting(deadline)}
@@ -124,18 +129,18 @@ const StyledContainer = styled.div`
   flex-direction: column;
 `;
 
-const StyledH2 = styled.h2`
-  font-size: 24px;
+const StyledTitleText = styled.p`
   margin: 0px;
   margin-bottom: 22px;
-  color: #00e595;
+  ${TitleText}
+  color: ${colors.main_mint}
 `;
 
-const StyledTitle = styled.h2`
-  font-size: 24px;
+const StyledTitleTextNavy = styled.p`
   margin: 0px;
   margin-bottom: 22px;
-  color: #00057d;
+  ${TitleText}
+  color: ${colors.main_navy}
 `;
 
 const TextInput = styled.textarea`
