@@ -155,7 +155,9 @@ const userApi = {
             // JWT 토큰 쿠키에 담아주기
             res.cookie('token', token, {
                 httpOnly: true,
-                maxAge: 3600000, // 1시간 (단위: 밀리초)
+                maxAge: 3600000, // 3600000(=1시간) (단위: 밀리초)
+                sameSite: 'none'
+                // secure: true,
             });
     
             // 설정된 쿠키 값 출력
