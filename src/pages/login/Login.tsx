@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useEffect } from 'react';
+import React, { ChangeEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import Button from "@mui/material/Button";
@@ -8,8 +8,8 @@ import LeftSignContainer from '../../components/auth/LeftSignContainer';
 import { storeTokenInCookie } from '../../components/auth/loginUtils';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState('');
 
@@ -88,7 +88,7 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
   const onClickSignup = () => {
-    navigate('./signup'); // useNavigate 사용하여 페이지 이동
+    navigate("./signup"); // useNavigate 사용하여 페이지 이동
   };
 
   return (
@@ -110,14 +110,21 @@ const LoginPage = () => {
               onChange={onChangePassword}
             />
             <StyledBtnWrapper>
-              <StyledSignupBtn variant="contained" color="primary" type="button" onClick={onClickSignup}>
+              <StyledSignupBtn
+                variant="contained"
+                color="primary"
+                type="button"
+                onClick={onClickSignup}
+              >
                 회원가입
               </StyledSignupBtn>
               <StyledLoginBtn variant="contained" color="primary" type="submit">
                 로그인
               </StyledLoginBtn>
             </StyledBtnWrapper>
-            {error && <StyledErrorMessage>{error.toString()}</StyledErrorMessage>}
+            {error && (
+              <StyledErrorMessage>{error.toString()}</StyledErrorMessage>
+            )}
           </StyledSignupContainer>
         </StyledLoginContainer>
         <StyledSignupCopyright>
@@ -127,7 +134,6 @@ const LoginPage = () => {
     </StyledCommonContainer>
   );
 };
-
 
 const StyledCommonContainer = styled.div`
   background-color: ${colors.back_navy};
@@ -162,9 +168,9 @@ const StyledSignupInput = styled.input`
   border-radius: 10px;
   padding-left: 18px;
   font-weight: 300;
-  font-size: 18px; 
+  font-size: 18px;
   &:first-of-type {
-    margin-top: 15px; 
+    margin-top: 15px;
   }
   &::placeholder {
     color: ${colors.gray_navy};
@@ -183,7 +189,7 @@ const StyledBtnWrapper = styled.div`
 `
 
 const StyledSignupBtn = styled(Button)`
-  &&{
+  && {
     width: 132px;
     height: 45px;
     border-radius: 10px;
