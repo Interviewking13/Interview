@@ -1,5 +1,6 @@
-import styled from "@emotion/styled";
+import styled from "styled-components";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import { SubTextSmall } from "../../../constants/fonts";
 export const DetailTitle = (props: any) => {
   return (
     <SubContainer>
@@ -14,8 +15,10 @@ export const DetailTitle = (props: any) => {
 
 const SubContentContent = styled.span`
   margin-top: 10px;
+  ${SubTextSmall};
 `;
 const SubContentTitle = styled.span`
+  ${SubTextSmall};
   display: flex;
   flex-direction: row;
   margin-top: 10px;
