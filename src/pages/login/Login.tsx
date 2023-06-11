@@ -67,7 +67,6 @@ const LoginPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
       // response 활용가능
       // 1. 응답 데이터 상태로 설정
       // const userData = response.data;
