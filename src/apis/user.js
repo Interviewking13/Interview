@@ -150,7 +150,7 @@ const userApi = {
                 user_id: findUser._id,          // 사용자의 MongoDB ObjectID
             }
 
-            const token = jwt.sign(payload, secretKey, { expiresIn: "15m" });   // 토큰 만료시간 
+            const token = jwt.sign(payload, secretKey, { expiresIn: "60m" });   // 토큰 만료시간 
             
             // JWT 토큰 쿠키에 담아주기
             res.cookie('token', token, {
@@ -198,6 +198,7 @@ const userApi = {
             const decoded = jwt.verify(token, secretKey);
             
             if (!decoded) {
+                console.error(err);
                 return res.status(401).json({
                 resultCode: "401",
                 message: "유효하지 않은 토큰입니다.",
@@ -288,6 +289,7 @@ const userApi = {
             const decoded = jwt.verify(token, secretKey);
             
             if (!decoded) {
+                console.error(err);
                 return res.status(401).json({
                 resultCode: "401",
                 message: "유효하지 않은 토큰입니다.",
@@ -406,6 +408,7 @@ const userApi = {
             const decoded = jwt.verify(token, secretKey);
             
             if (!decoded) {
+                console.error(err);
                 return res.status(401).json({
                 resultCode: "401",
                 message: "유효하지 않은 토큰입니다.",
