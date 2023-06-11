@@ -9,13 +9,15 @@ const studyApi = {
   async newStudy(req, res, next) {
     try {
       // 스터디 개설
-      const user_id = req.user._id;
-      const { study_name, title, content, deadline, headcount, chat_link, status } = req.body;
+      const { study_name, title, content, start, end, deadline, headcount, chat_link, status } =
+        req.body;
 
       const createInfo = {
         study_name,
         title,
         content,
+        start,
+        end,
         deadline,
         headcount,
         chat_link,
@@ -27,8 +29,10 @@ const studyApi = {
       res.status(200).json(createdStudy);
 
       // 스터디 관계 생성
+      const user_id = req.user._id;
       const study_id = createdStudy._id;
       console.log(study_id);
+      console.log(user_id);
 
       const createRelation = {
         user_id,
