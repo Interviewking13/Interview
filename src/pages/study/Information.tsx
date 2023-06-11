@@ -10,6 +10,7 @@ import { getInfoAllStudyData, getInfoStudyData } from "../../api/api-study";
 import { SubmitButton } from "./common/SubmitButton";
 import axios from "axios";
 import { dateSplice } from "../../utils/dateFomatting";
+import { useLocation } from "react-router-dom";
 
 const data = {
   // 스터디 정보
@@ -33,6 +34,10 @@ const data = {
 };
 
 const Information: React.FC = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const queryParamValue = queryParams.get("id");
+  //스터디 목록에서 특정 스터디 클릭시 스터디 id를 쿼리로 받아서 화면에 보여줄예정
   const [studyData, setStudyData] = useState({
     title: "",
     study_name: "",
@@ -44,7 +49,8 @@ const Information: React.FC = () => {
   });
 
   useEffect(() => {
-    getInfoStudyData()
+    console.log(queryParamValue);
+    getInfoStudyData("6481c6cf73e7175d6c31e18d")
       .then((response) => {
         console.log(response.data);
         setStudyData(response.data);
@@ -55,9 +61,8 @@ const Information: React.FC = () => {
   }, []);
   return (
     <Container>
-      <div>{}</div>
       <Mystudy>{studyData.status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
-      <StudyTaps></StudyTaps>
+      <StudyTaps />
       <Title>{studyData.title}</Title>
       <SubTitle>
         <DetailTitle
