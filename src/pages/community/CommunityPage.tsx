@@ -1,12 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Button, Grid } from "@mui/material";
-import { Create, Person, Checklist } from "@mui/icons-material";
-import { useNavigate } from 'react-router-dom';
-import BoardListItemContainer from '../community/components/BoardListItemContainer';
-import BestBoardListItemContainer from '../community/components/BestBoardListItemContainer';
-import MenuTapBtn from '../../components/UI/MenuTapBtn';
-
+import React from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import BoardListItemContainer from "../community/components/BoardListItemContainer";
 
 const CommunityPage: React.FC = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -15,50 +10,45 @@ const CommunityPage: React.FC = () => {
     e.preventDefault();
     // 검색하기 버튼 클릭 시 처리 로직
     // 입력된 검색어 활용 등
-    console.log('Search');
+    console.log("Search");
   };
 
   const handleCreatePost = () => {
-    navigate('/community/communityCreatePage');
+    navigate("/community/communityCreatePage");
   };
-
 
   return (
     <StyledCommonContainer>
-      <Grid container spacing={1} justifyContent="flex-start">
-        <MenuTapBtn onClick={handleCreatePost}>
-          <Checklist />
-          버튼 내용
-        </MenuTapBtn>
-      </Grid>
       <StyledContainer>
         <StyledHeadContainer>
-          <StyledTitle>커뮤니티</StyledTitle>
-          <StyledText>회원들과 정보를 공유해보세요.</StyledText>
-          <StyledSelect>
-            <option value="all">전체</option>
-            <option value="mypost">내가쓴글</option>
-          </StyledSelect>
-          <StyledSelect>
-            <option value="popular">인기순</option>
-          </StyledSelect>
-          <StyledSearchContainer onSubmit={handleSearch}>
-            <StyledSearchInput type="text" placeholder="검색하기" />
-          </StyledSearchContainer>
-          <StyledPostButton onClick={handleCreatePost}>글쓰기</StyledPostButton>
+          <StyledC>
+            <StyledTitle>커뮤니티</StyledTitle>
+            <StyledText>회원들과 정보를 공유해보세요.</StyledText>
+          </StyledC>
+          <StyledC>
+            <StyledSearchContainer onSubmit={handleSearch}>
+              <StyledSearchInput type="text" placeholder="검색하기" />
+            </StyledSearchContainer>
+            <StyledPostButton onClick={handleCreatePost}>
+              글쓰기
+            </StyledPostButton>
+          </StyledC>
         </StyledHeadContainer>
         {/* 게시판 목록 컨테이너, 아이템 컴포넌트 불러오기 */}
-        <BestBoardListItemContainer />
+        {/* <BestBoardListItemContainer /> */}
         <BoardListItemContainer />
       </StyledContainer>
-
     </StyledCommonContainer>
   );
 };
 
+const StyledC = styled.div`
+  display: flex;
+`;
+
 const StyledCommonContainer = styled.div`
   width: 1270px;
-  margin: 0 auto;
+  margin: 0px auto;
 `;
 
 const StyledContainer = styled.div`
@@ -69,49 +59,37 @@ const StyledContainer = styled.div`
 
 const StyledHeadContainer = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-`
+  margin: 30px 0;
+`;
 
 const StyledSearchContainer = styled.form`
-  align-items: center;
-  margin-right: 15px;
+  text-align: center;
 `;
 
-const StyledTitle = styled.h2`
-  height: fit-content;
-  font-family: 'establish Retrosans';
+const StyledTitle = styled.div`
+  font-family: "establish Retrosans";
   font-size: 32px;
-  font-weight: 400;
-  color: #00057D;
+  color: #00057d;
 `;
 
-const StyledText = styled.h2`
-  margin: 0 85px 0 40px;
+const StyledText = styled.div`
   font-size: 18px;
   font-weight: 300;
-  color: #8689A3;
-`;
-
-const StyledSelect = styled.select`
-  width: 133px;
-  height: 45px;
-  margin-right: 15px;
-  border-radius: 10px;
-  border: 1px solid #00057D;
-  font-size: 18px;
-  font-weight: 300;
-  color: #00057D;
+  color: #8689a3;
+  margin-left: 20px;
 `;
 
 const StyledSearchInput = styled.input`
+  text-align: center;
   width: 325px;
   height: 45px;
   border-radius: 10px;
-  border: 1px solid #00057D;
+  border: 1px solid #00057d;
   font-size: 18px;
   font-weight: 300;
-  color: #C0C3E5;
+  color: #c0c3e5;
   padding: 0;
   box-sizing: border-box;
 `;
@@ -120,15 +98,14 @@ const StyledPostButton = styled.button`
   width: 132px;
   height: 45px;
   padding: 10px 20px;
-  background-color: #00E595;
-  color: #0E0E0E;
+  background-color: #00e595;
+  color: #0e0e0e;
   font-size: 18px;
   font-weight: 600;
   border-radius: 10px;
   border: none;
+  margin-left: 20px;
   cursor: pointer;
 `;
-
-
 
 export default CommunityPage;

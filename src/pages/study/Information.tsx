@@ -8,35 +8,14 @@ import { colors } from "../../constants/colors";
 import { SubTextBig, TitleText } from "../../constants/fonts";
 import { getInfoAllStudyData, getInfoStudyData } from "../../api/api-study";
 import { SubmitButton } from "./common/SubmitButton";
-import axios from "axios";
 import { dateSplice } from "../../utils/dateFomatting";
 import { useLocation } from "react-router-dom";
 
-const data = {
-  // 스터디 정보
-  study_id: 1,
-  study_name: "interview king",
-  title: "신입 백엔드 개발자 취업을 위한 CS 스터디",
-  content: "우리 스터디는 ~~을 목표로 하고, ...을 규칙으로 함",
-  start: "2023-06-15",
-  end: "2023-07-30",
-  deadline: "2023-05-30",
-  headcount: 6,
-  chat_link:
-    "https://us05web.zoom.us/j/83754399005?pwd=QWRMY0I4VjhkWkhtdHdydkhTM0dLUT09",
-  status: 0,
-
-  // 스터디원 신청 정보 (스터디 신청 시, 사용자가 입력)
-  user_name: "강혜리",
-  email: "merrykang1103@gmail.com",
-  phone_number: "010-7296-2003",
-  goal: "금융, 인공지능",
-};
-
 const Information: React.FC = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const queryParamValue = queryParams.get("id");
+  const path = location.pathname;
+  const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
+
   //스터디 목록에서 특정 스터디 클릭시 스터디 id를 쿼리로 받아서 화면에 보여줄예정
   const [studyData, setStudyData] = useState({
     title: "",
@@ -46,11 +25,12 @@ const Information: React.FC = () => {
     start: "",
     end: "",
     chat_link: "",
+    headcount: 0,
+    acceptcount: 0,
   });
 
   useEffect(() => {
-    console.log(queryParamValue);
-    getInfoStudyData("6481c6cf73e7175d6c31e18d")
+    getInfoStudyData(lastPathSegment)
       .then((response) => {
         console.log(response.data);
         setStudyData(response.data);
@@ -79,7 +59,10 @@ const Information: React.FC = () => {
             studyData.end
           )}`}
         ></DetailTitle>
-        <DetailTitle name="&nbsp;인원" content={data.headcount}></DetailTitle>
+        <DetailTitle
+          name="&nbsp;인원"
+          content={`${studyData.acceptcount} / ${studyData.headcount}명`}
+        ></DetailTitle>
         <DetailTitle name="&nbsp;스터디장" content="이용섭"></DetailTitle>
       </SubTitle>
       <Divider></Divider>
