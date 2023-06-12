@@ -84,12 +84,12 @@ const StyledRightPostItem = styled.div`
 const StyledPostTitle = styled.p`
   font-size: 18px;
   font-weight: 500;
-  color: ${colors.main_black};
+  color: ${colors.main_navy};
   margin: 0;
 `;
 
 const StyledPostItem = styled.p`
-  color: ${colors.main_black};
+  color: ${colors.main_navy};
   ${SubTextThinSmall};
   flex-grow: 0;
   flex-shrink: 0;

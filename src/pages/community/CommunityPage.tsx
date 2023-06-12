@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Button, Grid } from "@mui/material";
+import { Create, Person, Checklist } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
 import BoardListItemContainer from '../community/components/BoardListItemContainer';
 import BestBoardListItemContainer from '../community/components/BestBoardListItemContainer';
+import MenuTapBtn from '../../components/UI/MenuTapBtn';
+
 
 const CommunityPage: React.FC = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -21,7 +25,12 @@ const CommunityPage: React.FC = () => {
 
   return (
     <StyledCommonContainer>
-
+      <Grid container spacing={1} justifyContent="flex-start">
+        <MenuTapBtn onClick={handleCreatePost}>
+          <Checklist />
+          버튼 내용
+        </MenuTapBtn>
+      </Grid>
       <StyledContainer>
         <StyledHeadContainer>
           <StyledTitle>커뮤니티</StyledTitle>

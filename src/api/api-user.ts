@@ -25,6 +25,7 @@ export const postSignIn = async (email: string, password: string) => {
     email,
     password,
   });
+  console.log(response);
   return response;
 };
 
