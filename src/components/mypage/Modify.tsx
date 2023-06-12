@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { getUserData } from "../../api/api-user";
 import { Button, Typography, TextField, Grid, Box } from "@mui/material";
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
-import axios from "axios";
+import FileUploader from "../UI/FileUploader";
 
 type userDate = {
   name: string;
@@ -24,6 +25,23 @@ type userDate = {
 //     console.error(error);
 //   });
 
+const YourComponent = () => {
+  const {
+    data: userData,
+    isLoading,
+    isError,
+  } = useQuery("getUserData", () =>
+    getUserData("6481bc83cd2bf33d75c6b3d4", "your_token_here")
+  );
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error occurred while fetching data</div>;
+  }
+};
 const MenuButton = () => {
   return (
     <>
@@ -131,6 +149,7 @@ const Modify = () => {
           </Grid>
           <Grid item xs={8}>
             <StyledTextField variant="outlined" type="file" fullWidth />
+            <FileUploader />
           </Grid>
           <Grid item xs={2} container justifyContent="flex-end">
             <StyledFindButton variant="contained">파일찾기</StyledFindButton>
