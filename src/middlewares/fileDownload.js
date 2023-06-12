@@ -13,8 +13,8 @@ async function fileDownload(req, res, next) {
     const reqNo = req.query.community_no;
     const reqContent = await Community.find({ community_no: reqNo });
 
-    const key = reqContent[0].fileKey;
-    const etag = reqContent[0].fileETag;
+    const key = reqContent[0].file_key;
+    const etag = reqContent[0].file_etag;
 
     /** S3에서 다운로드할 파일 가져오기 */
     const downloadFile = async (key, etag) => {
