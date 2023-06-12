@@ -188,23 +188,33 @@ const userApi = {
         // const secretKey = 'your_test_key';
         // const headerToken = req.headers.authorization;
         const token = req.cookies.token;
-
+        console.log('미들웨어 실행 -> userApi getUserInfo 도착!');
         console.log('내정보조회' + req.cookies.token);
 
         try {
             
-            const { user_id } = req.params;
+            // const { user_id } = req.params;
 
-            const decoded = jwt.verify(token, secretKey);
+            // console.log('middleware 에서 불러온 decoded값' + req.user);
+            // middleware 에서 불러온 decoded값[object Object]
+            // 64861538a1783d4f1622f41c
             
-            if (!decoded) {
-                console.error(err);
-                return res.status(401).json({
-                resultCode: "401",
-                message: "유효하지 않은 토큰입니다.",
-                token: token
-                });
-            }
+            // middleware 이용 테스트
+            const { user_id } = req.user;
+            console.log(user_id);
+
+            console.log('middleware 에서 불러온 decoded값' + user_id);
+            
+            // const decoded = jwt.verify(token, secretKey);
+            
+            // if (!decoded) {
+            //     console.error(err);
+            //     return res.status(401).json({
+            //     resultCode: "401",
+            //     message: "유효하지 않은 토큰입니다.",
+            //     token: token
+            //     });
+            // }
 
             const findUser = await User.findOne(
                 { "_id": user_id },
@@ -269,12 +279,23 @@ const userApi = {
         // const secretKey = 'your_test_key';
         // const headerToken = req.headers.authorization;
         const token = req.cookies.token;
-
+        console.log('미들웨어 실행 -> userApi modifyUserInfo 도착!');
         console.log('내정보수정' + req.cookies.token);
 
         try {
-            const { user_id, email, password, intro_yn, phone_number } = req.body;
-            // const { email, password, intro_yn, phone_number } = req.body;
+            
+            // middleware 이용 테스트
+            const { user_id } = req.user;
+            console.log(user_id);
+            console.log('middleware 에서 불러온 decoded값' + user_id);
+            
+            // middleware 이용 테스트
+            // const { decodedUserId } = req.user;
+            // console.log(decodedUserId);
+            // console.log('middleware 에서 불러온 decoded값' + decodedUserId);
+
+            // const { user_id, email, password, intro_yn, phone_number } = req.body;
+            const { email, password, intro_yn, phone_number } = req.body;
 
             const findUser = await User.findOne({ "_id": user_id });    //나중에 user_id 값 사용가능하면? 사용가능할듯.
             // const findUser = await User.findOne({ "email": email });
@@ -286,16 +307,16 @@ const userApi = {
                 });
             }
             
-            const decoded = jwt.verify(token, secretKey);
+            // const decoded = jwt.verify(token, secretKey);
             
-            if (!decoded) {
-                console.error(err);
-                return res.status(401).json({
-                resultCode: "401",
-                message: "유효하지 않은 토큰입니다.",
-                token: token
-                });
-            }
+            // if (!decoded) {
+            //     console.error(err);
+            //     return res.status(401).json({
+            //     resultCode: "401",
+            //     message: "유효하지 않은 토큰입니다.",
+            //     token: token
+            //     });
+            // }
 
             // 기존 사용자 정보
             const findUserId = findUser._id;
@@ -400,23 +421,29 @@ const userApi = {
         
         // const headerToken = req.headers.authorization;
         const token = req.cookies.token;
-        
+        console.log('미들웨어 실행 -> userApi deleteUser 도착!');
         console.log('회원탈퇴' + req.cookies.token);
 
         try {
 
-            const decoded = jwt.verify(token, secretKey);
+            // middleware 이용 테스트
+            const { user_id } = req.user;
+            console.log(user_id);
+            console.log('middleware 에서 불러온 decoded값' + user_id);
+
+            // const decoded = jwt.verify(token, secretKey);
             
-            if (!decoded) {
-                console.error(err);
-                return res.status(401).json({
-                resultCode: "401",
-                message: "유효하지 않은 토큰입니다.",
-                token: token
-                });
-            }
+            // if (!decoded) {
+            //     console.error(err);
+            //     return res.status(401).json({
+            //     resultCode: "401",
+            //     message: "유효하지 않은 토큰입니다.",
+            //     token: token
+            //     });
+            // }
             
-            const { user_id, email, password } = req.body;
+            // const { user_id, email, password } = req.body;
+            const { email, password } = req.body;
 
             const findUser = await User.findOne({ "_id": user_id });
 
