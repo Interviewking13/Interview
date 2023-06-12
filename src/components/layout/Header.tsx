@@ -52,7 +52,7 @@ const Header = (): JSX.Element => {
           <StyledLogo to="/">면접왕</StyledLogo>
         </StyledLogoContainer>
         <StyledNavItemContainer>
-          <StyledNavItem to="/studylist">스터디</StyledNavItem>
+          <StyledNavItem to="/study">스터디</StyledNavItem>
           <StyledNavItem to="/community/communityPage">커뮤니티</StyledNavItem>
           <StyledNavItem to="/userstudy">나의 스터디</StyledNavItem>
         </StyledNavItemContainer>
