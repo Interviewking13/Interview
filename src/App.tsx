@@ -18,6 +18,7 @@ import { Feedback } from "./pages/study/Feedback";
 import Information from "./pages/study/Information";
 import CommunityCreatePage from "./pages/community/CommunityCreatePage";
 import CommunityPage from "./pages/community/CommunityPage";
+import { CommunityDetailPage } from "./pages/community/ComunityDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,10 @@ function App() {
               <Route
                 path="/Community/CommunityCreatePage"
                 element={<CommunityCreatePage />}
+              />
+              <Route
+                path="/Community/CommunityDetailPage/:id"
+                element={<CommunityDetailPage />}
               />
             </Routes>
           </Layout>

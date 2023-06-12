@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { colors } from "../../../constants/colors";
 import { SubTextThinSmall } from "../../../constants/fonts";
 import { getAllCommunityData } from "../../../api/api-community";
+import { useNavigate } from "react-router-dom";
 
 const BoardListItem: React.FC = () => {
   const [startPage, setStartPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [allPosts, setAllPosts] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
-
+  const navigate = useNavigate(); // useNavigate 훅 사용
   useEffect(() => {
     getAllCommunityData()
       .then((response) => {
@@ -43,18 +44,19 @@ const BoardListItem: React.FC = () => {
       onClickPageBtn(nextPage);
     }
   };
-
-  const onItemClick = (id: string) => {
-    console.log(id);
+  const onItemClick = (e: any) => {
+    navigate(`/Community/communityDetailPage/${e.currentTarget.id}`);
+    console.log(e.currentTarget.id);
   };
 
   return (
     <StyledPostListItem>
       {posts.map((post) => (
         <StyledPostItems
+          onClick={onItemClick}
           key={post.community_id}
           id={post.community_id}
-          onClick={() => onItemClick(post.community_id)}
+          // onClick={() => onItemClick(post.community_id)}
         >
           <StyledLeftPostItem>
             <StyledPostTitle>{post.title}</StyledPostTitle>
