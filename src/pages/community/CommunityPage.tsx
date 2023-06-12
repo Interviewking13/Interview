@@ -42,7 +42,8 @@ const CommunityPage: React.FC = () => {
   );
 };
 
-const StyledC = styled.div`
+export const StyledC = styled.div`
+  margin-top: 20px;
   display: flex;
 `;
 
@@ -68,13 +69,13 @@ const StyledSearchContainer = styled.form`
   text-align: center;
 `;
 
-const StyledTitle = styled.div`
+export const StyledTitle = styled.div`
   font-family: "establish Retrosans";
   font-size: 32px;
   color: #00057d;
 `;
 
-const StyledText = styled.div`
+export const StyledText = styled.div`
   font-size: 18px;
   font-weight: 300;
   color: #8689a3;

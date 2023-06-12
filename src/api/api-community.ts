@@ -29,7 +29,7 @@ export const getDataByCommunity_noAndUser_id = async (
   user_id: string
 ) => {
   const response = await axiosInstance.get(
-    `community/detl/${community_no}/${user_id}`
+    `community/detl?community_id=${community_no}&${user_id}`
   );
   return response;
 };
