@@ -4,13 +4,14 @@ const mongoose = require('mongoose');
 const StudySchema = new Schema({
   // 스터디 정보
   study_id: { type: mongoose.Types.ObjectId }, // identification value
-  study_name: { type: String, unique: true },
+  study_name: { type: String },
   title: { type: String },
   content: { type: String },
   start: { type: Date },
   end: { type: Date },
   deadline: { type: Date }, // 모집완료날짜
   headcount: { type: Number, maximum: 10 }, // 최대 모집 인원
+  acceptcount: { type: Number, default: 0 },
   chat_link: {
     type: String,
     // pattern: '^https?:\\/\\/(?:www\\.)?zoom\\.us\\/(?:j\\/|my\\/|meetings\\/join\\?)[^\\s]+$',
