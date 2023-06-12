@@ -1,100 +1,61 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
-import { colors } from '../../constants/colors';
+import { colors } from "../../constants/colors";
 import Button from "@mui/material/Button";
-import axios from 'axios';
-import LeftSignContainer from '../../components/auth/LeftSignContainer';
+import LeftSignContainer from "../../components/auth/LeftSignContainer";
+import { postSignUp } from "../../api/api-user";
 
 const SignupPage = () => {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  // 테스트 데이터
-  // const testData: { name: string; email: string; password: string; phone_number: string; }[] = [
-  //   {
-  //     name: "박세진",
-  //     email: "cobaltcyan.park@gmail.com",
-  //     password: "tpwls1234",
-  //     phone_number: "010-4916-4244",
-  //   },
-  // ];
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const replaceText = "";
+    const nameValidated = name.replace(/[^가-힣a-zA-Z]/g, replaceText);
+    const phoneValidated = phone.replace(/[^0-9-]/g, replaceText);
+    const emailValidated = email.replace(/[^a-zA-Z0-9@.]/g, replaceText);
+    const passwordValidated = password.replace(/[^a-zA-Z0-9]/g, replaceText);
+    const confirmPasswordValidated = confirmPassword.replace(
+      /[^a-zA-Z0-9]/g,
+      replaceText
+    );
 
-    try {
-      const replaceText = "";
-      const nameValidated = name.replace(/[^가-힣a-zA-Z]/g, replaceText);
-      const phoneValidated = phone.replace(/[^0-9-]/g, replaceText);
-      const emailValidated = email.replace(/[^a-zA-Z0-9@.]/g, replaceText);
-      const passwordValidated = password.replace(/[^a-zA-Z0-9]/g, replaceText);
-      const confirmPasswordValidated = confirmPassword.replace(/[^a-zA-Z0-9]/g, replaceText);
-
-      if (!name || !phone || !email || !password || !confirmPassword) {
-        console.log("모든 필드를 입력해야 합니다.");
-        return;
-      }
-
-      if (nameValidated.length < 2) {
-        console.log("이름은 최소 2자 이상이어야 합니다.");
-        return;
-      }
-
-      if (phoneValidated !== phone) {
-        console.log("전화번호는 숫자와 - 기호로만 입력해야 합니다.");
-        return;
-      }
-
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(email)) {
-        console.log("유효한 이메일 주소를 입력해야 합니다.");
-        return;
-      }
-
-      if (passwordValidated.length < 6) {
-        console.log("비밀번호는 6자 이상으로 설정해주세요.");
-        return;
-      }
-
-      if (password !== confirmPassword) {
-        console.log("비밀번호가 일치하지 않습니다.");
-        return;
-      }
-
-      // 테스트 데이터에서 이름, 이메일, 비밀번호, 전화번호가 일치하는지 확인
-      // const matchedUser = testData.find(
-      //   (user: { name: string; email: string; password: string; phone_number: string; }) =>
-      //     user.name === name &&
-      //     user.email === email &&
-      //     user.password === password &&
-      //     user.phone_number === phone
-      // );
-
-      // if (matchedUser) {
-      //   console.log("회원가입 성공");
-      //   console.log(matchedUser);
-      // } else {
-      //   console.log("테스트 데이터와 일치하지 않습니다.");
-      //   return;
-      // }
-
-      // try {
-      const response = await axios.post('http://34.22.79.51:5000/api/user/register', {
-        name,
-        phone,
-        email,
-        password,
-      });
-
-      console.log("회원가입 성공");
-      console.log(response.data);
-    } catch (error) {
-      console.log("회원가입 실패");
-      console.error(error);
+    if (!name || !phone || !email || !password || !confirmPassword) {
+      console.log("모든 필드를 입력해야 합니다.");
+      return;
     }
+
+    // if (nameValidated.length < 2) {
+    //   console.log("이름은 최소 2자 이상이어야 합니다.");
+    //   return;
+    // }
+
+    // if (phoneValidated !== phone) {
+    //   console.log("전화번호는 숫자와 - 기호로만 입력해야 합니다.");
+    //   return;
+    // }
+
+    // const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    // if (!emailRegex.test(email)) {
+    //   console.log("유효한 이메일 주소를 입력해야 합니다.");
+    //   return;
+    // }
+
+    // if (passwordValidated.length < 6) {
+    //   console.log("비밀번호는 6자 이상으로 설정해주세요.");
+    //   return;
+    // }
+
+    // if (password !== confirmPassword) {
+    //   console.log("비밀번호가 일치하지 않습니다.");
+    //   return;
+    // }
+    postSignUp(name, email, password, passwordValidated);
+    console.log(postSignUp);
   };
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -177,10 +138,10 @@ const StyledSignupWrapper = styled.div`
 `;
 
 const StyledSignupContainer = styled.div`
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledSignupInputContainer = styled.form`
@@ -199,9 +160,9 @@ const StyledSignupInput = styled.input`
   border-radius: 10px;
   padding-left: 18px;
   font-weight: 300;
-  font-size: 18px; 
+  font-size: 18px;
   &:first-of-type {
-    margin-top: 15px; 
+    margin-top: 15px;
   }
   &::placeholder {
     color: ${colors.gray_navy};
@@ -234,7 +195,7 @@ const StyledSignupBtn = styled(Button)`
 const StyledSignupCopyright = styled.div`
   text-align: center;
   font-size: 14px;
-  color: #C0C3E5;
-`
+  color: #c0c3e5;
+`;
 
 export default SignupPage;

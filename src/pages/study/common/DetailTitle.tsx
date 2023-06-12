@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { SubTextSmall } from "../../../constants/fonts";
-export const DetailTitle = (props: any) => {
+interface DetailTitleProps {
+  name: string;
+  content: any;
+}
+
+export const DetailTitle = (props: DetailTitleProps) => {
   return (
     <SubContainer>
       <SubContentTitle>

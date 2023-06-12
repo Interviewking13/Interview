@@ -10,9 +10,11 @@ import Layout from "./components/layout/Layout";
 import TestPage from "./components/modal/TestPage";
 import LoginPage from "./pages/login/Login";
 import SignupPage from "./pages/login/SignupPage";
-import StudyApply from "./pages/mypage/components/StudyApply";
-import UserInfo from "./pages/mypage/components/UserInfo";
-import UserStudy from "./pages/mypage/components/UserStudy";
+import StudyApply from "./components/mypage/StudyApply";
+import UserInfo from "./components/mypage/UserInfo";
+import UserStudy from "./components/mypage/UserStudy";
+import Modify from "./components/mypage/Modify";
+
 import { Feedback } from "./pages/study/Feedback";
 import Information from "./pages/study/Information";
 import CommunityCreatePage from "./pages/community/CommunityCreatePage";
@@ -33,6 +35,8 @@ function App() {
                 <Route path="studyapply" element={<StudyApply />} />
                 <Route path="userinfo" element={<UserInfo />} />
               </Route>
+              <Route path="/mypage/userinfo/modify" element={<Modify />} />
+
               <Route path="/login" element={<LoginPage />} />
               <Route path="/login/signup" element={<SignupPage />} />
               <Route path="/study" element={<StudyList />} />

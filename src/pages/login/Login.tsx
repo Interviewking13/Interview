@@ -1,24 +1,17 @@
-import React, { ChangeEvent, useState, useEffect } from 'react';
+import React, { ChangeEvent, useState, useEffect } from "react";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import Button from "@mui/material/Button";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LeftSignContainer from '../../components/auth/LeftSignContainer';
+import { storeTokenInCookie } from '../../components/auth/loginUtils';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState('');
-
-  // 테스트데이터
-  // const testData = [
-  //   {
-  //     email: 'cobaltcyan.park@gmail.com',
-  //     password: 'tpwls1234',
-  //   },
-  // ];
 
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,20 +22,60 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await axios.post('http://34.22.79.51:5000/api/user/login', {
+      const response = await axios.post("http://34.22.79.51:5000/api/user/login", {
         email,
-        password
+        password,
       });
+      // response값 확인
+      console.log(response);
 
-      if (response.data.success) {
-        console.log("로그인 성공");
-        navigate('/homepage'); // 로그인 성공 시 홈페이지로 이동
+      if (response.status === 200) {
+        const { resultCode, message, data } = response.data;
+
+        if (resultCode === '200') {
+          const { user_id, token } = data || {}; // 데이터가 undefined인 경우 빈 객체를 기본값으로 사용
+
+          if (user_id && token) {
+            storeTokenInCookie(token);
+
+            console.log("User ID:", user_id);
+            console.log("Token:", token);
+
+            fetchUserData(token, user_id);
+            // navigate('/'); // 로그인 성공시 홈으로 이동
+          }
+        } else {
+          setError(message);
+        }
       } else {
-        console.log("로그인 실패");
-
+        setError("네트워크 오류가 발생했습니다.");
       }
+
+
     } catch (error) {
-      setError("에러 발생: " + String(error));
+      console.error("Error:", error);
+    }
+
+  };
+
+  const fetchUserData = async (token: string, userId: string) => {
+    console.log("Token:", token); // 토큰 값 확인
+
+    try {
+      const response = await axios.get(`http://34.22.79.51:5000/api/user/mypage/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // response 활용가능
+      // 1. 응답 데이터 상태로 설정
+      // const userData = response.data;
+      // setUser(userData);
+
+      // 2. 다른 함수에 전달하기
+      // processUserData(response.data);
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
@@ -54,38 +87,7 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
   const onClickSignup = () => {
-    navigate('./signup'); // useNavigate 사용하여 페이지 이동
-  };
-
-  useEffect(() => {
-    fetchData()
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
-
-  // const fetchData = () => {
-  //   const user_id = "6478073927182b326a1ced5c"; // 원하는 임의의 user_id 값
-  //   const user_password ="$2b$10$pAm1KetUgiKxto4Hd8oUV.QqHXhKtBq9gAnPktMytb7lY4LmpGjly" // 원하는 임의의 user_password 값
-  //   return axios
-  //     .get(`http://34.22.79.51:5000/api/user/mypage/${user_id}`)
-  //     .then((response) => response.data);
-  // };
-
-  const fetchData = () => {
-    const user_id = "6478073927182b326a1ced5c"; // 원하는 임의의 user_id 값
-    const user_password = "$2b$10$pAm1KetUgiKxto4Hd8oUV.QqHXhKtBq9gAnPktMytb7lY4LmpGjly"; // "원하는_임의의_비밀번호" 부분을 원하는 비밀번호로 대체하세요.
-
-    return axios
-      .get(`http://34.22.79.51:5000/api/user/mypage/${user_id}`, {
-        headers: {
-          Authorization: `Bearer ${user_password}`,
-        },
-      })
-      .then((response) => response.data);
+    navigate("./signup"); // useNavigate 사용하여 페이지 이동
   };
 
   return (
@@ -107,14 +109,21 @@ const LoginPage = () => {
               onChange={onChangePassword}
             />
             <StyledBtnWrapper>
-              <StyledSignupBtn variant="contained" color="primary" type="button" onClick={onClickSignup}>
+              <StyledSignupBtn
+                variant="contained"
+                color="primary"
+                type="button"
+                onClick={onClickSignup}
+              >
                 회원가입
               </StyledSignupBtn>
               <StyledLoginBtn variant="contained" color="primary" type="submit">
                 로그인
               </StyledLoginBtn>
             </StyledBtnWrapper>
-            {error && <StyledErrorMessage>{error.toString()}</StyledErrorMessage>}
+            {error && (
+              <StyledErrorMessage>{error.toString()}</StyledErrorMessage>
+            )}
           </StyledSignupContainer>
         </StyledLoginContainer>
         <StyledSignupCopyright>
@@ -125,15 +134,16 @@ const LoginPage = () => {
   );
 };
 
-
 const StyledCommonContainer = styled.div`
   background-color: ${colors.back_navy};
 `;
+
 const StyledLoginWrapper = styled.div`
   width: 1270px;
   margin: 0 auto;
   padding-bottom: 30px;
 `;
+
 const StyledLoginContainer = styled.div`
   height: 100vh;
   display: flex;
@@ -157,9 +167,9 @@ const StyledSignupInput = styled.input`
   border-radius: 10px;
   padding-left: 18px;
   font-weight: 300;
-  font-size: 18px; 
+  font-size: 18px;
   &:first-of-type {
-    margin-top: 15px; 
+    margin-top: 15px;
   }
   &::placeholder {
     color: ${colors.gray_navy};
@@ -170,13 +180,15 @@ const StyledSignupInput = styled.input`
     box-shadow: none;
   }
 `;
+
 const StyledBtnWrapper = styled.div`
   display: flex;
   margin-top: 40px;
   margin-left: auto;
 `
+
 const StyledSignupBtn = styled(Button)`
-  &&{
+  && {
     width: 132px;
     height: 45px;
     border-radius: 10px;
@@ -190,6 +202,7 @@ const StyledSignupBtn = styled(Button)`
     }
   }
 `;
+
 const StyledLoginBtn = styled(Button)`
   && {
     width: 132px;
