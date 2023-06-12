@@ -113,7 +113,6 @@ const StyledSubTextThin = styled.p`
   color: ${colors.main_gray};
   margin: 0;
 `;
-
 const StyledStudyCreateArea = styled.div`
     height: 760px;
     margin: 20px 0 20px 0;
