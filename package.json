@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.4",
@@ -23,7 +24,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.9.0",
     "react-query": "^3.39.3",
-    "react-router-dom": "^6.11.2",
+    "react-router-dom": "^6.12.1",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
     "recoil": "^0.7.7",
@@ -59,4 +60,3 @@
     "@types/styled-components": "^5.1.26"
   }
 }
-
