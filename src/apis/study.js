@@ -1,6 +1,8 @@
 const { Study } = require('../models/index');
 const { User } = require('../models/index');
 const { StudyRelation } = require('../models/index');
+const { StudyFeedback } = require('../models/index');
+
 // const mongoose = require('mongoose');
 // const { ObjectId } = require('mongodb');
 
@@ -9,15 +11,18 @@ const studyApi = {
   async newStudy(req, res, next) {
     try {
       // 스터디 개설
-      const user_id = req.user._id;
-      const { study_name, title, content, deadline, headcount, chat_link, status } = req.body;
+      const { study_name, title, content, start, end, deadline, headcount, chat_link, status } =
+        req.body;
 
       const createInfo = {
         study_name,
         title,
         content,
+        start,
+        end,
         deadline,
         headcount,
+        acceptcount: 0,
         chat_link,
         status,
       };
@@ -27,8 +32,10 @@ const studyApi = {
       res.status(200).json(createdStudy);
 
       // 스터디 관계 생성
+      const user_id = req.user._id;
       const study_id = createdStudy._id;
       console.log(study_id);
+      console.log(user_id);
 
       const createRelation = {
         user_id,
@@ -50,10 +57,15 @@ const studyApi = {
   /**스터디 신청*/
   async applyStudy(req, res, next) {
     try {
-      const user_id = req.user._id;
+      const member_id = req.user._id;
+      console.log(member_id);
       const { study_id, goal } = req.body;
+      // 스터디원 권한 판단
+      // const user = await StudyRelation.findOne({ study_id });
+      // console.log(user);
+      // if (user.user_id === member_id) throw new Error('The leader cannot apply.');
       const createInfo = {
-        user_id,
+        user_id: member_id,
         study_id,
         is_leader: 0,
         goal,
@@ -64,9 +76,9 @@ const studyApi = {
       res.status(200).json(applyedStudy);
     } catch (error) {
       console.log(error);
-      res.status(400).json({
-        code: 400,
-        message: 'wrong request',
+      res.status(401).json({
+        code: 401,
+        message: 'The leader cannot apply.',
       });
     }
   },
@@ -74,31 +86,35 @@ const studyApi = {
   /**스터디 신청 수락*/
   async acceptStudy(req, res, next) {
     try {
+      const { member_id, study_id } = req.params;
+      const leader_id = req.user._id;
+
       // 스터디장 권한 판단
-      const { user_id, study_id } = req.params;
-      // const member = StudyRelation.findOne({ user_id: member_id });
-      // if (!member || member.is_leader === 0)
-      //   throw new Error('You do not have authorization to accept study applications.');
+      const leader = await StudyRelation.findOne({ user_id: leader_id, study_id });
+      if (!leader || leader.is_leader === false) throw new Error('Not leader');
+      console.log(leader);
 
-      // 스터디원 권한 판단
-      // const leader_id = req.user._id;
-      // const leader = StudyRelation.findOne({ user_id: leader_id });
-      // if (!leader || leader.is_leader === 1) throw new Error('Only leader can accept');
-
-      // const foundRelation = await StudyRelation.findOne({ study_id, user_id });
-      // if (!foundRelation) {
-      //   throw new Error('Relation not found');
-      // }
-
+      // 스터디 신청 수락
       const { accept } = req.body;
       const updateInfo = { accept };
-      const updatedStudy = await StudyRelation.updateOne({ user_id, study_id }, updateInfo);
+      const updatedStudyRelation = await StudyRelation.updateOne(
+        { user_id: member_id, study_id },
+        updateInfo,
+      );
       console.log(updateInfo);
-      res.status(200).json(updatedStudy);
+      res.status(200).json(updatedStudyRelation);
+
+      // 스터디 신청 수락 인원 1 증가
+      const foundStudy = await Study.findOne({ _id: study_id });
+      console.log(foundStudy);
+      if (accept === 1) foundStudy.acceptcount += 1;
+      const updatedStudy = await foundStudy.save();
+      res.study = updatedStudy;
     } catch (error) {
-      res.status(422).json({
-        code: 422,
-        message: 'Not authorization',
+      console.log(error);
+      res.status(402).json({
+        code: 402,
+        message: 'The member cannot have authorization to accept study application.',
       });
     }
   },
@@ -107,13 +123,13 @@ const studyApi = {
   async getStudy(req, res, next) {
     try {
       const foundStudy = await Study.find({});
-      if (!foundStudy) return console.error(error);
+      if (!foundStudy) throw new Error('Not found');
       res.status(200).json(foundStudy);
     } catch (error) {
       console.log(error);
-      res.status(426).json({
-        code: 426,
-        message: 'wrong request',
+      res.status(403).json({
+        code: 403,
+        message: 'Not found',
       });
     }
   },
@@ -123,13 +139,13 @@ const studyApi = {
     try {
       const { study_id } = req.params;
       const foundStudy = await Study.findOne({ _id: study_id });
-      if (!foundStudy) throw new Error('Not found');
+      if (!foundStudy) throw new Error('Not found study');
       res.status(200).json(foundStudy);
     } catch (error) {
       console.log(error);
-      res.status(426).json({
-        code: 426,
-        message: 'study_id',
+      res.status(404).json({
+        code: 404,
+        message: 'Not found study',
       });
     }
   },
@@ -138,20 +154,34 @@ const studyApi = {
   async updateStudy(req, res, next) {
     try {
       // 스터디장 권한 판단
+      const { study_id } = req.params;
       const leader_id = req.user._id;
-      const foundRelation = await StudyRelation.findOne({ user_id: leader_id });
-      if (!foundRelation) throw new Error('Not found');
-      if (foundRelation.is_leader != 1) throw new Error('Not authorization');
+      const leader = await StudyRelation.findOne({ user_id: leader_id, study_id });
+      if (!leader || leader.is_leader === false) throw new Error('Not leader');
+      console.log(leader);
 
       // 스터디 정보 수정
-      const { study_id } = req.params;
-      const { study_name, title, content, deadline, headcount, chat_link, status } = req.body;
+      const {
+        study_name,
+        title,
+        content,
+        start,
+        end,
+        deadline,
+        headcount,
+        acceptcount,
+        chat_link,
+        status,
+      } = req.body;
       const updateInfo = {
         study_name,
         title,
         content,
+        start,
+        end,
         deadline,
         headcount,
+        acceptcount,
         chat_link,
         status,
       };
@@ -159,9 +189,9 @@ const studyApi = {
       res.status(200).json(updatedStudy);
     } catch (error) {
       console.log(error);
-      res.status(426).json({
-        code: 426,
-        message: 'wrong request',
+      res.status(402).json({
+        code: 402,
+        message: 'The member cannot have authorization to update.',
       });
     }
   },
@@ -170,13 +200,13 @@ const studyApi = {
   async deleteUser(req, res, next) {
     try {
       // 스터디장 권한 판단
+      const { study_id, member_id } = req.params;
       const leader_id = req.user._id;
-      const foundRelation = await StudyRelation.findOne({ user_id: leader_id });
-      if (!foundRelation) throw new Error('Not found');
-      if (foundRelation.is_leader != 1) throw new Error('Not authorization');
+      const leader = await StudyRelation.findOne({ user_id: leader_id, study_id });
+      if (!leader || leader.is_leader === false) throw new Error('Not leader');
+      console.log(leader);
 
       // 스터디 회원 관리
-      const member_id = req.params;
       const deletedRelation = await StudyRelation.deleteOne({ user_id: member_id }); // 특정 유저 스터디에서 삭제
       res.study_relation = deletedRelation;
       res.status(200).json(deletedRelation);
@@ -185,9 +215,9 @@ const studyApi = {
       res.study_feedback = deletedFeedback;
     } catch (error) {
       console.log(error);
-      res.status(426).json({
-        code: 426,
-        message: 'cannot delete study',
+      res.status(402).json({
+        code: 402,
+        message: 'The member cannot have authorization to delete.',
       });
     }
   },
@@ -196,13 +226,13 @@ const studyApi = {
   async deleteStudy(req, res, next) {
     try {
       // 스터디장 권한 판단
+      const { study_id } = req.params;
       const leader_id = req.user._id;
-      const foundRelation = await StudyRelation.findOne({ user_id: leader_id });
-      if (!foundRelation) throw new Error('Not found');
-      if (foundRelation.is_leader != 1) throw new Error('Not authorization');
+      const leader = await StudyRelation.findOne({ user_id: leader_id, study_id });
+      if (!leader || leader.is_leader === false) throw new Error('Not leader');
+      console.log(leader);
 
       // 스터디 삭제
-      const { study_id } = req.params;
       const foundStudy = await Study.findOne({ _id: study_id });
       if (!foundStudy) throw new Error('Not found');
       const deletedStudy = await Study.deleteOne({ _id: study_id }); // 스터디 삭제
@@ -216,9 +246,9 @@ const studyApi = {
       res.study_feedback = deletedFeedback;
     } catch (error) {
       console.log(error);
-      res.status(426).json({
-        code: 426,
-        message: 'cannot delete study',
+      res.status(402).json({
+        code: 402,
+        message: 'The member cannot have authorization to delete study.',
       });
     }
   },
