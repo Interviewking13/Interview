@@ -25,23 +25,6 @@ type userDate = {
 //     console.error(error);
 //   });
 
-const YourComponent = () => {
-  const {
-    data: userData,
-    isLoading,
-    isError,
-  } = useQuery("getUserData", () =>
-    getUserData("6481bc83cd2bf33d75c6b3d4", "your_token_here")
-  );
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error occurred while fetching data</div>;
-  }
-};
 const MenuButton = () => {
   return (
     <>
