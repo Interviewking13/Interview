@@ -5,24 +5,14 @@ import StudyApplyModal from "./StudyApplyModal";
 import styled from "styled-components";
 import { TitleText } from "../../constants/fonts";
 import { colors } from "../../constants/colors";
+import { getFeedbackDataByStudyId } from "../../api/api-study-feedback";
 // {/* 디자인 적용 예시 */}
 
 const TestPage: React.FC = () => {
   // const { data: studyData, isLoading } = useQuery(["orders"], () =>
   //   getStudyData()
   // );
-
-  const handleFetchStudyData = async () => {
-    try {
-      // const studyData = await getStudyData();
-      // console.log(studyData);
-      // 여기서 studyData를 원하는 방식으로 활용할 수 있습니다.
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  handleFetchStudyData();
-
+  console.log(getFeedbackDataByStudyId("648633260a456cedd1e64478"));
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
