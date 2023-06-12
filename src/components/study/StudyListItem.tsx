@@ -3,12 +3,14 @@ import styled from "styled-components";
 
 import StyledIcon from "../layout/Img";
 import PeopleIconSrc from "../../img/people_navy.svg";
+import { colors } from "../../constants/colors";
+import * as fonts from "../../constants/fonts";
 
 
 type StudyListProps = {
-  id: number,
+  id: string,
   title: string,
-  // currentParticipants: number,
+  currentParticipants: number,
   maxParticipants: number,
   startDate: string,
   endDate: string,
@@ -20,7 +22,7 @@ type StudyListProps = {
 const StudyListItem: React.FC<StudyListProps> = ({
   id,
   title,
-  // currentParticipants,
+  currentParticipants,
   maxParticipants,
   startDate,
   endDate,
@@ -32,7 +34,6 @@ const StudyListItem: React.FC<StudyListProps> = ({
       <StyledStudyListNavyArea>
         <StyledStudyTagArea>
           <StyledStudyRecruitTag>모집 중</StyledStudyRecruitTag>
-          <StyledStudyNewTag>NEW</StyledStudyNewTag>
         </StyledStudyTagArea>
         <StyledStudyName>{title}</StyledStudyName>
       </StyledStudyListNavyArea>
@@ -41,7 +42,7 @@ const StudyListItem: React.FC<StudyListProps> = ({
         <StyledStudyPeopleArea>
           <StyledIcon src={PeopleIconSrc} />
           <StyledStudyListPeopleText>
-            0 / {maxParticipants} 명
+          {currentParticipants} / {maxParticipants} 명
           </StyledStudyListPeopleText>
         </StyledStudyPeopleArea>
 
@@ -87,20 +88,11 @@ const StyledStudyRecruitTag = styled.div`
   width: fit-content;
   height: fit-content;
   display: inline;
-  color: #f1f4ff;
-  border: solid 1px #f1f4ff;
+  color: ${colors.main_mint};
+  border: solid 1px ${colors.main_mint};
   border-radius: 15px;
   padding: 1px 10px;
   margin-right: 8px;
-`;
-const StyledStudyNewTag = styled.div`
-  width: fit-content;
-  height: fit-content;
-  display: inline;
-  color: #00e595;
-  border: solid 1px #00e595;
-  border-radius: 15px;
-  padding: 1px 10px;
 `;
 const StyledStudyName = styled.p`
   width: 225px;
