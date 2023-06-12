@@ -9,16 +9,19 @@ export const TitleText = css`
 
 export const SubTextBig = css`
   font-family: "Pretendard-SemiBold", sans-serif;
+  font-weight: bold;
   font-size: 20px;
 `;
 
 export const SubText = css`
   font-family: "Pretendard-SemiBold", sans-serif;
+  font-weight: bold;
   font-size: 18px;
 `;
 
 export const SubTextSmall = css`
   font-family: "Pretendard-SemiBold", sans-serif;
+  font-weight: bold;
   font-size: 16px;
 `;
 
