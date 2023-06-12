@@ -7,10 +7,14 @@ import { useState } from "react";
 import { colors } from "../../../constants/colors";
 import { SubText } from "../../../constants/fonts";
 
-export const SubmitButton = () => {
+type SubmitButtonProps = {
+  onClick: () => void;
+};
+
+export const SubmitButton: React.FC<SubmitButtonProps> = ({ onClick }) => {
   return (
     <SubButtonContainer>
-      <SubButton>신청하기</SubButton>
+      <SubButton onClick={onClick}>신청하기</SubButton>
     </SubButtonContainer>
   );
 };
@@ -23,7 +27,7 @@ const SubButton = styled.button`
   border: none;
   border-radius: 10px;
   &:hover {
-    background-color: ${colors.main_navy}; /* 호버 시 변경할 색상 */
+    background-color: ${colors.main_navy};
     color: white;
   }
   ${SubText}
