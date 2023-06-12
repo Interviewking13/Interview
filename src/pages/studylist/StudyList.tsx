@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Link } from "@mui/material";
 import React from 'react';
 import StudyListItem from "../../components/study/StudyListItem";
 
@@ -8,11 +7,14 @@ import * as fonts from "../../constants/fonts";
 import PencilIconSrc from "../../img/pencil_mint.svg";
 import { getInfoAllStudyData } from "../../api/api-study";
 import { dateSplice } from "../../utils/dateFomatting";
+import { Link } from "react-router-dom";
 
 const StudyList = (): JSX.Element => {
+
   type StudyData = {
-    id: number,
+    _id: string,
     title: string,
+    acceptcount: number,
     headcount: number,
     start: string,
     end: string,
@@ -42,35 +44,40 @@ const StudyList = (): JSX.Element => {
 
               <StudyListInputArea>
                   <StyledSelect name="" id="StudyListSort">
-                    <option value="recent">최신순</option>
                     <option value="ing">모집중</option>
                   </StyledSelect>
                   <StyledInput type="text" name="" id="" placeholder="검색하기" />
+                  
                   <StyledInputBtn>
                     <StyledIcon src={PencilIconSrc} />
                   </StyledInputBtn>
-                  <CommonButton>
-                      <ButtonText>스터디 만들기</ButtonText>
-                  </CommonButton>
+                  <StyledLink to={`/study/create`}>
+                    <CommonButton>
+                        <ButtonText>스터디 만들기</ButtonText>
+                    </CommonButton>
+                  </StyledLink>
+                  
               </StudyListInputArea>
               
           </StudyListTopArea>
 
           <StudyListItemArea>
-          {studyData.slice(0, 12).map((study,index) => (
+          {studyData.slice(0, 4).map((study) => (
+            <StyledLink to={`/study/${study._id}`} key={study._id}>
               <StudyListItem
-               key={index}
-               id={study.id}
-               title={study.title}
-               // currentParticipants={study.currentParticipants}
-               maxParticipants={study.headcount}
-               startDate={dateSplice(study.start)}
-               endDate={dateSplice(study.end)}
-               recruitDeadline={dateSplice(study.deadline)}
-               master={study.master}
-               />
+                id={study._id}
+                title={study.title}
+                currentParticipants={study.acceptcount}
+                maxParticipants={study.headcount}
+                startDate={dateSplice(study.start)}
+                endDate={dateSplice(study.end)}
+                recruitDeadline={dateSplice(study.deadline)}
+                master={study.master}
+              />
+            </StyledLink>
+
           ))}
-          </StudyListItemArea>
+        </StudyListItemArea>
             
       </CommonContainer>
   );
@@ -165,6 +172,7 @@ const StyledIcon = styled.img`
   height: 27px;
 `
 
-function useEffect(arg0: () => void, arg1: never[]) {
-  throw new Error("Function not implemented.");
-}
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: ${colors.main_black};
+`

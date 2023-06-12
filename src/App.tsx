@@ -5,6 +5,7 @@ import { RecoilRoot } from "recoil";
 import HomePage from "./pages/home/Homepage";
 import Mypage from "./pages/mypage/Mypage";
 import StudyList from "./pages/studylist/StudyList";
+import CreateStudy from "./pages/studylist/CreateStudy";
 import Layout from "./components/layout/Layout";
 import TestPage from "./components/modal/TestPage";
 import LoginPage from "./pages/login/Login";
@@ -38,9 +39,10 @@ function App() {
 
               <Route path="/login" element={<LoginPage />} />
               <Route path="/login/signup" element={<SignupPage />} />
-              <Route path="/studylist" element={<StudyList />} />
+              <Route path="/study" element={<StudyList />} />
               <Route path="/study/feedback" element={<Feedback />} />
-              <Route path="/study/info" element={<Information />} />
+              <Route path="/study/:id" element={<Information />} />
+              <Route path="/study/create" element={<CreateStudy />} />
               {/* test 페이지 */}
               <Route path="/testpage" element={<TestPage />} />
               <Route
