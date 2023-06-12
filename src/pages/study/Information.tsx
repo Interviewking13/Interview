@@ -3,65 +3,79 @@ import { Link } from "@mui/material";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { DetailTitle } from "./common/DetailTitle";
 import { StudyTaps } from "./common/StudyTap";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { colors } from "../../constants/colors";
 import { SubTextBig, TitleText } from "../../constants/fonts";
 import { getInfoAllStudyData, getInfoStudyData } from "../../api/api-study";
 import { SubmitButton } from "./common/SubmitButton";
 import { dateSplice } from "../../utils/dateFomatting";
 import { useLocation } from "react-router-dom";
+import Modal from "@mui/material/Modal";
+import StudyApplyModal from "../../components/modal/StudyApplyModal";
+import { useQuery } from "react-query";
 
 const Information: React.FC = () => {
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  /** 모달을 닫는 함수인데 preventDefault로 event 내용 다 없애야 하는지..? */
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-  //스터디 목록에서 특정 스터디 클릭시 스터디 id를 쿼리로 받아서 화면에 보여줄예정
-  const [studyData, setStudyData] = useState({
-    title: "",
-    study_name: "",
-    status: 0,
-    content: 0,
-    start: "",
-    end: "",
-    chat_link: "",
-    headcount: 0,
-    acceptcount: 0,
-  });
+  const {
+    data: studyData,
+    isLoading,
+    isError,
+  } = useQuery("studyData", () =>
+    getInfoStudyData(lastPathSegment).then((response) => response.data)
+  );
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
 
-  useEffect(() => {
-    getInfoStudyData(lastPathSegment)
-      .then((response) => {
-        console.log(response.data);
-        setStudyData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching data</div>;
+  }
+
+  console.log(`path is: ${lastPathSegment}:`, studyData);
+  const {
+    title,
+    status,
+    content,
+    start,
+    end,
+    chat_link,
+    headcount,
+    acceptcount,
+  } = studyData;
   return (
     <Container>
-      <Mystudy>{studyData.status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
+      <Mystudy>{status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
       <StudyTaps />
-      <Title>{studyData.title}</Title>
+      <Title>{title}</Title>
       <SubTitle>
         <DetailTitle
           name="&nbsp;회의링크"
           content={
             <Link color="#00e595;" href="http://naver.com">
-              {studyData.chat_link}
+              {chat_link}
             </Link>
           }
         ></DetailTitle>
         <DetailTitle
           name="&nbsp;진행 기간"
-          content={`${dateSplice(studyData.start)} ~ ${dateSplice(
-            studyData.end
-          )}`}
+          content={`${dateSplice(start)} ~ ${dateSplice(end)}`}
         ></DetailTitle>
         <DetailTitle
           name="&nbsp;인원"
-          content={`${studyData.acceptcount} / ${studyData.headcount}명`}
+          content={`${acceptcount} / ${headcount}명`}
         ></DetailTitle>
         <DetailTitle name="&nbsp;스터디장" content="이용섭"></DetailTitle>
       </SubTitle>
@@ -70,8 +84,11 @@ const Information: React.FC = () => {
         <PeopleAltIcon />
         &nbsp;스터디 소개
       </StudyIntro>
-      <p>{studyData.content}</p>
-      <SubmitButton />
+      <p>{content}</p>
+      <SubmitButton onClick={handleOpen} />
+      <Modal open={open} onClose={handleClose}>
+        <StudyApplyModal studyId={lastPathSegment} />
+      </Modal>
     </Container>
   );
 };
