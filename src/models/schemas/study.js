@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const StudySchema = new Schema({
   // 스터디 정보
+  leader_name: { type: String }, // 스터디장 이름
   study_id: { type: mongoose.Types.ObjectId }, // identification value
   study_name: { type: String },
   title: { type: String },

@@ -11,10 +11,15 @@ const studyApi = {
   async newStudy(req, res, next) {
     try {
       // 스터디 개설
+      const leader_id = req.user._id;
+      console.log(leader_id);
+      const leader = await User.findOne({ _id: leader_id });
+      console.log(leader.user_name);
       const { study_name, title, content, start, end, deadline, headcount, chat_link, status } =
         req.body;
 
       const createInfo = {
+        leader_name: leader.user_name,
         study_name,
         title,
         content,
@@ -32,13 +37,11 @@ const studyApi = {
       res.status(200).json(createdStudy);
 
       // 스터디 관계 생성
-      const user_id = req.user._id;
       const study_id = createdStudy._id;
       console.log(study_id);
-      console.log(user_id);
 
       const createRelation = {
-        user_id,
+        user_id: leader_id,
         study_id,
         is_leader: 1,
       };
@@ -60,10 +63,6 @@ const studyApi = {
       const member_id = req.user._id;
       console.log(member_id);
       const { study_id, goal } = req.body;
-      // 스터디원 권한 판단
-      // const user = await StudyRelation.findOne({ study_id });
-      // console.log(user);
-      // if (user.user_id === member_id) throw new Error('The leader cannot apply.');
       const createInfo = {
         user_id: member_id,
         study_id,
@@ -134,11 +133,11 @@ const studyApi = {
     }
   },
 
-  /**스터디 정보 조회(개별)*/
-  async getStudyOne(req, res, next) {
+  /**스터디 정보 조회(모집 중)*/
+  async enrollingStudy(req, res, next) {
     try {
-      const { study_id } = req.params;
-      const foundStudy = await Study.findOne({ _id: study_id });
+      const { status } = req.params;
+      const foundStudy = await Study.find({ status: 0 });
       if (!foundStudy) throw new Error('Not found study');
       res.status(200).json(foundStudy);
     } catch (error) {
@@ -218,6 +217,38 @@ const studyApi = {
       res.status(402).json({
         code: 402,
         message: 'The member cannot have authorization to delete.',
+      });
+    }
+  },
+
+  /**스터디 탈퇴*/
+  async leaveUser(req, res, next) {
+    try {
+      // 스터디장이면 스터디도 삭제
+      const user_id = req.user._id;
+      const { study_id } = req.body;
+      const user = await StudyRelation.findOne({ user_id, study_id });
+      console.log(user);
+      if (user.is_leader === true) {
+        const deletedStudy = await Study.deleteOne({ _id: study_id });
+        res.Study = deletedStudy;
+      }
+
+      // 해당 스터디 아이디 관계 모두 삭제
+      if (user.is_leader === true || user.is_leader === false) {
+        const deletedRelation = await StudyRelation.deleteMany({ user_id });
+        res.study_relation = deletedRelation;
+        res.status(200).json(deletedRelation);
+
+        // 해당 스터디 피드백, 댓글 모두 삭제
+        const deletedFeedback = await StudyFeedback.deleteMany({ user_id });
+        res.study_feedback = deletedFeedback;
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(405).json({
+        code: 405,
+        message: 'wrong request',
       });
     }
   },
