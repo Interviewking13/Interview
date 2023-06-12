@@ -12,12 +12,14 @@ import './slick/slick.css';
 
 import { getInfoAllStudyData } from "../../api/api-study";
 import { dateSplice } from "../../utils/dateFomatting";
+import { Link } from "react-router-dom";
 
 const HomePage = (): JSX.Element => {
 
   type StudyData = {
-    id: number,
+    _id: string,
     title: string,
+    acceptcount: number,
     headcount: number,
     start: string,
     end: string,
@@ -96,19 +98,22 @@ const HomePage = (): JSX.Element => {
         </StyledItemNameArea>
 
         <StudyListItemArea>
-        {studyData.slice(0, 4).map((study, index) => (
-          <StudyListItem
-            key={index}
-            id={study.id}
-            title={study.title}
-            maxParticipants={study.headcount}
-            startDate={dateSplice(study.start)}
-            endDate={dateSplice(study.end)}
-            recruitDeadline={dateSplice(study.deadline)}
-            master={study.master}
-          />
-        ))}
+          {studyData.slice(0, 4).map((study) => (
+            <StyledLink to={`/study/${study._id}`} key={study._id}>
+              <StudyListItem
+                id={study._id}
+                title={study.title}
+                currentParticipants={study.acceptcount}
+                maxParticipants={study.headcount}
+                startDate={dateSplice(study.start)}
+                endDate={dateSplice(study.end)}
+                recruitDeadline={dateSplice(study.deadline)}
+                master={study.master}
+              />
+            </StyledLink>
+          ))}
         </StudyListItemArea>
+
         
         <StyledMainStudyBtnArea>      
           <StyledMainStudyBtn>
@@ -280,4 +285,7 @@ const StyledMainBtnSub = styled.p`
 
 const StyledMainCommunityArea = styled.div`
   height: 300px;
+`
+const StyledLink = styled(Link)`
+  text-decoration: none;
 `
