@@ -1,30 +1,53 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import styled, { css } from 'styled-components';
+import { useQuery, QueryClient, QueryClientProvider } from 'react-query';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { colors } from '../../../constants/colors';
 import { SubTextThinSmall } from '../../../constants/fonts';
 import { getAllCommunityData } from '../../../api/api-community';
 
 const BestBoardListItem: React.FC = () => {
-  const [posts, setPosts] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
+  // const [posts, setPosts] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
 
-  useEffect(() => {
-    // 페이지 로드 시 서버에서 게시글 데이터를 받아와 상태 업데이트
-    fetchPosts();
-  }, []);
+  // useEffect(() => {
+  //   // 페이지 로드 시 서버에서 게시글 데이터를 받아와 상태 업데이트
+  //   fetchPosts();
+  // }, []);
 
-  const fetchPosts = async () => {
-    try {
-      const response = await getAllCommunityData(); // getAllCommunityData 함수 호출
-      console.log(response.data); // 응답 데이터 구조 확인
-      setPosts(response.data.data); // 받아온 데이터로 게시글 상태 업데이트
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const fetchPosts = () => {
+  //   axios
+  //     .get('http://34.22.79.51:5000/api/community/list')
+  //     .then((response) => {
+  //       console.log(response.data); // 응답 데이터 구조 확인
+  //       setPosts(response.data.data); // 받아온 데이터로 게시글 상태 업데이트
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
 
   // const displayedPosts = posts
-  const displayedPosts = (posts ?? [])
+  // const displayedPosts = (posts ?? [])
+  //   .sort((a, b) => b.viewCount - a.viewCount) // 조회수에 따라 정렬
+  //   .slice(0, 3); // 상위 3개의 게시글 선택
+
+  const queryClient = new QueryClient();
+
+  const { data: postList } = useQuery<
+    AxiosResponse<{ data: any[] }>,
+    AxiosError,
+    any[]
+  >(["getAllCommunityData"], getAllCommunityData, {
+
+    select: (response) => {
+      return response.data.data;
+    },
+    onError: (error) => {
+      alert("에러가 발생했습니다.");
+    },
+  });
+
+  const displayedPosts = (postList ?? [])
     .sort((a, b) => b.viewCount - a.viewCount) // 조회수에 따라 정렬
     .slice(0, 3); // 상위 3개의 게시글 선택
 
