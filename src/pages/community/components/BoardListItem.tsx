@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
-import axios from 'axios';
-import { colors } from '../../../constants/colors';
-import { SubTextThinSmall } from '../../../constants/fonts';
+import React, { useEffect, useState } from "react";
+import styled, { css } from "styled-components";
+import axios from "axios";
+import { colors } from "../../../constants/colors";
+import { SubTextThinSmall } from "../../../constants/fonts";
 
 const BoardListItem: React.FC = () => {
   const [posts, setPosts] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
@@ -14,9 +14,10 @@ const BoardListItem: React.FC = () => {
 
   const fetchPosts = () => {
     axios
-      .get('http://34.22.79.51:5000/api/community/list')
+      .get("http://34.22.79.51:5000/api/community/list")
       .then((response) => {
         console.log(response.data); // 응답 데이터 구조 확인
+        console.log(response.data.data.length); // 응답 데이터 구조 확인
         setPosts(response.data.data); // 받아온 데이터로 게시글 상태 업데이트
       })
       .catch((error) => {
@@ -25,24 +26,26 @@ const BoardListItem: React.FC = () => {
   };
 
   return (
-    <div>
-      <StyledPostListItem>
-        {/* 글 목록 렌더링 */}
-        {posts.map((post) => (
-          <StyledPostItems key={post._id}>
-            <StyledLeftPostItem>
-              <StyledPostTitle>타이틀: {post.title}</StyledPostTitle>
-            </StyledLeftPostItem>
-            <StyledRightPostItem>
-              <StyledPostItem>댓글 수: {post.count}</StyledPostItem>
-              <StyledPostItem>조회 수: {post.viewCount}</StyledPostItem>
-              <StyledPostItem>작성자: {post.author && post.author[0] && post.author[0]._id}</StyledPostItem>
-              <StyledPostItem>게시일: {post.timestamps}</StyledPostItem>
-            </StyledRightPostItem>
-          </StyledPostItems>
-        ))}
-      </StyledPostListItem>
-    </div>
+    <StyledPostListItem>
+      {/* 글 목록 렌더링 */}
+      {posts.map((post) => (
+        <StyledPostItems key={post._id}>
+          <StyledLeftPostItem>
+            <StyledPostTitle>타이틀: {post.title}</StyledPostTitle>
+          </StyledLeftPostItem>
+          <StyledRightPostItem>
+            <StyledPostItem>댓글 수: {post.count}</StyledPostItem>
+            <StyledPostItem>조회 수: {post.viewCount}</StyledPostItem>
+            <StyledPostItem>
+              작성자: {post.author && post.author[0] && post.author[0]._id}
+            </StyledPostItem>
+            <StyledPostItem>게시일: {post.timestamps}</StyledPostItem>
+          </StyledRightPostItem>
+        </StyledPostItems>
+      ))}
+      <span>이전페이지</span>
+      <span>다음페이지</span>
+    </StyledPostListItem>
   );
 };
 
@@ -51,11 +54,12 @@ export default BoardListItem;
 const StyledPostListItem = styled.ul`
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  padding: 10px;
 `;
 
-const StyledPostItems = styled.li`
+const StyledPostItems = styled.button`
   border-bottom: 1px solid ${colors.gray_stroke};
+  width: 100%;
   padding: 10px 0;
   margin: 0;
   display: flex;
