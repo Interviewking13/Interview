@@ -119,6 +119,13 @@ const userApi = {
         }
     },
 
+
+    /** 로그인 */
+    async loginUser(req, res, next) {
+        try {
+            
+            const { email, password } = req.body;
+
             // 기존 사용자 유무 검사
             const findUser = await User.findOne({ "email": email });
 
@@ -155,7 +162,7 @@ const userApi = {
             });
     
             // 설정된 쿠키 값 출력
-            console.log('로그인' + req.cookies.token);
+            // console.log('로그인' + req.cookies.token);
 
             res.status(200).json({
                 resultCode: "200",
@@ -163,7 +170,7 @@ const userApi = {
                 data: {
                     user_id: findUser._id,
                     email,
-                    token
+                    // token
                 }
             });
 
@@ -179,8 +186,8 @@ const userApi = {
     /** 내 정보 조회 */
     async getUserInfo(req, res) {
         const token = req.cookies.token;
-        console.log('미들웨어 실행 -> userApi getUserInfo 도착!');
-        console.log('내정보조회' + req.cookies.token);
+        // console.log('미들웨어 실행 -> userApi getUserInfo 도착!');
+        // console.log('내정보조회' + req.cookies.token);
 
         try {
             // const { user_id } = req.params;
@@ -191,9 +198,8 @@ const userApi = {
             
             // middleware 이용 테스트
             const { user_id } = req.user;
-            console.log(user_id);
-
-            console.log('middleware 에서 불러온 decoded값' + user_id);
+            // console.log(user_id);
+            // console.log('middleware 에서 불러온 decoded값' + user_id);
 
             const findUser = await User.findOne(
                 { "_id": user_id },
@@ -222,48 +228,30 @@ const userApi = {
                     email: findUser.email,
                     intro_yn: findUser.intro_yn,
                     phone_number: findUser.phone_number,
-                    token: token
+                    // token: token
                 }
             });
         } catch (err) {
             console.error(err);
-            if (err.name === 'JsonWebTokenError') {
-                // 토큰이 유효하지 않은 경우
-                return res.status(401).json({
-                    resultCode: "401",
-                    message: "유효하지 않은 토큰입니다.",
-                    token: token
-                });
-            }
-            else if (err.name === 'TokenExpiredError') {
-                // 토큰이 만료되었을 경우
-                return res.status(401).json({
-                    resultCode: "401",
-                    message: "만료된 토큰입니다.",
-                    token: token
-                });
-            } else {
-                //기타 토큰 검증 실패
-                return res.status(500).json({
-                    resultCode: "500",
-                    message: "서버오류"
-                });
-            }
+            res.status(500).json({
+                resultCode: "500",
+                message: "서버오류"
+            });
         }
     },
 
     /** 내 정보 수정 */
     async modifyUserInfo(req, res, next) {
         const token = req.cookies.token;
-        console.log('미들웨어 실행 -> userApi modifyUserInfo 도착!');
-        console.log('내정보수정' + req.cookies.token);
+        // console.log('미들웨어 실행 -> userApi modifyUserInfo 도착!');
+        // console.log('내정보수정' + req.cookies.token);
 
         try {
             
             // middleware 이용 테스트
             const { user_id } = req.user;
-            console.log(user_id);
-            console.log('middleware 에서 불러온 decoded값' + user_id);
+            // console.log(user_id);
+            // console.log('middleware 에서 불러온 decoded값' + user_id);
             
             // middleware 이용 테스트
             // const { decodedUserId } = req.user;
@@ -354,44 +342,26 @@ const userApi = {
                 
             });
         } catch (err) {
-                console.error(err);
-                if (err.name === 'JsonWebTokenError') {
-                    // 토큰이 유효하지 않은 경우
-                    return res.status(401).json({
-                        resultCode: "401",
-                        message: "유효하지 않은 토큰입니다.",
-                        token: token
-                    });
-                }
-                else if (err.name === 'TokenExpiredError') {
-                    // 토큰이 만료되었을 경우
-                    return res.status(401).json({
-                        resultCode: "401",
-                        message: "만료된 토큰입니다.",
-                        token: token
-                    });
-                } else {
-                    //기타 토큰 검증 실패
-                    return res.status(500).json({
-                        resultCode: "500",
-                        message: "서버오류"
-                    });
-                }
-            }
+            console.error(err);
+            res.status(500).json({
+                resultCode: "500",
+                message: "서버오류"
+            });
+        }
     },
 
 
     /** 회원탈퇴 */
     async deleteUser(req, res, next) {
         const token = req.cookies.token;
-        console.log('미들웨어 실행 -> userApi deleteUser 도착!');
-        console.log('회원탈퇴' + req.cookies.token);
+        // console.log('미들웨어 실행 -> userApi deleteUser 도착!');
+        // console.log('회원탈퇴' + req.cookies.token);
 
         try {
             // middleware 이용 테스트
             const { user_id } = req.user;
-            console.log(user_id);
-            console.log('middleware 에서 불러온 decoded값' + user_id);
+            // console.log(user_id);
+            // console.log('middleware 에서 불러온 decoded값' + user_id);
             
             // const { user_id, email, password } = req.body;
             const { email, password } = req.body;
