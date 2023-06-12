@@ -11,6 +11,9 @@ const CommunitySchema = new Schema(
             type: mongoose.Types.ObjectId,
             ref: "User",
         },
+        user_name:  {
+            type: String,
+        },        
         /** 해당 게시글을 조회한 회원 : 한 회원은 조회수 하나만 카운트 */
         read_users: [{
             type: mongoose.Types.ObjectId,
@@ -22,13 +25,13 @@ const CommunitySchema = new Schema(
         content: {
             type: String,
         },
-        fileKey: {
+        file_key: {
             type: String,
         }, 
-        fileETag: {
+        file_etag: {
             type: String,
         }, 
-        fileName: {
+        file_name: {
             type: String,
         }   
     },

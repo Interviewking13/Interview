@@ -7,7 +7,7 @@ const communityApi = {
 
         try {
             const findContent = await Community.find({ });
-      
+            
             if (!findContent) {
                 return res.status(400).json({ message: "목록조회 실패" });
             } 
@@ -27,9 +27,13 @@ const communityApi = {
     
         try {
             const { user_id, title, content } = req.body;
-            const ETag = req.ETag;
-            const fileName = req.fileName;
-            const fileKey = req.fileKey;
+            const findUser = await User.findOne({ _id: user_id })
+                .populate("user_id", "user_name")
+            const user_name = findUser.user_name;
+
+            const file_etag = req.file_etag;
+            const file_name = req.file_name;
+            const file_key = req.file_key;
 
             /** 게시글번호 순차부여 */
             async function getLastCommunityId() {
@@ -48,11 +52,12 @@ const communityApi = {
             const newContent = await Community.create({
                 community_id: newCommunityId,
                 user_id,
+                user_name,
                 title,
                 content,
-                fileKey: fileKey,
-                fileETag: ETag,
-                fileName: fileName,
+                file_key,
+                file_etag,
+                file_name,
             });
 
             if (!newContent) {
@@ -132,9 +137,13 @@ const communityApi = {
             const { community_id, title, content } = req.body;
             const findContent = await Community.findOne({ community_id });
 
-            const fileETag = req.ETag;
-            const fileName = req.fileName;
-            const fileKey = req.fileKey;
+            const file_etag = req.file_etag;
+            const file_name = req.file_name;
+            const file_key = req.file_key;
+            const userTokenValidate = req.user;
+            // const { user_id } = req.user;
+
+            console.log('userTokenValidate: ', userTokenValidate);
 
             if(!findContent) {
                 return res.status(400).json({ message: "게시글찾기 실패" });
@@ -143,9 +152,9 @@ const communityApi = {
             const updateContent = await Community.findOneAndUpdate({ community_id }, {
                 title,
                 content,
-                fileKey,
-                fileETag,
-                fileName,
+                file_key,
+                file_etag,
+                file_name,
             }, { new: true });
             
             if (!updateContent){
@@ -188,7 +197,10 @@ const communityApi = {
 
         try {
             const { reply_user_id, reply_content, community_id } = req.body;
-
+            const findUser = await User.findOne({ _id: reply_user_id })
+            .populate("user_id", "user_name")
+            const reply_user_name = findUser.user_name;
+            
             /** 댓글번호 순차부여 */
             async function getLastCommunityId() {
 
@@ -204,6 +216,7 @@ const communityApi = {
             const newContent = await CommunityReply.create({
                 reply_id: newCommunityId,
                 reply_user_id,
+                reply_user_name,
                 reply_content,
                 community_id,
             });
