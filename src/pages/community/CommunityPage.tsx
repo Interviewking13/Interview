@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import BoardListItemContainer from "../community/components/BoardListItemContainer";
+import BestBoardListItemContainer from "./components/BestBoardListItemContainer";
 
 const CommunityPage: React.FC = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -35,7 +36,7 @@ const CommunityPage: React.FC = () => {
           </StyledC>
         </StyledHeadContainer>
         {/* 게시판 목록 컨테이너, 아이템 컴포넌트 불러오기 */}
-        {/* <BestBoardListItemContainer /> */}
+        <BestBoardListItemContainer />
         <BoardListItemContainer />
       </StyledContainer>
     </StyledCommonContainer>
