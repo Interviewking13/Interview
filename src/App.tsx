@@ -18,10 +18,6 @@ import { Feedback } from "./pages/study/Feedback";
 import Information from "./pages/study/Information";
 import CommunityCreatePage from "./pages/community/CommunityCreatePage";
 import CommunityPage from "./pages/community/CommunityPage";
-import StudyMagement from "./pages/study/Information";
-import StudyModify from "./components/study/manage/StudyModify";
-import StudyMemberManagement from "./components/study/manage/StudyMemberManagement";
-import StudyApplicantList from "./components/study/manage/StudyApplicantList";
 import StudyManage from "./pages/study/StudyManage";
 
 const queryClient = new QueryClient();
