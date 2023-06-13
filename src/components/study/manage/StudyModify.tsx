@@ -1,7 +1,7 @@
-const StudyModify = () => {
-  return <p>$$$$$$$$$$$$$$$$$$$$$$$$$$$$</p>;
-};
-export default StudyModify;
+// const StudyModify = () => {
+//   return <p>$$$$$$$$$$$$$$$$$$$$$$$$$$$$</p>;
+// };
+// export default StudyModify;
 
 import styled from "styled-components";
 import { colors } from "../../../constants/colors";
@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const StudyModify = () => {
   return (
-    <CommonContainer>
+    <>
       <StyledStudyListTopArea>
         <StyledTitleText>스터디 개설하기</StyledTitleText>
         <StyledSubTextThin>
@@ -33,39 +33,30 @@ const StudyModify = () => {
         <StyledStudyCreateInputArea>
           <StyledStudyCreateText>회의 링크</StyledStudyCreateText>
           <StyledStudyInput
-            type="text"
+            type="url"
             placeholder="화상 회의 주소를 입력하세요."
           />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateInputArea>
           <StyledStudyCreateText>진행 기간</StyledStudyCreateText>
           <StyledDateArea>
-            <StyledStudyDate
-              type="date"
-              placeholder="스터디 이름을 입력하세요."
-            />
+            <StyledStudyDate type="date" />
             <StyledStudyDateText>~</StyledStudyDateText>
-            <StyledStudyDate
-              type="date"
-              placeholder="스터디 이름을 입력하세요."
-            />
+            <StyledStudyDate type="date" />
           </StyledDateArea>
         </StyledStudyCreateInputArea>
         <StyledStudyCreateInputArea>
           <StyledStudyCreateText>모집 마감일</StyledStudyCreateText>
-          <StyledStudyDate
-            type="date"
-            placeholder="스터디 이름을 입력하세요."
-          />
+          <StyledStudyDate type="date" />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateInputArea>
           <StyledStudyCreateText>모집 인원</StyledStudyCreateText>
-          <StyledStudyInput
-            type="text"
-            placeholder="스터디 이름을 입력하세요."
+          <StyledStudyInputNumber
+            type="number"
+            min="1"
+            placeholder="모집 인원을 입력하세요."
           />
         </StyledStudyCreateInputArea>
-
         <StyledStudyCreateBtnArea>
           <StyledLink to={`/study/create`}>
             <StyledCommonButton>
@@ -74,7 +65,7 @@ const StudyModify = () => {
           </StyledLink>
         </StyledStudyCreateBtnArea>
       </StyledStudyCreateArea>
-    </CommonContainer>
+    </>
   );
 };
 
@@ -136,6 +127,16 @@ const StyledStudyInput = styled.input`
   margin: 0;
   padding-left: 20px;
   font-family: ${fonts.SubTextThinSmall};
+`;
+const StyledStudyInputNumber = styled.input`
+  width: 447px;
+  height: 45px;
+  border: solid 1px ${colors.main_navy};
+  border-radius: 10px;
+  margin: 0;
+  padding: 0 20px 0 20px;
+  font-family: sans-serif;
+  font-size: 16px;
 `;
 const StyledDateArea = styled.div`
   width: 1103px;
