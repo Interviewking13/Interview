@@ -10,18 +10,16 @@ import { colors } from "../../constants/colors";
 import React, { useEffect } from "react";
 
 type StudyApplyModalProps = {
-  studyId: number;
+  studyId: string;
 };
 
 const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
-  //console.log(getStudyData());
-
   const studyData = {
     title: "SAFFY 면접 스터디",
     period: "2023-05-30 ~ 2023-06-08",
     deadline: "2023-06-09",
     headcount: 4,
-    study_id: 1,
+    study_id: "123123",
     study_name: "interview king",
     content: "우리 스터디는 ~~을 목표로 하고, ...을 규칙으로 함",
     chat_link:
@@ -47,59 +45,48 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
   } = studyData;
 
   //취소버튼 이미지 링크
-  const imageSrc = "./cancel-button.png";
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  /** 모달을 닫는 함수인데 preventDefault로 event 내용 다 없애야 하는지..? */
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const imageSrc = "/cancel-button.png";
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
-      <Modal open={open} onClose={handleClose}>
-        <StyledBox>
-          <StyledContainer>
-            <StyledTopContainer>
-              <StyledTitleText>스터디 신청하기</StyledTitleText>
-              <StyledCancleImg src={imageSrc} alt="Cancel Button" />
-            </StyledTopContainer>
-            <StyledTitleTextNavy>{title}</StyledTitleTextNavy>
-            <StudyApplyList
-              period={dateFomatting(period)}
-              deadline={dateFomatting(deadline)}
-              currentCount={currentCount}
-              headCount={headcount}
-              studyLeader={studyLeader}
-            />
-            <TextInput placeholder="한 줄 소개를 입력하시오. (60자 이내)" />
-            <StyledBottom>
-              <BottomContainer>
-                <StyledP>스터디장의 승인 후 가입이 가능합니다.</StyledP>
-                <InfoContainer>
-                  <StyledP>
-                    신청 시 입력한 한 줄 소개와 등록된 자기소개서가 스터디장에게
-                    발송됩니다.
-                  </StyledP>
-                  <StyledA to="/mypage-modify">
-                    자기소개서 등록을 안 하셨나요?
-                  </StyledA>
-                </InfoContainer>
-              </BottomContainer>
-              <StyledApplyButton>신청하기</StyledApplyButton>
-            </StyledBottom>
-          </StyledContainer>
-        </StyledBox>
-      </Modal>
+      <StyledBox>
+        <StyledContainer>
+          <StyledTopContainer>
+            <StyledTitleText>스터디 신청하기</StyledTitleText>
+            <StyledCancleImg src={imageSrc} alt="Cancel Button" />
+          </StyledTopContainer>
+          <StyledTitleTextNavy>{title}</StyledTitleTextNavy>
+          <StudyApplyList
+            period={dateFomatting(period)}
+            deadline={dateFomatting(deadline)}
+            currentCount={currentCount}
+            headCount={headcount}
+            studyLeader={studyLeader}
+          />
+          <TextInput placeholder="한 줄 소개를 입력하시오. (60자 이내)" />
+          <StyledBottom>
+            <BottomContainer>
+              <StyledP>스터디장의 승인 후 가입이 가능합니다.</StyledP>
+              <InfoContainer>
+                <StyledP>
+                  신청 시 입력한 한 줄 소개와 등록된 자기소개서가 스터디장에게
+                  발송됩니다.
+                </StyledP>
+                <StyledA to="/mypage-modify">
+                  자기소개서 등록을 안 하셨나요?
+                </StyledA>
+              </InfoContainer>
+            </BottomContainer>
+            <StyledApplyButton>신청하기</StyledApplyButton>
+          </StyledBottom>
+        </StyledContainer>
+      </StyledBox>
     </div>
   );
 };
 
 export default StudyApplyModal;
+
 const StyledBox = styled(Box)`
   height: 594px;
   width: 1004px;
