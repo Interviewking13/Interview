@@ -13,7 +13,7 @@ const bcrypt = require('bcrypt');
 const secretKey = process.env.SECRET_KEY;
 
 const userTokenValidate = async (req, res, next) => {
-  console.log('미들웨어 실행!');
+  // console.log('미들웨어 실행!');
 
   // const payload = {
   //     user_id: findUser._id,          // 사용자의 MongoDB ObjectID
