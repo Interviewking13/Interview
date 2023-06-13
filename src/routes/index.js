@@ -20,6 +20,12 @@ router.use(
   }),
 );
 
+// JWT 토큰 - 쿠키값 테스트
+router.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  next();
+});
+
 router.use(express.json());
 router.use(express.static(indexPath));
 router.use('/api/user', userRouter);
