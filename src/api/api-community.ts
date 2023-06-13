@@ -9,12 +9,17 @@ export const getAllCommunityData = async () => {
 };
 
 /** 2. 커뮤니티 게시글 등록  post */
-export const postCommunity = async (
-  user_id: string,
-  title: string,
-  content: string,
-  attach: string
-) => {
+export const postCommunity = async ({
+  user_id,
+  title,
+  content,
+  attach,
+}: {
+  user_id?: string;
+  title: string;
+  content: string;
+  attach: string;
+}) => {
   const response = await axiosInstance.post(`community/detl`, {
     user_id,
     title,
