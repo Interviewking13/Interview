@@ -7,7 +7,7 @@ import { axiosInstance } from '../../api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 // import FileUploader from "../../components/UI/FileUploader";
 
-const postCommunity = async (data: { title: string, content: string, attach: string }) => {
+const postCommunity = async (data: { title: string, content: string, attach: string, user_id: string }) => {
   try {
     console.log('Posted Data:', data);
     const response = await axiosInstance.post('/community/detl', data);
@@ -33,12 +33,11 @@ const CommunityCreatePage: React.FC = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setContent(e.target.value);
-    // const selectedFiles = e.target.files;
-    // if (selectedFiles && selectedFiles.length > 0) {
-    //   const selectedFile = selectedFiles[0];
-    //   setFile(selectedFile);
-    // }
+    const selectedFiles = e.target.files;
+    if (selectedFiles && selectedFiles.length > 0) {
+      const selectedFile = selectedFiles[0];
+      setFile(selectedFile);
+    }
   };
 
   // 미리 선언해둔 postCommunity api service함수를 가져와서 사용했습니다.
@@ -62,7 +61,7 @@ const CommunityCreatePage: React.FC = () => {
 
   const handleSubmit = () => {
     // 이런식으로 호출하시면됩니다.
-    postCommunityMutate({ title: title, content: content, attach: "" });
+    postCommunityMutate({ title: title, content: content, attach: "", user_id: "6481bc83cd2bf33d75c6b3d4" });
   };
   //   const formData = new FormData();
   //   formData.append('title', title);
@@ -94,12 +93,12 @@ const CommunityCreatePage: React.FC = () => {
         </StyledTitleWrapper>
         <StyledInputWrapper>
           <StyledTitle>제목</StyledTitle>
-          <StyledInput value={title} onChange={handleTitleChange} placeholder="스터디 이름을 입력하세요." />
+          <StyledInput value={title} onChange={handleTitleChange} placeholder="제목을 입력하세요." />
         </StyledInputWrapper>
 
         <StyledInputWrapper className="second-input-wrapper">
           <StyledTitle>내용</StyledTitle>
-          <StyledTextarea value={content} onChange={handleContentChange} placeholder="스터디 설명을 입력하세요." />
+          <StyledTextarea value={content} onChange={handleContentChange} placeholder="내용을 입력하세요." />
         </StyledInputWrapper>
 
         <StyledFileInputWrapper>
@@ -330,8 +329,6 @@ const StyledDelButton = styled.button`
   display: flex;
   justify-content: flex-end;
   width: 45px;
-  /* margin-bottom: 15px; */
-  /* align-self: flex-end; */
 `
 
 export default CommunityCreatePage;

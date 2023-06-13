@@ -7,6 +7,7 @@ import LeftSignContainer from "../../components/auth/LeftSignContainer";
 import { getUserData, postSignIn } from "../../api/api-user";
 import { useCookies } from "react-cookie";
 import { useMutation, QueryClient, QueryClientProvider } from "react-query";
+import { axiosInstance } from "../../api/axiosInstance";
 
 // install
 // npm install react-cookie
@@ -19,66 +20,68 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [cookies, setCookie] = useCookies(["token"]);
 
-  const queryClient = new QueryClient();
+  // const queryClient = new QueryClient();
 
   const { mutate: loginMutation } = useMutation(postSignIn, {
-    // useQuery와 동일합니다 에러가 나면 실행되는 함수입니다.
     onError: (error) => {
       console.error("Error:", error);
     },
-    // 말그대로 성공하면 실행되는 함수입니다.
-    // 글을 생성하는 post니까 성공했을 땐 여기서 queryClient.invalidates([{postListAPI의 키값}])같은 코드를 넣어주면 글쓰기가 성공했을 때 자동으로 업데이트되겠죠?
     onSuccess: async (data) => {
+      // queryClient.invalidateQueries("PostSignIn");
       getUserData();
     },
   });
 
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     loginMutation({
       email: email,
       password: password,
     });
-    // if (!email || !password) {
-    //   console.log("모든 필드를 입력해야 합니다.");
-    //   return;
-    // }
 
-    // try {
-    //   const response = await axios.post(
-    //     "http://34.22.79.51:5000/api/user/login",
-    //     {
-    //       email,
-    //       password,
-    //     }
-    //   );
-    //   // response값 확인
-    //   console.log(response);
+    if (!email || !password) {
+      console.log("모든 필드를 입력해야 합니다.");
+      return;
+    }
 
-    //   if (response.status === 200) {
-    //     const { resultCode, message, data } = response.data;
+    try {
+      const response = await axiosInstance.post(
+        "user/login",
+        {
+          email,
+          password,
+        }
+      );
+      // response값 확인
+      console.log(response);
 
-    //     if (resultCode === "200") {
-    //       const { user_id, token } = data || {}; // 데이터가 undefined인 경우 빈 객체를 기본값으로 사용
+      // if (response.status === 200) {
+      //   const { resultCode, message, data } = response.data;
 
-    //       if (user_id && token) {
-    //         storeTokenInCookie(token);
+      //   if (resultCode === "200") {
+      //     const { user_id, token } = data || {}; // 데이터가 undefined인 경우 빈 객체를 기본값으로 사용
 
-    //         console.log("User ID:", user_id);
-    //         console.log("Token:", token);
+      //     if (user_id && token) {
+      //       storeTokenInCookie(token);
 
-    //         fetchUserData(token, user_id);
-    //         // navigate('/'); // 로그인 성공시 홈으로 이동
-    //       }
-    //     } else {
-    //       setError(message);
-    //     }
-    //   } else {
-    //     setError("네트워크 오류가 발생했습니다.");
-    //   }
-    // } catch (error) {
-    //   console.error("Error:", error);
-    // }
+      //       console.log("User ID:", user_id);
+      //       console.log("Token:", token);
+
+      //       // fetchUserData(token, user_id);
+      //       navigate('/'); // 로그인 성공시 홈으로 이동
+      //     }
+      //   } else if (resultCode === "400") {
+      //     setError("로그인 실패");
+      //   } else {
+      //     setError(message);
+      //   }
+      // } else {
+      //   setError("네트워크 오류가 발생했습니다.");
+      // }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
