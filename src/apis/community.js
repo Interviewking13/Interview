@@ -60,7 +60,7 @@ const communityApi = {
             };  
 
             /** 게시글번호 생성 */
-            const lastCommunityId = await getLastCommunityId();
+	    const lastCommunityId = await getLastCommunityId();
             const newCommunityId = lastCommunityId + 1;
     
             const newContent = await Community.create({
