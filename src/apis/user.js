@@ -1,4 +1,4 @@
-const { User }  = require('../models/');
+const { User }  = require('../models/index');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -10,8 +10,23 @@ const ObjectId = mongoose.Types.ObjectId;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
+const secretKey = process.env.SECRET_KEY;
+
+// dts_insert, dts_update 필드에 삽입할 변수 값 설정
+const currentDate = new Date();
+const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, "");    // 현재 날짜를 "yyyymmdd" 형식으로 설정
+const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    // 현재 시간을 "hhmmss" 형식으로 설정
+
 const userApi = {
 
+    /** user API middleware 테스트 */
+    async userMiddlewareApiTest(req, res, next) {
+        console.log('미들웨어 실행! userApi 도착!');
+        // 미들웨어 로직 처리
+        console.log(req.cookies.token);
+        next();
+    },
+    
     /** user 정보 전체 DB 조회 테스트 */
     async getAllUserInfo(req, res, next) {
         try {
@@ -27,9 +42,8 @@ const userApi = {
             res.status(200).json({
                 resultCode: "200",
                 message: "조회 성공",
-                // data: findAllUser    //보안 상 나중에 제거
             })
-            // res.send(findAllUser);
+
         } catch (err) {
             console.error(err);
             res.status(500).json({
@@ -42,11 +56,26 @@ const userApi = {
     /** 회원가입 */
     async registerUser(req, res, next) {
         try {
-            const { user_name, email, password } = req.body;
+            const { user_name, email, password, passwordCheck } = req.body;
+
+            // 입력값 검사
+            if (user_name === "" || email === "" || password === "" || passwordCheck === "") {
+                return res.status(200).json({
+                    resultCode: 200,
+                    message: "정보를 모두 입력하세요."
+                });
+            }
+
+            // 비밀번호, 비밀번호 확인 값 검사
+            if (password !== passwordCheck) {
+                return res.status(200).json({
+                    resultCode: 200,
+                    message: "비밀번호가 일치하지 않습니다."
+                });
+            }
             
             // 기존 사용자(이메일) 유무 검사
             const findUser = await User.findOne({ "email": email });
-            // console.log(findUser);
 
             if (findUser) {
                 return res.status(200).json({
@@ -62,11 +91,7 @@ const userApi = {
             // 비밀번호 암호화
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            // dts_insert 필드 내용에 삽입할 변수 값 설정
-            const currentDate = new Date();
-            const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, ""); // 현재 날짜를 "yyyymmdd" 형식으로 가져옵니다
-            const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, ""); // 현재 시간을 "hhmmss" 형식으로 가져옵니다
-            
+            // 계정 생성 정보
             const newUserInfo = {
                 user_name,
                 email,
@@ -80,7 +105,6 @@ const userApi = {
             res.status(200).json({
                 resultCode: "200",
                 message: "회원가입 성공",
-                data: newUser,
                 data: {
                     user_id: newUser._id,
                     email: newUser.email
@@ -98,40 +122,56 @@ const userApi = {
     /** 로그인 */
     async loginUser(req, res, next) {
         try {
-            
             const { email, password } = req.body;
 
             // 기존 사용자 유무 검사
             const findUser = await User.findOne({ "email": email });
 
-            // console.log(findUser);
-
             if (!findUser) {
                 return res.status(200).json({
-                    resultCode: "200",
+                    resultCode: "400",
                     message: "사용자가 존재하지 않습니다."
                 })
             }
 
             // 비밀번호 검증
-            const isPasswordValid = await bcrypt.compare(password, findUser.password);      // 평문값과 암호화값 비교
+            const isPasswordValid = await bcrypt.compare(password, findUser.password);
 
             if (!isPasswordValid) {
-                return res.status(200).json({
-                resultCode: "200",
+                return res.status(400).json({
+                resultCode: "400",
                 message: "비밀번호가 맞지 않습니다."
                 });
             }
+
+            // JWT 토큰 생성
+            const payload = {
+                user_id: findUser._id,          // 사용자의 MongoDB ObjectID
+            }
+
+            const token = jwt.sign(payload, secretKey, { expiresIn: "60m" });   // 토큰 만료시간 
+            
+            // JWT 토큰 쿠키에 담아주기
+            res.cookie('token', token, {
+                httpOnly: true,
+                maxAge: 3600000, // 3600000(=1시간) (단위: 밀리초)
+                sameSite: 'none'
+                // secure: true,
+            });
+    
+            // 설정된 쿠키 값 출력
+            // console.log('로그인' + req.cookies.token);
 
             res.status(200).json({
                 resultCode: "200",
                 message: "로그인 성공",
                 data: {
                     user_id: findUser._id,
-                    email
+                    email,
+                    // token
                 }
             });
-            
+
         } catch (err) {
             console.error(err);
             res.status(500).json({
@@ -143,11 +183,22 @@ const userApi = {
 
     /** 내 정보 조회 */
     async getUserInfo(req, res) {
-        try {
-            const { user_id } = req.params;
-            // const { user_id } = req.body;
+        const token = req.cookies.token;
+        // console.log('미들웨어 실행 -> userApi getUserInfo 도착!');
+        // console.log('내정보조회' + req.cookies.token);
 
-            // const findUser = await User.findOne({ "user_id": user_id }); //확인완료
+        try {
+            // const { user_id } = req.params;
+
+            // console.log('middleware 에서 불러온 decoded값' + req.user);
+            // middleware 에서 불러온 decoded값[object Object]
+            // 64861538a1783d4f1622f41c
+            
+            // middleware 이용 테스트
+            const { user_id } = req.user;
+            // console.log(user_id);
+            // console.log('middleware 에서 불러온 decoded값' + user_id);
+
             const findUser = await User.findOne(
                 { "_id": user_id },
                 {
@@ -157,20 +208,26 @@ const userApi = {
                     "intro_yn": true,
                     "phone_number": true
                 }
-            )
-            if (!findUser) {
+            );
+            
+            if (!findUser) {        // 여기로 안들어오네?
                 return res.status(400).json({
                     resultCode: "400",
                     message: "조회 실패"
                 });
             }
+            
             res.status(200).json({
-                // data: findUser
-                user_id: findUser._id,
-                user_name: findUser.user_name,
-                email: findUser.email,
-                intro_yn: findUser.intro_yn,
-                phone_number: findUser.phone_number
+                resultCode: "200",
+                message: "인증된 토큰입니다.",
+                data: {
+                    user_id: findUser._id,
+                    user_name: findUser.user_name,
+                    email: findUser.email,
+                    intro_yn: findUser.intro_yn,
+                    phone_number: findUser.phone_number,
+                    // token: token
+                }
             });
         } catch (err) {
             console.error(err);
@@ -183,9 +240,24 @@ const userApi = {
 
     /** 내 정보 수정 */
     async modifyUserInfo(req, res, next) {
+        const token = req.cookies.token;
+        // console.log('미들웨어 실행 -> userApi modifyUserInfo 도착!');
+        // console.log('내정보수정' + req.cookies.token);
+
         try {
-            const { user_id, email, password, intro_yn, phone_number } = req.body;
-            // const { email, password, intro_yn, phone_number } = req.body;
+            
+            // middleware 이용 테스트
+            const { user_id } = req.user;
+            // console.log(user_id);
+            // console.log('middleware 에서 불러온 decoded값' + user_id);
+            
+            // middleware 이용 테스트
+            // const { decodedUserId } = req.user;
+            // console.log(decodedUserId);
+            // console.log('middleware 에서 불러온 decoded값' + decodedUserId);
+
+            // const { user_id, email, password, intro_yn, phone_number } = req.body;
+            const { email, password, intro_yn, phone_number } = req.body;
 
             const findUser = await User.findOne({ "_id": user_id });    //나중에 user_id 값 사용가능하면? 사용가능할듯.
             // const findUser = await User.findOne({ "email": email });
@@ -196,15 +268,13 @@ const userApi = {
                     message: "해당 사용자를 찾을 수 없습니다."
                 });
             }
-            
+
             // 기존 사용자 정보
             const findUserId = findUser._id;
             const findUserEmail = findUser.email;
             const findUserPassword = findUser.password;
             const findUserIntro_yn = findUser.intro_yn;
             const findUserPhoneNumber = findUser.phone_number;
-
-            console.log(findUser);
 
             // 변경사항 있는지 확인
             let isModified = false;
@@ -229,7 +299,7 @@ const userApi = {
             // 변경사항이 없는 경우의 처리 로직
             if(!isModified) {
                 return res.status(200).json({
-                    status: "200", 
+                    resultCode: "200", 
                     message: "변경사항이 없습니다."
                 });
             }   
@@ -237,11 +307,6 @@ const userApi = {
             // 비밀번호 암호화
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            // dts_insert 필드 내용에 삽입할 변수 값 설정
-            const currentDate = new Date();
-            const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, ""); // 현재 날짜를 "yyyymmdd" 형식으로 가져옵니다
-            const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, ""); // 현재 시간을 "hhmmss" 형식으로 가져옵니다
-                    
             // 변경사항이 있을 경우 처리 로직
             const changeUserInfo = await User.updateOne({ "email": email },
             {
@@ -253,7 +318,7 @@ const userApi = {
                 }
             });
 
-            const changeFindUser = await User.findOne(
+            const updatedUser = await User.findOne(
                 { "_id": findUser._id },
                 {
                     "_id": true,
@@ -264,18 +329,16 @@ const userApi = {
                 });
 
             return res.status(200).json({
-                status: "200", 
+                resultCode: "200", 
                 message: "내 정보 수정 성공",
-                // data: changeUserInfo    // 안나와서 아래와 같이 수정
                 data: {
-                    user_id: findUser._id,
-                    email: findUser._id,
-                    intro_yn: findUser.intro_yn,
-                    phone_number: findUser.phone_number, 
+                    user_id: updatedUser._id,
+                    email: updatedUser.email,
+                    intro_yn: updatedUser.intro_yn,
+                    phone_number: updatedUser.phone_number, 
                 }
                 
             });
-
         } catch (err) {
             console.error(err);
             res.status(500).json({
@@ -288,10 +351,20 @@ const userApi = {
 
     /** 회원탈퇴 */
     async deleteUser(req, res, next) {
-        try {
-            const { user_id, email, password } = req.body;
+        const token = req.cookies.token;
+        // console.log('미들웨어 실행 -> userApi deleteUser 도착!');
+        // console.log('회원탈퇴' + req.cookies.token);
 
-            const findUser = await User.findOne({"_id": user_id });
+        try {
+            // middleware 이용 테스트
+            const { user_id } = req.user;
+            // console.log(user_id);
+            // console.log('middleware 에서 불러온 decoded값' + user_id);
+            
+            // const { user_id, email, password } = req.body;
+            const { email, password } = req.body;
+
+            const findUser = await User.findOne({ "_id": user_id });
 
             if (!findUser) {
                 return res.status(400).json({
@@ -312,6 +385,13 @@ const userApi = {
 
             // 회원 탈퇴
             await User.deleteOne({ "_id": user_id });
+                        
+            // 회원탈퇴시 토큰도 지워주자
+            // 헤더에 저장된 토큰 삭제
+            res.setHeader('Authorization', '');
+
+            // 토큰 쿠키 삭제
+            res.clearCookie('token');
 
             res.status(200).json({
                 resultCode: "200",
@@ -325,8 +405,37 @@ const userApi = {
                 message: "서버오류"
             });
         }
-    }
+    },
 
+    /** 로그아웃 */
+    async logoutUser (req, res, next) {
+        const token = req.cookies.token;
+        console.log('미들웨어 실행 -> userApi logoutUser 도착!');
+        console.log('로그아웃' + req.cookies.token);
+
+        try {
+            // middleware 이용 테스트
+            const { user_id } = req.user;
+            console.log(user_id);
+            console.log('middleware 에서 불러온 decoded값' + user_id);
+            
+            // 쿠키 삭제
+            res.clearCookie('token');
+
+            return res.status(200).json({
+                resultCode: "200",
+                message: "로그아웃 성공"
+            });
+
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                resultCode: "500",
+                message: "서버오류"
+            });
+        }
+
+    }
 }
 
 module.exports = userApi;
