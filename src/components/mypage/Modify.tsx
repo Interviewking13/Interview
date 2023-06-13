@@ -6,6 +6,7 @@ import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import FileUploader from "../UI/FileUploader";
+import Cookies from "react-cookie";
 
 type userDate = {
   name: string;
@@ -54,6 +55,28 @@ const Dummy = {
 
 const Modify = () => {
   const [userData, setUesrDate] = useState(Dummy);
+
+  const getToken = () => {
+    const token = Cookies.get("token");
+    return token;
+  };
+
+  const { data: token, isLoading, isError } = useQuery("userData", getToken);
+
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching token</div>;
+  }
+
+  // token 값을 활용하여 필요한 작업을 수행
+  console.log("Token:", token);
+  const { name, phone_number, email, password } = userData;
+
   return (
     <StyledContainer>
       <Grid container spacing={2}>
@@ -80,7 +103,7 @@ const Modify = () => {
           <Grid item xs={10}>
             <StyledTextField
               variant="outlined"
-              defaultValue={userData.name}
+              defaultValue={name}
               InputProps={{
                 readOnly: true,
               }}
@@ -93,7 +116,7 @@ const Modify = () => {
           <Grid item xs={10}>
             <StyledTextField
               variant="outlined"
-              defaultValue={userData.phone_number}
+              defaultValue={phone_number}
               fullWidth
             />
           </Grid>
@@ -103,7 +126,7 @@ const Modify = () => {
           <Grid item xs={10}>
             <StyledTextField
               variant="outlined"
-              defaultValue={userData.email}
+              defaultValue={email}
               InputProps={{
                 readOnly: true,
               }}
@@ -116,7 +139,7 @@ const Modify = () => {
           <Grid item xs={10}>
             <StyledTextField
               variant="outlined"
-              defaultValue={userData.password}
+              defaultValue={password}
               fullWidth
             />
           </Grid>
