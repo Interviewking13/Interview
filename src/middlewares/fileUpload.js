@@ -44,9 +44,9 @@ async function fileUpload(req, res, next) {
             const response = await s3.send(command);
       
             if(response){
-                req.ETag = response.ETag;
-                req.fileName = req.file.originalname;
-                req.fileKey = key; 
+                req.file_etag = response.ETag;
+                req.file_name = req.file.originalname;
+                req.file_key = key; 
                 next();
             } else {
                 res.end();

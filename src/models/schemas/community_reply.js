@@ -10,6 +10,9 @@ const CommunityReplySchema = new Schema(
             type: mongoose.Types.ObjectId,
             ref: "User",
         },
+        reply_user_name: {
+            type: String,
+        },
         reply_content : { 
             type: String,
         },

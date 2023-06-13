@@ -64,7 +64,7 @@ const fileModify = async (uploadFile, dir) => {
     formData.append('file', uploadFile);
 
     try {
-      const response = await fetch('/api/community/detl?community_no=49', {
+      const response = await fetch('/api/community/detl?community_no=12', {
         method: 'PUT',
         withCredentials: true,
         body: formData,
@@ -83,7 +83,7 @@ const fileModify = async (uploadFile, dir) => {
 /** 파일조회 */
 async function readFile() {
   try {
-    const response = await fetch(`/api/community/detl?community_no=48`, {
+    const response = await fetch(`/api/community/detl?community_no=12`, {
       method: 'GET',
       withCredentials: true,
     });
@@ -105,7 +105,7 @@ async function readFile() {
 /** 파일다운로드 */
 async function downloadFile() {
   try {
-    const response = await fetch(`/api/community/download?community_no=48`, {
+    const response = await fetch(`/api/community/download?community_no=12`, {
       method: 'GET',
       withCredentials: true,
     });
@@ -127,7 +127,6 @@ async function downloadFile() {
     console.error('클라이언트 파일 다운로드 실패:', err);
   }
 }
-
 
 
 
