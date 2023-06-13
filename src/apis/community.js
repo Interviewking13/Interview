@@ -27,8 +27,7 @@ const communityApi = {
     
         try {
             const { user_id, title, content } = req.body;
-            const findUser = await User.findOne({ _id: user_id })
-                .populate("user_id", "user_name")
+            const findUser = await User.findOne({ _id: user_id }).populate("_id").exec();
             const user_name = findUser.user_name;
 
             const file_etag = req.file_etag;
@@ -46,7 +45,7 @@ const communityApi = {
             };  
 
             /** 게시글번호 생성 */
-            const lastCommunityId = await getLastCommunityId();
+	    const lastCommunityId = await getLastCommunityId();
             const newCommunityId = lastCommunityId + 1;
     
             const newContent = await Community.create({
@@ -196,8 +195,7 @@ const communityApi = {
 
         try {
             const { reply_user_id, reply_content, community_id } = req.body;
-            const findUser = await User.findOne({ _id: reply_user_id })
-            .populate("user_id", "user_name")
+            const findUser = await User.findOne({ _id: reply_user_id }).populate("_id").exec();
             const reply_user_name = findUser.user_name;
             
             /** 댓글번호 순차부여 */
