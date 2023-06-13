@@ -7,13 +7,13 @@ const fileModify = require("../middlewares/fileModify");
 const userTokenValidate = require("../middlewares/userTokenValidate");
 
 router.get("/list", communityApi.getAllList);
-router.post("/detl", fileUpload, communityApi.postContent);
+router.post("/detl", communityApi.postContent); //fileUpload
 router.get("/detl", communityApi.getContent);
-router.put("/detl", fileModify, communityApi.modifyContent); //userTokenValidate
-router.delete("/detl", communityApi.deleteContent); //userTokenValidate
-router.get("/download", fileDownload, communityApi.fileDownload);
+router.put("/detl", userTokenValidate, communityApi.modifyContent); //fileModify
+router.delete("/detl", userTokenValidate, communityApi.deleteContent);
+router.get("/download", communityApi.fileDownload); //fileDownload
 router.post("/reply", communityApi.postReply);
-router.put("/reply", communityApi.modifyReply); //userTokenValidate
-router.delete("/reply", communityApi.deleteReply); //userTokenValidate
+router.put("/reply", userTokenValidate, communityApi.modifyReply);
+router.delete("/reply", userTokenValidate, communityApi.deleteReply);
 
 module.exports = router;
