@@ -18,6 +18,11 @@ import { Feedback } from "./pages/study/Feedback";
 import Information from "./pages/study/Information";
 import CommunityCreatePage from "./pages/community/CommunityCreatePage";
 import CommunityPage from "./pages/community/CommunityPage";
+import StudyMagement from "./pages/study/Information";
+import StudyModify from "./components/study/manage/StudyModify";
+import StudyMemberManagement from "./components/study/manage/StudyMemberManagement";
+import StudyApplicantList from "./components/study/manage/StudyApplicantList";
+import StudyManage from "./pages/study/StudyManage";
 
 const queryClient = new QueryClient();
 
@@ -35,13 +40,13 @@ function App() {
                 <Route path="userinfo" element={<UserInfo />} />
               </Route>
               <Route path="/mypage/userinfo/modify" element={<Modify />} />
-
               <Route path="/login" element={<LoginPage />} />
               <Route path="/login/signup" element={<SignupPage />} />
               <Route path="/study" element={<StudyList />} />
               <Route path="/study/feedback" element={<Feedback />} />
               <Route path="/study/:id" element={<Information />} />
               <Route path="/study/create" element={<CreateStudy />} />
+              <Route path="/management" element={<StudyManage />} />
               <Route
                 path="/Community/CommunityPage"
                 element={<CommunityPage />}
