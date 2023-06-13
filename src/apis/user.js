@@ -12,6 +12,8 @@ const bcrypt = require('bcrypt');
 
 const secretKey = process.env.SECRET_KEY;
 
+const validateEmail = require('../utils/user.js')
+
 // dts_insert, dts_update 필드에 삽입할 변수 값 설정
 const currentDate = new Date();
 const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, "");    // 현재 날짜를 "yyyymmdd" 형식으로 설정
@@ -60,16 +62,24 @@ const userApi = {
 
             // 입력값 검사
             if (user_name === "" || email === "" || password === "" || passwordCheck === "") {
-                return res.status(200).json({
-                    resultCode: 200,
+                return res.status(400).json({
+                    resultCode: 400,
                     message: "정보를 모두 입력하세요."
                 });
             }
 
+            // 이메일 형식 유효성 검사
+            if (!validateEmail(email)) {
+                return res.status(400).json({
+                    resultCode: "400",
+                    message: "올바른 이메일 형식이 아닙니다."
+                })
+            }
+
             // 비밀번호, 비밀번호 확인 값 검사
             if (password !== passwordCheck) {
-                return res.status(200).json({
-                    resultCode: 200,
+                return res.status(400).json({
+                    resultCode: 400,
                     message: "비밀번호가 일치하지 않습니다."
                 });
             }
@@ -78,9 +88,9 @@ const userApi = {
             const findUser = await User.findOne({ "email": email });
 
             if (findUser) {
-                return res.status(200).json({
-                    resultCode: "200",
-                    message: "기존에 이미 가입되어 있는 회원입니다.",
+                return res.status(400).json({
+                    resultCode: "400",
+                    message: "기존에 가입되어 있는 회원입니다.",
                     data: {
                         user_id: findUser._id,
                         email: findUser.email
@@ -149,12 +159,12 @@ const userApi = {
                 user_id: findUser._id,          // 사용자의 MongoDB ObjectID
             }
 
-            const token = jwt.sign(payload, secretKey, { expiresIn: "60m" });   // 토큰 만료시간 
+            const token = jwt.sign(payload, secretKey, { expiresIn: "3d" });   // 토큰 만료시간 
             
             // JWT 토큰 쿠키에 담아주기
             res.cookie('token', token, {
                 httpOnly: true,
-                maxAge: 3600000, // 3600000(=1시간) (단위: 밀리초)
+                maxAge: 3 * 24 * 60 * 60 * 1000,    // 3일 (단위: 밀리초) // 3600000(=1시간) (단위: 밀리초)
                 sameSite: 'none'
                 // secure: true,
             });
