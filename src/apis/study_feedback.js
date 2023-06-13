@@ -6,10 +6,13 @@ const studyFeedbackApi = {
   /**피드백, 댓글 작성*/
   async newFeedback(req, res, next) {
     try {
-      const user_id = req.user._id;
+      const user_id = req.user.user_id;
+      console.log(user_id);
+      const user = await User.findOne({ _id: user_id });
       const { study_id, content_type, content } = req.body;
       const createInfo = {
         user_id,
+        user_name: user.user_name,
         study_id,
         content_type,
         content,
@@ -66,7 +69,7 @@ const studyFeedbackApi = {
     try {
       // 유저 권한 판단
       const { study_id, content_type, content } = req.body;
-      const user_id = req.user._id;
+      const user_id = req.user.user_id;
       const foundFeedback = await StudyFeedback.findOne({ user_id, study_id });
       if (!foundFeedback) throw new Error('Not authorizaion');
 
@@ -88,7 +91,7 @@ const studyFeedbackApi = {
     try {
       // 유저 권한 판단
       const { study_id } = req.params;
-      const user_id = req.user._id;
+      const user_id = req.user.user_id;
       const foundFeedback = await StudyFeedback.findOne({ user_id, study_id });
       if (!foundFeedback) throw new Error('Not authorizaion');
 
