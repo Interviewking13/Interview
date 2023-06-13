@@ -5,7 +5,7 @@ export const dateFomatting = (date: string) => {
 export const dateSplice = (input: string) => {
   const dateString = input;
   const date = new Date(dateString);
-  const year = date.getFullYear();
+  const year = date.getFullYear() - 2000;
   const month = date.getMonth() + 1; // getMonth()의 반환값은 0부터 시작하므로 +1 해줍니다.
   const day = date.getDate();
 

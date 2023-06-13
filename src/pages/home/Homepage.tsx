@@ -7,23 +7,24 @@ import * as fonts from "../../constants/fonts";
 import PencilIconSrc from "../../img/pencil_mint.svg";
 import CarouselImgSrc from "../../img/carousel_hand_img.svg";
 import Slider from "react-slick";
-import './slick/slick-theme.css';
-import './slick/slick.css';
+import "./slick/slick-theme.css";
+import "./slick/slick.css";
 
 import { getInfoAllStudyData } from "../../api/api-study";
 import { dateSplice } from "../../utils/dateFomatting";
+import { Link } from "react-router-dom";
 
 const HomePage = (): JSX.Element => {
-
   type StudyData = {
-    id: number,
-    title: string,
-    headcount: number,
-    start: string,
-    end: string,
-    deadline: string,
-    master: string
-  }
+    _id: string;
+    title: string;
+    acceptcount: number;
+    headcount: number;
+    start: string;
+    end: string;
+    deadline: string;
+    master: string;
+  };
 
   const [studyData, setStudyData] = React.useState<StudyData[]>([]);
 
@@ -42,79 +43,74 @@ const HomePage = (): JSX.Element => {
     <>
       <StyledCarouselArea>
         <Slider
-        dots= {true}
-        infinite= {true}
-        speed= {500}
-        fade= {true}
-        cssEase= {"linear"}
-        autoplay= {true}
-        autoplaySpeed= {3000}
+          dots={true}
+          infinite={true}
+          speed={500}
+          fade={true}
+          cssEase={"linear"}
+          autoplay={true}
+          autoplaySpeed={3000}
         >
           <StyledCarouselOne>
-
             <StyledCarouselContainer>
-
               <StyledCarouselTextArea>
                 <StyledCarouselTitleTextNavy>
-                  면접을 <br/>
+                  면접을 <br />
                   면접답게
                 </StyledCarouselTitleTextNavy>
                 <StyledCarouselSubText>
-                  면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요
+                  면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을
+                  준비하세요
                 </StyledCarouselSubText>
               </StyledCarouselTextArea>
 
               <StyledCarouselImg src={CarouselImgSrc} />
-
             </StyledCarouselContainer>
-
           </StyledCarouselOne>
           <StyledCarouselTwo>
-          <StyledCarouselContainer>
+            <StyledCarouselContainer>
+              <StyledCarouselTextArea>
+                <StyledCarouselTitleTextMint>
+                  면접을 <br />
+                  면접답게
+                </StyledCarouselTitleTextMint>
+                <StyledCarouselSubText>
+                  면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을
+                  준비하세요
+                </StyledCarouselSubText>
+              </StyledCarouselTextArea>
 
-            <StyledCarouselTextArea>
-              <StyledCarouselTitleTextMint>
-                면접을 <br/>
-                면접답게
-              </StyledCarouselTitleTextMint>
-              <StyledCarouselSubText>
-                면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요
-              </StyledCarouselSubText>
-            </StyledCarouselTextArea>
-
-            <StyledCarouselImg src={CarouselImgSrc} />
-
-          </StyledCarouselContainer>
+              <StyledCarouselImg src={CarouselImgSrc} />
+            </StyledCarouselContainer>
           </StyledCarouselTwo>
         </Slider>
       </StyledCarouselArea>
 
       <StyledCommonContainer>
-
         <StyledItemNameArea>
           <StyledTitleText>새로 올라온 스터디</StyledTitleText>
         </StyledItemNameArea>
 
         <StudyListItemArea>
-        {studyData.slice(0, 4).map((study, index) => (
-          <StudyListItem
-            key={index}
-            id={study.id}
-            title={study.title}
-            maxParticipants={study.headcount}
-            startDate={dateSplice(study.start)}
-            endDate={dateSplice(study.end)}
-            recruitDeadline={dateSplice(study.deadline)}
-            master={study.master}
-          />
-        ))}
+          {studyData.slice(0, 4).map((study) => (
+            <StyledLink to={`/study/${study._id}`} key={study._id}>
+              <StudyListItem
+                id={study._id}
+                title={study.title}
+                currentParticipants={study.acceptcount}
+                maxParticipants={study.headcount}
+                startDate={dateSplice(study.start)}
+                endDate={dateSplice(study.end)}
+                recruitDeadline={dateSplice(study.deadline)}
+                master={study.master}
+              />
+            </StyledLink>
+          ))}
         </StudyListItemArea>
-        
-        <StyledMainStudyBtnArea>      
+
+        <StyledMainStudyBtnArea>
           <StyledMainStudyBtn>
-
             <StyeldBtnTextArea>
-
               <StyeldBtnTitleArea>
                 <StyledIcon src={PencilIconSrc} />
                 <StyledMainBtnTitle>스터디 참여하기</StyledMainBtnTitle>
@@ -124,45 +120,33 @@ const HomePage = (): JSX.Element => {
                 참여하고 싶은 스터디를 찾고, 자신있는 면접을 준비해보세요!
               </StyledMainBtnSub>
             </StyeldBtnTextArea>
-
-
           </StyledMainStudyBtn>
 
           <StyledMainStudyBtn>
-
             <StyeldBtnTextArea>
-
               <StyeldBtnTitleArea>
                 <StyledIcon src={PencilIconSrc} />
-                <StyledMainBtnTitle>
-                  스터디 만들기
-                </StyledMainBtnTitle>
+                <StyledMainBtnTitle>스터디 만들기</StyledMainBtnTitle>
               </StyeldBtnTitleArea>
 
               <StyledMainBtnSub>
                 알맞는 스터디가 없다면 직접 스터디를 개설해보세요!
               </StyledMainBtnSub>
             </StyeldBtnTextArea>
-
           </StyledMainStudyBtn>
-        </StyledMainStudyBtnArea>    
+        </StyledMainStudyBtnArea>
 
         <StyledItemNameArea>
           <StyledTitleText>커뮤니티 소식</StyledTitleText>
         </StyledItemNameArea>
 
-        <StyledMainCommunityArea>
-
-        </StyledMainCommunityArea>
-
+        <StyledMainCommunityArea></StyledMainCommunityArea>
       </StyledCommonContainer>
     </>
-    
   );
 };
 
 export default HomePage;
-
 
 const StyledCommonContainer = styled.div`
   width: 1270px;
@@ -173,7 +157,7 @@ const StyledCarouselArea = styled.div`
   overflow: hidden;
   height: 346px;
   margin-top: 25px;
-`
+`;
 const StyledCarouselContainer = styled.div`
   width: 1270px;
   margin: 0 auto;
@@ -182,24 +166,24 @@ const StyledCarouselContainer = styled.div`
 `;
 const StyledCarouselTextArea = styled.div`
   margin-top: 87px;
-`
+`;
 const StyledCarouselImg = styled.img`
   margin-top: 44px;
-`
+`;
 const StyledCarouselOne = styled.div`
   width: 1920px;
   height: 346px;
   margin: 0 auto;
   background-color: ${colors.back_navy};
   cursor: pointer;
-`
+`;
 const StyledCarouselTwo = styled.div`
   width: 1920px;
   height: 346px;
   margin: 0 auto;
   cursor: pointer;
-  background-color: #F2FFFA;
-`
+  background-color: #f2fffa;
+`;
 const StyledItemNameArea = styled.div`
   margin: 50px 0 0 0;
   display: flex;
@@ -231,18 +215,17 @@ const StyledCarouselTitleTextMint = styled.p`
 const StyledCarouselSubText = styled.p`
   ${fonts.SubTextThinSmall}
   margin: 34 0 0 0;
-`
+`;
 const StudyListItemArea = styled.p`
   width: 1270px;
   height: 295px;
-  margin: 30px 0 40PX 0;
+  margin: 30px 0 40px 0;
   display: grid;
   grid-auto-rows: 295px;
   grid-template-columns: 298px 298px 298px 298px;
   grid-row-gap: 30px;
   grid-column-gap: 25px;
 `;
-
 
 const StyledMainStudyBtnArea = styled.div`
   display: flex;
@@ -254,7 +237,7 @@ const StyledMainStudyBtn = styled.div`
   border: solid 1px ${colors.main_mint};
   border-radius: 15px;
 `;
-const StyeldBtnTextArea  = styled.div`
+const StyeldBtnTextArea = styled.div`
   width: fit-content;
   height: fit-content;
   margin: 35px 0 0 40px;
@@ -280,4 +263,7 @@ const StyledMainBtnSub = styled.p`
 
 const StyledMainCommunityArea = styled.div`
   height: 300px;
-`
+`;
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`;

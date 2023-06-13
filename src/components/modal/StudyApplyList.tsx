@@ -2,17 +2,21 @@ import React from "react";
 import styled from "styled-components";
 
 type ListItemProps = {
-  text1: string;
-  text2: string;
+  textTitle: string;
+  textContent: string;
   imageSrc: string;
 };
 
-const ListItem: React.FC<ListItemProps> = ({ text1, text2, imageSrc }) => {
+const ListItem: React.FC<ListItemProps> = ({
+  textTitle,
+  textContent,
+  imageSrc,
+}) => {
   return (
     <StyledListItem>
       <StyledImg src={imageSrc} alt="Icon" />
-      <StyledSpan>{text1}</StyledSpan>
-      <StyledSpanContent>{text2}</StyledSpanContent>
+      <StyledSpan>{textTitle}</StyledSpan>
+      <StyledSpanContent>{textContent}</StyledSpanContent>
     </StyledListItem>
   );
 };
@@ -35,24 +39,24 @@ const StudyApplyList: React.FC<ApplyListProps> = ({
   return (
     <ListContainer>
       <ListItem
-        text1="진행기간"
-        text2={period}
-        imageSrc="./study-icon-img.png"
+        textTitle="진행기간"
+        textContent={period}
+        imageSrc="/study-icon-img.png"
       />
       <ListItem
-        text1="모집마감"
-        text2={deadline}
-        imageSrc="./study-icon-img.png"
+        textTitle="모집마감"
+        textContent={deadline}
+        imageSrc="/study-icon-img.png"
       />
       <ListItem
-        text1="모집인원"
-        text2={`${currentCount}/${headCount}명`}
-        imageSrc="./study-icon-img.png"
+        textTitle="모집인원"
+        textContent={`${currentCount}/${headCount}명`}
+        imageSrc="/study-icon-img.png"
       />
       <ListItem
-        text1="스터디장"
-        text2={studyLeader}
-        imageSrc="./study-icon-img.png"
+        textTitle="스터디장"
+        textContent={studyLeader}
+        imageSrc="/study-icon-img.png"
       />
     </ListContainer>
   );
