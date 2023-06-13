@@ -1,5 +1,5 @@
 import React from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import HomePage from "./pages/home/Homepage";
