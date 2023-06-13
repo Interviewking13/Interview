@@ -11,7 +11,7 @@ const studyApi = {
   async newStudy(req, res, next) {
     try {
       // 스터디 개설
-      const leader_id = req.user._id;
+      const leader_id = req.user.user_id;
       console.log(leader_id);
       const leader = await User.findOne({ _id: leader_id });
       console.log(leader.user_name);
@@ -19,6 +19,7 @@ const studyApi = {
         req.body;
 
       const createInfo = {
+        leader_id,
         leader_name: leader.user_name,
         study_name,
         title,
@@ -60,7 +61,7 @@ const studyApi = {
   /**스터디 신청*/
   async applyStudy(req, res, next) {
     try {
-      const member_id = req.user._id;
+      const member_id = req.user.user_id;
       console.log(member_id);
       const { study_id, goal } = req.body;
       const createInfo = {
@@ -86,7 +87,7 @@ const studyApi = {
   async acceptStudy(req, res, next) {
     try {
       const { member_id, study_id } = req.params;
-      const leader_id = req.user._id;
+      const leader_id = req.user.user_id;
 
       // 스터디장 권한 판단
       const leader = await StudyRelation.findOne({ user_id: leader_id, study_id });
@@ -134,10 +135,10 @@ const studyApi = {
   },
 
   /**스터디 정보 조회(모집 중)*/
-  async enrollingStudy(req, res, next) {
+  async getStudyOne(req, res, next) {
     try {
-      const { status } = req.params;
-      const foundStudy = await Study.find({ status: 0 });
+      const { study_id } = req.params;
+      const foundStudy = await Study.findOne({ _id: study_id });
       if (!foundStudy) throw new Error('Not found study');
       res.status(200).json(foundStudy);
     } catch (error) {
@@ -154,7 +155,7 @@ const studyApi = {
     try {
       // 스터디장 권한 판단
       const { study_id } = req.params;
-      const leader_id = req.user._id;
+      const leader_id = req.user.user_id;
       const leader = await StudyRelation.findOne({ user_id: leader_id, study_id });
       if (!leader || leader.is_leader === false) throw new Error('Not leader');
       console.log(leader);
@@ -200,7 +201,7 @@ const studyApi = {
     try {
       // 스터디장 권한 판단
       const { study_id, member_id } = req.params;
-      const leader_id = req.user._id;
+      const leader_id = req.user.user_id;
       const leader = await StudyRelation.findOne({ user_id: leader_id, study_id });
       if (!leader || leader.is_leader === false) throw new Error('Not leader');
       console.log(leader);
@@ -225,7 +226,7 @@ const studyApi = {
   async leaveUser(req, res, next) {
     try {
       // 스터디장이면 스터디도 삭제
-      const user_id = req.user._id;
+      const user_id = req.user.user_id;
       const { study_id } = req.body;
       const user = await StudyRelation.findOne({ user_id, study_id });
       console.log(user);
@@ -258,7 +259,7 @@ const studyApi = {
     try {
       // 스터디장 권한 판단
       const { study_id } = req.params;
-      const leader_id = req.user._id;
+      const leader_id = req.user.user_id;
       const leader = await StudyRelation.findOne({ user_id: leader_id, study_id });
       if (!leader || leader.is_leader === false) throw new Error('Not leader');
       console.log(leader);
