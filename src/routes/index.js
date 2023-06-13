@@ -20,7 +20,10 @@ router.use(
   }),
 );
 
-// JWT 토큰 - 쿠키값 테스트
+// OPTIONS 요청에 대한 처리 - 0613
+router.options('*', cors());
+
+// JWT 토큰 - 쿠키값 테스트 - 0613
 router.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   next();
