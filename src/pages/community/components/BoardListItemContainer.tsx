@@ -17,6 +17,6 @@ export default BoardListItemContainer;
 
 const StyledPostListItemBox = styled.div`
   padding: 10px 20px;
-  border: 1px solid ${colors.darkgray_navy};
+  border: 13px solid ${colors.darkgray_navy};
   border-radius: 10px;
 `;
