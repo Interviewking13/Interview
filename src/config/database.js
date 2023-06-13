@@ -10,6 +10,6 @@ mongoose
     family: 4, // IPv4
   })
   .then(() => console.log('Successfully connected to MongoDB'))
-  .catch((err) => console.log(err));
+  .catch(err => console.log(err));
 
 module.exports = mongoose;
