@@ -24,7 +24,7 @@ const HomePage = (): JSX.Element => {
     start: string,
     end: string,
     deadline: string,
-    master: string
+    leader_name: string
   }
 
   const [studyData, setStudyData] = React.useState<StudyData[]>([]);
@@ -108,48 +108,51 @@ const HomePage = (): JSX.Element => {
                 startDate={dateSplice(study.start)}
                 endDate={dateSplice(study.end)}
                 recruitDeadline={dateSplice(study.deadline)}
-                master={study.master}
+                master={study.leader_name}
               />
             </StyledLink>
           ))}
         </StudyListItemArea>
 
         
-        <StyledMainStudyBtnArea>      
-          <StyledMainStudyBtn>
+        <StyledMainStudyBtnArea> 
+          <StyledLink to={`/study`}>     
+            <StyledMainStudyBtn>
 
-            <StyeldBtnTextArea>
+              <StyeldBtnTextArea>
+                <StyeldBtnTitleArea>
+                  <StyledIcon src={PencilIconSrc} />
+                  <StyledMainBtnTitle>스터디 참여하기</StyledMainBtnTitle>
+                </StyeldBtnTitleArea>
 
-              <StyeldBtnTitleArea>
-                <StyledIcon src={PencilIconSrc} />
-                <StyledMainBtnTitle>스터디 참여하기</StyledMainBtnTitle>
-              </StyeldBtnTitleArea>
-
-              <StyledMainBtnSub>
-                참여하고 싶은 스터디를 찾고, 자신있는 면접을 준비해보세요!
-              </StyledMainBtnSub>
-            </StyeldBtnTextArea>
+                <StyledMainBtnSub>
+                  참여하고 싶은 스터디를 찾고, 자신있는 면접을 준비해보세요!
+                </StyledMainBtnSub>
+              </StyeldBtnTextArea>
 
 
-          </StyledMainStudyBtn>
+            </StyledMainStudyBtn>
+          </StyledLink>
 
-          <StyledMainStudyBtn>
+          <StyledLink to={`/study/create`}> 
+            <StyledMainStudyBtn>
 
-            <StyeldBtnTextArea>
+              <StyeldBtnTextArea>
 
-              <StyeldBtnTitleArea>
-                <StyledIcon src={PencilIconSrc} />
-                <StyledMainBtnTitle>
-                  스터디 만들기
-                </StyledMainBtnTitle>
-              </StyeldBtnTitleArea>
+                <StyeldBtnTitleArea>
+                  <StyledIcon src={PencilIconSrc} />
+                  <StyledMainBtnTitle>
+                    스터디 만들기
+                  </StyledMainBtnTitle>
+                </StyeldBtnTitleArea>
 
-              <StyledMainBtnSub>
-                알맞는 스터디가 없다면 직접 스터디를 개설해보세요!
-              </StyledMainBtnSub>
-            </StyeldBtnTextArea>
+                <StyledMainBtnSub>
+                  알맞는 스터디가 없다면 직접 스터디를 개설해보세요!
+                </StyledMainBtnSub>
+              </StyeldBtnTextArea>
 
-          </StyledMainStudyBtn>
+            </StyledMainStudyBtn>
+          </StyledLink>
         </StyledMainStudyBtnArea>    
 
         <StyledItemNameArea>
@@ -277,10 +280,12 @@ const StyledMainBtnTitle = styled.p`
   margin: 2px 0 20px 20px;
   ${fonts.SubText}
   font-size: 20px;
+  color: ${colors.main_black};
 `;
 const StyledMainBtnSub = styled.p`
   ${fonts.SubTextThinSmall}
   margin: 0;
+  color: ${colors.main_black};
 `;
 
 const StyledMainCommunityArea = styled.div`
@@ -288,4 +293,10 @@ const StyledMainCommunityArea = styled.div`
 `
 const StyledLink = styled(Link)`
   text-decoration: none;
+  transition: 0.3s;
+
+  :hover {
+    transform: scale(1.007);
+    transition: 0.3s;
+  }
 `

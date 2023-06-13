@@ -70,6 +70,8 @@ const StyledStudyListContainer = styled.div`
   border-radius: 15px;
   background-color: #fff;
   margin: 0;
+  
+  
 `;
 const StyledStudyListNavyArea = styled.div`
   width: 295px;
