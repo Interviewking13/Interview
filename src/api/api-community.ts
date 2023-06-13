@@ -1,6 +1,7 @@
 import { axiosInstance } from "./axiosInstance";
 
 /* 인스턴스 네이밍 컨벤션 : 요청방식(ex get) + 해당 내용 + (by) + (파라미터/인자/쿼리) */
+/* 커뮤니티 최신화 06-11 00:45am */
 
 /** 1. 커뮤니티 목록 조회(전체)  get */
 export const getAllCommunityData = async () => {
@@ -24,7 +25,6 @@ export const postCommunity = async ({
     user_id,
     title,
     content,
-    attach,
   });
   return response;
 };
@@ -35,7 +35,7 @@ export const getDataByCommunity_noAndUser_id = async (
   user_id: string
 ) => {
   const response = await axiosInstance.get(
-    `community/detl/${community_no}/${user_id}`
+    `community/detl?community_id=${community_no}&${user_id}`
   );
   return response;
 };
@@ -44,56 +44,49 @@ export const getDataByCommunity_noAndUser_id = async (
 export const putCommunity = async (
   community_no: number,
   title: string,
-  content: string,
-  attach: string
+  content: string
 ) => {
   const response = await axiosInstance.put(`community/detl`, {
     community_no,
     title,
     content,
-    attach,
   });
   return response;
 };
 
 /** 5. 커뮤니티 게시글 삭제  delete */
-export const deleteCommunityByCommunity_no = async (community_no: number) => {
-  const response = await axiosInstance.delete(`community/detl/${community_no}`);
+export const deleteCommunityByCommunity_no = async (community_id: number) => {
+  const response = await axiosInstance.delete(`community/detl/${community_id}`);
   return response;
 };
 
 /** 6. 커뮤니티 댓글 등록  post */
 export const postReply = async (
-  community_no: number,
-  user_id: string,
-  reply_content: string
+  reply_user_id: string,
+  reply_content: string,
+  community_id: number
 ) => {
   const response = await axiosInstance.post(`community/reply`, {
-    community_no,
-    user_id,
+    reply_user_id,
     reply_content,
+    community_id,
   });
   return response;
 };
 
 /** 7. 커뮤니티 댓글 수정  put */
-export const putReply = async (
-  community_no: number,
-  reply_no: number,
-  reply_content: string
-) => {
+export const putReply = async (reply_id: number, reply_content: string) => {
   const response = await axiosInstance.put(`community/reply`, {
-    community_no,
-    reply_no,
+    reply_id,
     reply_content,
   });
   return response;
 };
 
 /** 8. 커뮤니티 댓글 삭제  delete */
-export const deleteReply = async (community_no: number, reply_no: number) => {
+export const deleteReply = async (reply_id: number) => {
   const response = await axiosInstance.delete(`community/reply`, {
-    data: { community_no, reply_no },
+    data: { reply_id },
   });
   return response;
 };
