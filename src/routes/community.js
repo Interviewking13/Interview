@@ -11,7 +11,7 @@ router.post("/detl", communityApi.postContent); //fileUpload
 router.get("/detl", communityApi.getContent);
 router.put("/detl", userTokenValidate, communityApi.modifyContent); //fileModify
 router.delete("/detl", userTokenValidate, communityApi.deleteContent);
-router.get("/download", communityApi.fileDownload); //fileDownload
+//router.get("/download", communityApi.fileDownload); //fileDownload
 router.post("/reply", communityApi.postReply);
 router.put("/reply", userTokenValidate, communityApi.modifyReply);
 router.delete("/reply", userTokenValidate, communityApi.deleteReply);
