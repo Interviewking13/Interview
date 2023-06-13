@@ -4,7 +4,7 @@ import StudyListItem from "../../components/study/StudyListItem";
 
 import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
-import PencilIconSrc from "../../img/pencil_mint.svg";
+import SearchIconSrc from "../../img/search_navy.svg";
 import { getInfoAllStudyData } from "../../api/api-study";
 import { dateSplice } from "../../utils/dateFomatting";
 import { Link } from "react-router-dom";
@@ -43,13 +43,10 @@ const StudyList = (): JSX.Element => {
               <StyledSubTextThin>원하는 스터디를 찾고 가입해보세요.</StyledSubTextThin>
 
               <StudyListInputArea>
-                  <StyledSelect name="" id="StudyListSort">
-                    <option value="ing">모집중</option>
-                  </StyledSelect>
                   <StyledInput type="text" name="" id="" placeholder="검색하기" />
                   
                   <StyledInputBtn>
-                    <StyledIcon src={PencilIconSrc} />
+                    <StyledIcon src={SearchIconSrc} />
                   </StyledInputBtn>
                   <StyledLink to={`/study/create`}>
                     <CommonButton>
@@ -96,7 +93,7 @@ const StudyListTopArea = styled.div`
   align-items: flex-end;
 `;
 const StudyListInputArea = styled.div`
-  width: 620px;
+  width: 472px;
   display: flex;
   justify-content: space-between;
 `;
@@ -107,12 +104,12 @@ const StyledTitleText = styled.p`
   margin: 0 30px 0 0;
   `;
 const StyledSubTextThin = styled.p`
-  width: 439px;
+  width: 595px;
   height: fit-content;
-  font-size: 18px;
   font-weight: light;
-  color: ${colors.main_gray};
+  color: ${colors.darkgray_navy};
   margin: 0;
+  ${fonts.SubTextThin}
 `;
 
 const CommonButton = styled.div`
@@ -123,6 +120,7 @@ const CommonButton = styled.div`
   align-content: center;
   border-radius: 10px;
   background-color: ${colors.main_mint};
+  ${fonts.SubText}
 `;
 const ButtonText = styled.p`
   font-size: 18px;
@@ -141,16 +139,6 @@ const StudyListItemArea = styled.div`
   grid-column-gap: 25px;
 `;
 
-const StyledSelect = styled.select`
-  width: 133px;
-  height: 45px;
-  margin: 0;
-  border: solid 1px ${colors.main_navy};
-  border-radius: 10px;
-  padding-left: 15px;
-  color: ${colors.main_navy};
-  ${fonts.SubTextThin}
-`
 const StyledInput = styled.input`
   width: 325px;
   height: 45px;
@@ -159,13 +147,15 @@ const StyledInput = styled.input`
   box-sizing: border-box;
   border-radius: 10px;
   padding-left: 15px;
-  color: ${colors.back_navy};
+  color: ${colors.main_navy};
   ${fonts.SubTextThin}
 `
 const StyledInputBtn = styled.button`
   background: none;
   border: none;
-  margin-left: -50px;
+  margin-left: -70px;
+  margin-top: 3px;
+  cursor: pointer;
 `
 const StyledIcon = styled.img`
   width: 27px;
@@ -175,4 +165,10 @@ const StyledIcon = styled.img`
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${colors.main_black};
+  transition: 0.3s;
+
+  :hover {
+    transform: scale(1.007);
+    transition: 0.3s;
+  }
 `
