@@ -21,7 +21,7 @@ const LoginPage = () => {
   const [cookies, setCookie] = useCookies(["token"]);
 
   // const queryClient = new QueryClient();
-
+  // 로그인 mutation 설정
   const { mutate: loginMutation } = useMutation(postSignIn, {
     onError: (error) => {
       console.error("Error:", error);
@@ -32,6 +32,7 @@ const LoginPage = () => {
     },
   });
 
+  // 로그인 버튼 클릭 시 동작
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -56,43 +57,47 @@ const LoginPage = () => {
       // response값 확인
       console.log(response);
 
-      // if (response.status === 200) {
-      //   const { resultCode, message, data } = response.data;
+      if (response.status === 200) {
+        const { resultCode, message, data } = response.data;
 
-      //   if (resultCode === "200") {
-      //     const { user_id, token } = data || {}; // 데이터가 undefined인 경우 빈 객체를 기본값으로 사용
+        if (resultCode === "200") {
+          const { user_id, token } = data || {}; // 데이터가 undefined인 경우 빈 객체를 기본값으로 사용
 
-      //     if (user_id && token) {
-      //       storeTokenInCookie(token);
+          if (user_id && token) {
+            // storeTokenInCookie(token);
 
-      //       console.log("User ID:", user_id);
-      //       console.log("Token:", token);
+            console.log("User ID:", user_id);
+            console.log("Token:", token);
 
-      //       // fetchUserData(token, user_id);
-      //       navigate('/'); // 로그인 성공시 홈으로 이동
-      //     }
-      //   } else if (resultCode === "400") {
-      //     setError("로그인 실패");
-      //   } else {
-      //     setError(message);
-      //   }
-      // } else {
-      //   setError("네트워크 오류가 발생했습니다.");
-      // }
+            // fetchUserData(token, user_id);
+            navigate('/'); // 로그인 성공시 홈으로 이동
+          }
+        } else if (resultCode === "400") {
+          setError("로그인 실패");
+        } else {
+          setError(message);
+        }
+      } else {
+        setError("네트워크 오류가 발생했습니다.");
+      }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
+  // 이메일 입력 값 변경 시 동작
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     const email = e.target.value;
     setEmail(email);
   };
 
+  // 비밀번호 입력 값 변경 시 동작
   const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value;
     setPassword(password);
   };
+
+  // 회원가입 페이지로 이동
   const onClickSignup = () => {
     navigate("./signup"); // useNavigate 사용하여 페이지 이동
   };
