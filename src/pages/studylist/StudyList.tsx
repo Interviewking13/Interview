@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React from 'react';
+import React from "react";
 import StudyListItem from "../../components/study/StudyListItem";
 
 import { colors } from "../../constants/colors";
@@ -10,17 +10,16 @@ import { dateSplice } from "../../utils/dateFomatting";
 import { Link } from "react-router-dom";
 
 const StudyList = (): JSX.Element => {
-
   type StudyData = {
-    _id: string,
-    title: string,
-    acceptcount: number,
-    headcount: number,
-    start: string,
-    end: string,
-    deadline: string,
-    master: string
-  }
+    _id: string;
+    title: string;
+    acceptcount: number;
+    headcount: number;
+    start: string;
+    end: string;
+    deadline: string;
+    master: string;
+  };
 
   const [studyData, setStudyData] = React.useState<StudyData[]>([]);
 
@@ -36,50 +35,47 @@ const StudyList = (): JSX.Element => {
   }, []);
 
   return (
-      <CommonContainer>
-          <StudyListTopArea>
-            
-              <StyledTitleText>스터디 찾기</StyledTitleText>
-              <StyledSubTextThin>원하는 스터디를 찾고 가입해보세요.</StyledSubTextThin>
+    <CommonContainer>
+      <StudyListTopArea>
+        <StyledTitleText>스터디 찾기</StyledTitleText>
+        <StyledSubTextThin>
+          원하는 스터디를 찾고 가입해보세요.
+        </StyledSubTextThin>
 
-              <StudyListInputArea>
-                  <StyledSelect name="" id="StudyListSort">
-                    <option value="ing">모집중</option>
-                  </StyledSelect>
-                  <StyledInput type="text" name="" id="" placeholder="검색하기" />
-                  
-                  <StyledInputBtn>
-                    <StyledIcon src={PencilIconSrc} />
-                  </StyledInputBtn>
-                  <StyledLink to={`/study/create`}>
-                    <CommonButton>
-                        <ButtonText>스터디 만들기</ButtonText>
-                    </CommonButton>
-                  </StyledLink>
-                  
-              </StudyListInputArea>
-              
-          </StudyListTopArea>
+        <StudyListInputArea>
+          <StyledSelect name="" id="StudyListSort">
+            <option value="ing">모집중</option>
+          </StyledSelect>
+          <StyledInput type="text" name="" id="" placeholder="검색하기" />
 
-          <StudyListItemArea>
-          {studyData.slice(0, 4).map((study) => (
-            <StyledLink to={`/study/${study._id}`} key={study._id}>
-              <StudyListItem
-                id={study._id}
-                title={study.title}
-                currentParticipants={study.acceptcount}
-                maxParticipants={study.headcount}
-                startDate={dateSplice(study.start)}
-                endDate={dateSplice(study.end)}
-                recruitDeadline={dateSplice(study.deadline)}
-                master={study.master}
-              />
-            </StyledLink>
+          <StyledInputBtn>
+            <StyledIcon src={PencilIconSrc} />
+          </StyledInputBtn>
+          <StyledLink to={`/study/create`}>
+            <CommonButton>
+              <ButtonText>스터디 만들기</ButtonText>
+            </CommonButton>
+          </StyledLink>
+        </StudyListInputArea>
+      </StudyListTopArea>
 
-          ))}
-        </StudyListItemArea>
-            
-      </CommonContainer>
+      <StudyListItemArea>
+        {studyData.slice(0, 12).map((study) => (
+          <StyledLink to={`/study/${study._id}`} key={study._id}>
+            <StudyListItem
+              id={study._id}
+              title={study.title}
+              currentParticipants={study.acceptcount}
+              maxParticipants={study.headcount}
+              startDate={dateSplice(study.start)}
+              endDate={dateSplice(study.end)}
+              recruitDeadline={dateSplice(study.deadline)}
+              master={study.master}
+            />
+          </StyledLink>
+        ))}
+      </StudyListItemArea>
+    </CommonContainer>
   );
 };
 
@@ -105,7 +101,7 @@ const StyledTitleText = styled.p`
   ${fonts.TitleText}
   color: ${colors.main_navy};
   margin: 0 30px 0 0;
-  `;
+`;
 const StyledSubTextThin = styled.p`
   width: 439px;
   height: fit-content;
@@ -133,7 +129,7 @@ const ButtonText = styled.p`
 const StudyListItemArea = styled.div`
   width: 1270px;
   height: 945px;
-  margin: 30px 0 40PX 0;
+  margin: 30px 0 40px 0;
   display: grid;
   grid-auto-rows: 295px;
   grid-template-columns: 298px 298px 298px 298px;
@@ -150,7 +146,7 @@ const StyledSelect = styled.select`
   padding-left: 15px;
   color: ${colors.main_navy};
   ${fonts.SubTextThin}
-`
+`;
 const StyledInput = styled.input`
   width: 325px;
   height: 45px;
@@ -161,18 +157,18 @@ const StyledInput = styled.input`
   padding-left: 15px;
   color: ${colors.back_navy};
   ${fonts.SubTextThin}
-`
+`;
 const StyledInputBtn = styled.button`
   background: none;
   border: none;
   margin-left: -50px;
-`
+`;
 const StyledIcon = styled.img`
   width: 27px;
   height: 27px;
-`
+`;
 
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${colors.main_black};
-`
+`;
