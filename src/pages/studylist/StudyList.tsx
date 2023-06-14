@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React from 'react';
+import React from "react";
 import StudyListItem from "../../components/study/StudyListItem";
 
 import { colors } from "../../constants/colors";
@@ -175,6 +175,7 @@ const ButtonText = styled.p`
 const StudyListItemArea = styled.div`
   width: 1270px;
   height: 945px;
+  margin: 30px 0 40px 0;
   margin: 30px 0 40px 0;
   display: grid;
   grid-auto-rows: 295px;
