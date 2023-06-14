@@ -5,7 +5,7 @@ import BoardListItemContainer from "../community/components/BoardListItemContain
 import BestBoardListItemContainer from "./components/BestBoardListItemContainer";
 
 const CommunityPage: React.FC = () => {
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
