@@ -226,9 +226,9 @@ const studyApi = {
   async leaveUser(req, res, next) {
     try {
       // 스터디장이면 스터디도 삭제
-      const user_id = req.user.user_id;
+      const leader_id = req.user.user_id;
       const { study_id } = req.body;
-      const user = await StudyRelation.findOne({ user_id, study_id });
+      const user = await StudyRelation.findOne({ user_id: leader_id, study_id });
       console.log(user);
       if (user.is_leader === true) {
         const deletedStudy = await Study.deleteOne({ _id: study_id });
@@ -237,12 +237,12 @@ const studyApi = {
 
       // 해당 스터디 아이디 관계 모두 삭제
       if (user.is_leader === true || user.is_leader === false) {
-        const deletedRelation = await StudyRelation.deleteMany({ user_id });
+        const deletedRelation = await StudyRelation.deleteMany({ user_id: leader_id });
         res.study_relation = deletedRelation;
         res.status(200).json(deletedRelation);
 
         // 해당 스터디 피드백, 댓글 모두 삭제
-        const deletedFeedback = await StudyFeedback.deleteMany({ user_id });
+        const deletedFeedback = await StudyFeedback.deleteMany({ user_id: leader_id });
         res.study_feedback = deletedFeedback;
       }
     } catch (error) {
