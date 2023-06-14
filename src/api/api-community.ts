@@ -41,11 +41,15 @@ export const getDataByCommunity_noAndUser_id = async (
 };
 
 /** 4. 커뮤니티 게시글 수정  put */
-export const putCommunity = async (
+export const putCommunity = async ({
+  community_no,
+  title,
+  content,
+}: {
   community_no: number,
   title: string,
   content: string
-) => {
+}) => {
   const response = await axiosInstance.put(`community/detl`, {
     community_no,
     title,
