@@ -11,6 +11,9 @@ const userApi = require("../apis/user");
 // user API 테스트
 router.get('/userInfo', userApi.getAllUserInfo);
 
+// user 로그인 유효성 검사 테스트
+router.post('/userInfo', userApi.isLoginValidate);
+
 // user API 실제 기능
 router.post('/register', userApi.registerUser);
 router.post('/login', userApi.loginUser); 
