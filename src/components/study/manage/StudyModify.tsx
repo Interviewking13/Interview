@@ -1,9 +1,4 @@
-// const StudyModify = () => {
-//   return <p>$$$$$$$$$$$$$$$$$$$$$$$$$$$$</p>;
-// };
-// export default StudyModify;
 import { HTMLAttributes } from "react";
-
 import styled from "styled-components";
 import { colors } from "../../../constants/colors";
 import * as fonts from "../../../constants/fonts";
