@@ -79,9 +79,9 @@ export const putReply = async (reply_id: number, reply_content: string) => {
 
 /** 8. 커뮤니티 댓글 삭제  delete */
 export const deleteReply = async (reply_id: number) => {
-  const response = await axiosInstance.delete(`community/reply`, {
-    data: { reply_id },
-  });
+  const response = await axiosInstance.delete(
+    `community/reply?reply_id=${reply_id}`
+  );
   return response;
 };
 
