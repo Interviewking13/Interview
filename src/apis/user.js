@@ -136,6 +136,14 @@ const userApi = {
             
             const { email, password } = req.body;
 
+            // 입력값 검사
+            if (email === "" || password === "") {
+                return res.status(400).json({
+                    resultCode: 400,
+                    message: "정보를 모두 입력하세요."
+                });
+            }
+
             // 기존 사용자 유무 검사
             const findUser = await User.findOne({ "email": email });
 
