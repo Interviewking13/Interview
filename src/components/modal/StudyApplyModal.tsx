@@ -6,7 +6,11 @@ import { dateFomatting } from "../../utils/dateFomatting";
 import { TitleText } from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import React, { useEffect } from "react";
-
+import { HTMLAttributes } from "react";
+import * as fonts from "../../constants/fonts";
+interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
+  backgroundColor?: string;
+}
 type StudyApplyModalProps = {
   studyId: string;
   handleModalClose: () => void;
@@ -83,7 +87,9 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
                 </StyledA>
               </InfoContainer>
             </BottomContainer>
-            <StyledApplyButton>신청하기</StyledApplyButton>
+            <StyledCommonButton backgroundColor={colors.main_mint}>
+              <StyledButtonTextField>신청하기</StyledButtonTextField>
+            </StyledCommonButton>
           </StyledBottom>
         </StyledContainer>
       </StyledBox>
@@ -155,17 +161,6 @@ const StyledA = styled(Link)`
   color: #000;
   text-decoration: underline;
 `;
-
-const StyledApplyButton = styled.button`
-  margin-left: auto;
-  background-color: #00e595;
-  border-radius: 10px;
-  width: 132px;
-  height: 45px;
-  font-size: 16px;
-  border: 0px;
-`;
-
 const StyledCancelButton = styled.button`
   width: 23px;
   height: 23px;
@@ -186,4 +181,28 @@ const StyledBottom = styled.div`
   margin-top: 30px;
   display: flex;
   flex-direction: row;
+`;
+
+const StyledCommonButton = styled.div<StyledCommonButtonProps>`
+  margin-left: auto;
+  cursor: pointer;
+  width: 132px;
+  height: 45px;
+  background-color: ${(props) =>
+    props.backgroundColor}; /* props로 전달받은 배경색을 사용 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 10px;
+  &:hover {
+    background-color: ${colors.main_navy};
+    color: white;
+  }
+  ${fonts.SubText}
+`;
+
+const StyledButtonTextField = styled.p`
+  font-family: ${fonts.SubTextBig};
+  color: ${colors.back_navy};
 `;
