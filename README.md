@@ -2,13 +2,13 @@
 **면접 스터디 모임을 할 수 있는 서비스**
 
 
-1. 프로젝트 소개<br/>
+**1. 프로젝트 소개**<br/>
 가. 프로젝트명: 면접왕(Interview King)<br/>
 나. 서비스 목적 : 면접 스터디를 하고 싶은 사용자들에게 서비스를 제공함으로써<br/>
 본인이 원하는 목표를 이룰 수 있도록 지원합니다.<br/><br/>
 
 
-2. 구현 기능 소개<br/>
+**2. 구현 기능 소개**<br/>
 가. 회원가입, 로그인, 회원정보 조회 및 수정 등 사용자 정보 관련 CRUD<br/>
 나. 스터디 개설·신청, 스터디 피드백 남기기 등 스터디 정보 관련 CRUD<br/>
 다. 스터디장의 스터디원 수락 등의 스터디관리자 권한 기능<br/>
@@ -16,44 +16,47 @@
 마. AWS S3 를 이용한 파일 업로드, 다운로드 기능 구현<br/>
 
 
-3. 데모 사이트<br/>
+**3. 데모 사이트**<br/>
 - http://34.22.79.51/
 <br/>
 
-4. API 설계문서<br/>
+**4. API 설계문서**<br/>
 - [노션페이지 참고](https://www.notion.so/elice/13-f3aabba967fe4fbeb0138da5d788012d?p=2bc36f954548418e8b58297e10234fa2&pm=s)
 <br/><br/>
 ![13team_main_logo](/uploads/37a96843cad510bed9e772a1e0630786/13team_main_logo.png)
 <br/>
 
 
-5. 기술스택<br/>
-![13team_tech_stack_2](/uploads/a236d270e78f169ff3f14fa6c6154c4e/13team_tech_stack_2.png)
-<br/>
+**5. 기술스택** <br />
+![13team_tech_stack](/uploads/8c168e69a4118cdee0f97994068b4f48/13team_tech_stack.jpg)
+<br/><br />
 가. 프론트엔드<br/>
 - React, TypeScript<br/>
 - Fetch: Axios, 리액트쿼리(부분적으로 사용)<br/>
 - UI: 스타일컴포넌트, MUI(부분적으로 사용)<br/>
 - 상태관리: Recoil<br/>
+
 나. 백엔드<br/>
 - Node, Express<br/>
 - DB: MongoDB, Mongoose<br/>
+
 다. 배포<br/>
 - NGINX<br/>
+
 라. auth<br/>
-- bcrypt, JWT Token<br/>
-<br/><br/>
+- JWT Token, bcrypt<br/>
+<br/>
 
 
-6. 인프라 구조
+**6. 인프라 구조**
 -
 
-7. 데모영상
+**7. 데모영상**
 - ** 각자 영상 촬영하여 주세요!
 <br/><br/>
 
 
-8. 구성원 역할 및 상세<br/>
+**8. 구성원 역할 및 상세**<br/>
 
 | 이름   | 담당 업무 |
 | ------ | --------- |
@@ -86,13 +89,13 @@
 - 혜진
 
 
-9. 폴더 구조
+**9. 폴더 구조**
 - 프론트 : src/pages, src/components, src/img, src/fonts 폴더
 - 백엔드 : 프론트 폴더 이외 src 폴더 내 전체
 
-10. 데이터 구조
+**10. 데이터 구조**
 
-11. 협업툴
+**11. 협업툴**
 - Figma : 서비스 기획 및 화면 UI 디자인<br />
 - Notion : 회의록 작성, API 명세, 구현기능 확인 등<br />
 - Discord : 스크럼, 진행상황 공유 등<br />
@@ -101,14 +104,14 @@
 - Postman Teams : API 테스트 진행<br />
 <br />
 
-12. 스크럼<br />
+**12. 스크럼**<br />
 - 평일 오후 9시를 기본으로 Discord 에서 진행하되, 탄력적으로 운영.<br />
 - YTB(Yesterday, Today, Blocking) 기반 스크럼 회의 진행<br />
 -- 어제할일, 오늘할일, 막히는 상황 스크럼 회의때 공유<br />
 필요시 수시로 프론트/백엔드/전체 스크럼 잡아서 진행<br />
 <br />
 
-13. 코드 컨벤션<br />
+**13. 코드 컨벤션**<br />
 - 컴포넌트는 함수형으로 작성<br />
 - 컴포넌트 함수명은 PascalCase으로 작성<br />
 - 일반 함수명, 변수명은 lower Camel Case 사용<br />
@@ -118,8 +121,7 @@
 - 백엔드 : commonJS 문법 사용<br />
 <br />
 
-14. Git 컨벤션<br />
-
+**14. Git 컨벤션**<br />
 - 커밋 유형은 영어 대문자로 작성하기<br />
 - Feat: 새로운 기능추가<br />
 - Fix: 수정사항 발생시, 버그 수정<br />
@@ -135,20 +137,30 @@
 - !BREAKING CHANGE: 커다란 API 변경의 경우<br />
 - !HOTFIX: 급하게 치명적인 버그를 고쳐야 하는 경우<br />
 <br />
-15. 브랜치 전략<br />
-- 배포 : master 브랜치
-- 파트 별로 dev-BE, dev-FE 브랜치 내 feature 브랜치 생성
-- feature 기능 구현 후 dev 에 pull request 
+
+**15. 브랜치 전략**<br />
+- 배포 : master 브랜치<br />
+- 파트 별로 dev-BE, dev-FE 브랜치 내 feature 브랜치 생성<br />
+- feature 기능 구현 후 dev 에 pull request<br />
+
+![13team_git_branch](/uploads/9a6cdd56c5d707b8aa4facfe351a2ed1/13team_git_branch.jpg)
 
 
-(16. 배포
+
+
+(
+
+16. 배포
 
 17. 실행방법
 
-18. .env.....)
+18. .env....
 
+)
 
+------------------------------------------------------------------------------------------------------
 
-
-[노션 링크](https://www.notion.so/elice/13-f3aabba967fe4fbeb0138da5d788012d)
+본 프로젝트에서 제공하는 모든 코드 등은 저작권법에 의해 보호 받으며, 13팀 및 (주)엘리스의 자산입니다.<br />
+무단 사용 및 도용, 복제 및 배포를 금합니다.<br />
+Copyright 2022 엘리스 Inc. All rights reserved.<br />
 
