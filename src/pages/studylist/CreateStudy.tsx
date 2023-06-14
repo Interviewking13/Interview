@@ -5,7 +5,7 @@ import StudyListItem from "../../components/study/StudyListItem";
 import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
 import PencilIconSrc from "../../img/pencil_mint.svg";
-import { getInfoAllStudyData } from "../../api/api-study";
+import { getInfoAllStudyData, postCreateStudy } from "../../api/api-study";
 import { dateSplice } from "../../utils/dateFomatting";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -20,7 +20,11 @@ const StudyList = (): JSX.Element => {
     start: string,
     end: string,
     deadline: string,
-    master: string
+    leader_name: string,
+    study_name: string,
+    content: string,
+    chat_link: string,
+    status: number
   }
 
   React.useEffect(() => {
@@ -45,24 +49,42 @@ const StudyList = (): JSX.Element => {
   const [recruitmentCount, setRecruitmentCount] = useState(0);
 
   const handleCreateStudy = () => {
-    const newStudyData = {
+    const newStudyData: StudyData = {
+      _id: "",
+      study_name: studyName,
       title: studyName,
-      description: studyDescription,
-      link: meetingLink,
+      content: studyDescription,
+      deadline: recruitmentDeadline,
+      acceptcount: 0,
+      headcount: recruitmentCount,
+      chat_link: meetingLink,
+      status: 1,
       start: startDate,
       end: endDate,
-      deadline: recruitmentDeadline,
-      headcount: recruitmentCount
+      leader_name: ""
     };
+    
 
-    // Send the new study data to the backend server
-    axios.post("/api/study", newStudyData)
-      .then(response => {
-        console.log("Study created successfully:", response.data);
-        // You can perform additional actions or updates after successful creation
+    postCreateStudy(
+      newStudyData.study_name,
+      newStudyData.title,
+      newStudyData.content,
+      newStudyData.deadline,
+      newStudyData.headcount,
+      newStudyData.chat_link,
+      newStudyData.status,
+      newStudyData.start,
+      newStudyData.end,
+      newStudyData.leader_name
+    )
+      .then((response) => {
+        if (response.data.success) {
+          newStudyData._id = response.data.studyId;
+          setStudyData((prevStudyData) => [newStudyData, ...prevStudyData]);
+        }
       })
-      .catch(error => {
-        console.error("Error creating study:", error);
+      .catch((error) => {
+        // 오류 처리
       });
   };
 
@@ -104,14 +126,14 @@ const StudyList = (): JSX.Element => {
           <StyledStudyInputNumber type="number" min="1" placeholder="모집 인원을 입력하세요." onChange={event => setRecruitmentCount(parseInt(event.target.value))} />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateBtnArea>
-          <StyledLink to={`/study/create`} onClick={handleCreateStudy}>
+          <StyledLink to={`/study`} onClick={handleCreateStudy}>
             <StyledCommonButton>
               <StyledButtonText>만들기</StyledButtonText>
             </StyledCommonButton>
           </StyledLink>
         </StyledStudyCreateBtnArea>
       </StyledStudyCreateArea>
-      
+
   </CommonContainer>
   );
 };

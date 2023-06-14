@@ -1,47 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
-import axios from 'axios';
-import { colors } from '../../../constants/colors';
-import { SubTextThinSmall } from '../../../constants/fonts';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { colors } from "../../../constants/colors";
+import { SubTextThinSmall } from "../../../constants/fonts";
+import { getAllCommunityData } from "../../../api/api-community";
+import { useNavigate } from "react-router-dom";
+import {
+  StyledLeftPostItem,
+  StyledPostItem,
+  StyledPostItems,
+  StyledPostTitle,
+} from "./BoardListItem";
 
 const BestBoardListItem: React.FC = () => {
   const [posts, setPosts] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
+  const [bestPosts, setBestPosts] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
 
+  const navigate = useNavigate(); // useNavigate 훅 사용
   useEffect(() => {
-    // 페이지 로드 시 서버에서 게시글 데이터를 받아와 상태 업데이트
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = () => {
-    axios
-      .get('http://34.22.79.51:5000/api/community/list')
+    getAllCommunityData()
       .then((response) => {
-        console.log(response.data); // 응답 데이터 구조 확인
-        setPosts(response.data.data); // 받아온 데이터로 게시글 상태 업데이트
+        const { data } = response;
+        setBestPosts(
+          data.data
+            .sort((a: any, b: any) => b.read_users.length - a.read_users.length)
+            .slice(0, 3)
+        );
+        // sortedArr
+        //   .sort((a, b) => b.read_users.length - a.read_users.length)
+        //   .slice(0, 3);
       })
       .catch((error) => {
         console.error(error);
       });
-  };
+  }, []);
 
-  const displayedPosts = posts
-    .sort((a, b) => b.viewCount - a.viewCount) // 조회수에 따라 정렬
-    .slice(0, 3); // 상위 3개의 게시글 선택
+  // const displayedPosts = posts
+  // const displayedPosts = (posts ?? [])
+  //   .sort((a, b) => b.viewCount - a.viewCount) // 조회수에 따라 정렬
+  //   .slice(0, 3); // 상위 3개의 게시글 선택
+  const onItemClick = (e: any) => {
+    navigate(`/Community/communityDetailPage/${e.currentTarget.id}`);
+    console.log(e.currentTarget.id);
+  };
 
   return (
     <div>
       <StyledPostListItem>
-        {/* 글 목록 렌더링 */}
-        {displayedPosts.map((post, index) => (
-          <StyledPostItems key={post._id}>
+        {bestPosts.map((post) => (
+          <StyledPostItems
+            onClick={onItemClick}
+            key={post.community_id}
+            id={post.community_id}
+          >
             <StyledLeftPostItem>
-              <StyledPostTitle>타이틀: {post.title}</StyledPostTitle>
+              <StyledPostTitle>{post.title}</StyledPostTitle>
             </StyledLeftPostItem>
             <StyledRightPostItem>
-              <StyledPostItem>댓글 수: {post.count}</StyledPostItem>
-              <StyledPostItem>조회 수: {post.viewCount}</StyledPostItem>
-              <StyledPostItem>작성자: {post.author && post.author[0] && post.author[0]._id}</StyledPostItem>
-              <StyledPostItem>게시일: {post.timestamps}</StyledPostItem>
+              <StyledPostItem>조회 수: {post.read_users.length}</StyledPostItem>
+              <StyledPostItem>{post.user_name}</StyledPostItem>
+              <StyledPostItem>{post.timestamps}</StyledPostItem>
             </StyledRightPostItem>
           </StyledPostItems>
         ))}
@@ -50,7 +68,19 @@ const BestBoardListItem: React.FC = () => {
   );
 };
 
-export default BestBoardListItem;
+const App = () => {
+  const queryClient = new QueryClient();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BestBoardListItem />
+    </QueryClientProvider>
+  );
+};
+
+export default App;
+
+// export default BestBoardListItem;
 
 const StyledPostListItem = styled.ul`
   list-style-type: none;
@@ -58,42 +88,8 @@ const StyledPostListItem = styled.ul`
   padding: 0;
 `;
 
-const StyledPostItems = styled.li`
-  border-bottom: 1px solid ${colors.gray_stroke};
-  padding: 10px 0;
-  margin: 0;
-  display: flex;
-  justify-items: center;
-  align-items: flex-start;
-
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-const StyledLeftPostItem = styled.div`
-  flex: 1; /* 수정: 오른쪽으로 붙도록 flex 속성 추가 */
-`;
-
 const StyledRightPostItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-`;
-
-const StyledPostTitle = styled.p`
-  font-size: 18px;
-  font-weight: 500;
-  color: ${colors.main_navy};
-  margin: 0;
-`;
-
-const StyledPostItem = styled.p`
-  color: ${colors.main_navy};
-  ${SubTextThinSmall};
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: 60px;
-  margin: 0;
-  padding-left: 45px;
 `;
