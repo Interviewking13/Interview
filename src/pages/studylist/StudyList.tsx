@@ -11,15 +11,15 @@ import { Link } from "react-router-dom";
 
 const StudyList = (): JSX.Element => {
   type StudyData = {
-    _id: string,
-    title: string,
-    acceptcount: number,
-    headcount: number,
-    start: string,
-    end: string,
-    deadline: string,
-    leader_name: string
-  }
+    _id: string;
+    title: string;
+    acceptcount: number;
+    headcount: number;
+    start: string;
+    end: string;
+    deadline: string;
+    leader_name: string;
+  };
 
   const [studyData, setStudyData] = React.useState<StudyData[]>([]);
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -29,7 +29,7 @@ const StudyList = (): JSX.Element => {
     getInfoAllStudyData()
       .then((response) => {
         console.log(response.data);
-        setStudyData(response.data);
+        setStudyData(response.data.reverse());
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -68,7 +68,9 @@ const StudyList = (): JSX.Element => {
     <CommonContainer>
       <StudyListTopArea>
         <StyledTitleText>스터디 찾기</StyledTitleText>
-        <StyledSubTextThin>원하는 스터디를 찾고 가입해보세요.</StyledSubTextThin>
+        <StyledSubTextThin>
+          원하는 스터디를 찾고 가입해보세요.
+        </StyledSubTextThin>
 
         <StudyListInputArea>
           <StyledInput type="text" name="search" id="" placeholder="검색하기" />
@@ -105,7 +107,7 @@ const StudyList = (): JSX.Element => {
           disabled={currentPage === 1}
           onClick={() => goToPage(currentPage - 1)}
         >
-          	&lt;
+          &lt;
         </PaginationButton>
         {generatePaginationNumbers()}
         <PaginationButton
@@ -257,8 +259,7 @@ const PaginationNumber = styled.button<{ active: boolean }>`
   margin: 0 5px;
   border-radius: 50%;
   background-color: transparent;
-  color: ${({ active }) =>
-    active ? colors.dark_navy : colors.gray_navy};
+  color: ${({ active }) => (active ? colors.dark_navy : colors.gray_navy)};
   border: none;
   outline: none;
   cursor: pointer;
