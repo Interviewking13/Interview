@@ -9,7 +9,7 @@ const indexPath = path.join(__dirname, "../pages");
 const studyRouter = require('./study');
 const studyFeedbackRouter = require('./study_feedback');
 
-router.user(cors());
+router.use(cors());
 
 router.use(express.json());
 router.use(express.static(indexPath));
