@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import CreateIcon from "@mui/icons-material/Create";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
@@ -8,6 +8,9 @@ import { colors } from "../../../constants/colors";
 import { TitleText } from "../../../constants/fonts";
 
 export const StudyTaps = () => {
+  const location = useLocation();
+  const path = location.pathname;
+  const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
   const navigate = useNavigate();
   const onClickTap = (value: string) => {
     navigate(`/study/${value}`);
@@ -15,11 +18,11 @@ export const StudyTaps = () => {
 
   return (
     <StydyTap>
-      <StydyTapText onClick={() => onClickTap("info")}>
+      <StydyTapText onClick={() => onClickTap(`${lastPathSegment}`)}>
         <CreateIcon />
         &nbsp;스터디정보
       </StydyTapText>
-      <StydyTapText onClick={() => onClickTap("feedback")}>
+      <StydyTapText onClick={() => onClickTap(`feedback/${lastPathSegment}`)}>
         <PeopleAltIcon />
         &nbsp;피드백
       </StydyTapText>

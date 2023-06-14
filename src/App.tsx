@@ -40,7 +40,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/login/signup" element={<SignupPage />} />
               <Route path="/study" element={<StudyList />} />
-              <Route path="/study/feedback" element={<Feedback />} />
+              <Route path="/study/feedback/:id" element={<Feedback />} />
               <Route path="/study/:id" element={<Information />} />
               <Route path="/study/create" element={<CreateStudy />} />
               <Route
