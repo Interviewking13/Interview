@@ -10,7 +10,7 @@ const studyRouter = require('./study');
 const studyFeedbackRouter = require('./study_feedback');
 
 router.use(
-  cors()
+    cors()
 );
 
 router.use(express.json());

@@ -21,6 +21,13 @@ const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    
 
 const userApi = {
 
+    /** 로그인 유효성 검사 테스트 */
+    async isLoginValidate(req, res) {
+        console.log('로그인 유효성 검사 테스트!');
+        // console.log(req.cookies.token);
+        // console.log(req.token);
+    },
+
     /** user API middleware 테스트 */
     async userMiddlewareApiTest(req, res, next) {
         console.log('미들웨어 실행! userApi 도착!');
@@ -134,6 +141,14 @@ const userApi = {
         try {
             const { email, password } = req.body;
 
+            // 입력값 검사
+            if (email === "" || password === "") {
+                return res.status(400).json({
+                    resultCode: 400,
+                    message: "정보를 모두 입력하세요."
+                });
+            }
+
             // 기존 사용자 유무 검사
             const findUser = await User.findOne({ "email": email });
 
@@ -161,13 +176,13 @@ const userApi = {
 
             const token = jwt.sign(payload, secretKey, { expiresIn: "3d" });   // 토큰 만료시간 
             
-            // JWT 토큰 쿠키에 담아주기
-            res.cookie('token', token, {
-                httpOnly: true,
-                maxAge: 3 * 24 * 60 * 60 * 1000,    // 3일 (단위: 밀리초) // 3600000(=1시간) (단위: 밀리초)
-                sameSite: 'none'
-                // secure: true,
-            });
+            // JWT 토큰 쿠키에 담아주기 - 주석 처리
+            // res.cookie('token', token, {
+            //     httpOnly: true,
+            //     maxAge: 3 * 24 * 60 * 60 * 1000,    // 3일 (단위: 밀리초) // 3600000(=1시간) (단위: 밀리초)
+            //     sameSite: 'none'
+            //     // secure: true,
+            // });
     
             // 설정된 쿠키 값 출력
             // console.log('로그인' + req.cookies.token);
@@ -178,7 +193,7 @@ const userApi = {
                 data: {
                     user_id: findUser._id,
                     email,
-                    // token
+                    token
                 }
             });
 
@@ -193,9 +208,14 @@ const userApi = {
 
     /** 내 정보 조회 */
     async getUserInfo(req, res) {
-        const token = req.cookies.token;
+        // 쿠키값 사용 주석 처리
+        // const token = req.cookies.token;
         // console.log('미들웨어 실행 -> userApi getUserInfo 도착!');
         // console.log('내정보조회' + req.cookies.token);
+
+        // json body (localStorage 값 사용)
+        const { token } = req.body;
+        console.log(token + '/ userAPI');
 
         try {
             // const { user_id } = req.params;
@@ -250,9 +270,14 @@ const userApi = {
 
     /** 내 정보 수정 */
     async modifyUserInfo(req, res, next) {
-        const token = req.cookies.token;
+        // 쿠키값 사용 주석 처리
+        // const token = req.cookies.token;
         // console.log('미들웨어 실행 -> userApi modifyUserInfo 도착!');
         // console.log('내정보수정' + req.cookies.token);
+
+        // json body (localStorage 값 사용)
+        // const { token } = req.body.token;
+        const { token } = req.body;
 
         try {
             
@@ -361,9 +386,14 @@ const userApi = {
 
     /** 회원탈퇴 */
     async deleteUser(req, res, next) {
-        const token = req.cookies.token;
+        // 쿠키값 사용 주석 처리
+        // const token = req.cookies.token;
         // console.log('미들웨어 실행 -> userApi deleteUser 도착!');
         // console.log('회원탈퇴' + req.cookies.token);
+
+        // json body (localStorage 값 사용)
+        // const { token } = req.body.token;
+        const { token } = req.body;
 
         try {
             // middleware 이용 테스트
@@ -419,23 +449,34 @@ const userApi = {
 
     /** 로그아웃 */
     async logoutUser (req, res, next) {
-        const token = req.cookies.token;
-        console.log('미들웨어 실행 -> userApi logoutUser 도착!');
-        console.log('로그아웃' + req.cookies.token);
+        // 쿠키값 사용 주석 처리
+        // const token = req.cookies.token;
+        // console.log('미들웨어 실행 -> userApi logoutUser 도착!');
+        // console.log('로그아웃' + req.cookies.token);
+
+        // json body (localStorage 값 사용)
+        // const { token } = req.body;
+        let { token } = req.body;
+        console.log(token + '/ userAPI - logoutUser');
 
         try {
             // middleware 이용 테스트
             const { user_id } = req.user;
-            console.log(user_id);
-            console.log('middleware 에서 불러온 decoded값' + user_id);
+            // console.log(user_id);
+            // console.log('middleware 에서 불러온 decoded값' + user_id);
             
-            // 쿠키 삭제
-            res.clearCookie('token');
+            // 쿠키 삭제 - 주석처리
+            // res.clearCookie('token');
 
-            return res.status(200).json({
-                resultCode: "200",
-                message: "로그아웃 성공"
-            });
+            // 클라이언트에서 localStorage 값 제거 필요
+            
+            if (user_id) {    
+                return res.status(200).json({
+                    resultCode: "200",
+                    message: "로그아웃 성공",
+                    // token
+                });
+            }
 
         } catch (err) {
             console.error(err);
