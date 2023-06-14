@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import StudyListItem from "../../components/study/StudyListItem";
+import BestBoardListItemContainer from "../community/components/BestBoardListItemContainer";
 
 import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
@@ -16,15 +17,15 @@ import { Link } from "react-router-dom";
 
 const HomePage = (): JSX.Element => {
   type StudyData = {
-    _id: string;
-    title: string;
-    acceptcount: number;
-    headcount: number;
-    start: string;
-    end: string;
-    deadline: string;
-    master: string;
-  };
+    _id: string,
+    title: string,
+    acceptcount: number,
+    headcount: number,
+    start: string,
+    end: string,
+    deadline: string,
+    leader_name: string
+  }
 
   const [studyData, setStudyData] = React.useState<StudyData[]>([]);
 
@@ -102,45 +103,60 @@ const HomePage = (): JSX.Element => {
                 startDate={dateSplice(study.start)}
                 endDate={dateSplice(study.end)}
                 recruitDeadline={dateSplice(study.deadline)}
-                master={study.master}
+                master={study.leader_name}
               />
             </StyledLink>
           ))}
         </StudyListItemArea>
 
-        <StyledMainStudyBtnArea>
-          <StyledMainStudyBtn>
-            <StyeldBtnTextArea>
-              <StyeldBtnTitleArea>
-                <StyledIcon src={PencilIconSrc} />
-                <StyledMainBtnTitle>스터디 참여하기</StyledMainBtnTitle>
-              </StyeldBtnTitleArea>
+        
+        <StyledMainStudyBtnArea> 
+          <StyledLink to={`/study`}>     
+            <StyledMainStudyBtn>
 
-              <StyledMainBtnSub>
-                참여하고 싶은 스터디를 찾고, 자신있는 면접을 준비해보세요!
-              </StyledMainBtnSub>
-            </StyeldBtnTextArea>
-          </StyledMainStudyBtn>
+              <StyeldBtnTextArea>
+                <StyeldBtnTitleArea>
+                  <StyledIcon src={PencilIconSrc} />
+                  <StyledMainBtnTitle>스터디 참여하기</StyledMainBtnTitle>
+                </StyeldBtnTitleArea>
 
-          <StyledMainStudyBtn>
-            <StyeldBtnTextArea>
-              <StyeldBtnTitleArea>
-                <StyledIcon src={PencilIconSrc} />
-                <StyledMainBtnTitle>스터디 만들기</StyledMainBtnTitle>
-              </StyeldBtnTitleArea>
+                <StyledMainBtnSub>
+                  참여하고 싶은 스터디를 찾고, 자신있는 면접을 준비해보세요!
+                </StyledMainBtnSub>
+              </StyeldBtnTextArea>
 
-              <StyledMainBtnSub>
-                알맞는 스터디가 없다면 직접 스터디를 개설해보세요!
-              </StyledMainBtnSub>
-            </StyeldBtnTextArea>
-          </StyledMainStudyBtn>
-        </StyledMainStudyBtnArea>
+
+            </StyledMainStudyBtn>
+          </StyledLink>
+
+          <StyledLink to={`/study/create`}> 
+            <StyledMainStudyBtn>
+
+              <StyeldBtnTextArea>
+
+                <StyeldBtnTitleArea>
+                  <StyledIcon src={PencilIconSrc} />
+                  <StyledMainBtnTitle>
+                    스터디 만들기
+                  </StyledMainBtnTitle>
+                </StyeldBtnTitleArea>
+
+                <StyledMainBtnSub>
+                  알맞는 스터디가 없다면 직접 스터디를 개설해보세요!
+                </StyledMainBtnSub>
+              </StyeldBtnTextArea>
+
+            </StyledMainStudyBtn>
+          </StyledLink>
+        </StyledMainStudyBtnArea>    
 
         <StyledItemNameArea>
           <StyledTitleText>커뮤니티 소식</StyledTitleText>
         </StyledItemNameArea>
 
-        <StyledMainCommunityArea></StyledMainCommunityArea>
+        <StyledMainCommunityArea>
+          <BestBoardListItemContainer />
+        </StyledMainCommunityArea>
       </StyledCommonContainer>
     </>
   );
@@ -185,7 +201,7 @@ const StyledCarouselTwo = styled.div`
   background-color: #f2fffa;
 `;
 const StyledItemNameArea = styled.div`
-  margin: 50px 0 0 0;
+  margin: 50px 0 30px 0;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -216,10 +232,10 @@ const StyledCarouselSubText = styled.p`
   ${fonts.SubTextThinSmall}
   margin: 34 0 0 0;
 `;
-const StudyListItemArea = styled.p`
+const StudyListItemArea = styled.div`
   width: 1270px;
   height: 295px;
-  margin: 30px 0 40px 0;
+  margin: 0 0 40px 0;
   display: grid;
   grid-auto-rows: 295px;
   grid-template-columns: 298px 298px 298px 298px;
@@ -242,7 +258,7 @@ const StyeldBtnTextArea = styled.div`
   height: fit-content;
   margin: 35px 0 0 40px;
 `;
-const StyeldBtnTitleArea = styled.p`
+const StyeldBtnTitleArea = styled.div`
   height: fit-content;
   display: flex;
   margin: 0;
@@ -255,10 +271,12 @@ const StyledMainBtnTitle = styled.p`
   margin: 2px 0 20px 20px;
   ${fonts.SubText}
   font-size: 20px;
+  color: ${colors.main_black};
 `;
 const StyledMainBtnSub = styled.p`
   ${fonts.SubTextThinSmall}
   margin: 0;
+  color: ${colors.main_black};
 `;
 
 const StyledMainCommunityArea = styled.div`
@@ -266,4 +284,10 @@ const StyledMainCommunityArea = styled.div`
 `;
 const StyledLink = styled(Link)`
   text-decoration: none;
-`;
+  transition: 0.3s;
+
+  :hover {
+    transform: scale(1.007);
+    transition: 0.3s;
+  }
+`
