@@ -247,7 +247,22 @@ const StyledReplyContainerWrapper = styled.div`
   margin-bottom: 90px;
 `;
 
-const StyledContent = styled.div``;
+const StyledReplyContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin: 20px 0;
+`
+
+const StyledReplyUserName = styled.div`
+  color: ${colors.main_navy};
+  ${fonts.SubTextSmall};
+  margin-right: 40px;
+`
+
+const StyledReplyText = styled.div`
+  color: ${colors.main_black};
+  ${fonts.SubTextThinSmall};
+`
 
 const StyledDelButton = styled.button`
   color: ${colors.darkgray_navy};
