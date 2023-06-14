@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Button, Typography, Grid, Box } from "@mui/material";
+import { Create, Person, Checklist } from "@mui/icons-material"; //MUI icon import
 import { useNavigate } from "react-router-dom";
 import StudyModify from "../../components/study/manage/StudyModify";
 import StudyMemberManagement from "../../components/study/manage/StudyMemberManagement";
@@ -7,6 +9,7 @@ import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
 import { Link } from "react-router-dom";
+import MenuTapBtn from "../../components/UI/MenuTapBtn";
 const StudyManage = () => {
   const navigate = useNavigate();
   const [activePage, setActivePage] = useState("");
@@ -23,30 +26,33 @@ const StudyManage = () => {
     setActivePage("applicant");
   };
 
-  const renderActivePage = () => {
-    switch (activePage) {
-      case "modify":
-        return <StudyModify />;
-      case "member":
-        return <StudyMemberManagement />;
-      case "applicant":
-        return <StudyApplicantList />;
-      default:
-        return <StudyManage />;
-    }
-  };
-
   return (
     <div>
       <CommonContainer>
-        <h1>Study Management</h1>
-        <button onClick={onClickStudyModify}>Go to Study Modify</button>
-        <button onClick={onClickMemberManagement}>
-          Go to Member Management
-        </button>
-        <button onClick={onClickApplicantList}>Go to Applicant List</button>
-
-        {/* {renderActivePage()} */}
+        <StyledStudyListTopArea>
+          <StyledTitleText>스터디 관리</StyledTitleText>
+          <StyledSubTextThin>스터디 관리자 페이지입니다.</StyledSubTextThin>
+        </StyledStudyListTopArea>
+        {/* 버튼1, 버튼2, 버튼3 */}
+        <Grid item xs={12}>
+          <Grid container spacing={1} justifyContent="flex-start">
+            <MenuTapBtn onClick={onClickStudyModify}>
+              <Create />
+              정보수정
+            </MenuTapBtn>
+            <MenuTapBtn onClick={onClickMemberManagement}>
+              <Checklist />
+              회원관리
+            </MenuTapBtn>
+            <MenuTapBtn onClick={onClickApplicantList}>
+              <Person />
+              신청목록
+            </MenuTapBtn>
+          </Grid>
+        </Grid>
+        {activePage === "modify" && <StudyModify />}
+        {activePage === "member" && <StudyMemberManagement />}
+        {activePage === "applicant" && <StudyApplicantList />}
       </CommonContainer>
     </div>
   );
@@ -58,4 +64,67 @@ const CommonContainer = styled.div`
   width: 1270px;
   margin: 0 auto;
   font-family: ${fonts.SubTextThinSmall};
+`;
+
+const StyledStudyListTopArea = styled.div`
+  margin: 50px 0 0 0;
+  display: flex;
+  align-items: baseline;
+`;
+const StyledTitleText = styled.p`
+  height: fit-content;
+  ${fonts.TitleText}
+  color: ${colors.main_mint};
+  margin: 0 30px 0 0;
+`;
+const StyledSubTextThin = styled.p`
+  width: 439px;
+  height: fit-content;
+  font-size: 18px;
+  font-weight: light;
+  color: ${colors.main_gray};
+  margin: 0;
+`;
+const StyledContainer = styled(Box)`
+  && {
+    width: 100%;
+    max-width: 1920px;
+  }
+`;
+const StyledContent = styled(Grid)`
+  && {
+    width: 66.1%;
+    max-width: 1270px;
+    margin: 0 auto;
+    padding-left: 0;
+  }
+`;
+
+const StyledTitle = styled(Button)`
+  && {
+    ${fonts.TitleText}
+    color: ${colors.main_mint};
+  }
+`;
+
+const StyledSubTitle = styled(Typography)`
+  && {
+    ${fonts.SubTextThin}
+    color: ${colors.darkgray_navy};
+  }
+`;
+
+//버튼 스타일
+const StyledButton = styled(Button)`
+  && {
+    padding-left: 0;
+    ${fonts.SubTextBig}
+    color: ${colors.gray_mint}; /* 적절한 색상으로 변경 */
+    &:hover {
+      color: ${colors.main_mint}; /* 호버 시 변경할 색상 */
+    }
+    &:active {
+      background-color: #0000ff; /* 선택 시 변경할 색상 */
+    }
+  }
 `;

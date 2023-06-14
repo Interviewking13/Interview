@@ -11,13 +11,6 @@ import { Link } from "react-router-dom";
 const StudyModify = () => {
   return (
     <>
-      <StyledStudyListTopArea>
-        <StyledTitleText>스터디 개설하기</StyledTitleText>
-        <StyledSubTextThin>
-          만들고 싶은 스터디 정보를 입력하세요.
-        </StyledSubTextThin>
-      </StyledStudyListTopArea>
-
       <StyledStudyCreateArea>
         <StyledStudyCreateInputArea>
           <StyledStudyCreateText>스터디 이름</StyledStudyCreateText>
@@ -58,9 +51,12 @@ const StudyModify = () => {
           />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateBtnArea>
-          <StyledLink to={`/study/create`}>
+          <StyledLink to={`/study/info`}>
+            <StyledCommonButtonDelete>
+              <StyledButtonTextDelete>스터디 삭제</StyledButtonTextDelete>
+            </StyledCommonButtonDelete>
             <StyledCommonButton>
-              <StyledButtonText>만들기</StyledButtonText>
+              <StyledButtonText>수정하기</StyledButtonText>
             </StyledCommonButton>
           </StyledLink>
         </StyledStudyCreateBtnArea>
@@ -71,30 +67,6 @@ const StudyModify = () => {
 
 export default StudyModify;
 
-const CommonContainer = styled.div`
-  width: 1270px;
-  margin: 0 auto;
-  font-family: ${fonts.SubTextThinSmall};
-`;
-const StyledStudyListTopArea = styled.div`
-  margin: 50px 0 0 0;
-  display: flex;
-  align-items: baseline;
-`;
-const StyledTitleText = styled.p`
-  height: fit-content;
-  ${fonts.TitleText}
-  color: ${colors.main_mint};
-  margin: 0 30px 0 0;
-`;
-const StyledSubTextThin = styled.p`
-  width: 439px;
-  height: fit-content;
-  font-size: 18px;
-  font-weight: light;
-  color: ${colors.main_gray};
-  margin: 0;
-`;
 const StyledStudyCreateArea = styled.div`
   height: 760px;
   margin: 20px 0 20px 0;
@@ -196,6 +168,9 @@ const StyledStudyCreateBtnArea = styled.div`
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${colors.main_black};
+  display: flex;
+  align-items: center;
+  gap: 20px;
 `;
 const StyledCommonButton = styled.div`
   width: 132px;
@@ -209,4 +184,19 @@ const StyledCommonButton = styled.div`
 const StyledButtonText = styled.p`
   font-family: ${fonts.SubTextBig};
   color: ${colors.main_black};
+`;
+
+const StyledCommonButtonDelete = styled.div`
+  width: 132px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background-color: ${colors.main_red};
+`;
+
+const StyledButtonTextDelete = styled.p`
+  font-family: ${fonts.SubTextBig};
+  color: ${colors.back_navy};
 `;
