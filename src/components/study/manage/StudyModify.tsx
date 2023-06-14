@@ -2,12 +2,15 @@
 //   return <p>$$$$$$$$$$$$$$$$$$$$$$$$$$$$</p>;
 // };
 // export default StudyModify;
+import { HTMLAttributes } from "react";
 
 import styled from "styled-components";
 import { colors } from "../../../constants/colors";
 import * as fonts from "../../../constants/fonts";
 import { Link } from "react-router-dom";
-
+interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
+  backgroundColor?: string;
+}
 const StudyModify = () => {
   return (
     <>
@@ -51,13 +54,19 @@ const StudyModify = () => {
           />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateBtnArea>
-          <StyledLink to={`/study/info`}>
-            <StyledCommonButtonDelete>
-              <StyledButtonTextDelete>스터디 삭제</StyledButtonTextDelete>
-            </StyledCommonButtonDelete>
-            <StyledCommonButton>
-              <StyledButtonText>수정하기</StyledButtonText>
-            </StyledCommonButton>
+          <StyledLink to={`/study/delete`}>
+            <SubButtonContainer>
+              <StyledCommonButton backgroundColor={colors.main_red}>
+                <StyledButtonTextDelete>스터디 삭제</StyledButtonTextDelete>
+              </StyledCommonButton>
+            </SubButtonContainer>
+          </StyledLink>
+          <StyledLink to={`/study/modify`}>
+            <SubButtonContainer>
+              <StyledCommonButton backgroundColor={colors.main_mint}>
+                <StyledButtonTextDelete>수정하기</StyledButtonTextDelete>
+              </StyledCommonButton>
+            </SubButtonContainer>
           </StyledLink>
         </StyledStudyCreateBtnArea>
       </StyledStudyCreateArea>
@@ -164,39 +173,39 @@ const StyledStudyCreateBtnArea = styled.div`
   width: 1270px;
   display: flex;
   flex-direction: row-reverse;
+  gap: 20px;
 `;
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${colors.main_black};
   display: flex;
   align-items: center;
-  gap: 20px;
-`;
-const StyledCommonButton = styled.div`
-  width: 132px;
-  height: 45px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  background-color: ${colors.main_mint};
-`;
-const StyledButtonText = styled.p`
-  font-family: ${fonts.SubTextBig};
-  color: ${colors.main_black};
 `;
 
-const StyledCommonButtonDelete = styled.div`
+const StyledCommonButton = styled.div<StyledCommonButtonProps>`
+  cursor: pointer;
   width: 132px;
   height: 45px;
+  background-color: ${(props) =>
+    props.backgroundColor}; /* props로 전달받은 배경색을 사용 */
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  border: none;
   border-radius: 10px;
-  background-color: ${colors.main_red};
+  &:hover {
+    background-color: ${colors.main_navy};
+    color: white;
+  }
+  ${fonts.SubText}
 `;
 
 const StyledButtonTextDelete = styled.p`
   font-family: ${fonts.SubTextBig};
   color: ${colors.back_navy};
+`;
+
+const SubButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;
