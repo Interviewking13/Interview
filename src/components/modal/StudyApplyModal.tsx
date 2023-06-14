@@ -1,6 +1,4 @@
 import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
 import styled from "styled-components";
 import StudyApplyList from "./StudyApplyList";
 import { Link } from "react-router-dom";
@@ -11,9 +9,13 @@ import React, { useEffect } from "react";
 
 type StudyApplyModalProps = {
   studyId: string;
+  handleModalClose: () => void;
 };
 
-const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
+const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
+  studyId,
+  handleModalClose,
+}) => {
   const studyData = {
     title: "SAFFY 면접 스터디",
     period: "2023-05-30 ~ 2023-06-08",
@@ -46,14 +48,18 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId }) => {
 
   //취소버튼 이미지 링크
   const imageSrc = "/cancel-button.png";
-
+  const handleCloseModal = () => {
+    handleModalClose();
+  };
   return (
     <div>
       <StyledBox>
         <StyledContainer>
           <StyledTopContainer>
             <StyledTitleText>스터디 신청하기</StyledTitleText>
-            <StyledCancleImg src={imageSrc} alt="Cancel Button" />
+            <StyledCancelButton onClick={handleCloseModal}>
+              <CancelButtonImage src={imageSrc} alt="Cancel Button" />
+            </StyledCancelButton>
           </StyledTopContainer>
           <StyledTitleTextNavy>{title}</StyledTitleTextNavy>
           <StudyApplyList
@@ -160,9 +166,19 @@ const StyledApplyButton = styled.button`
   border: 0px;
 `;
 
-const StyledCancleImg = styled.img`
+const StyledCancelButton = styled.button`
   width: 23px;
   height: 23px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: auto;
+  cursor: pointer; /* 클릭 커서 스타일 추가 */
+`;
+
+const CancelButtonImage = styled.img`
+  width: 100%;
+  height: 100%;
 `;
 
 const BottomContainer = styled.div``;
