@@ -107,9 +107,6 @@ export const CommunityDetailPage: React.FC = () => {
               <StyledReplyContainer>
                 <StyledReplyUserName>{b.reply_user_name}</StyledReplyUserName>
                 <StyledReplyText>{b.reply_content}</StyledReplyText>
-                {/* <StyledDelButton id={b.reply_id} onClick={handleDelete}>
-                  삭제
-                </StyledDelButton> */}
                 {b.reply_user_id === "6483fe05cd2bf33d75c6c632" ? (
                   <StyledDelButton id={b.reply_id} onClick={handleDelete}>
                     삭제
