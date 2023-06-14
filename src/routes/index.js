@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const userRouter = require('./user');
 const communityRouter = require('./community');
-const indexPath = path.join(__dirname, "../pages");
+const indexPath = path.join(__dirname, '../pages');
 const studyRouter = require('./study');
 const studyFeedbackRouter = require('./study_feedback');
 
