@@ -15,11 +15,11 @@ const secretKey = process.env.SECRET_KEY;
 const userTokenValidate = async (req, res, next) => {
   // console.log('미들웨어 실행!');
 
-  // const payload = {
-  //     user_id: findUser._id,          // 사용자의 MongoDB ObjectID
-  // }
+  // 쿠키값 사용 주석 처리
+  // const token = req.cookies.token;
 
-  const token = req.cookies.token;
+  // json body (localStorage 값 사용)
+  const { token } = req.body;
 
   if (!token) {
     return res.status(401).json({
