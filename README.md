@@ -39,9 +39,10 @@
 나. 백엔드<br/>
 - Node, Express<br/>
 - DB: MongoDB, Mongoose<br/>
+- File Upload/Download : amazon s3
 
 다. 배포<br/>
-- NGINX<br/>
+- NGINX, PM2<br/>
 
 라. auth<br/>
 - JWT Token, bcrypt<br/>
@@ -49,7 +50,8 @@
 
 
 **6. 인프라 구조**
--
+- 
+<br/><br/>
 
 **7. 데모영상**
 - ** 각자 영상 촬영하여 주세요!
