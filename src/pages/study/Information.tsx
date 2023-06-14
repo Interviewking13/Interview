@@ -3,83 +3,80 @@ import { Link } from "@mui/material";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { DetailTitle } from "./common/DetailTitle";
 import { StudyTaps } from "./common/StudyTap";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { colors } from "../../constants/colors";
 import { SubTextBig, TitleText } from "../../constants/fonts";
 import { getInfoAllStudyData, getInfoStudyData } from "../../api/api-study";
 import { SubmitButton } from "./common/SubmitButton";
-import axios from "axios";
 import { dateSplice } from "../../utils/dateFomatting";
 import { useLocation } from "react-router-dom";
-
-const data = {
-  // 스터디 정보
-  study_id: 1,
-  study_name: "interview king",
-  title: "신입 백엔드 개발자 취업을 위한 CS 스터디",
-  content: "우리 스터디는 ~~을 목표로 하고, ...을 규칙으로 함",
-  start: "2023-06-15",
-  end: "2023-07-30",
-  deadline: "2023-05-30",
-  headcount: 6,
-  chat_link:
-    "https://us05web.zoom.us/j/83754399005?pwd=QWRMY0I4VjhkWkhtdHdydkhTM0dLUT09",
-  status: 0,
-
-  // 스터디원 신청 정보 (스터디 신청 시, 사용자가 입력)
-  user_name: "강혜리",
-  email: "merrykang1103@gmail.com",
-  phone_number: "010-7296-2003",
-  goal: "금융, 인공지능",
-};
+import { Modal } from "@mui/material";
+import StudyApplyModal from "../../components/modal/StudyApplyModal";
+import { useQuery } from "react-query";
 
 const Information: React.FC = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const queryParamValue = queryParams.get("id");
-  //스터디 목록에서 특정 스터디 클릭시 스터디 id를 쿼리로 받아서 화면에 보여줄예정
-  const [studyData, setStudyData] = useState({
-    title: "",
-    study_name: "",
-    status: 0,
-    content: 0,
-    start: "",
-    end: "",
-    chat_link: "",
-  });
+  const path = location.pathname;
+  const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  /** 모달을 닫는 함수인데 preventDefault로 event 내용 다 없애야 하는지..? */
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-  useEffect(() => {
-    console.log(queryParamValue);
-    getInfoStudyData("6481c6cf73e7175d6c31e18d")
-      .then((response) => {
-        console.log(response.data);
-        setStudyData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
+  const {
+    data: studyData,
+    isLoading,
+    isError,
+  } = useQuery("studyData", () =>
+    getInfoStudyData(lastPathSegment).then((response) => response.data)
+  );
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching data</div>;
+  }
+
+  console.log(`path is: ${lastPathSegment}:`, studyData);
+  const {
+    title,
+    status,
+    content,
+    start,
+    end,
+    chat_link,
+    headcount,
+    acceptcount,
+  } = studyData;
   return (
     <Container>
-      <Mystudy>{studyData.status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
+      <Mystudy>{status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
       <StudyTaps />
-      <Title>{studyData.title}</Title>
+      <Title>{title}</Title>
       <SubTitle>
         <DetailTitle
           name="&nbsp;회의링크"
           content={
             <Link color="#00e595;" href="http://naver.com">
-              {studyData.chat_link}
+              {chat_link}
             </Link>
           }
         ></DetailTitle>
         <DetailTitle
           name="&nbsp;진행 기간"
-          content={`${dateSplice(studyData.start)} ~ ${dateSplice(
-            studyData.end
-          )}`}
+          content={`${dateSplice(start)} ~ ${dateSplice(end)}`}
         ></DetailTitle>
-        <DetailTitle name="&nbsp;인원" content={data.headcount}></DetailTitle>
+        <DetailTitle
+          name="&nbsp;인원"
+          content={`${acceptcount} / ${headcount}명`}
+        ></DetailTitle>
         <DetailTitle name="&nbsp;스터디장" content="이용섭"></DetailTitle>
       </SubTitle>
       <Divider></Divider>
@@ -87,8 +84,11 @@ const Information: React.FC = () => {
         <PeopleAltIcon />
         &nbsp;스터디 소개
       </StudyIntro>
-      <p>{studyData.content}</p>
-      <SubmitButton />
+      <p>{content}</p>
+      <SubmitButton onClick={handleOpen} />
+      <Modal open={open} onClose={handleClose}>
+        <StudyApplyModal studyId={lastPathSegment} />
+      </Modal>
     </Container>
   );
 };

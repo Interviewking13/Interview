@@ -1,3 +1,4 @@
+import { QueryFunction, QueryFunctionContext, QueryKey } from "react-query";
 import { axiosInstance } from "./axiosInstance";
 // axios.defaults.withCredentials = true;
 
@@ -11,7 +12,10 @@ export const postCreateStudy = async (
   deadline: string,
   headcount: number,
   chat_link: string,
-  status: number
+  status: number,
+  start: string,
+  end: string,
+  leader_name: string
 ) => {
   const response = await axiosInstance.post("study/create", {
     study_name,
@@ -21,6 +25,9 @@ export const postCreateStudy = async (
     headcount,
     chat_link,
     status,
+    start,
+    end,
+    leader_name
   });
   return response;
 };
@@ -46,6 +53,20 @@ export const putAcceptStudy = async (study_id: number, accept: number) => {
 export const getInfoAllStudyData = async () => {
   const response = await axiosInstance.get("study/info");
   return response;
+};
+
+/** 5. 스터디 정보 조회 (개별)  get */
+export const getInfoStudyData1: QueryFunction<any, string[]> = async ({
+  queryKey,
+}: QueryFunctionContext<string[]>) => {
+  if (queryKey.length !== 2) {
+    throw new Error("Invalid queryKey");
+  }
+
+  const study_id = queryKey[1];
+  const response = await axiosInstance.get(`study/info/${study_id}`);
+  console.log(response);
+  return response.data;
 };
 
 /** 5. 스터디 정보 조회 (개별)  get */

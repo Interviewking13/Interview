@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Button, Typography, TextField, Grid, Box } from "@mui/material";
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
+import axios from "axios";
 
-//각 페이지컴포넌트 호출
+type userDate = {
+  name: string;
+  email: string;
+  phone_number: string;
+  password: string;
+};
+
+// axios
+//   .get(`http://34.22.79.51:5000/api/user/mypage/${userId}`)
+//   .then((response) => {
+//     // 성공적으로 데이터를 받아왔을 때 처리할 로직 작성
+//     console.log(response.data);
+//   })
+//   .catch((error) => {
+//     // 에러가 발생했을 때 처리할 로직 작성
+//     console.error(error);
+//   });
 
 const MenuButton = () => {
   return (
@@ -21,8 +38,21 @@ const MenuButton = () => {
     </>
   );
 };
+const Dummy = {
+  name: "박세진",
+  email: "cobaltcyan.park@gmail.com",
+  password: "tpwls1234",
+  privacy_use_yn: "Y",
+  marketing_use_yn: "N",
+  intro_yn: "00030001_202305300019.pdf", // 또는 NULL
+  phone_number: "010-4916-4244",
+  admin_yn: false,
+  dts_insert: "202305291250",
+  dts_update: "202306100421",
+};
 
 const Modify = () => {
+  const [userData, setUesrDate] = useState(Dummy);
   return (
     <StyledContainer>
       <Grid container spacing={2}>
@@ -49,7 +79,7 @@ const Modify = () => {
           <Grid item xs={10}>
             <StyledTextField
               variant="outlined"
-              defaultValue="Hello World"
+              defaultValue={userData.name}
               InputProps={{
                 readOnly: true,
               }}
@@ -60,7 +90,11 @@ const Modify = () => {
             <StyledInfoName>연락처</StyledInfoName>
           </Grid>
           <Grid item xs={10}>
-            <StyledTextField variant="outlined" fullWidth />
+            <StyledTextField
+              variant="outlined"
+              defaultValue={userData.phone_number}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={2}>
             <StyledInfoName>아이디</StyledInfoName>
@@ -68,7 +102,7 @@ const Modify = () => {
           <Grid item xs={10}>
             <StyledTextField
               variant="outlined"
-              defaultValue="Hello World"
+              defaultValue={userData.email}
               InputProps={{
                 readOnly: true,
               }}
@@ -79,7 +113,11 @@ const Modify = () => {
             <StyledInfoName>비밀번호</StyledInfoName>
           </Grid>
           <Grid item xs={10}>
-            <StyledTextField variant="outlined" fullWidth />
+            <StyledTextField
+              variant="outlined"
+              defaultValue={userData.password}
+              fullWidth
+            />
           </Grid>
           <Grid item xs={2}>
             <StyledInfoName>비밀번호확인</StyledInfoName>
@@ -92,12 +130,7 @@ const Modify = () => {
             <StyledInfoName>자기소개서첨부</StyledInfoName>
           </Grid>
           <Grid item xs={8}>
-            <StyledTextField
-              variant="outlined"
-              type="file"
-              placeholder="파일을 선택해주세온마우ㅠㅁ나,ㅓ움나"
-              fullWidth
-            />
+            <StyledTextField variant="outlined" type="file" fullWidth />
           </Grid>
           <Grid item xs={2} container justifyContent="flex-end">
             <StyledFindButton variant="contained">파일찾기</StyledFindButton>
