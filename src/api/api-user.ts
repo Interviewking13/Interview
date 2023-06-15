@@ -29,9 +29,17 @@ export const postSignIn = async (email: string, password: string) => {
   return response;
 };
 
-/** 3. 내 정보 조회 GET */
-export const getUserData = async () => {
-  const response = await axiosInstance.get(`user/mypage/`);
+// /** 3. 내 정보 조회 GET*/
+// export const getUserData = async () => {
+//   const response = await axiosInstance.get(`user/mypage/`);
+//   return response;
+// };
+
+/** 3. 내 정보 조회 GET 1  로컬 스토리지에 토큰이 저장되어 있으면 백에서 먼저 확인하고 해당 유저 정보 줌*/
+export const getUserData = async (token: string) => {
+  const response = await axiosInstance.post(`user/mypage`, {
+      token: token,
+  });
   return response;
 };
 

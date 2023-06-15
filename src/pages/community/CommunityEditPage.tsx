@@ -81,7 +81,8 @@ const CommunityEditPage: React.FC<CommunityEditPageProps> = ({ post }) => {
     },
     onSuccess: (data) => {
       console.log('성공: ', data);
-      queryClient.invalidateQueries('communityList');
+      // queryClient.invalidateQueries('communityList');
+      navigate(`/Community/communityDetailPage/${data.data.community_id}`);
     },
   });
 
