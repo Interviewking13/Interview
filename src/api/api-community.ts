@@ -10,11 +10,17 @@ export const getAllCommunityData = async () => {
 };
 
 /** 2. 커뮤니티 게시글 등록  post */
-export const postCommunity = async (
-  user_id: string,
-  title: string,
-  content: string
-) => {
+export const postCommunity = async ({
+  user_id,
+  title,
+  content,
+  attach,
+}: {
+  user_id?: string;
+  title: string;
+  content: string;
+  attach: string;
+}) => {
   const response = await axiosInstance.post(`community/detl`, {
     user_id,
     title,
@@ -29,17 +35,21 @@ export const getDataByCommunity_noAndUser_id = async (
   user_id: string
 ) => {
   const response = await axiosInstance.get(
-    `community/detl/${community_no}/${user_id}`
+    `community/detl?community_id=${community_no}&${user_id}`
   );
   return response;
 };
 
 /** 4. 커뮤니티 게시글 수정  put */
-export const putCommunity = async (
+export const putCommunity = async ({
+  community_no,
+  title,
+  content,
+}: {
   community_no: number,
   title: string,
   content: string
-) => {
+}) => {
   const response = await axiosInstance.put(`community/detl`, {
     community_no,
     title,
@@ -79,9 +89,9 @@ export const putReply = async (reply_id: number, reply_content: string) => {
 
 /** 8. 커뮤니티 댓글 삭제  delete */
 export const deleteReply = async (reply_id: number) => {
-  const response = await axiosInstance.delete(`community/reply`, {
-    data: { reply_id },
-  });
+  const response = await axiosInstance.delete(
+    `community/reply?reply_id=${reply_id}`
+  );
   return response;
 };
 

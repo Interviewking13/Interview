@@ -1,99 +1,186 @@
 import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
-import axios from "axios";
+import styled from "styled-components";
 import { colors } from "../../../constants/colors";
-import { SubTextThinSmall } from "../../../constants/fonts";
+import {
+  SubTextThin,
+  SubTextThinSmall,
+  SubText,
+} from "../../../constants/fonts";
+import { getAllCommunityData } from "../../../api/api-community";
+import { useNavigate } from "react-router-dom";
 
 const BoardListItem: React.FC = () => {
-  const [posts, setPosts] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
+  const [tap, setTap] = useState(1);
+  const [startPage, setStartPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+  const [allPosts, setAllPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   useEffect(() => {
-    // 페이지 로드 시 서버에서 게시글 데이터를 받아와 상태 업데이트
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = () => {
-    axios
-      .get("http://34.22.79.51:5000/api/community/list")
+    getAllCommunityData()
       .then((response) => {
-        console.log(response.data); // 응답 데이터 구조 확인
-        console.log(response.data.data.length); // 응답 데이터 구조 확인
-        setPosts(response.data.data); // 받아온 데이터로 게시글 상태 업데이트
+        const { data } = response;
+        setAllPosts(data.data.reverse());
+        setLastPage(Math.ceil(data.data.length / 10));
+        setPosts(data.data.slice(0, 10));
       })
       .catch((error) => {
         console.error(error);
       });
+  }, []);
+
+  const onClickPageBtn = (selectedPage: number) => {
+    const startIdx = (selectedPage - 1) * 10;
+    const endIdx = selectedPage * 10;
+    setPosts(allPosts.slice(startIdx, endIdx));
+    setStartPage(selectedPage);
   };
 
+  const onClickPrevPage = () => {
+    if (startPage > 1) {
+      const prevPage = startPage - 1;
+      onClickPageBtn(prevPage);
+    }
+  };
+
+  const onClickNextPage = () => {
+    if (startPage < lastPage) {
+      const nextPage = startPage + 1;
+      onClickPageBtn(nextPage);
+    }
+  };
+
+  const onItemClick = (e: any) => {
+    navigate(`/Community/communityDetailPage/${e.currentTarget.id}`);
+    console.log(e.currentTarget.id);
+  };
+
+  const onClickTotalTap = (e: any) => {
+    console.log("토탈");
+    setTap(1);
+  };
+  const onClickMyTap = (e: any) => {
+    console.log("마이");
+    setTap(0);
+  };
   return (
     <StyledPostListItem>
-      {/* 글 목록 렌더링 */}
-      {posts.map((post) => (
-        <StyledPostItems key={post._id}>
-          <StyledLeftPostItem>
-            <StyledPostTitle>타이틀: {post.title}</StyledPostTitle>
-          </StyledLeftPostItem>
-          <StyledRightPostItem>
-            <StyledPostItem>댓글 수: {post.count}</StyledPostItem>
-            <StyledPostItem>조회 수: {post.viewCount}</StyledPostItem>
-            <StyledPostItem>
-              작성자: {post.author && post.author[0] && post.author[0]._id}
-            </StyledPostItem>
-            <StyledPostItem>게시일: {post.timestamps}</StyledPostItem>
-          </StyledRightPostItem>
-        </StyledPostItems>
-      ))}
-      <span>이전페이지</span>
-      <span>다음페이지</span>
+      <div>
+        <button onClick={onClickTotalTap}>전체</button>
+        <button onClick={onClickMyTap}>내가 쓴 글</button>
+      </div>
+      {tap == 1 ? (
+        <StyledPostListItemBox>
+          {posts.map((post) => (
+            <StyledPostItems
+              onClick={onItemClick}
+              key={post.community_id}
+              id={post.community_id}
+            >
+              <StyledLeftPostItem>
+                <StyledPostTitle>{post.title}</StyledPostTitle>
+              </StyledLeftPostItem>
+              <StyledRightPostItem>
+                <StyledPostItem>
+                  조회 수: {post.read_users.length}
+                </StyledPostItem>
+                <StyledPostItem>{post.user_name}</StyledPostItem>
+                <StyledPostItem>{post.timestamps}</StyledPostItem>
+              </StyledRightPostItem>
+            </StyledPostItems>
+          ))}
+          <PageNation>
+            <PageMoveBtn onClick={onClickPrevPage}>&lt;</PageMoveBtn>
+            {Array.from({ length: lastPage }).map((_, index) => (
+              <StyledPageBtn
+                key={index + 1}
+                isActive={index + 1 === startPage}
+                onClick={() => onClickPageBtn(index + 1)}
+              >
+                {index + 1}
+              </StyledPageBtn>
+            ))}
+            <PageMoveBtn onClick={onClickNextPage}>&gt;</PageMoveBtn>
+          </PageNation>
+        </StyledPostListItemBox>
+      ) : (
+        <div>내가쓴글이다</div>
+      )}
     </StyledPostListItem>
   );
 };
 
 export default BoardListItem;
 
-const StyledPostListItem = styled.ul`
-  list-style-type: none;
-  margin: 0;
-  padding: 10px;
+const PageNation = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 `;
 
-const StyledPostItems = styled.button`
+const StyledPostListItem = styled.div`
+  margin: 0;
+`;
+
+const PageMoveBtn = styled.button`
+  width: 70px;
+  height: 50px;
+  background: none;
+  border: none;
+  cursor: pointer;
+`;
+
+export const StyledPostItems = styled.div`
+  cursor: pointer;
   border-bottom: 1px solid ${colors.gray_stroke};
-  width: 100%;
   padding: 10px 0;
   margin: 0;
   display: flex;
-  justify-items: center;
-  align-items: flex-start;
-
-  &:last-child {
-    border-bottom: none;
-  }
+  justify-content: space-between;
+  align-items: center;
 `;
 
-const StyledLeftPostItem = styled.div`
-  flex: 1; /* 수정: 오른쪽으로 붙도록 flex 속성 추가 */
-`;
+export const StyledLeftPostItem = styled.div``;
 
 const StyledRightPostItem = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
 `;
 
-const StyledPostTitle = styled.p`
-  font-size: 18px;
-  font-weight: 500;
+export const StyledPostTitle = styled.div`
+  width: 430px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  ${SubText};
   color: ${colors.main_black};
   margin: 0;
 `;
 
-const StyledPostItem = styled.p`
+const StyledPostListItemBox = styled.div`
+  border: 1px solid ${colors.darkgray_navy};
+  border-radius: 10px;
+  padding: 0 20px;
+`;
+
+export const StyledPostItem = styled.div`
+  margin-left: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   color: ${colors.main_black};
   ${SubTextThinSmall};
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: 60px;
-  margin: 0;
-  padding-left: 45px;
+  width: 100px;
+`;
+
+const StyledPageBtn = styled.button<{ isActive: boolean }>`
+  color: ${({ isActive }) =>
+    isActive ? `${colors.main_black}` : `${colors.main_gray}`};
+  background-color: #fff;
+  ${SubTextThin};
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin: 0 5px;
 `;

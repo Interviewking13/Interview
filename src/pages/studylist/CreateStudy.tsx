@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import StudyListItem from "../../components/study/StudyListItem";
 
 import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
 import PencilIconSrc from "../../img/pencil_mint.svg";
-import { getInfoAllStudyData } from "../../api/api-study";
+import { getInfoAllStudyData, postCreateStudy } from "../../api/api-study";
 import { dateSplice } from "../../utils/dateFomatting";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const StudyList = (): JSX.Element => {
   type StudyData = {
@@ -21,8 +22,6 @@ const StudyList = (): JSX.Element => {
     master: string;
   };
 
-  const [studyData, setStudyData] = React.useState<StudyData[]>([]);
-
   React.useEffect(() => {
     getInfoAllStudyData()
       .then((response) => {
@@ -33,6 +32,55 @@ const StudyList = (): JSX.Element => {
         console.error("Error:", error);
       });
   }, []);
+
+  // post
+  const [studyData, setStudyData] = useState<StudyData[]>([]);
+  const [studyName, setStudyName] = useState("");
+  const [studyDescription, setStudyDescription] = useState("");
+  const [meetingLink, setMeetingLink] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [recruitmentDeadline, setRecruitmentDeadline] = useState("");
+  const [recruitmentCount, setRecruitmentCount] = useState(0);
+
+  const handleCreateStudy = () => {
+    const newStudyData: StudyData = {
+      _id: "",
+      study_name: studyName,
+      title: studyName,
+      content: studyDescription,
+      deadline: recruitmentDeadline,
+      acceptcount: 0,
+      headcount: recruitmentCount,
+      chat_link: meetingLink,
+      status: 1,
+      start: startDate,
+      end: endDate,
+      leader_name: "",
+    };
+
+    postCreateStudy(
+      newStudyData.study_name,
+      newStudyData.title,
+      newStudyData.content,
+      newStudyData.deadline,
+      newStudyData.headcount,
+      newStudyData.chat_link,
+      newStudyData.status,
+      newStudyData.start,
+      newStudyData.end,
+      newStudyData.leader_name
+    )
+      .then((response) => {
+        if (response.data.success) {
+          newStudyData._id = response.data.studyId;
+          setStudyData((prevStudyData) => [newStudyData, ...prevStudyData]);
+        }
+      })
+      .catch((error) => {
+        // 오류 처리
+      });
+  };
 
   return (
     <CommonContainer>
@@ -49,17 +97,22 @@ const StudyList = (): JSX.Element => {
           <StyledStudyInput
             type="text"
             placeholder="스터디 이름을 입력하세요."
+            onChange={(event) => setStudyName(event.target.value)}
           />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateInputAreaBig>
           <StyledStudyCreateText>스터디 소개</StyledStudyCreateText>
-          <StyledStudyInputBig placeholder="스터디 설명을 입력하세요." />
+          <StyledStudyInputBig
+            placeholder="스터디 설명을 입력하세요."
+            onChange={(event) => setStudyDescription(event.target.value)}
+          />
         </StyledStudyCreateInputAreaBig>
         <StyledStudyCreateInputArea>
           <StyledStudyCreateText>회의 링크</StyledStudyCreateText>
           <StyledStudyInput
-            type="text"
+            type="url"
             placeholder="화상 회의 주소를 입력하세요."
+            onChange={(event) => setMeetingLink(event.target.value)}
           />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateInputArea>
@@ -67,12 +120,12 @@ const StudyList = (): JSX.Element => {
           <StyledDateArea>
             <StyledStudyDate
               type="date"
-              placeholder="스터디 이름을 입력하세요."
+              onChange={(event) => setStartDate(event.target.value)}
             />
             <StyledStudyDateText>~</StyledStudyDateText>
             <StyledStudyDate
               type="date"
-              placeholder="스터디 이름을 입력하세요."
+              onChange={(event) => setEndDate(event.target.value)}
             />
           </StyledDateArea>
         </StyledStudyCreateInputArea>
@@ -80,19 +133,22 @@ const StudyList = (): JSX.Element => {
           <StyledStudyCreateText>모집 마감일</StyledStudyCreateText>
           <StyledStudyDate
             type="date"
-            placeholder="스터디 이름을 입력하세요."
+            onChange={(event) => setRecruitmentDeadline(event.target.value)}
           />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateInputArea>
           <StyledStudyCreateText>모집 인원</StyledStudyCreateText>
-          <StyledStudyInput
-            type="text"
-            placeholder="스터디 이름을 입력하세요."
+          <StyledStudyInputNumber
+            type="number"
+            min="1"
+            placeholder="모집 인원을 입력하세요."
+            onChange={(event) =>
+              setRecruitmentCount(parseInt(event.target.value))
+            }
           />
         </StyledStudyCreateInputArea>
-
         <StyledStudyCreateBtnArea>
-          <StyledLink to={`/study/create`}>
+          <StyledLink to={`/study`} onClick={handleCreateStudy}>
             <StyledCommonButton>
               <StyledButtonText>만들기</StyledButtonText>
             </StyledCommonButton>
@@ -161,6 +217,16 @@ const StyledStudyInput = styled.input`
   margin: 0;
   padding-left: 20px;
   font-family: ${fonts.SubTextThinSmall};
+`;
+const StyledStudyInputNumber = styled.input`
+  width: 447px;
+  height: 45px;
+  border: solid 1px ${colors.main_navy};
+  border-radius: 10px;
+  margin: 0;
+  padding: 0 20px 0 20px;
+  font-family: sans-serif;
+  font-size: 16px;
 `;
 const StyledDateArea = styled.div`
   width: 1103px;
