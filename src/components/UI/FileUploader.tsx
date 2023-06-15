@@ -28,6 +28,7 @@ const FileUploader = () => {
     if (selectedFile) {
       const timecodeForUpload = Math.floor(Date.now() / 1000); //파일명이 같은 파일을 위한 시간코드.
       const key = `community/${timecodeForUpload}_${selectedFile.name}`;
+      const fileName = selectedFile.name;
 
       const s3 = new AWS.S3();
       const bucketName = "13team";
@@ -40,15 +41,33 @@ const FileUploader = () => {
       try {
         await s3.putObject(uploadParams).promise();
         console.log("File uploaded successfully:", key);
-        setUploadedFile(key);
+        setUploadedFile(fileName);
       } catch (error) {
         console.error("Error uploading file:", error);
       }
     }
   };
   const handleDownload = () => {
-    // 다운로드 버튼을 클릭하면 파일을 다운로드할 수 있는 로직을 구현
-    // downloadFile(uploadedFile);
+    if (uploadedFile) {
+      const s3 = new AWS.S3();
+      const bucketName = "13team";
+      const key = `community/${timecodeForUpload}_${selectedFile.name}`;
+
+      const params = {
+        Bucket: bucketName,
+        Key: key,
+      };
+
+      s3.getSignedUrl("getObject", params, (err, url) => {
+        if (err) {
+          console.error("Error generating download URL:", err);
+          return;
+        }
+        console.log("Download URL:", url);
+        // 생성된 다운로드 URL을 사용하거나, 이를 표시할 다이얼로그 또는 링크로 전달하여 사용자에게 제공합니다.
+        window.open(url, "_blank");
+      });
+    }
   };
 
   const handleDelete = () => {
@@ -83,12 +102,24 @@ const FileUploader = () => {
             파일찾기
           </StyledFindButton>
         </label>
+      </Grid>
+      <Grid container>
         {uploadedFile && (
           <>
-            <StyledTextButton onClick={handleDownload}>
-              Body: {uploadedFile}
-            </StyledTextButton>
-            <StyledTextButton onClick={handleDelete}>삭제</StyledTextButton>
+            <Grid item xs={2}></Grid>
+            <Grid item xs={6}>
+              <StyledFileButton onClick={handleDownload}>
+                {uploadedFile}
+              </StyledFileButton>
+            </Grid>
+            <Grid item xs={2}>
+              <Grid container justifyContent="flex-end">
+                <StyledDeleteButton onClick={handleDelete}>
+                  삭제
+                </StyledDeleteButton>{" "}
+              </Grid>
+            </Grid>
+            <Grid item xs={2}></Grid>
           </>
         )}
       </Grid>
@@ -124,15 +155,18 @@ const StyledFindButton = styled(Button)`
   }
 `;
 
-const StyledTextButton = styled(Button)`
+const StyledDeleteButton = styled(Button)`
   && {
-    background: none;
-    border: none;
-    color: ${colors.back_navy};
-    ${fonts.SubText}
+    color: ${colors.main_red};
+    ${fonts.SubTextThinSmall}
     cursor: pointer;
-    &:hover {
-      text-decoration: underline;
-    }
+  }
+`;
+
+const StyledFileButton = styled(Button)`
+  && {
+    color: ${colors.darkgray_navy};
+    ${fonts.SubTextSmall}
+    cursor: pointer;
   }
 `;
