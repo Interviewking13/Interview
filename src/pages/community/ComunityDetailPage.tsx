@@ -83,9 +83,9 @@ export const CommunityDetailPage: React.FC = () => {
       console.log(error);
     }
   };
-  const handleDelete = async (e: any) => {
+  const handleDelete = async (targetId: number) => {
     try {
-      const deleteMyReply = await deleteReply(Number(e.target.id));
+      const deleteMyReply = await deleteReply(targetId);
       getDataByCommunity();
     } catch (error) {
       console.log(error);
@@ -154,7 +154,7 @@ export const CommunityDetailPage: React.FC = () => {
                 <StyledReplyUserName>{b.reply_user_name}</StyledReplyUserName>
                 <StyledReplyText>{b.reply_content}</StyledReplyText>
                 {b.reply_user_id === "6487ea3c2188ede075315499" ? (
-                  <StyledDelButton id={b.reply_id} onClick={handleDelete}>
+                  <StyledDelButton onClick={() => handleDelete(b.reply_id)}>
                     삭제
                   </StyledDelButton>
                 ) : (
