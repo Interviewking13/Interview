@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import LeftSignContainer from "../../components/auth/LeftSignContainer";
 import { postSignIn } from "../../api/api-user";
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from "react-query";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -14,8 +14,9 @@ const LoginPage = () => {
   const queryClient = useQueryClient();
   const [error, setError] = useState("");
 
-  const loginMutation = useMutation((credentials: { email: string; password: string }) =>
-    postSignIn(credentials.email, credentials.password)
+  const loginMutation = useMutation(
+    (credentials: { email: string; password: string }) =>
+      postSignIn(credentials.email, credentials.password)
   );
 
   // 로그인 버튼 클릭 시 동작
@@ -28,20 +29,18 @@ const LoginPage = () => {
     }
 
     try {
-      await loginMutation.mutateAsync({ email, password });
+      const response = await loginMutation.mutateAsync({ email, password });
 
-      const response = loginMutation.data;
       if (response && response.data.resultCode === "200") {
         localStorage.setItem("token", response.data.data.token);
       }
 
-      queryClient.invalidateQueries('userData');
+      queryClient.invalidateQueries("userData");
       console.log(response);
       navigate("/");
     } catch (error) {
       setError("로그인에 실패했습니다.");
     }
-
   };
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     const email = e.target.value;
