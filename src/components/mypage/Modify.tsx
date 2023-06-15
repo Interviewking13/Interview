@@ -150,6 +150,7 @@ const Modify = () => {
         <Grid item xs={10}>
           <StyledTextField variant="outlined" fullWidth />
         </Grid>
+        <Grid item xs={12}></Grid>
         <Grid container>
           <Grid item xs={2}>
             <StyledInfoName>자기소개서첨부</StyledInfoName>
@@ -212,21 +213,6 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 //버튼 스타일
-const StyledFindButton = styled(Button)`
-  && {
-    border-radius: 10px;
-    width: 132px;
-    height: 45px;
-    padding: auto;
-    ${fonts.SubText}
-    background-color: ${colors.dark_navy};
-    color: ${colors.back_navy};
-    &:hover {
-      background-color: ${colors.back_navy};
-      color: ${colors.dark_navy};
-    }
-  }
-`;
 
 const StyledModifyButton = styled(Button)`
   && {
