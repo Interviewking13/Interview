@@ -20,6 +20,7 @@ import CommunityCreatePage from "./pages/community/CommunityCreatePage";
 import CommunityPage from "./pages/community/CommunityPage";
 import { CommunityDetailPage } from "./pages/community/ComunityDetailPage";
 import CommunityEditPage from "./pages/community/CommunityEditPage";
+import TestGetUser from "./components/mypage/TestGetUser";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ function App() {
                 <Route path="userstudy" element={<UserStudy />} />
                 <Route path="studyapply" element={<StudyApply />} />
                 <Route path="userinfo" element={<UserInfo />} />
+                <Route path="/mypage/TestGetUser" element={<TestGetUser />} />
               </Route>
               <Route path="/mypage/userinfo/modify" element={<Modify />} />
 
