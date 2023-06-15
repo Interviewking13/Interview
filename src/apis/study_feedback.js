@@ -46,12 +46,10 @@ const studyFeedbackApi = {
     }
   },
 
-  /**피드백, 댓글 조회(유저별)*/
-  async userFeedback(req, res, next) {
+  /**피드백, 댓글 조회(전체))*/
+  async allFeedback(req, res, next) {
     try {
-      const { user_id } = req.body;
-      console.log(user_id);
-      const foundFeedback = await StudyFeedback.find({ user_id });
+      const foundFeedback = await StudyFeedback.find({});
       console.log(foundFeedback);
       if (!foundFeedback) throw new Error('Not found user feedback');
       res.status(200).json(foundFeedback);
