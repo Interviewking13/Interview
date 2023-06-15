@@ -7,6 +7,7 @@ const tokenValidate = require('../middlewares/tokenValidate');
 router.post('/create', userTokenValidate, studyApi.newStudy); // 스터디 개설
 router.post('/apply', userTokenValidate, studyApi.applyStudy); // 스터디 신청
 router.put('/accept/:study_id/:member_id', userTokenValidate, studyApi.acceptStudy); // 스터디 신청 수락
+router.get('/accept', userTokenValidate, studyApi.acceptRelation); // 스터디 신청 or 수락 명단 조회
 router.get('/info', studyApi.getStudy); // 스터디 정보 조회(전체)
 router.get('/info/:study_id', studyApi.getStudyOne); // 스터디 정보 조회(스터디별)
 router.put('/info/:study_id', userTokenValidate, studyApi.updateStudy); // 스터디 정보 수정(장)
