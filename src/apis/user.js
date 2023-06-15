@@ -257,7 +257,7 @@ const userApi = {
                     email: findUser.email,
                     intro_yn: findUser.intro_yn,
                     phone_number: findUser.phone_number,
-                    // token: token
+                    token: token
                 }
             });
         } catch (err) {
@@ -369,9 +369,11 @@ const userApi = {
                 message: "내 정보 수정 성공",
                 data: {
                     user_id: updatedUser._id,
+                    user_name: findUser.user_name,
                     email: updatedUser.email,
                     intro_yn: updatedUser.intro_yn,
                     phone_number: updatedUser.phone_number, 
+                    token: token
                 }
                 
             });
