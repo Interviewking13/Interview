@@ -37,7 +37,7 @@ export const CommunityDetailPage: React.FC = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, [a, b]);
+  }, []);
 
   const [text, setText] = useState("");
 

@@ -1,33 +1,43 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { colors } from '../../constants/colors';
-import { TitleText, SubTextThin, SubTextSmall } from '../../constants/fonts';
-import { useMutation, useQueryClient } from 'react-query';
-import { axiosInstance } from '../../api/axiosInstance';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { colors } from "../../constants/colors";
+import { TitleText, SubTextThin, SubTextSmall } from "../../constants/fonts";
+import { useMutation, useQueryClient } from "react-query";
+import { axiosInstance } from "../../api/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
-const postCommunity = async (data: { title: string, content: string, attach: string, user_id: string, community_id: number }) => {
+const postCommunity = async (data: {
+  title: string;
+  content: string;
+  attach: string;
+  user_id: string;
+  community_id: number;
+}) => {
   try {
-    console.log('Posted Data:', data);
-    const response = await axiosInstance.post('/community/detl', data);
+    console.log("Posted Data:", data);
+    const response = await axiosInstance.post("/community/detl", data);
     return response.data;
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
     throw error;
   }
 };
 
 const CommunityCreatePage: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [file, setFile] = useState<File | null>(null);
   // const [file, setFile] = useState(null);
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleTitleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setTitle(e.target.value);
   };
 
-  const handleContentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleContentChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setContent(e.target.value);
   };
 
@@ -53,41 +63,57 @@ const CommunityCreatePage: React.FC = () => {
     // 글을 생성하는 post니까 성공했을 땐 여기서 queryClient.invalidates([{postListAPI의 키값}])같은 코드를 넣어주면 글쓰기가 성공했을 때 자동으로 업데이트되겠죠?
     onSuccess: (data) => {
       console.log("성공: ", data);
-      queryClient.invalidateQueries('communityList');
-      // navigate('/Community/communityDetailPage/43');
+      queryClient.invalidateQueries("communityList");
+      navigate(`/Community/communityDetailPage/${data.data.community_id}`);
     },
   });
 
   const handleSubmit = () => {
     // 호출
-    postCommunityMutate({ title: title, content: content, attach: "", user_id: "6481bc83cd2bf33d75c6b3d4", community_id: 43 });
+
+    // "community_id": 11,
+    postCommunityMutate({
+      title: title,
+      content: content,
+      attach: "",
+      user_id: "6481bc83cd2bf33d75c6b3d4",
+      community_id: 43,
+    });
   };
 
   const handleDelete = () => {
     setFile(null);
   };
 
-
   return (
     <StyledCommonContainer>
-
       <StyledCreatePageContainer>
         <StyledTitleWrapper>
           <StyledTitleContainer>
             <StyledCreatePageTitle>커뮤니티 글 쓰기</StyledCreatePageTitle>
           </StyledTitleContainer>
           <StyledSubTitleContainer>
-            <StyledCreatePageSubtitle>회원들과 정보를 공유해보세요.</StyledCreatePageSubtitle>
+            <StyledCreatePageSubtitle>
+              회원들과 정보를 공유해보세요.
+            </StyledCreatePageSubtitle>
           </StyledSubTitleContainer>
         </StyledTitleWrapper>
         <StyledInputWrapper>
           <StyledTitle>제목</StyledTitle>
-          <StyledInput value={title} onChange={handleTitleChange} placeholder="제목을 입력하세요." />
+          <StyledInput
+            value={title}
+            onChange={handleTitleChange}
+            placeholder="제목을 입력하세요."
+          />
         </StyledInputWrapper>
 
         <StyledInputWrapper className="second-input-wrapper">
           <StyledTitle>내용</StyledTitle>
-          <StyledTextarea value={content} onChange={handleContentChange} placeholder="내용을 입력하세요." />
+          <StyledTextarea
+            value={content}
+            onChange={handleContentChange}
+            placeholder="내용을 입력하세요."
+          />
         </StyledInputWrapper>
 
         <StyledFileInputWrapper>
@@ -115,7 +141,6 @@ const CommunityCreatePage: React.FC = () => {
           <StyledCreateButton onClick={handleSubmit}>글쓰기</StyledCreateButton>
         </StyledFileButtonWrapper>
       </StyledCreatePageContainer>
-
     </StyledCommonContainer>
   );
 };
@@ -296,8 +321,7 @@ const FileList = styled.div`
   width: 1060px;
 `;
 
-const FileListItem = styled.div`
-`;
+const FileListItem = styled.div``;
 
 const FileAttachment = styled.a`
   display: block;
@@ -309,7 +333,7 @@ const StyledFileButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 1270px;
-`
+`;
 const StyledCreateButton = styled.button`
   padding: 10px 20px;
   background-color: ${colors.main_mint};
@@ -331,6 +355,6 @@ const StyledDelButton = styled.button`
   display: flex;
   justify-content: flex-end;
   width: 45px;
-`
+`;
 
 export default CommunityCreatePage;
