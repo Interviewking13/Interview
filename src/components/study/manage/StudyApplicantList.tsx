@@ -7,18 +7,18 @@ import { Modal } from "@mui/material";
 import UserInfoModal from "../../modal/UserInfoModal";
 
 type StudyApplicantListProps = {
-  userId: string;
+  studyId: string;
 };
 
 const members = [
-  { name: "고병욱", description: "힘내자 힘" },
-  { name: "이예준", description: "열심히 하자" },
-  { name: "박지원", description: "화이팅!" },
+  { name: "고병욱", description: "힘내자 힘", userId: "1232" },
+  { name: "이예준", description: "열심히 하자", userId: "1234" },
+  { name: "박지원", description: "화이팅!", userId: "1235" },
 ];
 
 const onDelete = () => {};
 
-const StudyApplicantList = ({ userId }: StudyApplicantListProps) => {
+const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
   const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
 
   const handleOpenUserInfoModal = () => {
@@ -38,7 +38,7 @@ const StudyApplicantList = ({ userId }: StudyApplicantListProps) => {
             </StyledName>
             <Modal open={userInfoModalOpen} onClose={handleCloseUserInfoModal}>
               <UserInfoModal
-                userId={userId}
+                userId={member.userId}
                 handleModalClose={handleCloseUserInfoModal}
               />
             </Modal>

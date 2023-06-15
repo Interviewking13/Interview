@@ -43,7 +43,7 @@ function App() {
               <Route path="/study/feedback/:id" element={<Feedback />} />
               <Route path="/study/:id" element={<Information />} />
               <Route path="/study/create" element={<CreateStudy />} />
-              <Route path="/management" element={<StudyManage />} />
+              <Route path="/management/:studyId" element={<StudyManage />} />
               <Route
                 path="/Community/CommunityPage"
                 element={<CommunityPage />}
