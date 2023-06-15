@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { colors } from "../../../constants/colors";
-import { SubTextThinSmall } from "../../../constants/fonts";
+import { SubTextThin, SubTextThinSmall, SubText } from "../../../constants/fonts";
 import { getAllCommunityData } from "../../../api/api-community";
 import { useNavigate } from "react-router-dom";
 
@@ -53,24 +53,27 @@ const BoardListItem: React.FC = () => {
 
   return (
     <StyledPostListItem>
-      {posts.map((post) => (
-        <StyledPostItems
-          onClick={onItemClick}
-          key={post.community_id}
-          id={post.community_id}
-        >
-          <StyledLeftPostItem>
-            <StyledPostTitle>{post.title}</StyledPostTitle>
-          </StyledLeftPostItem>
-          <StyledRightPostItem>
-            <StyledPostItem>조회 수: {post.read_users.length}</StyledPostItem>
-            <StyledPostItem>{post.user_name}</StyledPostItem>
-            <StyledPostItem>{post.timestamps}</StyledPostItem>
-          </StyledRightPostItem>
-        </StyledPostItems>
-      ))}
+      <StyledPostListItemBox>
+        {posts.map((post) => (
+          <StyledPostItems
+            onClick={onItemClick}
+            key={post.community_id}
+            id={post.community_id}
+          >
+            <StyledLeftPostItem>
+              <StyledPostTitle>{post.title}</StyledPostTitle>
+            </StyledLeftPostItem>
+            <StyledRightPostItem>
+              <StyledPostItem>댓글 수: </StyledPostItem>
+              <StyledPostItem>조회 수: {post.read_users.length}</StyledPostItem>
+              <StyledPostItem>{post.user_name}</StyledPostItem>
+              <StyledPostItem>{post.timestamps}</StyledPostItem>
+            </StyledRightPostItem>
+          </StyledPostItems>
+        ))}
+      </StyledPostListItemBox>
       <PageNation>
-        <PageMoveBtn onClick={onClickPrevPage}>이전</PageMoveBtn>
+        <PageMoveBtn onClick={onClickPrevPage}>&lt;</PageMoveBtn>
         {Array.from({ length: lastPage }).map((_, index) => (
           <StyledPageBtn
             key={index + 1}
@@ -80,7 +83,7 @@ const BoardListItem: React.FC = () => {
             {index + 1}
           </StyledPageBtn>
         ))}
-        <PageMoveBtn onClick={onClickNextPage}>다음</PageMoveBtn>
+        <PageMoveBtn onClick={onClickNextPage}>&gt;</PageMoveBtn>
       </PageNation>
     </StyledPostListItem>
   );
@@ -96,7 +99,6 @@ const PageNation = styled.div`
 
 const StyledPostListItem = styled.div`
   margin: 0;
-  padding: 10px;
 `;
 
 const PageMoveBtn = styled.button`
@@ -109,44 +111,51 @@ const PageMoveBtn = styled.button`
 
 export const StyledPostItems = styled.div`
   cursor: pointer;
-  background: none;
-  border: none;
-  border-bottom: 2px solid ${colors.gray_stroke};
-  width: 100%;
-  padding: 10px 10px;
-  border-radius: 15px;
+  border-bottom: 1px solid ${colors.gray_stroke};
+  padding: 10px 0;
   margin: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  &:hover {
-    background-color: #00e595;
-  }
 `;
 
 export const StyledLeftPostItem = styled.div``;
 
 const StyledRightPostItem = styled.div`
   display: flex;
+  justify-content: space-between;
 `;
 
 export const StyledPostTitle = styled.div`
+  width: 430px;
   text-overflow: ellipsis;
-  font-size: 18px;
-  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  ${SubText};
   color: ${colors.main_black};
   margin: 0;
 `;
 
+const StyledPostListItemBox = styled.div`
+  border: 1px solid ${colors.darkgray_navy};
+  border-radius: 10px;
+  padding: 0 20px;
+`;
+
 export const StyledPostItem = styled.div`
+  margin-left: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   color: ${colors.main_black};
   ${SubTextThinSmall};
   width: 100px;
-  margin: 5px;
 `;
 
 const StyledPageBtn = styled.button<{ isActive: boolean }>`
-  background-color: ${({ isActive }) => (isActive ? "yellow" : "transparent")};
+  color: ${({ isActive }) => (isActive ? `${colors.main_black}` : `${colors.main_gray}`)};
+  background-color: #fff;
+  ${SubTextThin};
   border: none;
   cursor: pointer;
   padding: 5px 10px;

@@ -1,16 +1,14 @@
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { colors } from "../../constants/colors";
-import {
-  deleteReply,
-  getDataByCommunity_noAndUser_id,
-} from "../../api/api-community";
+import { getDataByCommunity_noAndUser_id } from "../../api/api-community";
+import { response } from "express";
 import { useEffect, useState } from "react";
 import { dateSplice } from "../../utils/dateFomatting";
+import { style } from "@mui/system";
 import * as fonts from "../../constants/fonts";
-import { MdOutlineFileDownload } from "react-icons/md";
-import { postReply } from "../../api/api-community";
-import { postFeedback } from "../../api/api-study-feedback";
+import { MdOutlineFileDownload } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 export const CommunityDetailPage: React.FC = () => {
   const [a, setA] = useState({
@@ -20,9 +18,10 @@ export const CommunityDetailPage: React.FC = () => {
     updatedAt: "",
     read_users: [],
     file_name: "",
+    reply_user_name: "",
+    reply_content: "",
   });
-  const [b, setB] = useState<any[]>([]);
-
+  const [user_name, setUser_name] = useState("");
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
@@ -30,41 +29,32 @@ export const CommunityDetailPage: React.FC = () => {
   useEffect(() => {
     getDataByCommunity_noAndUser_id(Number(lastPathSegment), "asd")
       .then((response) => {
+        console.log(response.data.data.updateContent);
         setA(response.data.data.updateContent);
-        setB(response.data.data.findReply);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [a, b]);
-
-  const [text, setText] = useState("");
-
-  const handleTextChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  }, []);
+  // getDataByCommunity_noAndUser_id(Number(lastPathSegment), "asd").then(
+  //   (response) => {
+  //     console.log(response.data);
+  //   }
+  // );
+  const [text, setText] = useState('');
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
 
-  const handleSubmit = (e: any) => {
-    postReply("6483fe05cd2bf33d75c6c632", text, Number(lastPathSegment))
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    setText("");
+  const handleSubmit = () => {
   };
-  const handleDelete = (e: any) => {
-    console.log(Number(e.target.id));
-    deleteReply(Number(e.target.id))
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const handleDelete = () => {
+    // setReply(null);
+  };
+
+  const navigate = useNavigate();
+  const handleEditClick = () => {
+    navigate('/community/CommunityEditPage', { state: { post: a } });
   };
 
   return (
@@ -87,37 +77,28 @@ export const CommunityDetailPage: React.FC = () => {
         </StyledCommunityInfo>
         <Divider />
         <StyledContent>{a.content}</StyledContent>
-        <StyledFileDownloadBtn>
-          첨부파일1.docx{a.file_name}
+        <StyledFileDownloadBtn>첨부파일1.docx{a.file_name}
           <MdOutlineFileDownload size={16} />
         </StyledFileDownloadBtn>
         <StyledReplyInputContainer>
-          <StyledReplyInput
-            value={text}
-            onChange={handleTextChange}
-            placeholder="댓글을 입력하세요."
-          ></StyledReplyInput>
-          <StyledReplyAddButton onClick={handleSubmit}>
-            댓글 쓰기
-          </StyledReplyAddButton>
+          <StyledReplyInput value={text} onChange={handleTextChange} placeholder="댓글을 입력하세요." ></StyledReplyInput>
+          <StyledReplyAddButton onClick={handleSubmit}>댓글 쓰기</StyledReplyAddButton>
         </StyledReplyInputContainer>
         <StyledReplyContainerWrapper>
-          {b.map((b) => (
-            <div key={b.reply_id} id={b.reply_user_id}>
-              <StyledReplyContainer>
-                <StyledReplyUserName>{b.reply_user_name}</StyledReplyUserName>
-                <StyledReplyText>{b.reply_content}</StyledReplyText>
-                {b.reply_user_id === "6483fe05cd2bf33d75c6c632" ? (
-                  <StyledDelButton id={b.reply_id} onClick={handleDelete}>
-                    삭제
-                  </StyledDelButton>
-                ) : (
-                  <div></div>
-                )}
-              </StyledReplyContainer>
-              <Divider />
-            </div>
-          ))}
+          <StyledReplyContainer>
+            <StyledReplyUserName>이름{a.reply_user_name}</StyledReplyUserName>
+            <StyledReplyText>댓글내용 {a.reply_content}</StyledReplyText>
+            <StyledDelButton onClick={handleDelete}>삭제</StyledDelButton>
+          </StyledReplyContainer>
+          <Divider />
+          <StyledReplyContainer>
+            <StyledReplyUserName>이름{a.reply_user_name}</StyledReplyUserName>
+            <StyledReplyText>댓글내용 {a.reply_content}</StyledReplyText>
+          </StyledReplyContainer>
+          <Divider />
+          {/* {user_name === a.user_name && ( */}
+          <StyledEditButton onClick={handleEditClick}>수정하기</StyledEditButton>
+          {/* )} */}
         </StyledReplyContainerWrapper>
       </StyledContainer>
     </StyledCommonContainer>
@@ -133,6 +114,7 @@ const StyledCommonContainer = styled.div`
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 const StyledTitleTextContainer = styled.div`
@@ -273,4 +255,18 @@ const StyledDelButton = styled.button`
   justify-content: flex-end;
   width: 45px;
   margin-left: auto;
+`
+
+const StyledEditButton = styled.button`
+  padding: 10px 20px;
+  background-color: ${colors.main_mint};
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  color: ${colors.main_navy};
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 50px;
+  right: 0;
 `

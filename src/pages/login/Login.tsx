@@ -12,6 +12,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
+  // 로그인 버튼 클릭 시 동작
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -23,15 +24,22 @@ const LoginPage = () => {
       console.log(response.data);
       if (response.data.resultCode == "200")
         localStorage.setItem("token", response.data.data.token);
+
+      navigate("/"); // useNavigate 사용하여 페이지 이동
     });
   };
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+    const email = e.target.value;
+    setEmail(email);
   };
 
+  // 비밀번호 입력 값 변경 시 동작
   const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    const password = e.target.value;
+    setPassword(password);
   };
+
+  // 회원가입 페이지로 이동
   const onClickSignup = () => {
     navigate("./signup"); // useNavigate 사용하여 페이지 이동
   };
