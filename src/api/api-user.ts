@@ -28,8 +28,10 @@ export const postSignIn = async (email: string, password: string) => {
 };
 
 export const getUserData = async (token: string) => {
-  const response = await axiosInstance.post(`user/mypage`, {
-    token: token,
+  const response = await axiosInstance.get("user/mypage", {
+    headers: {
+      Authorization: `${token}`,
+    },
   });
   return response;
 };
