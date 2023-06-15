@@ -2,15 +2,15 @@ import Box from "@mui/material/Box";
 import styled from "styled-components";
 import StudyApplyList from "./StudyApplyList";
 import { Link } from "react-router-dom";
-import { dateFomatting } from "../../utils/dateFomatting";
+import { dateFomatting, dateSplice } from "../../utils/dateFomatting";
 import { TitleText } from "../../constants/fonts";
 import { colors } from "../../constants/colors";
-import React, { useEffect } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { HTMLAttributes } from "react";
 import * as fonts from "../../constants/fonts";
-interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
-  backgroundColor?: string;
-}
+import { getInfoStudyData, postApplyStudy } from "../../api/api-study";
+import { useQuery } from "react-query";
+
 type StudyApplyModalProps = {
   studyId: string;
   handleModalClose: () => void;
@@ -20,30 +20,37 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
   studyId,
   handleModalClose,
 }) => {
-  const studyData = {
-    title: "SAFFY 면접 스터디",
-    period: "2023-05-30 ~ 2023-06-08",
-    deadline: "2023-06-09",
-    headcount: 4,
-    study_id: "123123",
-    study_name: "interview king",
-    content: "우리 스터디는 ~~을 목표로 하고, ...을 규칙으로 함",
-    chat_link:
-      "https://us05web.zoom.us/j/83754399005?pwd=QWRMY0I4VjhkWkhtdHdydkhTM0dLUT09",
-    status: 1,
-    currentCount: 2,
-    studyLeader: "채진짱",
+  const [goal, setGoal] = useState("");
+  const handleGoalChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setGoal(event.target.value);
   };
+  const {
+    data: studyData,
+    isLoading,
+    isError,
+  } = useQuery("studyData", () =>
+    getInfoStudyData(studyId).then((response) => response.data)
+  );
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching data</div>;
+  }
 
   //받아온 스터디의 데이터 분해구조 할당
   const {
     title,
-    period,
+    start,
+    end,
     deadline,
     headcount,
-    currentCount,
+    acceptcount,
     study_id,
-    studyLeader,
+    leader_name,
     study_name,
     content,
     chat_link,
@@ -54,6 +61,13 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
   const imageSrc = "/cancel-button.png";
   const handleCloseModal = () => {
     handleModalClose();
+  };
+  const onApplyButtonHandler = () => {
+    postApplyStudy(study_id, goal);
+    alert("스터디가 신청되었습니다!");
+    handleModalClose();
+
+    //information에서 정보 재랜더링 해야함 쿼리로.
   };
   return (
     <div>
@@ -67,13 +81,17 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
           </StyledTopContainer>
           <StyledTitleTextNavy>{title}</StyledTitleTextNavy>
           <StudyApplyList
-            period={dateFomatting(period)}
+            period={`${dateSplice(start)} ~ ${dateSplice(end)}`}
             deadline={dateFomatting(deadline)}
-            currentCount={currentCount}
+            currentCount={acceptcount}
             headCount={headcount}
-            studyLeader={studyLeader}
+            studyLeader={leader_name}
           />
-          <TextInput placeholder="한 줄 소개를 입력하시오. (60자 이내)" />
+          <TextInput
+            placeholder="한 줄 소개를 입력하시오. (60자 이내)"
+            value={goal}
+            onChange={handleGoalChange}
+          />
           <StyledBottom>
             <BottomContainer>
               <StyledP>스터디장의 승인 후 가입이 가능합니다.</StyledP>
@@ -87,7 +105,10 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
                 </StyledA>
               </InfoContainer>
             </BottomContainer>
-            <StyledCommonButton backgroundColor={colors.main_mint}>
+            <StyledCommonButton
+              backgroundColor={colors.main_mint}
+              onClick={onApplyButtonHandler}
+            >
               <StyledButtonTextField>신청하기</StyledButtonTextField>
             </StyledCommonButton>
           </StyledBottom>
@@ -183,7 +204,9 @@ const StyledBottom = styled.div`
   flex-direction: row;
   font-family: ${fonts.SubTextThinSmall};
 `;
-
+interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
+  backgroundColor?: string;
+}
 const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   margin-left: auto;
   cursor: pointer;
