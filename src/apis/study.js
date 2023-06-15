@@ -12,6 +12,7 @@ const studyApi = {
     try {
       // 스터디 개설
       const leader_id = req.user.user_id;
+      console.log(req.user);
       console.log(leader_id);
       const leader = await User.findOne({ _id: leader_id });
       console.log(leader.user_name);
