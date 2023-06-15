@@ -12,7 +12,10 @@ export const postCreateStudy = async (
   deadline: string,
   headcount: number,
   chat_link: string,
-  status: number
+  status: number,
+  start: string,
+  end: string,
+  leader_name: string
 ) => {
   const response = await axiosInstance.post("study/create", {
     study_name,
@@ -22,6 +25,9 @@ export const postCreateStudy = async (
     headcount,
     chat_link,
     status,
+    start,
+    end,
+    leader_name
   });
   return response;
 };
