@@ -19,7 +19,11 @@ const StudyList = (): JSX.Element => {
     start: string;
     end: string;
     deadline: string;
-    master: string;
+    leader_name: string;
+    study_name: string;
+    content: string;
+    chat_link: string;
+    status: number;
   };
 
   React.useEffect(() => {

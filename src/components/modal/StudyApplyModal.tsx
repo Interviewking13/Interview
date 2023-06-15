@@ -181,6 +181,7 @@ const StyledBottom = styled.div`
   margin-top: 30px;
   display: flex;
   flex-direction: row;
+  font-family: ${fonts.SubTextThinSmall};
 `;
 
 const StyledCommonButton = styled.div<StyledCommonButtonProps>`
@@ -188,6 +189,7 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   cursor: pointer;
   width: 132px;
   height: 45px;
+  color: ${colors.main_black};
   background-color: ${(props) =>
     props.backgroundColor}; /* props로 전달받은 배경색을 사용 */
   display: flex;
@@ -197,12 +199,11 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   border-radius: 10px;
   &:hover {
     background-color: ${colors.main_navy};
-    color: white;
+    color: ${colors.main_white};
   }
   ${fonts.SubText}
 `;
 
 const StyledButtonTextField = styled.p`
   font-family: ${fonts.SubTextBig};
-  color: ${colors.back_navy};
 `;
