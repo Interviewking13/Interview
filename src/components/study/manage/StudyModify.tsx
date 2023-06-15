@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { colors } from "../../../constants/colors";
 import * as fonts from "../../../constants/fonts";
 import { Link } from "react-router-dom";
-interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
-  backgroundColor?: string;
+interface StudyModifyProps {
+  studyId: string;
 }
-const StudyModify = () => {
+const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
   return (
     <>
       <StyledStudyCreateArea>
@@ -176,7 +176,9 @@ const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
 `;
-
+interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
+  backgroundColor?: string;
+}
 const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   cursor: pointer;
   width: 132px;

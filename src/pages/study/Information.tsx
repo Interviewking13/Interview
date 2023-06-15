@@ -38,6 +38,10 @@ const Information: React.FC = () => {
     setStudyApplyModalOpen(false);
   };
 
+  const handleStudyManageButtonClick = () => {
+    window.location.href = `/management/${_id}`;
+  };
+
   const {
     data: studyData,
     isLoading,
@@ -67,11 +71,17 @@ const Information: React.FC = () => {
     acceptcount,
     leader_name,
     leader_id,
+    _id,
   } = studyData;
   return (
     <Container>
       <Mystudy>{status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
-      <StudyTaps />
+      <StyeldTapContainer>
+        <StudyTaps />
+        <StyledStudyManageButton onClick={handleStudyManageButtonClick}>
+          스터디 관리로 가는 버튼
+        </StyledStudyManageButton>
+      </StyeldTapContainer>
       <Title>{title}</Title>
       <SubTitle>
         <DetailTitle
@@ -124,6 +134,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const StyeldTapContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+const StyledStudyManageButton = styled.button``;
 
 export const Title = styled.span`
   margin-top: 10px;
