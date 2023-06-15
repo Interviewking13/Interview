@@ -28,9 +28,16 @@ export const CommunityDetailPage: React.FC = () => {
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
 
-  const { data: userData } = useQuery(["getUserData"], getUserData);
+  // const { data: userData } = useQuery(["getUserData"], getUserData);
+  const token = localStorage.getItem('token') || '';
 
-  const myId = userData.id;
+  const { data: userData } = useQuery(["getUserData", token], () => getUserData(token), {
+    enabled: !!token, // 토큰이 존재할 때만 데이터 가져오도록 설정
+  });
+
+  console.log("token:", token);
+
+  const myId = userData?.data.id;
 
   useEffect(() => {
     getDataByCommunity_noAndUser_id(Number(lastPathSegment), "asd")

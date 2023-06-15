@@ -45,6 +45,16 @@ const StyledLoginItem = styled(Link)`
   text-decoration: none;
 `;
 
+const StyledLogOutButton = styled(Link)`
+  font-size: 16px;
+  font-weight: 300;
+  color: ${colors.main_gray};
+  margin-left: 35px;
+  text-decoration: none;
+  cursor: pointer;
+`;
+
+
 const Header = (): JSX.Element => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -53,6 +63,7 @@ const Header = (): JSX.Element => {
     localStorage.removeItem("token");
     navigate("/login");
   };
+
 
   return (
     <>
@@ -70,11 +81,11 @@ const Header = (): JSX.Element => {
             <>
               <StyledLoginItem to="/login">로그인</StyledLoginItem>
               <StyledLoginItem to="/login/signup">회원가입</StyledLoginItem>
-              <StyledLoginItem to="/mypage">마이페이지</StyledLoginItem>
+              <StyledLoginItem to="/login">마이페이지</StyledLoginItem>
             </>
           ) : (
             <>
-              <button onClick={handleLogout}>로그아웃</button>
+              <StyledLogOutButton to="" onClick={handleLogout}>로그아웃</StyledLogOutButton>
               <StyledLoginItem to="/mypage">마이페이지</StyledLoginItem>
             </>
           )}
