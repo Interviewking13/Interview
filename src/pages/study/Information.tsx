@@ -65,6 +65,8 @@ const Information: React.FC = () => {
     chat_link,
     headcount,
     acceptcount,
+    leader_name,
+    leader_id,
   } = studyData;
   return (
     <Container>
@@ -90,12 +92,12 @@ const Information: React.FC = () => {
         ></DetailTitle>
         <DetailButton
           name="&nbsp;스터디장"
-          content="이용섭"
+          content={leader_name}
           onClick={handleOpenUserInfoModal}
         ></DetailButton>
         <Modal open={userInfoModalOpen} onClose={handleCloseUserInfoModal}>
           <UserInfoModal
-            studyId={lastPathSegment}
+            userId={leader_id}
             handleModalClose={handleCloseUserInfoModal}
           />
         </Modal>
