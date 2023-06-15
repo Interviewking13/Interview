@@ -63,7 +63,7 @@ const CommunityCreatePage: React.FC = () => {
     // 글을 생성하는 post니까 성공했을 땐 여기서 queryClient.invalidates([{postListAPI의 키값}])같은 코드를 넣어주면 글쓰기가 성공했을 때 자동으로 업데이트되겠죠?
     onSuccess: (data) => {
       console.log("성공: ", data);
-      queryClient.invalidateQueries("communityList");
+      // queryClient.invalidateQueries("communityList");
       navigate(`/Community/communityDetailPage/${data.data.community_id}`);
     },
   });

@@ -5,12 +5,18 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import LeftSignContainer from "../../components/auth/LeftSignContainer";
 import { postSignIn } from "../../api/api-user";
+import { useMutation, useQueryClient } from 'react-query';
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [error, setError] = useState("");
+
+  const loginMutation = useMutation((credentials: { email: string; password: string }) =>
+    postSignIn(credentials.email, credentials.password)
+  );
 
   // 로그인 버튼 클릭 시 동작
   const onClickSubmit = async (e: React.FormEvent) => {
@@ -20,13 +26,21 @@ const LoginPage = () => {
       console.log("모든 필드를 입력해야 합니다.");
       return;
     }
-    postSignIn(email, password).then((response) => {
-      console.log(response.data);
-      if (response.data.resultCode == "200")
-        localStorage.setItem("token", response.data.data.token);
 
-      navigate("/"); // useNavigate 사용하여 페이지 이동
-    });
+    try {
+      await loginMutation.mutateAsync({ email, password });
+
+      const response = loginMutation.data;
+      if (response && response.data.resultCode === "200") {
+        localStorage.setItem("token", response.data.data.token);
+      }
+
+      queryClient.invalidateQueries('userData');
+      navigate("/");
+    } catch (error) {
+      setError("로그인에 실패했습니다.");
+    }
+
   };
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     const email = e.target.value;
