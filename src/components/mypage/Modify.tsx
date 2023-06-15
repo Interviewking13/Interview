@@ -6,7 +6,6 @@ import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import FileUploader from "../UI/FileUploader";
-import Cookies from "react-cookie";
 
 type userDate = {
   user_name: string;
