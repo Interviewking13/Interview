@@ -8,12 +8,7 @@ import { colors } from "../../../constants/colors";
 const StudyMemberManagement = () => {
   return (
     <p>
-      스터디어플라이페이지입니다.솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라
-      솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라
-      솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라
-      솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라
-      솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라
-      솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라솰라
+      StudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagementStudyMemberManagement
     </p>
   );
 };
