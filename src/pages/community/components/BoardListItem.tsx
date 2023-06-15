@@ -9,7 +9,7 @@ import {
 import { getAllCommunityData } from "../../../api/api-community";
 import { useNavigate } from "react-router-dom";
 
-const BoardListItem: React.FC = () => {
+const BoardListItem: React.FC = (props) => {
   const [tap, setTap] = useState(1);
   const [startPage, setStartPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
@@ -21,7 +21,8 @@ const BoardListItem: React.FC = () => {
     getAllCommunityData()
       .then((response) => {
         const { data } = response;
-        setAllPosts(data.data.reverse());
+        setAllPosts(data.data);
+        console.log(data.data.reverse());
         setLastPage(Math.ceil(data.data.length / 10));
         setPosts(data.data.slice(0, 10));
       })
@@ -56,26 +57,22 @@ const BoardListItem: React.FC = () => {
     console.log(e.currentTarget.id);
   };
 
-  const onClickTotalTap = (e: any) => {
-    console.log("토탈");
-    setTap(1);
-  };
-  const onClickMyTap = (e: any) => {
-    console.log("마이");
-    setTap(0);
-  };
+  // const onClickTotalTap = (e: any) => {
+  //   console.log("토탈");
+  //   setTap(1);
+  // };
+  // const onClickMyTap = (e: any) => {
+  //   console.log("마이");
+  //   setTap(0);
+  // };
   return (
     <StyledPostListItem>
-      <div>
-        <button onClick={onClickTotalTap}>전체</button>
-        <button onClick={onClickMyTap}>내가 쓴 글</button>
-      </div>
       {tap == 1 ? (
         <StyledPostListItemBox>
-          {posts.map((post) => (
+          {posts.map((post, index) => (
             <StyledPostItems
               onClick={onItemClick}
-              key={post.community_id}
+              key={index}
               id={post.community_id}
             >
               <StyledLeftPostItem>
