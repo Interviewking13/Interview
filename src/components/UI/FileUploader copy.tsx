@@ -14,18 +14,13 @@ AWS.config.update({
 const FileUploader = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const handleFindButtonClick = async () => {
-    const inputFile = document.getElementById("input-file");
-    if (inputFile) {
-      inputFile.click();
-    }
+  const handleFileChange = (event: any) => {
+    setSelectedFile(event.target.files[0]);
   };
 
-  const handleFileChange = async (event: any) => {
-    const selectedFile = event.target.files[0];
-
+  const handleUpload = async () => {
+    const timecodeForUpload = Math.floor(Date.now() / 1000);
     if (selectedFile) {
-      const timecodeForUpload = Math.floor(Date.now() / 1000); //파일명이 같은 파일을 위한 시간코드.
       const key = `community/${timecodeForUpload}_${selectedFile.name}`;
 
       const s3 = new AWS.S3();
@@ -44,6 +39,18 @@ const FileUploader = () => {
       }
     }
   };
+
+  const handleFindButtonClick = async () => {
+    const inputFile = document.getElementById("input-file");
+    if (inputFile) {
+      inputFile.click();
+    }
+
+    if (selectedFile) {
+      await handleUpload(); // 파일 선택 시 바로 업로드 함수 호출
+    }
+  };
+
   return (
     <>
       {/* <input type="file" onChange={handleFileChange} />
