@@ -59,7 +59,7 @@ const Modify = () => {
   };
 
   const [userData, setUesrDate] = useState(Dummy);
-  const { data: token, isLoading, isError } = useQuery("userData", () => {});
+  const { data: token, isLoading, isError } = useQuery("userData", getUserData);
 
   if (isLoading) {
     // 로딩 상태를 표시
@@ -72,7 +72,7 @@ const Modify = () => {
   }
 
   // token 값을 활용하여 필요한 작업을 수행
-  console.log("Token:", token);
+  console.log("UserData", userData);
   const { name, phone_number, email, password } = userData;
 
   return (
