@@ -1,16 +1,23 @@
 import { ReactNode } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import { useLocation } from "react-router-dom";
 
 type LayoutProps = {
   children: ReactNode;
 };
+
+const blaklist = ["/login", "/login/signup"];
+
 const Layout = (props: LayoutProps) => {
+  const { pathname } = useLocation();
+  const isShow = !blaklist.some((path) => pathname.includes(path));
+
   return (
     <div>
-      <Header />
+      {isShow && <Header />}
       <div>{props.children}</div>
-      <Footer />
+      {isShow && <Footer />}
     </div>
   );
 };
