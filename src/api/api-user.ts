@@ -33,7 +33,7 @@ export const getUserData = async (token: string) => {
       Authorization: `${token}`,
     },
   });
-  return response;
+  return response.data;
 };
 // /** 3. 내 정보 조회 GET */
 // // export const getUserData = async () => {
