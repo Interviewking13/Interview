@@ -10,6 +10,8 @@ import { dateSplice } from "../../utils/dateFomatting";
 import * as fonts from "../../constants/fonts";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { postReply } from "../../api/api-community";
+import { useQuery } from "react-query";
+import { getUserData } from "../../api/api-user";
 
 export const CommunityDetailPage: React.FC = () => {
   const [a, setA] = useState({
@@ -25,6 +27,10 @@ export const CommunityDetailPage: React.FC = () => {
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
+
+  const { data: userData } = useQuery(["getUserData"], getUserData);
+
+  const myId = userData.id;
 
   useEffect(() => {
     getDataByCommunity_noAndUser_id(Number(lastPathSegment), "asd")
@@ -108,7 +114,7 @@ export const CommunityDetailPage: React.FC = () => {
               <StyledReplyContainer>
                 <StyledReplyUserName>{b.reply_user_name}</StyledReplyUserName>
                 <StyledReplyText>{b.reply_content}</StyledReplyText>
-                {b.reply_user_id === "6483fe05cd2bf33d75c6c632" ? (
+                {b.reply_user_id === myId ? (
                   <StyledDelButton id={b.reply_id} onClick={handleDelete}>
                     삭제
                   </StyledDelButton>
