@@ -54,14 +54,12 @@ const Dummy = {
 };
 
 const Modify = () => {
-  const [userData, setUesrDate] = useState(Dummy);
-
-  const getToken = () => {
-    const token = Cookies.get("token");
-    return token;
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
   };
 
-  const { data: token, isLoading, isError } = useQuery("userData", getToken);
+  const [userData, setUesrDate] = useState(Dummy);
+  const { data: token, isLoading, isError } = useQuery("userData", () => {});
 
   if (isLoading) {
     // 로딩 상태를 표시
@@ -90,88 +88,82 @@ const Modify = () => {
         </Grid>
       </Grid>
       {/**  페이지내용 */}
-      <form>
+      {/* <form onSubmit={handleSubmit}> */}
+      <Grid
+        container
+        rowSpacing={2}
+        alignItems="center"
+        sx={{ marginTop: "7px" }}
+      >
+        <Grid item xs={2}>
+          <StyledInfoName>이름</StyledInfoName>
+        </Grid>
+        <Grid item xs={10}>
+          <StyledTextField
+            variant="outlined"
+            defaultValue={name}
+            InputProps={{
+              readOnly: true,
+            }}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <StyledInfoName>연락처</StyledInfoName>
+        </Grid>
+        <Grid item xs={10}>
+          <StyledTextField
+            variant="outlined"
+            defaultValue={phone_number}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <StyledInfoName>아이디</StyledInfoName>
+        </Grid>
+        <Grid item xs={10}>
+          <StyledTextField
+            variant="outlined"
+            defaultValue={email}
+            InputProps={{
+              readOnly: true,
+            }}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <StyledInfoName>비밀번호</StyledInfoName>
+        </Grid>
+        <Grid item xs={10}>
+          <StyledTextField
+            variant="outlined"
+            defaultValue={password}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <StyledInfoName>비밀번호확인</StyledInfoName>
+        </Grid>
+        <Grid item xs={10}>
+          <StyledTextField variant="outlined" fullWidth />
+        </Grid>
+
+        <Grid item xs={2}>
+          <StyledInfoName>자기소개서첨부</StyledInfoName>
+        </Grid>
+        <FileUploader />
+
+        {/* 버튼1, 버튼2 */}
         <Grid
           container
-          rowSpacing={2}
-          alignItems="center"
+          spacing={1}
           sx={{ marginTop: "7px" }}
+          justifyContent="flex-end"
         >
-          <Grid item xs={2}>
-            <StyledInfoName>이름</StyledInfoName>
-          </Grid>
-          <Grid item xs={10}>
-            <StyledTextField
-              variant="outlined"
-              defaultValue={name}
-              InputProps={{
-                readOnly: true,
-              }}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <StyledInfoName>연락처</StyledInfoName>
-          </Grid>
-          <Grid item xs={10}>
-            <StyledTextField
-              variant="outlined"
-              defaultValue={phone_number}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <StyledInfoName>아이디</StyledInfoName>
-          </Grid>
-          <Grid item xs={10}>
-            <StyledTextField
-              variant="outlined"
-              defaultValue={email}
-              InputProps={{
-                readOnly: true,
-              }}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <StyledInfoName>비밀번호</StyledInfoName>
-          </Grid>
-          <Grid item xs={10}>
-            <StyledTextField
-              variant="outlined"
-              defaultValue={password}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <StyledInfoName>비밀번호확인</StyledInfoName>
-          </Grid>
-          <Grid item xs={10}>
-            <StyledTextField variant="outlined" fullWidth />
-          </Grid>
-
-          <Grid item xs={2}>
-            <StyledInfoName>자기소개서첨부</StyledInfoName>
-          </Grid>
-          <Grid item xs={8}>
-            <StyledTextField variant="outlined" type="file" fullWidth />
-            <FileUploader />
-          </Grid>
-          <Grid item xs={2} container justifyContent="flex-end">
-            <StyledFindButton variant="contained">파일찾기</StyledFindButton>
-          </Grid>
-
-          {/* 버튼1, 버튼2 */}
-          <Grid
-            container
-            spacing={1}
-            sx={{ marginTop: "7px" }}
-            justifyContent="flex-end"
-          >
-            <MenuButton />
-          </Grid>
+          <MenuButton />
         </Grid>
-      </form>
+      </Grid>
+      {/* </form> */}
     </StyledContainer>
   );
 };
