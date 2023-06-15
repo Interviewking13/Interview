@@ -48,7 +48,7 @@ const StudyManage = () => {
           <StyledTitleText onClick={onClickStudyManageMain}>
             스터디 관리
           </StyledTitleText>
-          <StyledSubTextThin>스터디를 관리하세요.</StyledSubTextThin>
+          <StyledSubTextThin>스터디 관리자 페이지입니다.</StyledSubTextThin>
         </StyledStudyListTopArea>
         {/* 버튼1, 버튼2, 버튼3 */}
         {activePage === "manage-main" ? (
@@ -100,7 +100,7 @@ const StyledTitleText = styled.p`
   cursor: pointer;
   ${fonts.TitleText}
   color: ${colors.main_mint};
-  margin: 0 30px 0 0;
+  margin: 0 30px 10px 0;
 `;
 const StyledSubTextThin = styled.p`
   width: 439px;
