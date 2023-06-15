@@ -150,10 +150,8 @@ const communityApi = {
             const { community_id, title, content, file_etag, file_name, file_key } = req.body;
             const findContent = await Community.findOne({ community_id });
 
-            // token 확인 후 업데이트예정
+            /** 회원 유효성 확인 : 본인 글 수정 시 */
             const user_id = req.user.user_id;
-            // const { user_id } = req.user;
-            console.log('userTokenValidate: ', userTokenValidate);
             if(!user_id){
                 return res.status(400).json({ message: "유효하지 않은 사용자" });
             }
@@ -188,15 +186,13 @@ const communityApi = {
     async deleteContent(req, res) {
 
         try {
-            const findContent = await Community.findOne({ community_id: req.query.community_id });
-
-            // token 확인 후 업데이트예정
-            // const user_id = req.user.user_id;
-            // const { user_id } = req.user;
-            // console.log('userTokenValidate: ', userTokenValidate);
-            // if(!user_id){
-            //     return res.status(400).json({ message: "유효하지 않은 사용자" });
-            // }
+            const findContent = await Community.findOne({ community_id: req.body.community_id });
+            
+            /** 회원 유효성 확인 : 본인 글 삭제 시 */
+            const user_id = req.user.user_id;
+            if(!user_id){
+                return res.status(400).json({ message: "유효하지 않은 사용자" });
+            }
 
             if (!findContent) {
                 return res.status(400).json({ message: "게시글삭제 실패" });
@@ -262,13 +258,11 @@ const communityApi = {
             const { reply_id, reply_content } = req.body;
             const findReply = await CommunityReply.findOne({ reply_id });
 
-            // token 확인 후 업데이트예정
-            // const user_id = req.user.user_id;
-            // const { user_id } = req.user;
-            // console.log('userTokenValidate: ', userTokenValidate);
-            // if(!user_id){
-            //     return res.status(400).json({ message: "유효하지 않은 사용자" });
-            // }
+            /** 회원 유효성 확인 : 본인 글 수정 시 */
+            const user_id = req.user.user_id;
+            if(!user_id){
+                return res.status(400).json({ message: "유효하지 않은 사용자" });
+            }
 
             if (!findReply) {
                 return res.status(400).json({ message: "댓글수정 실패" });
@@ -291,15 +285,13 @@ const communityApi = {
     /** 댓글삭제 */
     async deleteReply(req, res) {
         try {
-            const findReply = await CommunityReply.findOne({ reply_id: req.query.reply_id });
+            const findReply = await CommunityReply.findOne({ reply_id: req.body.reply_id });
 
-            // token 확인 후 업데이트예정
-            // const user_id = req.user.user_id;
-            // const { user_id } = req.user;
-            // console.log('userTokenValidate: ', userTokenValidate);
-            // if(!user_id){
-            //     return res.status(400).json({ message: "유효하지 않은 사용자" });
-            // }
+            /** 회원 유효성 확인 : 본인 글 수정 시 */
+            const user_id = req.user.user_id;
+            if(!user_id){
+                return res.status(400).json({ message: "유효하지 않은 사용자" });
+            }
 
             if (!findReply) {
                 return res.status(400).json({ message: "댓글삭제 실패" });
