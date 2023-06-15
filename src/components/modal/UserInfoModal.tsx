@@ -10,12 +10,12 @@ const cancelImageSrc = "/cancel-button.png";
 interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
   backgroundColor?: string;
 }
-type StudyApplyModalProps = {
-  studyId: string;
+type UserInfoModalProps = {
+  userId: string;
   handleModalClose: () => void;
 };
-const UserInfoModal: React.FC<StudyApplyModalProps> = ({
-  studyId,
+const UserInfoModal: React.FC<UserInfoModalProps> = ({
+  userId,
   handleModalClose,
 }) => {
   const handleCloseModal = () => {

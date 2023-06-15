@@ -2,11 +2,13 @@ import { HTMLAttributes } from "react";
 import styled from "styled-components";
 import { colors } from "../../../constants/colors";
 import * as fonts from "../../../constants/fonts";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Modal } from "@mui/material";
+import UserInfoModal from "../../modal/UserInfoModal";
 
-interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
-  backgroundColor?: string;
-}
+type StudyApplicantListProps = {
+  userId: string;
+};
 
 const members = [
   { name: "고병욱", description: "힘내자 힘" },
@@ -16,13 +18,30 @@ const members = [
 
 const onDelete = () => {};
 
-const StudyApplicantList = () => {
+const StudyApplicantList = ({ userId }: StudyApplicantListProps) => {
+  const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
+
+  const handleOpenUserInfoModal = () => {
+    setUserInfoModalOpen(true);
+  };
+
+  const handleCloseUserInfoModal = () => {
+    setUserInfoModalOpen(false);
+  };
   return (
     <>
       {members.map((member, index) => (
         <CardContainer key={index}>
           <CardContent>
-            <StyledName>{member.name}</StyledName>
+            <StyledName onClick={handleOpenUserInfoModal}>
+              {member.name}
+            </StyledName>
+            <Modal open={userInfoModalOpen} onClose={handleCloseUserInfoModal}>
+              <UserInfoModal
+                userId={userId}
+                handleModalClose={handleCloseUserInfoModal}
+              />
+            </Modal>
             <StyledDescription>{member.description}</StyledDescription>
           </CardContent>
           <StyledCommonButton
@@ -64,6 +83,7 @@ const StyledName = styled.p`
   font-weight: bold;
   margin-right: 10px;
   margin-left: 20px;
+  cursor: pointer;
 `;
 
 const StyledDescription = styled.p`
@@ -71,7 +91,9 @@ const StyledDescription = styled.p`
   margin-right: 10px;
   margin-left: 100px;
 `;
-
+interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
+  backgroundColor?: string;
+}
 const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   cursor: pointer;
   margin-left: 20px;
