@@ -39,18 +39,6 @@ const MenuButton = () => {
     </>
   );
 };
-const Dummy = {
-  name: "박세진",
-  email: "cobaltcyan.park@gmail.com",
-  password: "tpwls1234",
-  privacy_use_yn: "Y",
-  marketing_use_yn: "N",
-  intro_yn: "00030001_202305300019.pdf", // 또는 NULL
-  phone_number: "010-4916-4244",
-  admin_yn: false,
-  dts_insert: "202305291250",
-  dts_update: "202306100421",
-};
 
 const Modify = () => {
   const handleSubmit = (event: any) => {

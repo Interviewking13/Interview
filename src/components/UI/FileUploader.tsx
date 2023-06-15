@@ -26,7 +26,7 @@ const FileUploader = () => {
     const selectedFile = event.target.files[0];
 
     if (selectedFile) {
-      const timecodeForUpload = Math.floor(Date.now() / 1000); //파일명이 같은 파일을 위한 시간코드.
+      const timecodeForUpload = Date.now(); //파일명이 같은 파일을 위한 시간코드.
       const key = `community/${timecodeForUpload}_${selectedFile.name}`;
       const fileName = selectedFile.name;
 
@@ -71,14 +71,16 @@ const FileUploader = () => {
   };
 
   const handleDelete = () => {
-    // 삭제 버튼을 클릭하면 파일을 삭제하는 로직을 구현
-    // deleteFile(uploadedFile);
     setUploadedFile(null);
+
+    // Reset the file input element value to enable re-uploading the same file
+    const inputFile = document.getElementById("input-file") as HTMLInputElement;
+    if (inputFile) {
+      inputFile.value = "";
+    }
   };
   return (
     <>
-      {/* <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button> */}
       <Grid item xs={8}>
         <StyledTextField
           variant="outlined"
