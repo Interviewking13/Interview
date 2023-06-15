@@ -3,12 +3,18 @@
 import styled from "styled-components";
 import { TitleText } from "../../constants/fonts";
 import { colors } from "../../constants/colors";
+import { useNavigate } from "react-router-dom";
 
 const LeftSignContainer: React.FC = () => {
+  const navigate = useNavigate();
+
+  const onClickNavigateHome = () => {
+    navigate("/");
+  };
 
   return (
     <div>
-      <StyledLoginTitleContainer>
+      <StyledLoginTitleContainer onClick={onClickNavigateHome}>
         <StyledLoginText>면접을 면접답게</StyledLoginText>
         <StyledLoginText>면접왕</StyledLoginText>
         <StyledLoginText>면접왕에서 스터디 찾고, 동료들과 함께 자신있는 면접을 준비하세요</StyledLoginText>
@@ -19,9 +25,10 @@ const LeftSignContainer: React.FC = () => {
 export default LeftSignContainer;
 
 
-const StyledLoginTitleContainer = styled.div`
+const StyledLoginTitleContainer = styled.a`
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 `;
 const StyledLoginText = styled.div`
   height: fit-content;

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import { TitleText } from "../../constants/fonts";
@@ -44,7 +44,16 @@ const StyledLoginItem = styled(Link)`
   margin-left: 35px;
   text-decoration: none;
 `;
+
 const Header = (): JSX.Element => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
     <>
       <StyledContainer>
@@ -57,9 +66,18 @@ const Header = (): JSX.Element => {
           <StyledNavItem to="/userstudy">나의 스터디</StyledNavItem>
         </StyledNavItemContainer>
         <StyledLoginItemContainer>
-          <StyledLoginItem to="/login">로그인</StyledLoginItem>
-          <StyledLoginItem to="/login/signup">회원가입</StyledLoginItem>
-          <StyledLoginItem to="/mypage">마이페이지</StyledLoginItem>
+          {!token ? (
+            <>
+              <StyledLoginItem to="/login">로그인</StyledLoginItem>
+              <StyledLoginItem to="/login/signup">회원가입</StyledLoginItem>
+              <StyledLoginItem to="/mypage">마이페이지</StyledLoginItem>
+            </>
+          ) : (
+            <>
+              <button onClick={handleLogout}>로그아웃</button>
+              <StyledLoginItem to="/mypage">마이페이지</StyledLoginItem>
+            </>
+          )}
         </StyledLoginItemContainer>
       </StyledContainer>
       <Divider></Divider>
