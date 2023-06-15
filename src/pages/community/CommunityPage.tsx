@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import BoardListItemContainer from "../community/components/BoardListItemContainer";
 import BestBoardListItemContainer from "./components/BestBoardListItemContainer";
@@ -9,6 +9,16 @@ import SearchIconSrc from "../../img/search_navy.svg";
 import { Link } from "react-router-dom";
 
 const CommunityPage: React.FC = () => {
+  const a = 2;
+  const [tap, setTap] = useState(1);
+  // const onClickTotalTap = (e: any) => {
+  //   console.log("토탈");
+  //   setTap(1);
+  // };
+  // const onClickMyTap = (e: any) => {
+  //   console.log("마이");
+  //   setTap(0);
+  // };
   return (
     <StyledCommonContainer>
       <StyledHeadContainer>
@@ -26,6 +36,9 @@ const CommunityPage: React.FC = () => {
           </StyledLink>
         </CommunityListInputArea>
       </StyledHeadContainer>
+      {/* <CommunityTaps></CommunityTaps>
+      <button onClick={onClickTotalTap}>전체</button>
+      <button onClick={onClickMyTap}>내가쓴글</button> */}
       {/* 게시판 목록 컨테이너, 아이템 컴포넌트 불러오기 */}
       <BestBoardListItemContainer />
       <BoardListItemContainer />
