@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { colors } from "../../../constants/colors";
-import { SubTextThin, SubTextThinSmall, SubText } from "../../../constants/fonts";
+import {
+  SubTextThin,
+  SubTextThinSmall,
+  SubText,
+} from "../../../constants/fonts";
 import { getAllCommunityData } from "../../../api/api-community";
 import { useNavigate } from "react-router-dom";
 
 const BoardListItem: React.FC = () => {
+  const [tap, setTap] = useState(1);
   const [startPage, setStartPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [allPosts, setAllPosts] = useState<any[]>([]);
@@ -51,40 +56,57 @@ const BoardListItem: React.FC = () => {
     console.log(e.currentTarget.id);
   };
 
+  const onClickTotalTap = (e: any) => {
+    console.log("토탈");
+    setTap(1);
+  };
+  const onClickMyTap = (e: any) => {
+    console.log("마이");
+    setTap(0);
+  };
   return (
     <StyledPostListItem>
-      <StyledPostListItemBox>
-        {posts.map((post) => (
-          <StyledPostItems
-            onClick={onItemClick}
-            key={post.community_id}
-            id={post.community_id}
-          >
-            <StyledLeftPostItem>
-              <StyledPostTitle>{post.title}</StyledPostTitle>
-            </StyledLeftPostItem>
-            <StyledRightPostItem>
-              <StyledPostItem>댓글 수: </StyledPostItem>
-              <StyledPostItem>조회 수: {post.read_users.length}</StyledPostItem>
-              <StyledPostItem>{post.user_name}</StyledPostItem>
-              <StyledPostItem>{post.timestamps}</StyledPostItem>
-            </StyledRightPostItem>
-          </StyledPostItems>
-        ))}
-      </StyledPostListItemBox>
-      <PageNation>
-        <PageMoveBtn onClick={onClickPrevPage}>&lt;</PageMoveBtn>
-        {Array.from({ length: lastPage }).map((_, index) => (
-          <StyledPageBtn
-            key={index + 1}
-            isActive={index + 1 === startPage}
-            onClick={() => onClickPageBtn(index + 1)}
-          >
-            {index + 1}
-          </StyledPageBtn>
-        ))}
-        <PageMoveBtn onClick={onClickNextPage}>&gt;</PageMoveBtn>
-      </PageNation>
+      <div>
+        <button onClick={onClickTotalTap}>전체</button>
+        <button onClick={onClickMyTap}>내가 쓴 글</button>
+      </div>
+      {tap == 1 ? (
+        <StyledPostListItemBox>
+          {posts.map((post) => (
+            <StyledPostItems
+              onClick={onItemClick}
+              key={post.community_id}
+              id={post.community_id}
+            >
+              <StyledLeftPostItem>
+                <StyledPostTitle>{post.title}</StyledPostTitle>
+              </StyledLeftPostItem>
+              <StyledRightPostItem>
+                <StyledPostItem>
+                  조회 수: {post.read_users.length}
+                </StyledPostItem>
+                <StyledPostItem>{post.user_name}</StyledPostItem>
+                <StyledPostItem>{post.timestamps}</StyledPostItem>
+              </StyledRightPostItem>
+            </StyledPostItems>
+          ))}
+          <PageNation>
+            <PageMoveBtn onClick={onClickPrevPage}>&lt;</PageMoveBtn>
+            {Array.from({ length: lastPage }).map((_, index) => (
+              <StyledPageBtn
+                key={index + 1}
+                isActive={index + 1 === startPage}
+                onClick={() => onClickPageBtn(index + 1)}
+              >
+                {index + 1}
+              </StyledPageBtn>
+            ))}
+            <PageMoveBtn onClick={onClickNextPage}>&gt;</PageMoveBtn>
+          </PageNation>
+        </StyledPostListItemBox>
+      ) : (
+        <div>내가쓴글이다</div>
+      )}
     </StyledPostListItem>
   );
 };
@@ -153,7 +175,8 @@ export const StyledPostItem = styled.div`
 `;
 
 const StyledPageBtn = styled.button<{ isActive: boolean }>`
-  color: ${({ isActive }) => (isActive ? `${colors.main_black}` : `${colors.main_gray}`)};
+  color: ${({ isActive }) =>
+    isActive ? `${colors.main_black}` : `${colors.main_gray}`};
   background-color: #fff;
   ${SubTextThin};
   border: none;

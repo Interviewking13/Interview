@@ -34,7 +34,7 @@ const StudyList = (): JSX.Element => {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, []);
+  }, [studyData]);
 
   const getDisplayedStudyData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;

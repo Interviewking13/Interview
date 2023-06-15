@@ -11,7 +11,6 @@ const BestBoardListItemContainer: React.FC = () => {
         <StyledPostItems>
           <StyledBestTitle>인기 글</StyledBestTitle>
           <StyledRightPostItem>
-            <StyledPostItem>댓글</StyledPostItem>
             <StyledPostItem>조회</StyledPostItem>
             <StyledPostItem>작성자</StyledPostItem>
             <StyledPostItem>게시일</StyledPostItem>
@@ -32,7 +31,6 @@ const StyledBestTitle = styled.div`
   padding: 10px 20px;
 `;
 
-
 const StyledPostItems = styled.div`
   border-bottom: 1px solid ${colors.main_navy};
   cursor: pointer;
@@ -45,11 +43,10 @@ const StyledPostItems = styled.div`
 const StyledBestPostListItemBox = styled.div`
   border: 1px solid ${colors.main_navy};
   border-radius: 10px;
-  margin-bottom: 15px;            
+  margin-bottom: 15px;
 `;
 
-export const StyledLeftPostItem = styled.div`
-`;
+export const StyledLeftPostItem = styled.div``;
 
 const StyledRightPostItem = styled.div`
   display: flex;
