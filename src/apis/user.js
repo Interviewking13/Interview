@@ -106,10 +106,10 @@ const userApi = {
     /** 회원가입 */
     async registerUser(req, res, next) {
         try {
-            const { user_name, email, password, passwordCheck } = req.body;
+            const { user_name, email, password, passwordCheck, phone_number } = req.body;
 
             // 입력값 검사
-            if (user_name === "" || email === "" || password === "" || passwordCheck === "") {
+            if (user_name === "" || email === "" || password === "" || passwordCheck === "" || phone_number === "") {
                 return res.status(400).json({
                     resultCode: 400,
                     message: "정보를 모두 입력하세요."
@@ -154,6 +154,7 @@ const userApi = {
                 user_name,
                 email,
                 password: hashedPassword,
+                phone_number,
                 dts_insert: dateString + timeString,
                 dts_update: null
             }
@@ -177,11 +178,9 @@ const userApi = {
         }
     },
 
-
     /** 로그인 */
     async loginUser(req, res, next) {
         try {
-            
             const { email, password } = req.body;
 
             // 입력값 검사
