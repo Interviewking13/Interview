@@ -57,19 +57,23 @@ const Modify = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
   };
-
+  const token = localStorage.getItem("token");
   const [userData, setUesrDate] = useState(Dummy);
-  // const { data: token, isLoading, isError } = useQuery("userData", getUserData);
+  const {
+    data: userData,
+    isLoading,
+    isError,
+  } = useQuery("userData", () => getUserData(token));
 
-  // if (isLoading) {
-  //   // 로딩 상태를 표시
-  //   return <div>Loading...</div>;
-  // }
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
 
-  // if (isError) {
-  //   // 에러 상태를 표시
-  //   return <div>Error occurred while fetching token</div>;
-  // }
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching token</div>;
+  }
 
   // token 값을 활용하여 필요한 작업을 수행
   console.log("UserData", userData);
