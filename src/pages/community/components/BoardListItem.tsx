@@ -21,7 +21,7 @@ const BoardListItem: React.FC = (props) => {
     getAllCommunityData()
       .then((response) => {
         const { data } = response;
-        setAllPosts(data.data.reverse());
+        setAllPosts(data.data);
         console.log(data.data.reverse());
         setLastPage(Math.ceil(data.data.length / 10));
         setPosts(data.data.slice(0, 10));
