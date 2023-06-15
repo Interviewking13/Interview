@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "@mui/material";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import { DetailTitle } from "./common/DetailTitle";
+import { DetailButton, DetailTitle } from "./common/DetailTitle";
 import { StudyTaps } from "./common/StudyTap";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../constants/colors";
@@ -13,18 +13,29 @@ import { useLocation } from "react-router-dom";
 import { Modal } from "@mui/material";
 import StudyApplyModal from "../../components/modal/StudyApplyModal";
 import { useQuery } from "react-query";
+import UserInfoModal from "../../components/modal/UserInfoModal";
 
 const Information: React.FC = () => {
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
+  const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
+  const [studyApplyModalOpen, setStudyApplyModalOpen] = React.useState(false);
+
+  const handleOpenUserInfoModal = () => {
+    setUserInfoModalOpen(true);
   };
-  /** 모달을 닫는 함수인데 preventDefault로 event 내용 다 없애야 하는지..? */
-  const handleClose = () => {
-    setOpen(false);
+
+  const handleCloseUserInfoModal = () => {
+    setUserInfoModalOpen(false);
+  };
+
+  const handleOpenStudyApplyModal = () => {
+    setStudyApplyModalOpen(true);
+  };
+
+  const handleCloseStudyApplyModal = () => {
+    setStudyApplyModalOpen(false);
   };
 
   const {
@@ -54,6 +65,8 @@ const Information: React.FC = () => {
     chat_link,
     headcount,
     acceptcount,
+    leader_name,
+    leader_id,
   } = studyData;
   return (
     <Container>
@@ -77,7 +90,17 @@ const Information: React.FC = () => {
           name="&nbsp;인원"
           content={`${acceptcount} / ${headcount}명`}
         ></DetailTitle>
-        <DetailTitle name="&nbsp;스터디장" content="이용섭"></DetailTitle>
+        <DetailButton
+          name="&nbsp;스터디장"
+          content={leader_name}
+          onClick={handleOpenUserInfoModal}
+        ></DetailButton>
+        <Modal open={userInfoModalOpen} onClose={handleCloseUserInfoModal}>
+          <UserInfoModal
+            userId={leader_id}
+            handleModalClose={handleCloseUserInfoModal}
+          />
+        </Modal>
       </SubTitle>
       <Divider></Divider>
       <StudyIntro>
@@ -85,9 +108,12 @@ const Information: React.FC = () => {
         &nbsp;스터디 소개
       </StudyIntro>
       <p>{content}</p>
-      <SubmitButton onClick={handleOpen} />
-      <Modal open={open} onClose={handleClose}>
-        <StudyApplyModal studyId={lastPathSegment} />
+      <SubmitButton onClick={handleOpenStudyApplyModal} />
+      <Modal open={studyApplyModalOpen} onClose={handleCloseStudyApplyModal}>
+        <StudyApplyModal
+          studyId={lastPathSegment}
+          handleModalClose={handleCloseStudyApplyModal}
+        />
       </Modal>
     </Container>
   );
@@ -124,6 +150,12 @@ const StudyIntro = styled.div`
   margin: 10px 0px;
   ${SubTextBig};
   color: ${colors.main_navy};
+`;
+const StyledDetailTitle = styled(DetailTitle)`
+  cursor: pointer;
+  &.cursor-style {
+    cursor: pointer;
+  }
 `;
 
 export default Information;

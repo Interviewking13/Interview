@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-
+import * as fonts from "../../constants/fonts";
+import { colors } from "../../constants/colors";
 type ListItemProps = {
   textTitle: string;
   textContent: string;
@@ -71,12 +72,15 @@ const StyledListItem = styled.div`
 `;
 
 const StyledSpan = styled.span`
-  font-size: 14px;
   margin-right: 70px; /* 원하는 마진 값 설정 */
+  font-family: ${fonts.SubTextThinSmall};
+  font-size: 14px;
+  color: ${colors.darkgray_navy};
 `;
 
 const StyledSpanContent = styled.span`
-  font-size: 12px;
+  font-family: ${fonts.SubTextThinSmall};
+  font-size: 14px;
 `;
 
 const StyledImg = styled.img`

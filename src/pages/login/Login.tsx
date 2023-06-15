@@ -4,14 +4,18 @@ import { colors } from "../../constants/colors";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import LeftSignContainer from "../../components/auth/LeftSignContainer";
-import { postSignIn } from "../../api/api-user";
+import { getUserData, postSignIn } from "../../api/api-user";
+import { response } from "express";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState("");
-
+  //내정보조회
+  // getUserData(
+  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4YWM5NGJjMjQxYmRkNzk5YzM1YjMzIiwiaWF0IjoxNjg2ODE3MTA2LCJleHAiOjE2ODcwNzYzMDZ9.wA06-jh12FWXpV7N5Xw4vt4ZQGQLj11Hbf5DMrYD9rs"
+  // );
   // 로그인 버튼 클릭 시 동작
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

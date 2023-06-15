@@ -35,7 +35,7 @@ export const getDataByCommunity_noAndUser_id = async (
   user_id: string
 ) => {
   const response = await axiosInstance.get(
-    `community/detl?community_id=${community_no}&${user_id}`
+    `community/detl?community_id=${community_no}&user_id=${user_id}`
   );
   return response;
 };
@@ -46,9 +46,9 @@ export const putCommunity = async ({
   title,
   content,
 }: {
-  community_no: number,
-  title: string,
-  content: string
+  community_no: number;
+  title: string;
+  content: string;
 }) => {
   const response = await axiosInstance.put(`community/detl`, {
     community_no,
