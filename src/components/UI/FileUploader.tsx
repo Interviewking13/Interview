@@ -12,8 +12,8 @@ AWS.config.update({
 });
 
 const FileUploader = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadedFile, setUploadedFile] = useState<string | null>(null);
+  const [uploadedKey, setUploadedKey] = useState<string | null>(null);
 
   const handleFindButtonClick = async () => {
     const inputFile = document.getElementById("input-file");
@@ -42,6 +42,7 @@ const FileUploader = () => {
         await s3.putObject(uploadParams).promise();
         console.log("File uploaded successfully:", key);
         setUploadedFile(fileName);
+        setUploadedKey(key);
       } catch (error) {
         console.error("Error uploading file:", error);
       }
@@ -51,11 +52,10 @@ const FileUploader = () => {
     if (uploadedFile) {
       const s3 = new AWS.S3();
       const bucketName = "13team";
-      const key = `community/${timecodeForUpload}_${selectedFile.name}`;
 
       const params = {
         Bucket: bucketName,
-        Key: key,
+        Key: uploadedKey,
       };
 
       s3.getSignedUrl("getObject", params, (err, url) => {
