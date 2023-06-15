@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, TextField, Grid } from "@mui/material";
+import { Button, TextField, Grid, Typography } from "@mui/material";
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
@@ -13,6 +13,7 @@ AWS.config.update({
 
 const FileUploader = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<string | null>(null);
 
   const handleFindButtonClick = async () => {
     const inputFile = document.getElementById("input-file");
@@ -39,10 +40,21 @@ const FileUploader = () => {
       try {
         await s3.putObject(uploadParams).promise();
         console.log("File uploaded successfully:", key);
+        setUploadedFile(key);
       } catch (error) {
         console.error("Error uploading file:", error);
       }
     }
+  };
+  const handleDownload = () => {
+    // 다운로드 버튼을 클릭하면 파일을 다운로드할 수 있는 로직을 구현
+    // downloadFile(uploadedFile);
+  };
+
+  const handleDelete = () => {
+    // 삭제 버튼을 클릭하면 파일을 삭제하는 로직을 구현
+    // deleteFile(uploadedFile);
+    setUploadedFile(null);
   };
   return (
     <>
@@ -71,6 +83,14 @@ const FileUploader = () => {
             파일찾기
           </StyledFindButton>
         </label>
+        {uploadedFile && (
+          <>
+            <StyledTextButton onClick={handleDownload}>
+              Body: {uploadedFile}
+            </StyledTextButton>
+            <StyledTextButton onClick={handleDelete}>삭제</StyledTextButton>
+          </>
+        )}
       </Grid>
     </>
   );
@@ -100,6 +120,19 @@ const StyledFindButton = styled(Button)`
     &:hover {
       background-color: ${colors.back_navy};
       color: ${colors.dark_navy};
+    }
+  }
+`;
+
+const StyledTextButton = styled(Button)`
+  && {
+    background: none;
+    border: none;
+    color: ${colors.back_navy};
+    ${fonts.SubText}
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
     }
   }
 `;
