@@ -9,7 +9,7 @@ import FileUploader from "../UI/FileUploader";
 import Cookies from "react-cookie";
 
 type userDate = {
-  name: string;
+  user_name: string;
   email: string;
   phone_number: string;
   password: string;
@@ -58,8 +58,12 @@ const Modify = () => {
     event.preventDefault();
   };
 
-  const [userData, setUesrDate] = useState(Dummy);
-  const { data: token, isLoading, isError } = useQuery("userData", getUserData);
+  const token = localStorage.getItem("token");
+  const {
+    data: userData,
+    isLoading,
+    isError,
+  } = useQuery("userData", () => getUserData(token as string)); // 수정요망
 
   if (isLoading) {
     // 로딩 상태를 표시
@@ -73,7 +77,7 @@ const Modify = () => {
 
   // token 값을 활용하여 필요한 작업을 수행
   console.log("UserData", userData);
-  const { name, phone_number, email, password } = userData;
+  const { user_name, phone_number, email, password } = userData?.data || {};
 
   return (
     <StyledContainer>
@@ -101,7 +105,7 @@ const Modify = () => {
         <Grid item xs={10}>
           <StyledTextField
             variant="outlined"
-            defaultValue={name}
+            defaultValue={user_name}
             InputProps={{
               readOnly: true,
             }}
