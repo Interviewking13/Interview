@@ -22,10 +22,51 @@ const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    
 const userApi = {
 
     /** 로그인 유효성 검사 테스트 */
-    async isLoginValidate(req, res) {
+    async userApiIsLoginValidate(req, res) {
         console.log('로그인 유효성 검사 테스트!');
-        // console.log(req.cookies.token);
-        // console.log(req.token);
+        const { token } = req.body;
+        console.log(token + '/ userAPI');
+        
+        if (!token) {
+            return res.status(401).json({
+                resultCode: "401",
+                message: "토큰이 없습니다. / 로그아웃상태"
+            });
+        }
+
+        try {
+            const decoded = jwt.verify(token, secretKey);
+
+            // 토큰이 유효한 경우
+            req.user = decoded;
+
+            return res.status(200).json({
+                resultCode: "200",
+                message: "로그인 상태"
+            });
+
+        } catch (err) {
+            if (err.name === 'JsonWebTokenError') {
+            // 토큰이 유효하지 않은 경우
+            return res.status(401).json({
+                resultCode: "401",
+                message: "유효하지 않은 토큰입니다. / 로그아웃상태"
+            });
+            } else if (err.name === 'TokenExpiredError') {
+            // 토큰이 만료된 경우
+            return res.status(401).json({
+                resultCode: "401",
+                message: "만료된 토큰입니다. / 로그아웃상태"
+            });
+            } else {
+            // 기타 토큰 검증 실패
+            return res.status(500).json({
+                resultCode: "500",
+                message: "서버 오류 / 로그아웃상태"
+            });
+            }
+        }
+
     },
 
     /** user API middleware 테스트 */
@@ -217,20 +258,26 @@ const userApi = {
         // console.log('내정보조회' + req.cookies.token);
 
         // json body (localStorage 값 사용)
-        const { token } = req.body;
-        console.log(token + '/ userAPI');
-
-        try {
-            // const { user_id } = req.params;
-
-            // console.log('middleware 에서 불러온 decoded값' + req.user);
-            // middleware 에서 불러온 decoded값[object Object]
-            // 64861538a1783d4f1622f41c
+        // const { token } = req.body;
+        
+        // 클라이언트로부터 전달된 헤더(토큰값) 사용
+        const token = req.headers.authorization;    
+        console.log(token + '/ userAPI - getUserInfo - header');
             
-            // middleware 이용 테스트
-            const { user_id } = req.user;
-            // console.log(user_id);
-            // console.log('middleware 에서 불러온 decoded값' + user_id);
+        try {
+            const decoded = jwt.verify(token, secretKey);
+            
+            if (!decoded) {
+                return res.status(401).json({
+                resultCode: "401",
+                message: "유효하지 않은 토큰입니다.",
+                token: token
+                });
+            }
+
+            // req.user = decoded;
+            // const { user_id } = req.user;    // 왜 안되지?
+            const { user_id } = decoded;
 
             const findUser = await User.findOne(
                 { "_id": user_id },
@@ -264,10 +311,6 @@ const userApi = {
             });
         } catch (err) {
             console.error(err);
-            res.status(500).json({
-                resultCode: "500",
-                message: "서버오류"
-            });
         }
     },
 
