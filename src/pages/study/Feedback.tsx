@@ -91,7 +91,8 @@ const SubContainer = styled.div`
 `;
 
 const Container = styled.div`
-  margin: 30px 100px;
+  margin: 0 auto;
+  width: 1270px;
   display: flex;
   flex-direction: column;
 `;
