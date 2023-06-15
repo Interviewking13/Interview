@@ -11,14 +11,14 @@ import { Link } from "react-router-dom";
 const CommunityPage: React.FC = () => {
   const a = 2;
   const [tap, setTap] = useState(1);
-  // const onClickTotalTap = (e: any) => {
-  //   console.log("토탈");
-  //   setTap(1);
-  // };
-  // const onClickMyTap = (e: any) => {
-  //   console.log("마이");
-  //   setTap(0);
-  // };
+  const onClickTotalTap = (e: any) => {
+    console.log("토탈");
+    setTap(1);
+  };
+  const onClickMyTap = (e: any) => {
+    console.log("마이");
+    setTap(0);
+  };
   return (
     <StyledCommonContainer>
       <StyledHeadContainer>
