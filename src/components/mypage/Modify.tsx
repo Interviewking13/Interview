@@ -128,7 +128,7 @@ const Modify = () => {
         <Grid item xs={10}>
           <StyledTextField
             variant="outlined"
-            defaultValue={email}
+            // defaultValue={email}
             InputProps={{
               readOnly: true,
             }}
