@@ -48,10 +48,10 @@ export const postSignIn = async (email: string, password: string) => {
 export const getUserData = async (token: string) => {
   const response = await axiosInstance.get("user/mypage", {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   });
-  return response.data;;
+  return response.data;
 };
 
 /** 4. 내 정보 수정 PUT */
