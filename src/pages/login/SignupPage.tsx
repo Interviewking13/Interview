@@ -4,6 +4,7 @@ import { colors } from "../../constants/colors";
 import Button from "@mui/material/Button";
 import LeftSignContainer from "../../components/auth/LeftSignContainer";
 import { postSignUp } from "../../api/api-user";
+import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
   const [name, setName] = useState("");
@@ -11,6 +12,7 @@ const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,8 +56,19 @@ const SignupPage = () => {
     //   console.log("비밀번호가 일치하지 않습니다.");
     //   return;
     // }
-    postSignUp(name, email, password, passwordValidated);
-    console.log(postSignUp);
+    // postSignUp(name, email, password, passwordValidated);
+    // console.log(postSignUp);
+    // API 호출
+    try {
+      const response = await postSignUp(name, email, password, passwordValidated);
+      console.log("가입 성공:", response);
+
+      // 가입 성공 후 마이페이지로 이동
+      navigate("../mypage");
+    } catch (error) {
+      console.log("가입 실패:", error);
+    }
+
   };
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {

@@ -1,18 +1,18 @@
-import React, { ChangeEvent, useState, useEffect } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import Button from "@mui/material/Button";
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import LeftSignContainer from '../../components/auth/LeftSignContainer';
-import { storeTokenInCookie } from '../../components/auth/loginUtils';
+import { useNavigate } from "react-router-dom";
+import LeftSignContainer from "../../components/auth/LeftSignContainer";
+import { postSignIn } from "../../api/api-user";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
+  // 로그인 버튼 클릭 시 동작
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -20,72 +20,26 @@ const LoginPage = () => {
       console.log("모든 필드를 입력해야 합니다.");
       return;
     }
+    postSignIn(email, password).then((response) => {
+      console.log(response.data);
+      if (response.data.resultCode == "200")
+        localStorage.setItem("token", response.data.data.token);
 
-    try {
-      const response = await axios.post("http://34.22.79.51:5000/api/user/login", {
-        email,
-        password,
-      });
-      // response값 확인
-      console.log(response);
-
-      if (response.status === 200) {
-        const { resultCode, message, data } = response.data;
-
-        if (resultCode === '200') {
-          const { user_id, token } = data || {}; // 데이터가 undefined인 경우 빈 객체를 기본값으로 사용
-
-          if (user_id && token) {
-            storeTokenInCookie(token);
-
-            console.log("User ID:", user_id);
-            console.log("Token:", token);
-
-            fetchUserData(token, user_id);
-            // navigate('/'); // 로그인 성공시 홈으로 이동
-          }
-        } else {
-          setError(message);
-        }
-      } else {
-        setError("네트워크 오류가 발생했습니다.");
-      }
-
-
-    } catch (error) {
-      console.error("Error:", error);
-    }
-
+      navigate("/"); // useNavigate 사용하여 페이지 이동
+    });
   };
-
-  const fetchUserData = async (token: string, userId: string) => {
-    console.log("Token:", token); // 토큰 값 확인
-
-    try {
-      const response = await axios.get(`http://34.22.79.51:5000/api/user/mypage/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      // response 활용가능
-      // 1. 응답 데이터 상태로 설정
-      // const userData = response.data;
-      // setUser(userData);
-
-      // 2. 다른 함수에 전달하기
-      // processUserData(response.data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+    const email = e.target.value;
+    setEmail(email);
   };
 
+  // 비밀번호 입력 값 변경 시 동작
   const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    const password = e.target.value;
+    setPassword(password);
   };
+
+  // 회원가입 페이지로 이동
   const onClickSignup = () => {
     navigate("./signup"); // useNavigate 사용하여 페이지 이동
   };
@@ -185,7 +139,7 @@ const StyledBtnWrapper = styled.div`
   display: flex;
   margin-top: 40px;
   margin-left: auto;
-`
+`;
 
 const StyledSignupBtn = styled(Button)`
   && {

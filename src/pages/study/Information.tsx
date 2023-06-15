@@ -10,7 +10,7 @@ import { getInfoAllStudyData, getInfoStudyData } from "../../api/api-study";
 import { SubmitButton } from "./common/SubmitButton";
 import { dateSplice } from "../../utils/dateFomatting";
 import { useLocation } from "react-router-dom";
-import Modal from "@mui/material/Modal";
+import { Modal } from "@mui/material";
 import StudyApplyModal from "../../components/modal/StudyApplyModal";
 import { useQuery } from "react-query";
 import UserInfoModal from "../../components/modal/UserInfoModal";

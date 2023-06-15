@@ -6,18 +6,16 @@ import PeopleIconSrc from "../../img/people_navy.svg";
 import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
 
-
 type StudyListProps = {
-  id: string,
-  title: string,
-  currentParticipants: number,
-  maxParticipants: number,
-  startDate: string,
-  endDate: string,
-  recruitDeadline: string,
-  master: string
-}
-
+  id: string;
+  title: string;
+  currentParticipants: number;
+  maxParticipants: number;
+  startDate: string;
+  endDate: string;
+  recruitDeadline: string;
+  master: string;
+};
 
 const StudyListItem: React.FC<StudyListProps> = ({
   id,
@@ -42,7 +40,7 @@ const StudyListItem: React.FC<StudyListProps> = ({
         <StyledStudyPeopleArea>
           <StyledIcon src={PeopleIconSrc} />
           <StyledStudyListPeopleText>
-          {currentParticipants} / {maxParticipants} 명
+            {currentParticipants} / {maxParticipants} 명
           </StyledStudyListPeopleText>
         </StyledStudyPeopleArea>
 
@@ -142,4 +140,3 @@ const StyledStudyMaster = styled.p`
   color: black;
   margin: 20px 0 0 0;
 `;
-

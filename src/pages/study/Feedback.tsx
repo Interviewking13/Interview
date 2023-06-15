@@ -9,102 +9,43 @@ import {
   deleteFeedbackByUserId,
 } from "../../api/api-study-feedback";
 import { colors } from "../../constants/colors";
+import { useLocation } from "react-router-dom";
 
 export const Feedback = () => {
-  const [FeedbackInput, setFeedbackInput] = useState("");
-  const [studyTapsCount, setStudyTapsCount] = useState(0);
-  const [studyData, setStudyData] = useState({
-    title: "",
-    study_name: "",
-    status: 0,
-    content: 0,
-    start: "",
-    end: "",
-    chat_link: "",
-  });
+  const location = useLocation();
+  const path = location.pathname;
+  const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
+  //스터디 id값을
 
+  const [feedbackData, setFeedbackData] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
+  // title: "",
+  // study_name: "",
+  // content: "",
+  // user_name: "",
   useEffect(() => {
-    getInfoStudyData("6481c6cf73e7175d6c31e18d")
+    getFeedbackDataByStudyId("6488114c4bef8842f98828ca")
       .then((response) => {
         console.log(response.data);
-        setStudyData(response.data);
+        setFeedbackData(response.data);
+        console.log(feedbackData);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   }, []);
 
-  useEffect(() => {
-    getFeedbackDataByStudyId("6481c6cf73e7175d6c31e18d")
-      .then((response) => {
-        console.log(response.data);
-        // setStudyData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
-  const onClickButton = () => {
-    postFeedback(0, "ㅁㄴㅇ").then((response) => {
-      console.log(response.data);
-    });
-    setStudyTapsCount((pre) => pre + 1);
-  };
-
-  const FeedbackCotent = (e: any) => {
-    setFeedbackInput(e.target.value);
-  };
-  const onClickFeedbackBtn = (event: any) => {
-    if (event.target.innerText === "등록") {
-      postFeedback(0, "asd");
-      console.log("등록할게");
-    } else if (event.target.innerText === "수정") {
-      // getFeedbackDataByStudyId("user_id",{content_type:1, content:"s"});
-      console.log("수정입니다");
-    } else if (event.target.innerText === "삭제") {
-      deleteFeedbackByUserId("user_id");
-      console.log("삭제합니다");
-    }
-  };
   return (
     <Container>
-      <Mystudy>{studyData.status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
+      <Mystudy>나의 스터디</Mystudy>
       <StudyTaps />
-      <Title>{studyData.title}</Title>
+      <Title>ㄴㅁㄴ</Title>
       <SubContainer>
-        <FeedbackBtn onClick={onClickButton}>새 피드백 남기기</FeedbackBtn>
+        <FeedbackBtn>새 피드백 남기기</FeedbackBtn>
       </SubContainer>
-      <div>피드백 목록 불러와서 MAP으로 넣기 현재 API연결 오류</div>
-      <FeedbackContainer>
-        <FeedbackUser>이용섭</FeedbackUser>
-        <FeedbackContentContainer>
-          <FeedbackContent2 onChange={FeedbackCotent}></FeedbackContent2>
-          <FeedbackBtnContainer>
-            <InputBtn onClick={onClickFeedbackBtn}>수정</InputBtn>
-            <InputBtn onClick={onClickFeedbackBtn}>삭제</InputBtn>
-          </FeedbackBtnContainer>
-        </FeedbackContentContainer>
-      </FeedbackContainer>
-      <FeedbackContainer>
-        <FeedbackUser>이용섭</FeedbackUser>
-        <FeedbackContentContainer>
-          <FeedbackContent2 onChange={FeedbackCotent}></FeedbackContent2>
-          <FeedbackBtnContainer>
-            <InputBtn onClick={onClickFeedbackBtn}>수정</InputBtn>
-            <InputBtn onClick={onClickFeedbackBtn}>삭제</InputBtn>
-          </FeedbackBtnContainer>
-        </FeedbackContentContainer>
-      </FeedbackContainer>
-      {[...Array(studyTapsCount)].map((_, index) => (
-        <FeedbackContainer key={index}>
-          <FeedbackUser>이용섭</FeedbackUser>
-          <FeedbackContentContainer>
-            <FeedbackContent1 onChange={FeedbackCotent}></FeedbackContent1>
-
-            <FeedbackBtnContainer>
-              <InputBtn onClick={onClickFeedbackBtn}>등록</InputBtn>
-            </FeedbackBtnContainer>
-          </FeedbackContentContainer>
+      {feedbackData.map((post) => (
+        <FeedbackContainer>
+          <FeedbackContentContainer>{post.user_name}</FeedbackContentContainer>
+          <FeedbackContentContainer>{post.content}</FeedbackContentContainer>
         </FeedbackContainer>
       ))}
     </Container>
@@ -126,11 +67,11 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
+//피드백 개별 박스
 const FeedbackContainer = styled.div`
   background-color: ${colors.back_navy};
   padding: 10px;
   height: 100px;
-  justify-content: space-between;
   border: 1px solid black;
   border-radius: 5px;
   display: flex;
@@ -138,27 +79,13 @@ const FeedbackContainer = styled.div`
   margin-top: 5px;
 `;
 
-const FeedbackUser = styled.div`
-  width: 50px;
-`;
-const FeedbackContent1 = styled.textarea`
-  width: 1100px;
-  height: 80px;
-`;
-
-const FeedbackContent2 = styled.div`
-  width: 1100px;
-  height: 80px;
-`;
 const FeedbackContentContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+
+  margin-right: 100px;
 `;
 const FeedbackBtnContainer = styled.div`
-  display: flex;
-
-  justify-content: flex-end;
+  width: 70px;
 `;
 
 const InputBtn = styled.button`
