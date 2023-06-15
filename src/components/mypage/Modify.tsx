@@ -57,26 +57,23 @@ const Modify = () => {
     event.preventDefault();
   };
 
-  // const token = localStorage.getItem("token");
-  // const {
-  //   data: userData,
-  //   isLoading,
-  //   isError,
-  // } = useQuery("userData", () => getUserData(token as string)); // 수정요망
-
-  // if (isLoading) {
-  //   // 로딩 상태를 표시
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (isError) {
-  //   // 에러 상태를 표시
-  //   return <div>Error occurred while fetching token</div>;
-  // }
-
+  const token = localStorage.getItem("token");
+  const {
+    data: userData,
+    isLoading,
+    isError,
+  } = useQuery(["userData"], () => getUserData(token as string)); // 수정요망
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching token</div>;
+  }
   // token 값을 활용하여 필요한 작업을 수행
-  // console.log("UserData", userData);
-  // const { user_name, phone_number, email, password } = userData?.data || {};
+  console.log("UserData", userData);
+  const { user_name, phone_number, email, password } = userData?.data || {};
 
   return (
     <StyledContainer>
@@ -104,7 +101,7 @@ const Modify = () => {
         <Grid item xs={10}>
           <StyledTextField
             variant="outlined"
-            // defaultValue={user_name}
+            defaultValue={user_name}
             InputProps={{
               readOnly: true,
             }}
@@ -117,7 +114,7 @@ const Modify = () => {
         <Grid item xs={10}>
           <StyledTextField
             variant="outlined"
-            // defaultValue={phone_number}
+            defaultValue={phone_number}
             fullWidth
           />
         </Grid>
@@ -127,7 +124,7 @@ const Modify = () => {
         <Grid item xs={10}>
           <StyledTextField
             variant="outlined"
-            // defaultValue={email}
+            defaultValue={email}
             InputProps={{
               readOnly: true,
             }}
@@ -140,7 +137,7 @@ const Modify = () => {
         <Grid item xs={10}>
           <StyledTextField
             variant="outlined"
-            // defaultValue={password}
+            defaultValue={password}
             fullWidth
           />
         </Grid>
