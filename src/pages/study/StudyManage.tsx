@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Typography, Grid, Box } from "@mui/material";
 import { Create, Person, Checklist } from "@mui/icons-material"; //MUI icon import
-import { useNavigate } from "react-router-dom";
 import StudyModify from "../../components/study/manage/StudyModify";
 import StudyMemberManagement from "../../components/study/manage/StudyMemberManagement";
 import StudyApplicantList from "../../components/study/manage/StudyApplicantList";
@@ -10,7 +9,6 @@ import StudyManageMain from "../../components/study/manage/StudyManageMain";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
-import { Link } from "react-router-dom";
 import MenuTapBtn from "../../components/UI/MenuTapBtn";
 const StudyManage = () => {
   const [activePage, setActivePage] = useState("manage-main");
