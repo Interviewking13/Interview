@@ -10,7 +10,6 @@ import { dateSplice } from "../../utils/dateFomatting";
 import * as fonts from "../../constants/fonts";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { postReply } from "../../api/api-community";
-import { postFeedback } from "../../api/api-study-feedback";
 
 export const CommunityDetailPage: React.FC = () => {
   const [a, setA] = useState({
@@ -32,6 +31,8 @@ export const CommunityDetailPage: React.FC = () => {
       .then((response) => {
         setA(response.data.data.updateContent);
         setB(response.data.data.findReply);
+        console.log(response.data.data.updateContent);
+        console.log(response.data.data.findReply);
       })
       .catch((error) => {
         console.error(error);
@@ -124,7 +125,6 @@ export const CommunityDetailPage: React.FC = () => {
   );
 };
 
-
 const StyledCommonContainer = styled.div`
   width: 1270px;
   margin: 0px auto;
@@ -139,7 +139,7 @@ const StyledTitleTextContainer = styled.div`
   margin: 60px 0 25px;
   display: flex;
   align-items: center;
-`
+`;
 
 const StyledTitle = styled.div`
   ${fonts.TitleText};
@@ -177,7 +177,7 @@ const StyledCommunitySunInfo = styled.div`
   margin-right: 15px;
   padding-right: 15px;
   border-right: 1px solid ${colors.darkgray_navy};
-  
+
   &:last-child {
     border-right: none;
   }
@@ -194,7 +194,7 @@ const StyledFileDownloadBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap:40px;
+  gap: 40px;
   /* width: 200px;
   height: 45px; */
   width: fit-content;
@@ -203,8 +203,7 @@ const StyledFileDownloadBtn = styled.button`
   background-color: ${colors.back_navy};
   border: none;
   border-radius: 10px;
-
-`
+`;
 const StyledReplyInputContainer = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -251,26 +250,26 @@ const StyledReplyContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   margin: 20px 0;
-`
+`;
 
 const StyledReplyUserName = styled.div`
   color: ${colors.main_navy};
   ${fonts.SubTextSmall};
   margin-right: 40px;
-`
+`;
 
 const StyledReplyText = styled.div`
   color: ${colors.main_black};
   ${fonts.SubTextThinSmall};
-`
+`;
 
 const StyledDelButton = styled.button`
   color: ${colors.darkgray_navy};
   ${fonts.SubTextThinSmall};
   border: none;
   background-color: #ffffff;
-  display: flex;  
+  display: flex;
   justify-content: flex-end;
   width: 45px;
   margin-left: auto;
-`
+`;

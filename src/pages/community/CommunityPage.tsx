@@ -2,15 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import BoardListItemContainer from "../community/components/BoardListItemContainer";
 import BestBoardListItemContainer from "./components/BestBoardListItemContainer";
-import CommunityTaps from '../community/components/CommunityTap';
+import CommunityTaps from "../community/components/CommunityTap";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import SearchIconSrc from "../../img/search_navy.svg";
 import { Link } from "react-router-dom";
 
-
 const CommunityPage: React.FC = () => {
-
   return (
     <StyledCommonContainer>
       <StyledHeadContainer>
@@ -28,7 +26,6 @@ const CommunityPage: React.FC = () => {
           </StyledLink>
         </CommunityListInputArea>
       </StyledHeadContainer>
-      <CommunityTaps />
       {/* 게시판 목록 컨테이너, 아이템 컴포넌트 불러오기 */}
       <BestBoardListItemContainer />
       <BoardListItemContainer />

@@ -18,14 +18,14 @@ export const CommunityTaps = () => {
 
   return (
     <StyledCommunityTabs>
-      <StyledCommunityTab className={activeTab === `${lastPathSegment}` ? 'active' : ''} onClick={() => onClickTap(`${lastPathSegment}`)}>
-        <span style={{ fontSize: '16px' }}>
+      <StyledCommunityTab>
+        <span style={{ fontSize: "16px" }}>
           <CreateIcon />
         </span>
         전체 글
       </StyledCommunityTab>
-      <StyledCommunityTab className={activeTab === `community/${lastPathSegment}` ? 'active' : ''} onClick={() => onClickTap(`community/${lastPathSegment}`)}>
-        <span style={{ fontSize: '16px' }}>
+      <StyledCommunityTab>
+        <span style={{ fontSize: "16px" }}>
           <CreateIcon />
         </span>
         내가 쓴 글
