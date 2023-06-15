@@ -192,6 +192,7 @@ const userApi = {
                 message: "로그인 성공",
                 data: {
                     user_id: findUser._id,
+                    user_name: findUser.user_name,
                     email,
                     token
                 }
