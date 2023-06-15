@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { colors } from "../../../constants/colors";
 import BoardListItem from "../../community/components/BoardListItem";
 
 const BoardListItemContainer: React.FC = () => {
@@ -15,5 +13,4 @@ const BoardListItemContainer: React.FC = () => {
 
 export default BoardListItemContainer;
 
-const StyledPostListItemBox = styled.div`
-`;
+const StyledPostListItemBox = styled.div``;

@@ -1,6 +1,4 @@
-import { setCookie } from "cookies-utils";
 import { axiosInstance } from "./axiosInstance";
-// axios.defaults.withCredentials = true;
 
 /* 인스턴스 네이밍 컨벤션 : 요청방식(ex get) + 해당 내용 + (by) + (파라미터/인자/쿼리) */
 
@@ -29,11 +27,17 @@ export const postSignIn = async (email: string, password: string) => {
   return response;
 };
 
-/** 3. 내 정보 조회 GET */
-export const getUserData = async () => {
-  const response = await axiosInstance.get(`user/mypage/`);
-  return response.data; //230615_임준영수정byGPT
+export const getUserData = async (token: string) => {
+  const response = await axiosInstance.post(`user/mypage`, {
+    token: token,
+  });
+  return response;
 };
+/** 3. 내 정보 조회 GET */
+// export const getUserData = async () => {
+//   const response = await axiosInstance.get(`user/mypage/`);
+//   return response;
+// };
 
 /** 4. 내 정보 수정 PUT */
 export const putUserData = async (
