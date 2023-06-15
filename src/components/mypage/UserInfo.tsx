@@ -38,7 +38,7 @@ const UserInfo = () => {
 
   return (
     <StyledDiv>
-      <Grid container xs={12} rowSpacing={2} alignItems={"center"}>
+      <Grid container rowSpacing={2} alignItems={"center"}>
         <Grid item xs={11.5}>
           <StyledSayHello noWrap>
             면접왕 <b>{userData.name}</b> 님, 어서오세요.

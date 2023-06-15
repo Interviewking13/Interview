@@ -33,13 +33,13 @@ export const getUserData = async (token: string) => {
       Authorization: `${token}`,
     },
   });
-  return response;
+  return response.data;
 };
-/** 3. 내 정보 조회 GET */
-// export const getUserData = async () => {
-//   const response = await axiosInstance.get(`user/mypage/`);
-//   return response;
-// };
+// /** 3. 내 정보 조회 GET */
+// // export const getUserData = async () => {
+// //   const response = await axiosInstance.get(`user/mypage/`);
+// //   return response;
+// // };
 
 /** 4. 내 정보 수정 PUT */
 export const putUserData = async (
