@@ -151,12 +151,12 @@ const communityApi = {
             const findContent = await Community.findOne({ community_id });
 
             // token 확인 후 업데이트예정
-            // const user_id = req.user.user_id;
+            const user_id = req.user.user_id;
             // const { user_id } = req.user;
-            // console.log('userTokenValidate: ', userTokenValidate);
-            // if(!user_id){
-            //     return res.status(400).json({ message: "유효하지 않은 사용자" });
-            // }
+            console.log('userTokenValidate: ', userTokenValidate);
+            if(!user_id){
+                return res.status(400).json({ message: "유효하지 않은 사용자" });
+            }
 
             if(!findContent) {
                 return res.status(400).json({ message: "게시글찾기 실패" });
