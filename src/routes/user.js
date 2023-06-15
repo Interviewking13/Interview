@@ -17,7 +17,8 @@ router.post('/userInfo', userApi.isLoginValidate);
 // user API 실제 기능
 router.post('/register', userApi.registerUser);
 router.post('/login', userApi.loginUser); 
-router.get('/mypage', userTokenValidate, userApi.getUserInfo);
+// router.get('/mypage', userTokenValidate, userApi.getUserInfo);
+router.post('/mypage', userTokenValidate, userApi.getUserInfo);
 router.put('/mypage', userTokenValidate, userApi.modifyUserInfo);
 router.delete('/mypage', userTokenValidate, userApi.deleteUser);
 router.post('/logout', userTokenValidate, userApi.logoutUser);
