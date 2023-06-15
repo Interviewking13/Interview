@@ -49,17 +49,17 @@ const StudyModify = () => {
           />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateBtnArea>
-          <StyledLink to={`/study/delete`}>
-            <SubButtonContainer>
-              <StyledCommonButton backgroundColor={colors.main_red}>
-                <StyledButtonTextDelete>스터디 삭제</StyledButtonTextDelete>
-              </StyledCommonButton>
-            </SubButtonContainer>
-          </StyledLink>
           <StyledLink to={`/study/modify`}>
             <SubButtonContainer>
               <StyledCommonButton backgroundColor={colors.main_mint}>
                 <StyledButtonTextDelete>수정하기</StyledButtonTextDelete>
+              </StyledCommonButton>
+            </SubButtonContainer>
+          </StyledLink>
+          <StyledLink to={`/study/delete`}>
+            <SubButtonContainer>
+              <StyledCommonButton backgroundColor={colors.main_red}>
+                <StyledButtonTextDelete>스터디 삭제</StyledButtonTextDelete>
               </StyledCommonButton>
             </SubButtonContainer>
           </StyledLink>

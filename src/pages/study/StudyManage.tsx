@@ -11,10 +11,11 @@ import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
 import MenuTapBtn from "../../components/UI/MenuTapBtn";
 const StudyManage = () => {
-  const [activePage, setActivePage] = useState("manage-main");
+  const [activePage, setActivePage] = useState("modify");
 
   const onClickStudyManageMain = () => {
-    setActivePage("manage-main");
+    // setActivePage("manage-main");
+    setActivePage("modify");
   };
   const onClickStudyModify = () => {
     setActivePage("modify");
