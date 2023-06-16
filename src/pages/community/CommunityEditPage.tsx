@@ -1,142 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { colors } from '../../constants/colors';
-import { TitleText, SubTextThin, SubTextSmall } from '../../constants/fonts';
-import { useMutation, useQueryClient } from 'react-query';
-import { axiosInstance } from '../../api/axiosInstance';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { colors } from "../../constants/colors";
+import { TitleText, SubTextThin, SubTextSmall } from "../../constants/fonts";
+import { useLocation, useNavigate } from "react-router-dom";
+import { putCommunity } from "../../api/api-community";
 
-
-interface CommunityPost {
-  id: string;
-  title: string;
-  content: string;
-  attach: string;
-  user_id: string;
-}
-
-interface CommunityEditPageProps {
-  post?: CommunityPost;
-}
-
-const getCommunityPost = async (postId: string) => {
-  try {
-    const response = await axiosInstance.get(`/community/detl/${postId}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error:', error);
-    throw error;
-  }
-};
-
-const putCommunity = async (data: { community_no: number, title: string, content: string }) => {
-  try {
-    const response = await axiosInstance.put('/community/detl', data);
-    return response.data;
-  } catch (error) {
-    console.error('Error:', error);
-    throw error;
-  }
-};
-
-const CommunityEditPage: React.FC<CommunityEditPageProps> = ({ post }) => {
-  const [postId, setPostId] = useState('');
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-
-  useEffect(() => {
-    if (post) {
-      setPostId(post.id);
-      getPostDataMutate(post.id);
-    }
-  }, [post]);
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+const CommunityEditPage: React.FC = ({}) => {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.pathname;
+  const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
+  const token = localStorage.getItem("token");
+  const onChangeTitleInput = (e: any) => {
+    console.log(e.target.value);
     setTitle(e.target.value);
   };
 
-  const handleContentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setContent(e.target.value);
+  const onChangeContentsInput = (e: any) => {
+    console.log(e.target.value);
+    setTitle(e.target.value);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = e.target.files;
-
+  const onClickEdit = () => {
+    putCommunity(
+      Number(lastPathSegment),
+      title,
+      content,
+      String(localStorage.getItem("token"))
+    );
+    alert("수정 되었습니다");
+    navigate(`/Community/communityDetailPage/${lastPathSegment}`);
   };
-
-
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-
-  const { mutate: getPostDataMutate } = useMutation(getCommunityPost, {
-    onSuccess: (data) => {
-      setTitle(data.title);
-      setContent(data.content);
-    },
-  });
-
-  const { mutate: putCommunityMutate } = useMutation(putCommunity, {
-    onError: (error) => {
-      console.error('Error:', error);
-    },
-    onSuccess: (data) => {
-      console.log('성공: ', data);
-      queryClient.invalidateQueries('communityList');
-    },
-  });
-
-  const handleGetPostData = () => {
-    getPostDataMutate(postId);
-  };
-
-  const handleSubmit = () => {
-    putCommunityMutate({ community_no: parseInt(postId), title, content });
-  };
-
-  const handleDelete = () => {
-    // 삭제 로직 구현
-  };
-
 
   return (
     <StyledCommonContainer>
-
       <StyledCreatePageContainer>
         <StyledTitleWrapper>
           <StyledTitleContainer>
             <StyledCreatePageTitle>커뮤니티 글 수정</StyledCreatePageTitle>
           </StyledTitleContainer>
           <StyledSubTitleContainer>
-            <StyledCreatePageSubtitle>회원들과 정보를 공유해보세요.</StyledCreatePageSubtitle>
+            <StyledCreatePageSubtitle>
+              회원들과 정보를 공유해보세요.
+            </StyledCreatePageSubtitle>
           </StyledSubTitleContainer>
         </StyledTitleWrapper>
         <StyledInputWrapper>
           <StyledTitle>제목</StyledTitle>
-          <StyledInput value={title || post?.title || ''} onChange={handleTitleChange} placeholder="" />
+          <StyledInput onChange={onChangeTitleInput} />
         </StyledInputWrapper>
 
         <StyledInputWrapper className="second-input-wrapper">
           <StyledTitle>내용</StyledTitle>
-          <StyledTextarea value={content || post?.content || ''} onChange={handleContentChange} placeholder="" />
+          <StyledTextarea onChange={onChangeContentsInput} />
         </StyledInputWrapper>
 
         <StyledFileInputWrapper>
           <StyledFileInputContainer>
             <StyledTitle>파일 첨부</StyledTitle>
             <StyledSubtitle>파일을 첨부하세요.</StyledSubtitle>
-            <FileInput type="file" id="fileInput" onChange={handleFileChange} />
+            <FileInput type="file" id="fileInput" />
             {/* <FileUploader /> */}
             <StyledFileButton htmlFor="fileInput">파일찾기</StyledFileButton>
           </StyledFileInputContainer>
           <StyledAttachedFileListContainer>
-            <StyledDelButton onClick={handleDelete}>삭제</StyledDelButton>
+            <StyledDelButton>삭제</StyledDelButton>
           </StyledAttachedFileListContainer>
         </StyledFileInputWrapper>
         <StyledFileButtonWrapper>
-          <StyledCreateButton onClick={handleSubmit}>수정하기</StyledCreateButton>
+          <StyledCreateButton onClick={onClickEdit}>
+            수정하기
+          </StyledCreateButton>
         </StyledFileButtonWrapper>
       </StyledCreatePageContainer>
-
     </StyledCommonContainer>
   );
 };
@@ -317,8 +255,7 @@ const FileList = styled.div`
   width: 1060px;
 `;
 
-const FileListItem = styled.div`
-`;
+const FileListItem = styled.div``;
 
 const FileAttachment = styled.a`
   display: block;
@@ -330,7 +267,7 @@ const StyledFileButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 1270px;
-`
+`;
 const StyledCreateButton = styled.button`
   padding: 10px 20px;
   background-color: ${colors.main_mint};
@@ -352,6 +289,6 @@ const StyledDelButton = styled.button`
   display: flex;
   justify-content: flex-end;
   width: 45px;
-`
+`;
 
 export default CommunityEditPage;

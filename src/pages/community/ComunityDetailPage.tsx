@@ -103,26 +103,6 @@ export const CommunityDetailPage: React.FC = () => {
       console.log(error);
     }
   };
-  // const handleDelete = (e: any) => {
-  //   console.log(Number(e.target.id));
-  //   deleteReply(Number(e.target.id))
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       getDataByCommunity_noAndUser_id(
-  //         Number(lastPathSegment),
-  //         "6487ea3c2188ede075315499"
-  //       )
-  //         .then((response) => {
-  //           setB(response.data.data.findReply);
-  //         })
-  //         .catch((error) => {
-  //           console.error(error);
-  //         });
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
 
   return (
     <StyledCommonContainer>
@@ -145,7 +125,11 @@ export const CommunityDetailPage: React.FC = () => {
           </StyledCommunityInfoContainer>
           {useId === writerId ? (
             <FixButtonContainer>
-              <FixButton onClick={() => navigate(`/community/communityPage`)}>
+              <FixButton
+                onClick={() =>
+                  navigate(`/Community/CommunityEditPage/${lastPathSegment}`)
+                }
+              >
                 수정 <ClearIcon></ClearIcon>
               </FixButton>
               <FixButton onClick={writeHandleDelete}>
