@@ -9,8 +9,11 @@ import {
 import { getAllCommunityData } from "../../../api/api-community";
 import { useNavigate } from "react-router-dom";
 
-const BoardListItem: React.FC = (props) => {
-  const [tap, setTap] = useState(1);
+interface BoardListItemProps {
+  tap: number;
+}
+
+const BoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
   const [startPage, setStartPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [allPosts, setAllPosts] = useState<any[]>([]);
@@ -21,7 +24,7 @@ const BoardListItem: React.FC = (props) => {
     getAllCommunityData()
       .then((response) => {
         const { data } = response;
-        setAllPosts(data.data.reverse());
+        setAllPosts(data.data);
         console.log(data.data.reverse());
         setLastPage(Math.ceil(data.data.length / 10));
         setPosts(data.data.slice(0, 10));
@@ -57,14 +60,6 @@ const BoardListItem: React.FC = (props) => {
     console.log(e.currentTarget.id);
   };
 
-  // const onClickTotalTap = (e: any) => {
-  //   console.log("토탈");
-  //   setTap(1);
-  // };
-  // const onClickMyTap = (e: any) => {
-  //   console.log("마이");
-  //   setTap(0);
-  // };
   return (
     <StyledPostListItem>
       {tap == 1 ? (
@@ -102,7 +97,27 @@ const BoardListItem: React.FC = (props) => {
           </PageNation>
         </StyledPostListItemBox>
       ) : (
-        <div>내가쓴글이다</div>
+        <StyledPostListItemBox>
+          {posts
+            .filter((post) => post.user_id === "6487ea3c2188ede075315499")
+            .map((filteredPost, index) => (
+              <StyledPostItems
+                onClick={onItemClick}
+                id={filteredPost.community_id}
+              >
+                <StyledLeftPostItem>
+                  <StyledPostTitle>{filteredPost.title}</StyledPostTitle>
+                </StyledLeftPostItem>
+                <StyledRightPostItem>
+                  <StyledPostItem>
+                    조회 수: {filteredPost.read_users.length}
+                  </StyledPostItem>
+                  <StyledPostItem>{filteredPost.user_name}</StyledPostItem>
+                  <StyledPostItem>{filteredPost.timestamps}</StyledPostItem>
+                </StyledRightPostItem>
+              </StyledPostItems>
+            ))}
+        </StyledPostListItemBox>
       )}
     </StyledPostListItem>
   );

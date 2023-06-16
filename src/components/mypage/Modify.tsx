@@ -6,25 +6,13 @@ import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import FileUploader from "../UI/FileUploader";
-import Cookies from "react-cookie";
 
 type userDate = {
-  name: string;
+  user_name: string;
   email: string;
   phone_number: string;
   password: string;
 };
-
-// axios
-//   .get(`http://34.22.79.51:5000/api/user/mypage/${userId}`)
-//   .then((response) => {
-//     // 성공적으로 데이터를 받아왔을 때 처리할 로직 작성
-//     console.log(response.data);
-//   })
-//   .catch((error) => {
-//     // 에러가 발생했을 때 처리할 로직 작성
-//     console.error(error);
-//   });
 
 const MenuButton = () => {
   return (
@@ -40,44 +28,29 @@ const MenuButton = () => {
     </>
   );
 };
-const Dummy = {
-  name: "박세진",
-  email: "cobaltcyan.park@gmail.com",
-  password: "tpwls1234",
-  privacy_use_yn: "Y",
-  marketing_use_yn: "N",
-  intro_yn: "00030001_202305300019.pdf", // 또는 NULL
-  phone_number: "010-4916-4244",
-  admin_yn: false,
-  dts_insert: "202305291250",
-  dts_update: "202306100421",
-};
 
 const Modify = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
   };
+
   const token = localStorage.getItem("token");
-  const [userData, setUesrDate] = useState(Dummy);
   const {
     data: userData,
     isLoading,
     isError,
-  } = useQuery("userData", () => getUserData(token));
-
+  } = useQuery(["userData"], () => getUserData(token as string)); // 수정요망
   if (isLoading) {
     // 로딩 상태를 표시
     return <div>Loading...</div>;
   }
-
   if (isError) {
     // 에러 상태를 표시
     return <div>Error occurred while fetching token</div>;
   }
-
   // token 값을 활용하여 필요한 작업을 수행
   console.log("UserData", userData);
-  const { name, phone_number, email, password } = userData;
+  const { user_name, phone_number, email, password } = userData?.data || {};
 
   return (
     <StyledContainer>
@@ -105,7 +78,7 @@ const Modify = () => {
         <Grid item xs={10}>
           <StyledTextField
             variant="outlined"
-            defaultValue={name}
+            defaultValue={user_name}
             InputProps={{
               readOnly: true,
             }}
@@ -151,11 +124,13 @@ const Modify = () => {
         <Grid item xs={10}>
           <StyledTextField variant="outlined" fullWidth />
         </Grid>
-
-        <Grid item xs={2}>
-          <StyledInfoName>자기소개서첨부</StyledInfoName>
+        <Grid item xs={12}></Grid>
+        <Grid container>
+          <Grid item xs={2}>
+            <StyledInfoName>자기소개서첨부</StyledInfoName>
+          </Grid>
+          <FileUploader />
         </Grid>
-        <FileUploader />
 
         {/* 버튼1, 버튼2 */}
         <Grid
@@ -212,21 +187,6 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 //버튼 스타일
-const StyledFindButton = styled(Button)`
-  && {
-    border-radius: 10px;
-    width: 132px;
-    height: 45px;
-    padding: auto;
-    ${fonts.SubText}
-    background-color: ${colors.dark_navy};
-    color: ${colors.back_navy};
-    &:hover {
-      background-color: ${colors.back_navy};
-      color: ${colors.dark_navy};
-    }
-  }
-`;
 
 const StyledModifyButton = styled(Button)`
   && {

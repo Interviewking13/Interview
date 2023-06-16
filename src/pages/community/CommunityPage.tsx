@@ -7,18 +7,20 @@ import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import SearchIconSrc from "../../img/search_navy.svg";
 import { Link } from "react-router-dom";
+interface BoardListItemContainerProps {
+  tap: number;
+}
 
-const CommunityPage: React.FC = () => {
-  const a = 2;
-  const [tap, setTap] = useState(1);
-  // const onClickTotalTap = (e: any) => {
-  //   console.log("토탈");
-  //   setTap(1);
-  // };
-  // const onClickMyTap = (e: any) => {
-  //   console.log("마이");
-  //   setTap(0);
-  // };
+const CommunityPage: React.FC<BoardListItemContainerProps> = ({ tap }) => {
+  const [taps, setTap] = useState(1);
+  const onClickTotalTap = (e: any) => {
+    console.log("토탈");
+    setTap(1);
+  };
+  const onClickMyTap = (e: any) => {
+    console.log("마이");
+    setTap(0);
+  };
   return (
     <StyledCommonContainer>
       <StyledHeadContainer>
@@ -36,12 +38,12 @@ const CommunityPage: React.FC = () => {
           </StyledLink>
         </CommunityListInputArea>
       </StyledHeadContainer>
-      {/* <CommunityTaps></CommunityTaps>
+      {/* <CommunityTaps></CommunityTaps> */}
       <button onClick={onClickTotalTap}>전체</button>
-      <button onClick={onClickMyTap}>내가쓴글</button> */}
+      <button onClick={onClickMyTap}>내가쓴글</button>
       {/* 게시판 목록 컨테이너, 아이템 컴포넌트 불러오기 */}
       <BestBoardListItemContainer />
-      <BoardListItemContainer />
+      <BoardListItemContainer tap={taps} />
     </StyledCommonContainer>
   );
 };

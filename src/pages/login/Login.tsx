@@ -12,11 +12,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  //내정보조회
-  // getUserData(
-  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4YWM5NGJjMjQxYmRkNzk5YzM1YjMzIiwiaWF0IjoxNjg2ODE3MTA2LCJleHAiOjE2ODcwNzYzMDZ9.wA06-jh12FWXpV7N5Xw4vt4ZQGQLj11Hbf5DMrYD9rs"
-  // );
-  // 로그인 버튼 클릭 시 동작
+
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -28,6 +24,9 @@ const LoginPage = () => {
       console.log(response.data);
       if (response.data.resultCode == "200")
         localStorage.setItem("token", response.data.data.token);
+      getUserData(String(localStorage.getItem("token"))).then((response) =>
+        console.log("response")
+      );
 
       navigate("/"); // useNavigate 사용하여 페이지 이동
     });
