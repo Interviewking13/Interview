@@ -46,7 +46,7 @@ const Information: React.FC = () => {
     data: studyData,
     isLoading,
     isError,
-  } = useQuery("studyData", () =>
+  } = useQuery(["studyData"], () =>
     getInfoStudyData(lastPathSegment).then((response) => response.data)
   );
   if (isLoading) {

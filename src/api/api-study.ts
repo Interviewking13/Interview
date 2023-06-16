@@ -27,7 +27,7 @@ export const postCreateStudy = async (
     status,
     start,
     end,
-    leader_name
+    leader_name,
   });
   return response;
 };
@@ -107,7 +107,9 @@ export const deleteStudyMember = async (member_id: string) => {
 };
 
 /** 8. 스터디 삭제 (장)  get */
-export const deleteStudy = async (study_id: string) => {
-  const response = await axiosInstance.delete(`study/info/${study_id}`);
+export const deleteStudy = async (token: string, study_id: string) => {
+  const response = await axiosInstance.delete(`study/info/${study_id}`, {
+    data: { token: token }, // 토큰을 바디로 보내기 위해 data 속성에 객체 형태로 설정
+  });
   return response;
 };
