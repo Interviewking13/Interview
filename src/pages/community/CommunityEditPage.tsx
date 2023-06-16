@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import { TitleText, SubTextThin, SubTextSmall } from "../../constants/fonts";
 import { useLocation, useNavigate } from "react-router-dom";
 import { putCommunity } from "../../api/api-community";
+import { useRecoilState } from "recoil";
+import { EditContent } from "../../utils/CommunitiEdit";
 
 const CommunityEditPage: React.FC = ({}) => {
+  const [data, setData] = useRecoilState(EditContent);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
-  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    console.log(data);
+  }, []);
   const onChangeTitleInput = (e: any) => {
     console.log(e.target.value);
     setTitle(e.target.value);
@@ -49,12 +55,15 @@ const CommunityEditPage: React.FC = ({}) => {
         </StyledTitleWrapper>
         <StyledInputWrapper>
           <StyledTitle>제목</StyledTitle>
-          <StyledInput onChange={onChangeTitleInput} />
+          <StyledInput placeholder={data.title} onChange={onChangeTitleInput} />
         </StyledInputWrapper>
 
         <StyledInputWrapper className="second-input-wrapper">
           <StyledTitle>내용</StyledTitle>
-          <StyledTextarea onChange={onChangeContentsInput} />
+          <StyledTextarea
+            placeholder={data.content}
+            onChange={onChangeContentsInput}
+          />
         </StyledInputWrapper>
 
         <StyledFileInputWrapper>
@@ -137,6 +146,8 @@ const StyledInput = styled.input`
 
   &::placeholder {
     color: ${colors.gray_navy};
+    font-weight: bold;
+    font-size: 15px;
   }
 `;
 const StyledTextarea = styled.textarea`
@@ -149,9 +160,10 @@ const StyledTextarea = styled.textarea`
   box-sizing: border-box;
   padding: 20px;
   resize: none;
-
   &::placeholder {
     color: ${colors.gray_navy};
+    font-weight: bold;
+    font-size: 18px;
   }
   ::-webkit-scrollbar {
     width: 20px; /* 스크롤바 너비 */
