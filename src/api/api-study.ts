@@ -52,10 +52,19 @@ export const postApplyStudy = async (
 };
 
 /** 3. 스터디 신청 수락 (장)  put */
-export const putAcceptStudy = async (study_id: number, accept: number) => {
-  const response = await axiosInstance.put(`study/accept/${study_id}`, {
-    accept,
-  });
+export const putAcceptStudy = async (
+  token: string,
+  study_id: number,
+  member_id: number,
+  accept: number
+) => {
+  const response = await axiosInstance.put(
+    `study/accept/${study_id}/${member_id}`,
+    {
+      token,
+      accept,
+    }
+  );
   return response;
 };
 
@@ -85,7 +94,7 @@ export const getInfoStudyData = async (study_id: string) => {
   return response;
 };
 
-/** 6. 스터디 정보 수정 (장)  get */
+/** 6. 스터디 정보 수정 (장)  put */
 export const putInfoStudy = async (
   study_id: string,
   data: {
@@ -112,13 +121,13 @@ export const putInfoStudy = async (
   return response;
 };
 
-/** 7. 스터디 회원 관리 (장)  get */
+/** 7. 스터디 회원 관리 (장)  delete */
 export const deleteStudyMember = async (member_id: string) => {
   const response = await axiosInstance.delete(`study/${member_id}`);
   return response;
 };
 
-/** 8. 스터디 삭제 (장)  get */
+/** 8. 스터디 삭제 (장)  delete */
 export const deleteStudy = async (token: string, study_id: string) => {
   const response = await axiosInstance.delete(`study/${study_id}`, {
     data: { token: token }, // 토큰을 바디로 보내기 위해 data 속성에 객체 형태로 설정
@@ -127,13 +136,12 @@ export const deleteStudy = async (token: string, study_id: string) => {
 };
 
 /** 9. 스터디 신청원 조회  get */
-export const getStudyAccept = async (
-  token: string,
-  study_id: string,
-  accept: number
-) => {
+export const getStudyAccept = async (study_id: string, accept: number) => {
   const response = await axiosInstance.get(`study/accept`, {
-    data: { token: token, study_id: study_id, accept: accept },
+    params: {
+      study_id: study_id,
+      accept: accept,
+    },
   });
   return response;
 };
