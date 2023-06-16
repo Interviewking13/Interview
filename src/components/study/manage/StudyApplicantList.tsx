@@ -5,20 +5,61 @@ import * as fonts from "../../../constants/fonts";
 import React, { useEffect, useState } from "react";
 import { Modal } from "@mui/material";
 import UserInfoModal from "../../modal/UserInfoModal";
-
+import { useQuery } from "react-query";
+import { getStudyAccept, putAcceptStudy } from "../../../api/api-study";
+import { useQueryClient } from "react-query";
 type StudyApplicantListProps = {
   studyId: string;
 };
 
-const members = [
-  { name: "고병욱", description: "힘내자 힘", userId: "1232" },
-  { name: "이예준", description: "열심히 하자", userId: "1234" },
-  { name: "박지원", description: "화이팅!", userId: "1235" },
-];
-
-const onDelete = () => {};
+interface StudyAcceptData {
+  _id: string;
+  study_id: string;
+  user_id: string;
+  user_name: string;
+  is_leader: boolean;
+  goal: string;
+  accept: number;
+}
 
 const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
+  const queryClient = useQueryClient();
+  const apply = 0;
+  // 신청 수락
+  const accept = 1;
+  // 신청 거절
+  const unAccept = 2;
+  const onAcceptButton = async (index: number) => {
+    const userId = studyAcceptData[index].user_id;
+    await putAcceptStudy(
+      String(localStorage.getItem("token")),
+      studyId,
+      userId,
+      accept
+    );
+    queryClient.invalidateQueries(["studyAcceptData"]);
+  };
+  const onDeleteButton = async (index: number) => {
+    const userId = studyAcceptData[index].user_id;
+    await putAcceptStudy(
+      String(localStorage.getItem("token")),
+      studyId,
+      userId,
+      unAccept
+    );
+    queryClient.invalidateQueries(["studyAcceptData"]);
+  };
+
+  const {
+    data: studyAcceptData,
+    isLoading,
+    isError,
+  } = useQuery(["studyAcceptData"], () =>
+    getStudyAccept(studyId, apply).then((response) => response.data)
+  );
+
+  console.log(`studyAcceptData:`, studyAcceptData);
+  const members = studyAcceptData;
   const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
 
   const handleOpenUserInfoModal = () => {
@@ -28,31 +69,41 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
   const handleCloseUserInfoModal = () => {
     setUserInfoModalOpen(false);
   };
+
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching data</div>;
+  }
   return (
     <>
-      {members.map((member, index) => (
+      {members.map((member: StudyAcceptData, index: number) => (
         <CardContainer key={index}>
           <CardContent>
             <StyledName onClick={handleOpenUserInfoModal}>
-              {member.name}
+              {member.user_name}
             </StyledName>
             <Modal open={userInfoModalOpen} onClose={handleCloseUserInfoModal}>
               <UserInfoModal
-                userId={member.userId}
+                userId={member.user_id}
                 handleModalClose={handleCloseUserInfoModal}
               />
             </Modal>
-            <StyledDescription>{member.description}</StyledDescription>
+            <StyledDescription>{member.goal}</StyledDescription>
           </CardContent>
           <StyledCommonButton
             backgroundColor={colors.main_mint}
-            onClick={onDelete}
+            onClick={() => onAcceptButton(index)}
           >
             신청 수락
           </StyledCommonButton>
           <StyledCommonButton
             backgroundColor={colors.main_red}
-            onClick={onDelete}
+            onClick={() => onDeleteButton(index)}
           >
             회원 거절
           </StyledCommonButton>
