@@ -32,15 +32,20 @@ export const Feedback = () => {
   }, []);
 
   const postFeedbackBtn = () => {
-    postFeedback(0, feedbackInput, lastPathSegment).then((response) => {
+    postFeedback(
+      0,
+      feedbackInput,
+      lastPathSegment,
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4M2ZlMDVjZDJiZjMzZDc1YzZjNjMyIiwiaWF0IjoxNjg2ODU5MzI5LCJleHAiOjE2ODcxMTg1Mjl9.Pk0Ux-i6VAqP7czJVdRwUVoPMUs5Z4JShximmDH4Uo0"
+    ).then((response) => {
       console.log(response.data);
     });
   };
-  const DeleteFeedbackBtn = () => {
-    postFeedback(0, feedbackInput, lastPathSegment).then((response) => {
-      console.log(response.data);
-    });
-  };
+  // const DeleteFeedbackBtn = () => {
+  //   postFeedback(0, feedbackInput, lastPathSegment).then((response) => {
+  //     console.log(response.data);
+  //   });
+  // };
   const onChangeArea = (e: any) => {
     setFeedbackInput(e.target.value);
   };
@@ -55,7 +60,7 @@ export const Feedback = () => {
           onChange={onChangeArea}
         ></InputArea>
         <FeedbackBtn onClick={postFeedbackBtn}>입력</FeedbackBtn>
-        <FeedbackBtn onClick={DeleteFeedbackBtn}>삭제</FeedbackBtn>
+        <FeedbackBtn>삭제</FeedbackBtn>
       </FeedbackContainer>
       {feedbackData.map((post, index) => (
         <FeedbackContainer key={post._id} id={post.user_id}>
