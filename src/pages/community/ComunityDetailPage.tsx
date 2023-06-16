@@ -11,7 +11,7 @@ import * as fonts from "../../constants/fonts";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { postReply } from "../../api/api-community";
 import { getUserData } from "../../api/api-user";
-
+import ClearIcon from "@mui/icons-material/Clear";
 export const CommunityDetailPage: React.FC = () => {
   const [a, setA] = useState({
     content: "",
@@ -78,7 +78,7 @@ export const CommunityDetailPage: React.FC = () => {
     try {
       const deleteMyReply = await deleteReply(
         targetId,
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4M2ZlMDVjZDJiZjMzZDc1YzZjNjMyIiwiaWF0IjoxNjg2ODU5MzI5LCJleHAiOjE2ODcxMTg1Mjl9.Pk0Ux-i6VAqP7czJVdRwUVoPMUs5Z4JShximmDH4Uo0"
+        String(localStorage.getItem("token"))
       );
       getDataByCommunity(useId);
     } catch (error) {
@@ -117,14 +117,22 @@ export const CommunityDetailPage: React.FC = () => {
         <DividerNavy />
         <StyledCommunityTitle>{a.title}</StyledCommunityTitle>
         <StyledCommunityInfo>
-          <StyledCommunitySunInfo>{a.user_name}</StyledCommunitySunInfo>
-          <StyledCommunitySunInfo>
-            {dateSplice(a.updatedAt)}
-          </StyledCommunitySunInfo>
-          <StyledCommunitySunInfo>
-            조회 : {a.read_users.length}
-          </StyledCommunitySunInfo>
-          {useId === writerId ? <FixButton>수정</FixButton> : <div></div>}
+          <StyledCommunityInfoContainer>
+            <StyledCommunitySunInfo>{a.user_name}</StyledCommunitySunInfo>
+            <StyledCommunitySunInfo>
+              {dateSplice(a.updatedAt)}
+            </StyledCommunitySunInfo>
+            <StyledCommunitySunInfo>
+              조회 : {a.read_users.length}
+            </StyledCommunitySunInfo>
+          </StyledCommunityInfoContainer>
+          {useId === writerId ? (
+            <FixButton>
+              삭제 <ClearIcon></ClearIcon>
+            </FixButton>
+          ) : (
+            <div></div>
+          )}
         </StyledCommunityInfo>
         <Divider />
         <StyledContent>{a.content}</StyledContent>
@@ -165,10 +173,19 @@ export const CommunityDetailPage: React.FC = () => {
   );
 };
 const FixButton = styled.button`
-  width: 50px;
-  background-color: yellow;
+  color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  width: 100px;
   height: 20px;
+  font-size: 20px;
   cursor: pointer;
+`;
+const StyledCommunityInfoContainer = styled.div`
+  display: flex;
 `;
 const StyledCommonContainer = styled.div`
   width: 1270px;
@@ -213,6 +230,7 @@ const StyledCommunityTitle = styled.div`
 
 const StyledCommunityInfo = styled.div`
   display: flex;
+  justify-content: space-between;
   ${fonts.SubTextThinSmall};
   color: ${colors.darkgray_navy};
   margin-bottom: 15px;

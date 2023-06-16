@@ -11,6 +11,7 @@ const BestBoardListItemContainer: React.FC = () => {
         <StyledPostItems>
           <StyledBestTitle>인기 글</StyledBestTitle>
           <StyledRightPostItem>
+            <StyledPostItem>댓글</StyledPostItem>
             <StyledPostItem>조회</StyledPostItem>
             <StyledPostItem>작성자</StyledPostItem>
             <StyledPostItem>게시일</StyledPostItem>

@@ -49,6 +49,7 @@ const BestBoardListItem: React.FC = () => {
               <StyledPostTitle>{post.title}</StyledPostTitle>
             </StyledLeftPostItem>
             <StyledRightPostItem>
+              <StyledPostItem>댓글 수 : {post.reply_count}</StyledPostItem>
               <StyledPostItem>조회 수: {post.read_users.length}</StyledPostItem>
               <StyledPostItem>{post.user_name}</StyledPostItem>
               <StyledPostItem>{dateSplice(post.updatedAt)}</StyledPostItem>
