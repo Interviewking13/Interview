@@ -6,6 +6,8 @@ import { axiosInstance } from "./axiosInstance";
 
 /** 1. 스터디 개설 (장) post */
 export const postCreateStudy = async (
+  token: string,
+  _id: string,
   study_name: string,
   title: string,
   content: string,
@@ -15,7 +17,8 @@ export const postCreateStudy = async (
   status: number,
   start: string,
   end: string,
-  leader_name: string
+  leader_name: string,
+  leader_id: string  
 ) => {
   const response = await axiosInstance.post("study/create", {
     study_name,
@@ -28,6 +31,8 @@ export const postCreateStudy = async (
     start,
     end,
     leader_name,
+    leader_id,
+    token,
   });
   return response;
 };

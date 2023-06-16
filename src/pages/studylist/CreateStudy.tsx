@@ -6,6 +6,7 @@ import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
 import PencilIconSrc from "../../img/pencil_mint.svg";
 import { getInfoAllStudyData, postCreateStudy } from "../../api/api-study";
+import { getUserData } from "../../api/api-user";
 import { dateSplice } from "../../utils/dateFomatting";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -20,6 +21,8 @@ const StudyList = (): JSX.Element => {
   const [endDate, setEndDate] = useState("");
   const [recruitmentDeadline, setRecruitmentDeadline] = useState("");
   const [recruitmentCount, setRecruitmentCount] = useState(0);
+  const [userId, setUserId] = useState("");
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
   type StudyData = {
@@ -31,6 +34,7 @@ const StudyList = (): JSX.Element => {
     end: string;
     deadline: string;
     leader_name: string;
+    leader_id: string;
     study_name: string;
     content: string;
     chat_link: string;
@@ -38,10 +42,13 @@ const StudyList = (): JSX.Element => {
   };
 
   React.useEffect(() => {
-    getInfoAllStudyData()
+    getUserData(String(localStorage.getItem("token")))
       .then((response) => {
+        setUserId(response.data.user_id);
+        setUserName(response.data.user_name);
+        console.log(response.data.user_id);
+        console.log(response.data.user_name);
         console.log(response.data);
-        setStudyData(response.data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -75,10 +82,13 @@ const StudyList = (): JSX.Element => {
       status: 1,
       start: startDate,
       end: endDate,
-      leader_name: "",
+      leader_name: userName, // 사용자 이름을 leader_name에 할당
+      leader_id: userId, // 사용자 ID를 leader_id에 할당
     };
 
     postCreateStudy(
+      String(localStorage.getItem("token")),
+      newStudyData._id,
       newStudyData.study_name,
       newStudyData.title,
       newStudyData.content,
@@ -88,7 +98,8 @@ const StudyList = (): JSX.Element => {
       newStudyData.status,
       newStudyData.start,
       newStudyData.end,
-      newStudyData.leader_name
+      newStudyData.leader_name,
+      newStudyData.leader_id      
     )
       .then((response) => {
         if (response.data.success) {
@@ -97,7 +108,7 @@ const StudyList = (): JSX.Element => {
           // 스터디 목록 페이지로 이동
           navigate("/study");
         } else {
-          setError("스터디 생성에 실패했습니다.");
+          navigate("/study");
         }
       })
       .catch((error) => {
