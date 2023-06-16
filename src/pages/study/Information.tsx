@@ -14,6 +14,7 @@ import { Modal } from "@mui/material";
 import StudyApplyModal from "../../components/modal/StudyApplyModal";
 import { useQuery } from "react-query";
 import UserInfoModal from "../../components/modal/UserInfoModal";
+import { getUserData } from "../../api/api-user";
 
 const Information: React.FC = () => {
   const location = useLocation();
@@ -21,7 +22,21 @@ const Information: React.FC = () => {
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
   const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
   const [studyApplyModalOpen, setStudyApplyModalOpen] = React.useState(false);
+  const [useId, setUserId] = useState("");
+  const [leaderId, setLeaderId] = useState("");
 
+  useEffect(() => {
+    getUserData(String(localStorage.getItem("token"))).then((response) => {
+      console.log(response.data.user_id);
+      setUserId(response.data.user_id);
+    });
+  }, []);
+  useEffect(() => {
+    getInfoStudyData(String(lastPathSegment)).then((response) => {
+      console.log(response.data.leader_id);
+      setLeaderId(response.data.leader_id);
+    });
+  }, []);
   const handleOpenUserInfoModal = () => {
     setUserInfoModalOpen(true);
   };
@@ -75,12 +90,16 @@ const Information: React.FC = () => {
   } = studyData;
   return (
     <Container>
-      <Mystudy>{status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
+      <Mystudy>스터디정보</Mystudy>
       <StyeldTapContainer>
         <StudyTaps />
-        <StyledStudyManageButton onClick={handleStudyManageButtonClick}>
-          스터디 관리로 가는 버튼
-        </StyledStudyManageButton>
+        {useId === leaderId ? (
+          <StyledStudyManageButton onClick={handleStudyManageButtonClick}>
+            스터디 관리로 가는 버튼
+          </StyledStudyManageButton>
+        ) : (
+          <div></div>
+        )}
       </StyeldTapContainer>
       <Title>{title}</Title>
       <SubTitle>
