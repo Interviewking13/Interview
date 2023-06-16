@@ -360,9 +360,9 @@ const userApi = {
 
         // json body (localStorage 값 사용)
         // const { token } = req.body.token;
-        const { token } = req.body;
 
         try {
+            const { token } = req.body;
             
             // middleware 이용 테스트
             const { user_id } = req.user;
@@ -416,11 +416,11 @@ const userApi = {
                 isModified = true;
             }
             if (file_key !== findUserFileKey) {
-                findUser.phone_number = file_key;
+                findUser.file_key = file_key;
                 isModified = true;
             }
             if (file_name !== findUserFileName) {
-                findUser.phone_number = file_name;
+                findUser.file_name = file_name;
                 isModified = true;
             }
 
