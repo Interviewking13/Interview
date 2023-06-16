@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { getUserData } from "../../api/api-user";
 import { Button, Typography, TextField, Grid, Box } from "@mui/material";
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
-import axios from "axios";
+import FileUploader from "../UI/FileUploader";
 
 type userDate = {
-  name: string;
+  user_name: string;
   email: string;
   phone_number: string;
   password: string;
@@ -38,21 +39,30 @@ const MenuButton = () => {
     </>
   );
 };
-const Dummy = {
-  name: "박세진",
-  email: "cobaltcyan.park@gmail.com",
-  password: "tpwls1234",
-  privacy_use_yn: "Y",
-  marketing_use_yn: "N",
-  intro_yn: "00030001_202305300019.pdf", // 또는 NULL
-  phone_number: "010-4916-4244",
-  admin_yn: false,
-  dts_insert: "202305291250",
-  dts_update: "202306100421",
-};
 
 const Modify = () => {
-  const [userData, setUesrDate] = useState(Dummy);
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+  };
+
+  const token = localStorage.getItem("token");
+  const {
+    data: userData,
+    isLoading,
+    isError,
+  } = useQuery(["userData"], () => getUserData(token as string)); // 수정요망
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching token</div>;
+  }
+  // token 값을 활용하여 필요한 작업을 수행
+  console.log("UserData", userData);
+  const { user_name, phone_number, email, password } = userData?.data || {};
+
   return (
     <StyledContainer>
       <Grid container spacing={2}>
@@ -66,87 +76,84 @@ const Modify = () => {
         </Grid>
       </Grid>
       {/**  페이지내용 */}
-      <form>
-        <Grid
-          container
-          rowSpacing={2}
-          alignItems="center"
-          sx={{ marginTop: "7px" }}
-        >
-          <Grid item xs={2}>
-            <StyledInfoName>이름</StyledInfoName>
-          </Grid>
-          <Grid item xs={10}>
-            <StyledTextField
-              variant="outlined"
-              defaultValue={userData.name}
-              InputProps={{
-                readOnly: true,
-              }}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <StyledInfoName>연락처</StyledInfoName>
-          </Grid>
-          <Grid item xs={10}>
-            <StyledTextField
-              variant="outlined"
-              defaultValue={userData.phone_number}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <StyledInfoName>아이디</StyledInfoName>
-          </Grid>
-          <Grid item xs={10}>
-            <StyledTextField
-              variant="outlined"
-              defaultValue={userData.email}
-              InputProps={{
-                readOnly: true,
-              }}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <StyledInfoName>비밀번호</StyledInfoName>
-          </Grid>
-          <Grid item xs={10}>
-            <StyledTextField
-              variant="outlined"
-              defaultValue={userData.password}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <StyledInfoName>비밀번호확인</StyledInfoName>
-          </Grid>
-          <Grid item xs={10}>
-            <StyledTextField variant="outlined" fullWidth />
-          </Grid>
-
+      {/* <form onSubmit={handleSubmit}> */}
+      <Grid
+        container
+        rowSpacing={2}
+        alignItems="center"
+        sx={{ marginTop: "7px" }}
+      >
+        <Grid item xs={2}>
+          <StyledInfoName>이름</StyledInfoName>
+        </Grid>
+        <Grid item xs={10}>
+          <StyledTextField
+            variant="outlined"
+            defaultValue={user_name}
+            InputProps={{
+              readOnly: true,
+            }}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <StyledInfoName>연락처</StyledInfoName>
+        </Grid>
+        <Grid item xs={10}>
+          <StyledTextField
+            variant="outlined"
+            defaultValue={phone_number}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <StyledInfoName>아이디</StyledInfoName>
+        </Grid>
+        <Grid item xs={10}>
+          <StyledTextField
+            variant="outlined"
+            defaultValue={email}
+            InputProps={{
+              readOnly: true,
+            }}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <StyledInfoName>비밀번호</StyledInfoName>
+        </Grid>
+        <Grid item xs={10}>
+          <StyledTextField
+            variant="outlined"
+            defaultValue={password}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <StyledInfoName>비밀번호확인</StyledInfoName>
+        </Grid>
+        <Grid item xs={10}>
+          <StyledTextField variant="outlined" fullWidth />
+        </Grid>
+        <Grid item xs={12}></Grid>
+        <Grid container>
           <Grid item xs={2}>
             <StyledInfoName>자기소개서첨부</StyledInfoName>
           </Grid>
-          <Grid item xs={8}>
-            <StyledTextField variant="outlined" type="file" fullWidth />
-          </Grid>
-          <Grid item xs={2} container justifyContent="flex-end">
-            <StyledFindButton variant="contained">파일찾기</StyledFindButton>
-          </Grid>
-
-          {/* 버튼1, 버튼2 */}
-          <Grid
-            container
-            spacing={1}
-            sx={{ marginTop: "7px" }}
-            justifyContent="flex-end"
-          >
-            <MenuButton />
-          </Grid>
+          <FileUploader />
         </Grid>
-      </form>
+
+        {/* 버튼1, 버튼2 */}
+        <Grid
+          container
+          spacing={1}
+          sx={{ marginTop: "7px" }}
+          justifyContent="flex-end"
+        >
+          <MenuButton />
+        </Grid>
+      </Grid>
+      {/* </form> */}
     </StyledContainer>
   );
 };
@@ -191,21 +198,6 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 //버튼 스타일
-const StyledFindButton = styled(Button)`
-  && {
-    border-radius: 10px;
-    width: 132px;
-    height: 45px;
-    padding: auto;
-    ${fonts.SubText}
-    background-color: ${colors.dark_navy};
-    color: ${colors.back_navy};
-    &:hover {
-      background-color: ${colors.back_navy};
-      color: ${colors.dark_navy};
-    }
-  }
-`;
 
 const StyledModifyButton = styled(Button)`
   && {

@@ -4,8 +4,13 @@ import { colors } from "../../constants/colors";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import LeftSignContainer from "../../components/auth/LeftSignContainer";
+<<<<<<< HEAD
 import { postSignIn } from "../../api/api-user";
 import { useMutation, useQueryClient } from "react-query";
+=======
+import { getUserData, postSignIn } from "../../api/api-user";
+import { response } from "express";
+>>>>>>> d8482ef09d438cf50d6ebf9b9b2d9de4a25f6519
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -14,12 +19,15 @@ const LoginPage = () => {
   const queryClient = useQueryClient();
   const [error, setError] = useState("");
 
+<<<<<<< HEAD
   const loginMutation = useMutation(
     (credentials: { email: string; password: string }) =>
       postSignIn(credentials.email, credentials.password)
   );
 
   // 로그인 버튼 클릭 시 동작
+=======
+>>>>>>> d8482ef09d438cf50d6ebf9b9b2d9de4a25f6519
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -27,6 +35,16 @@ const LoginPage = () => {
       console.log("모든 필드를 입력해야 합니다.");
       return;
     }
+<<<<<<< HEAD
+=======
+    postSignIn(email, password).then((response) => {
+      console.log(response.data);
+      if (response.data.resultCode == "200")
+        localStorage.setItem("token", response.data.data.token);
+      getUserData(String(localStorage.getItem("token"))).then((response) =>
+        console.log("response")
+      );
+>>>>>>> d8482ef09d438cf50d6ebf9b9b2d9de4a25f6519
 
     try {
       const response = await loginMutation.mutateAsync({ email, password });

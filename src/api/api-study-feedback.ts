@@ -4,10 +4,17 @@ import { axiosInstance } from "./axiosInstance";
 /* 인스턴스 네이밍 컨벤션 : 요청방식(ex get) + 해당 내용 + (by) + (파라미터/인자/쿼리) */
 
 /** 1. 피드백, 댓글 작성  post */
-export const postFeedback = async (content_type: number, content: string) => {
+export const postFeedback = async (
+  content_type: number,
+  content: string,
+  study_id: string,
+  token: string
+) => {
   const response = await axiosInstance.post(`/feedback/create`, {
     content_type,
     content,
+    study_id,
+    token,
   });
   return response;
 };

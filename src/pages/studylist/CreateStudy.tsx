@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import StudyListItem from "../../components/study/StudyListItem";
 
 import { colors } from "../../constants/colors";
@@ -11,21 +11,20 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const StudyList = (): JSX.Element => {
-
   type StudyData = {
-    _id: string,
-    title: string,
-    acceptcount: number,
-    headcount: number,
-    start: string,
-    end: string,
-    deadline: string,
-    leader_name: string,
-    study_name: string,
-    content: string,
-    chat_link: string,
-    status: number
-  }
+    _id: string;
+    title: string;
+    acceptcount: number;
+    headcount: number;
+    start: string;
+    end: string;
+    deadline: string;
+    leader_name: string;
+    study_name: string;
+    content: string;
+    chat_link: string;
+    status: number;
+  };
 
   React.useEffect(() => {
     getInfoAllStudyData()
@@ -37,7 +36,7 @@ const StudyList = (): JSX.Element => {
         console.error("Error:", error);
       });
   }, []);
-  
+
   // post
   const [studyData, setStudyData] = useState<StudyData[]>([]);
   const [studyName, setStudyName] = useState("");
@@ -61,9 +60,8 @@ const StudyList = (): JSX.Element => {
       status: 1,
       start: startDate,
       end: endDate,
-      leader_name: ""
+      leader_name: "",
     };
-    
 
     postCreateStudy(
       newStudyData.study_name,
@@ -90,40 +88,68 @@ const StudyList = (): JSX.Element => {
 
   return (
     <CommonContainer>
-      
       <StyledStudyListTopArea>
-          <StyledTitleText>스터디 개설하기</StyledTitleText>
-          <StyledSubTextThin>만들고 싶은 스터디 정보를 입력하세요.</StyledSubTextThin>
+        <StyledTitleText>스터디 개설하기</StyledTitleText>
+        <StyledSubTextThin>
+          만들고 싶은 스터디 정보를 입력하세요.
+        </StyledSubTextThin>
       </StyledStudyListTopArea>
 
       <StyledStudyCreateArea>
         <StyledStudyCreateInputArea>
           <StyledStudyCreateText>스터디 이름</StyledStudyCreateText>
-          <StyledStudyInput type="text" placeholder="스터디 이름을 입력하세요." onChange={event => setStudyName(event.target.value)} />
+          <StyledStudyInput
+            type="text"
+            placeholder="스터디 이름을 입력하세요."
+            onChange={(event) => setStudyName(event.target.value)}
+          />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateInputAreaBig>
           <StyledStudyCreateText>스터디 소개</StyledStudyCreateText>
-          <StyledStudyInputBig placeholder="스터디 설명을 입력하세요." onChange={event => setStudyDescription(event.target.value)} />
+          <StyledStudyInputBig
+            placeholder="스터디 설명을 입력하세요."
+            onChange={(event) => setStudyDescription(event.target.value)}
+          />
         </StyledStudyCreateInputAreaBig>
         <StyledStudyCreateInputArea>
           <StyledStudyCreateText>회의 링크</StyledStudyCreateText>
-          <StyledStudyInput type="url" placeholder="화상 회의 주소를 입력하세요." onChange={event => setMeetingLink(event.target.value)} />
+          <StyledStudyInput
+            type="url"
+            placeholder="화상 회의 주소를 입력하세요."
+            onChange={(event) => setMeetingLink(event.target.value)}
+          />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateInputArea>
           <StyledStudyCreateText>진행 기간</StyledStudyCreateText>
           <StyledDateArea>
-            <StyledStudyDate type="date" onChange={event => setStartDate(event.target.value)} />
+            <StyledStudyDate
+              type="date"
+              onChange={(event) => setStartDate(event.target.value)}
+            />
             <StyledStudyDateText>~</StyledStudyDateText>
-            <StyledStudyDate type="date" onChange={event => setEndDate(event.target.value)} />
+            <StyledStudyDate
+              type="date"
+              onChange={(event) => setEndDate(event.target.value)}
+            />
           </StyledDateArea>
         </StyledStudyCreateInputArea>
         <StyledStudyCreateInputArea>
           <StyledStudyCreateText>모집 마감일</StyledStudyCreateText>
-          <StyledStudyDate type="date" onChange={event => setRecruitmentDeadline(event.target.value)} />
+          <StyledStudyDate
+            type="date"
+            onChange={(event) => setRecruitmentDeadline(event.target.value)}
+          />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateInputArea>
           <StyledStudyCreateText>모집 인원</StyledStudyCreateText>
-          <StyledStudyInputNumber type="number" min="1" placeholder="모집 인원을 입력하세요." onChange={event => setRecruitmentCount(parseInt(event.target.value))} />
+          <StyledStudyInputNumber
+            type="number"
+            min="1"
+            placeholder="모집 인원을 입력하세요."
+            onChange={(event) =>
+              setRecruitmentCount(parseInt(event.target.value))
+            }
+          />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateBtnArea>
           <StyledLink to={`/study`} onClick={handleCreateStudy}>
@@ -133,8 +159,7 @@ const StudyList = (): JSX.Element => {
           </StyledLink>
         </StyledStudyCreateBtnArea>
       </StyledStudyCreateArea>
-
-  </CommonContainer>
+    </CommonContainer>
   );
 };
 
@@ -155,7 +180,7 @@ const StyledTitleText = styled.p`
   ${fonts.TitleText}
   color: ${colors.main_mint};
   margin: 0 30px 0 0;
-  `;
+`;
 const StyledSubTextThin = styled.p`
   width: 439px;
   height: fit-content;
@@ -165,107 +190,107 @@ const StyledSubTextThin = styled.p`
   margin: 0;
 `;
 const StyledStudyCreateArea = styled.div`
-    height: 760px;
-    margin: 20px 0 20px 0;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: space-between;
-`
+  height: 760px;
+  margin: 20px 0 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+`;
 const StyledStudyCreateInputArea = styled.div`
-    height: 45px;
-    display: flex;
-    align-items: center;
-`
+  height: 45px;
+  display: flex;
+  align-items: center;
+`;
 const StyledStudyCreateInputAreaBig = styled.div`
-    height: 400px;
-    display: flex;
-`
+  height: 400px;
+  display: flex;
+`;
 const StyledStudyCreateText = styled.p`
-    width: 163px;
-    margin: 0;
-    font-family: ${fonts.SubText};
-    padding: 10px 0;
-    color: ${colors.main_gray};
-`
+  width: 163px;
+  margin: 0;
+  font-family: ${fonts.SubText};
+  padding: 10px 0;
+  color: ${colors.main_gray};
+`;
 
 const StyledStudyInput = styled.input`
-    width: 1080px;
-    height: 45px;
-    border: solid 1px ${colors.main_navy};
-    border-radius: 10px;
-    margin: 0;
-    padding-left: 20px;
-    font-family: ${fonts.SubTextThinSmall};
-`
+  width: 1080px;
+  height: 45px;
+  border: solid 1px ${colors.main_navy};
+  border-radius: 10px;
+  margin: 0;
+  padding-left: 20px;
+  font-family: ${fonts.SubTextThinSmall};
+`;
 const StyledStudyInputNumber = styled.input`
-    width: 447px;
-    height: 45px;
-    border: solid 1px ${colors.main_navy};
-    border-radius: 10px;
-    margin: 0;
-    padding: 0 20px 0 20px;
-    font-family: sans-serif;
-    font-size: 16px;
-`
+  width: 447px;
+  height: 45px;
+  border: solid 1px ${colors.main_navy};
+  border-radius: 10px;
+  margin: 0;
+  padding: 0 20px 0 20px;
+  font-family: sans-serif;
+  font-size: 16px;
+`;
 const StyledDateArea = styled.div`
-    width: 1103px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`
+  width: 1103px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 const StyledStudyDateText = styled.p`
-    margin: 0;
-    font-family: ${fonts.SubText};
-    color: ${colors.main_gray};
-`
+  margin: 0;
+  font-family: ${fonts.SubText};
+  color: ${colors.main_gray};
+`;
 const StyledStudyDate = styled.input`
-    width: 447px;
-    height: 45px;
-    border: solid 1px ${colors.main_navy};
-    border-radius: 10px;
-    margin: 0;
-    padding: 0 20px 0 20px;
-    font-family: sans-serif;
-    font-size: 16px;
-`
+  width: 447px;
+  height: 45px;
+  border: solid 1px ${colors.main_navy};
+  border-radius: 10px;
+  margin: 0;
+  padding: 0 20px 0 20px;
+  font-family: sans-serif;
+  font-size: 16px;
+`;
 const StyledStudyInputBig = styled.textarea`
-    width: 1082px;
-    height: 380px;
-    border: solid 1px ${colors.main_navy};
-    border-radius: 10px;
-    margin: 0;
-    padding: 20px 0 0 20px;
-    font-family: sans-serif;
-    font-size: 16px;
-    resize: none;
+  width: 1082px;
+  height: 380px;
+  border: solid 1px ${colors.main_navy};
+  border-radius: 10px;
+  margin: 0;
+  padding: 20px 0 0 20px;
+  font-family: sans-serif;
+  font-size: 16px;
+  resize: none;
 
-    ::-webkit-scrollbar {
-      width: 20px; /* 스크롤바 너비 */
-    }
+  ::-webkit-scrollbar {
+    width: 20px; /* 스크롤바 너비 */
+  }
 
-    ::-webkit-scrollbar-thumb {
-      background-color: ${colors.darkgray_navy}; /* 스크롤바 색상 */
-      border-radius: 20px; /* 스크롤바 둥글게 */
-      margin-right: 20px;
-      border: solid 6px white;
-    }
+  ::-webkit-scrollbar-thumb {
+    background-color: ${colors.darkgray_navy}; /* 스크롤바 색상 */
+    border-radius: 20px; /* 스크롤바 둥글게 */
+    margin-right: 20px;
+    border: solid 6px white;
+  }
 
-    ::-webkit-scrollbar-track {
-      width: 14px;
-      background-color: none; /* 스크롤바 트랙 색상 */
-      border-radius: 4px; /* 스크롤바 트랙 둥글게 */
-    }
-`
+  ::-webkit-scrollbar-track {
+    width: 14px;
+    background-color: none; /* 스크롤바 트랙 색상 */
+    border-radius: 4px; /* 스크롤바 트랙 둥글게 */
+  }
+`;
 
 const StyledStudyCreateBtnArea = styled.div`
-    width: 1270px;
-    display: flex;
-    flex-direction: row-reverse;
-`
+  width: 1270px;
+  display: flex;
+  flex-direction: row-reverse;
+`;
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${colors.main_black};
-`
+`;
 const StyledCommonButton = styled.div`
   width: 132px;
   height: 45px;

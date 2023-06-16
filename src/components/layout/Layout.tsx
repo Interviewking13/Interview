@@ -7,11 +7,11 @@ type LayoutProps = {
   children: ReactNode;
 };
 
-const blacklist = ["/login", "/login/signup"];
+const blaklist = ["/login", "/login/signup"];
 
 const Layout = (props: LayoutProps) => {
   const { pathname } = useLocation();
-  const isShow = !blacklist.some((path) => pathname.includes(path));
+  const isShow = !blaklist.some((path) => pathname.includes(path));
 
   return (
     <div>
