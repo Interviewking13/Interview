@@ -7,7 +7,7 @@ import { Modal } from "@mui/material";
 import UserInfoModal from "../../modal/UserInfoModal";
 import { useQuery } from "react-query";
 import { getStudyAccept, putAcceptStudy } from "../../../api/api-study";
-
+import { useQueryClient } from "react-query";
 type StudyApplicantListProps = {
   studyId: string;
 };
@@ -23,25 +23,21 @@ interface StudyAcceptData {
 }
 
 const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
+  const queryClient = useQueryClient();
+  const apply = 0;
   // 신청 수락
   const accept = 1;
   // 신청 거절
   const unAccept = 2;
   const onAcceptButton = async (index: number) => {
     const userId = studyAcceptData[index].user_id;
-    console.log(
-      `putAcceptStudy의 헤더와 바디는,
-      token:${String(localStorage.getItem("token"))},
-      studyId:${studyId},
-      userId:${userId},
-      accept:${accept}`
-    );
     await putAcceptStudy(
       String(localStorage.getItem("token")),
       studyId,
       userId,
       accept
     );
+    queryClient.invalidateQueries(["studyAcceptData"]);
   };
   const onDeleteButton = async (index: number) => {
     const userId = studyAcceptData[index].user_id;
@@ -58,17 +54,8 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
     isLoading,
     isError,
   } = useQuery(["studyAcceptData"], () =>
-    getStudyAccept(studyId, 0).then((response) => response.data)
+    getStudyAccept(studyId, apply).then((response) => response.data)
   );
-  if (isLoading) {
-    // 로딩 상태를 표시
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    // 에러 상태를 표시
-    return <div>Error occurred while fetching data</div>;
-  }
 
   console.log(`studyAcceptData:`, studyAcceptData);
   const members = studyAcceptData;
@@ -81,6 +68,16 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
   const handleCloseUserInfoModal = () => {
     setUserInfoModalOpen(false);
   };
+
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching data</div>;
+  }
   return (
     <>
       {members.map((member: StudyAcceptData, index: number) => (

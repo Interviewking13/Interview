@@ -64,15 +64,6 @@ const Information: React.FC = () => {
   } = useQuery(["studyData"], () =>
     getInfoStudyData(lastPathSegment).then((response) => response.data)
   );
-  if (isLoading) {
-    // 로딩 상태를 표시
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    // 에러 상태를 표시
-    return <div>Error occurred while fetching data</div>;
-  }
 
   console.log(`path is: ${lastPathSegment}:`, studyData);
   const {
@@ -88,6 +79,16 @@ const Information: React.FC = () => {
     leader_id,
     _id,
   } = studyData;
+
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching data</div>;
+  }
   return (
     <Container>
       <Mystudy>스터디정보</Mystudy>
