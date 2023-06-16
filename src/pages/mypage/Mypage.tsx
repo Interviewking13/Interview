@@ -6,9 +6,11 @@ import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import MenuTapBtn from "../../components/UI/MenuTapBtn";
+import { getUserData } from "../../api/api-user";
 
 const Mypage = () => {
   const navigate = useNavigate();
+
   useEffect(() => {
     onClickUserInfo();
   }, []);
