@@ -44,6 +44,7 @@ const studyApi = {
 
       const createRelation = {
         user_id: leader_id,
+        user_name: leader.user_name,
         study_id,
         is_leader: 1,
       };
@@ -64,9 +65,14 @@ const studyApi = {
     try {
       const member_id = req.user.user_id;
       console.log(member_id);
+      if (!member_id) throw new Error('Only logged-in people can apply'); // 로그인한 사람만 신청 가능
+      const member = await User.findOne({ _id: member_id });
+      console.log(member);
+
       const { study_id, goal } = req.body;
       const createInfo = {
         user_id: member_id,
+        user_name: member.user_name,
         study_id,
         is_leader: 0,
         goal,
@@ -116,6 +122,31 @@ const studyApi = {
       res.status(402).json({
         code: 402,
         message: 'The member cannot have authorization to accept study application.',
+      });
+    }
+  },
+
+  /**스터디 신청 완료 or 신청 수락 명단 조회*/
+  async acceptRelation(req, res, next) {
+    try {
+      const { study_id, accept } = req.body;
+      const leader_id = req.user.user_id;
+
+      // 스터디장 권한 판단
+      const leader = await StudyRelation.findOne({ user_id: leader_id, study_id });
+      if (!leader || leader.is_leader === false) throw new Error('Not leader');
+      console.log(leader);
+
+      // 명단 조회
+      const foundRelation = await StudyRelation.find({ study_id, accept });
+      console.log(foundRelation);
+      if (!foundRelation) throw new Error('Not found');
+      res.status(200).json(foundRelation);
+    } catch (error) {
+      console.log(error);
+      res.status(403).json({
+        code: 403,
+        message: 'Not leader',
       });
     }
   },
