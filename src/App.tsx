@@ -36,7 +36,6 @@ function App() {
                 <Route path="userstudy" element={<UserStudy />} />
                 <Route path="studyapply" element={<StudyApply />} />
                 <Route path="userinfo" element={<UserInfo />} />
-                <Route path="/mypage/TestGetUser" element={<TestGetUser />} />
               </Route>
               <Route path="/mypage/userinfo/modify" element={<Modify />} />
               <Route path="/login" element={<LoginPage />} />
