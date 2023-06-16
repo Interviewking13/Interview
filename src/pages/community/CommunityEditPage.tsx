@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { colors } from '../../constants/colors';
 import { TitleText, SubTextThin, SubTextSmall } from '../../constants/fonts';
-import { useMutation, useQueryClient } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { axiosInstance } from '../../api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
-
+import { getUserData } from "../../api/api-user";
 
 interface CommunityPost {
   id: string;
@@ -43,8 +43,29 @@ const CommunityEditPage: React.FC<CommunityEditPageProps> = ({ post }) => {
   const [postId, setPostId] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      getUserData(token)
+        .then((response) => {
+          const userData = response.data;
+          setUserData(userData);
+          console.log('사용자 이름:', userData.user_name);
+          console.log('이메일:', userData.email);
+          console.log('전화번호:', userData.user_id);
+          console.log('전화번호:', userData.token);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+
+    // if (!userData) {
+    //   return <div>userData is null</div>
+    // }
+
     if (post) {
       setPostId(post.id);
       getPostDataMutate(post.id);
@@ -75,13 +96,20 @@ const CommunityEditPage: React.FC<CommunityEditPageProps> = ({ post }) => {
     },
   });
 
-  const { mutate: putCommunityMutate } = useMutation(putCommunity, {
+  const { mutate: getCommunityMutate } = useMutation(getCommunityPost, {
     onError: (error) => {
       console.error('Error:', error);
     },
     onSuccess: (data) => {
       console.log('성공: ', data);
       // queryClient.invalidateQueries('communityList');
+      navigate(`/Community/communityDetailPage/${data.data.community_id}`);
+    },
+  });
+
+  const { mutate: putCommunityMutate } = useMutation(putCommunity, {
+    onSuccess: (data) => {
+      console.log('성공: ', data);
       navigate(`/Community/communityDetailPage/${data.data.community_id}`);
     },
   });
@@ -141,6 +169,8 @@ const CommunityEditPage: React.FC<CommunityEditPageProps> = ({ post }) => {
     </StyledCommonContainer>
   );
 };
+
+export default CommunityEditPage;
 
 const StyledCommonContainer = styled.div`
   width: 1270px;
@@ -354,5 +384,3 @@ const StyledDelButton = styled.button`
   justify-content: flex-end;
   width: 45px;
 `
-
-export default CommunityEditPage;

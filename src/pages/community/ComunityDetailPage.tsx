@@ -90,11 +90,7 @@ export const CommunityDetailPage: React.FC = () => {
     try {
       const deleteMyReply = await deleteReply(
         targetId,
-<<<<<<< HEAD
-        // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4M2ZlMDVjZDJiZjMzZDc1YzZjNjMyIiwiaWF0IjoxNjg2ODU5MzI5LCJleHAiOjE2ODcxMTg1Mjl9.Pk0Ux-i6VAqP7czJVdRwUVoPMUs5Z4JShximmDH4Uo0"
-=======
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4M2ZlMDVjZDJiZjMzZDc1YzZjNjMyIiwiaWF0IjoxNjg2ODU5MzI5LCJleHAiOjE2ODcxMTg1Mjl9.Pk0Ux-i6VAqP7czJVdRwUVoPMUs5Z4JShximmDH4Uo0"
->>>>>>> d8482ef09d438cf50d6ebf9b9b2d9de4a25f6519
       );
       getDataByCommunity();
     } catch (error) {
