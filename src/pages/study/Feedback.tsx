@@ -12,38 +12,58 @@ import { colors } from "../../constants/colors";
 import { useLocation } from "react-router-dom";
 
 export const Feedback = () => {
+  const [feedbackInput, setFeedbackInput] = useState("");
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
   //스터디 id값을
 
   const [feedbackData, setFeedbackData] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
-  // title: "",
-  // study_name: "",
-  // content: "",
-  // user_name: "",
+
   useEffect(() => {
-    getFeedbackDataByStudyId("6488114c4bef8842f98828ca")
+    getFeedbackDataByStudyId(lastPathSegment)
       .then((response) => {
         console.log(response.data);
         setFeedbackData(response.data);
-        console.log(feedbackData);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   }, []);
 
+  const postFeedbackBtn = () => {
+    postFeedback(
+      0,
+      feedbackInput,
+      lastPathSegment,
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4M2ZlMDVjZDJiZjMzZDc1YzZjNjMyIiwiaWF0IjoxNjg2ODU5MzI5LCJleHAiOjE2ODcxMTg1Mjl9.Pk0Ux-i6VAqP7czJVdRwUVoPMUs5Z4JShximmDH4Uo0"
+    ).then((response) => {
+      console.log(response.data);
+    });
+  };
+  // const DeleteFeedbackBtn = () => {
+  //   postFeedback(0, feedbackInput, lastPathSegment).then((response) => {
+  //     console.log(response.data);
+  //   });
+  // };
+  const onChangeArea = (e: any) => {
+    setFeedbackInput(e.target.value);
+  };
   return (
     <Container>
       <Mystudy>나의 스터디</Mystudy>
       <StudyTaps />
-      <Title>ㄴㅁㄴ</Title>
-      <SubContainer>
-        <FeedbackBtn>새 피드백 남기기</FeedbackBtn>
-      </SubContainer>
-      {feedbackData.map((post) => (
-        <FeedbackContainer>
+      <SubContainer></SubContainer>
+      <FeedbackContainer>
+        <InputArea
+          placeholder="피드백을 입력해주세요"
+          onChange={onChangeArea}
+        ></InputArea>
+        <FeedbackBtn onClick={postFeedbackBtn}>입력</FeedbackBtn>
+        <FeedbackBtn>삭제</FeedbackBtn>
+      </FeedbackContainer>
+      {feedbackData.map((post, index) => (
+        <FeedbackContainer key={post._id} id={post.user_id}>
           <FeedbackContentContainer>{post.user_name}</FeedbackContentContainer>
           <FeedbackContentContainer>{post.content}</FeedbackContentContainer>
         </FeedbackContainer>
@@ -51,24 +71,42 @@ export const Feedback = () => {
     </Container>
   );
 };
+
+const InputArea = styled.textarea`
+  height: 80px;
+  width: 80%;
+  margin-left: 20px;
+  font-size: 20px;
+`;
+const FeedbackBtn = styled.button`
+  background-color: yellow;
+  border-radius: 20px;
+  margin-right: 20px;
+  border: 1px solid 2px;
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+`;
 const SubContainer = styled.div`
   margin-top: 10px;
   display: flex;
   justify-content: flex-end;
 `;
-const FeedbackBtn = styled.button`
-  cursor: pointer;
-  background: none;
-  border: none;
-`;
+
 const Container = styled.div`
-  margin: 30px 100px;
+  margin: 0 auto;
+  width: 1270px;
   display: flex;
   flex-direction: column;
 `;
 
 //피드백 개별 박스
 const FeedbackContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: ${colors.back_navy};
   padding: 10px;
   height: 100px;
@@ -83,13 +121,4 @@ const FeedbackContentContainer = styled.div`
   display: flex;
 
   margin-right: 100px;
-`;
-const FeedbackBtnContainer = styled.div`
-  width: 70px;
-`;
-
-const InputBtn = styled.button`
-  cursor: pointer;
-  background: none;
-  margin: auto;
 `;

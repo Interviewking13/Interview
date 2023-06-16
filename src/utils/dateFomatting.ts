@@ -1,5 +1,14 @@
-export const dateFomatting = (date: string) => {
-  return date.replaceAll("-", ".");
+export const dateFomatting = (dateString: string) => {
+  const formattedDate = (dateString ?? "")
+    .toString()
+    .replaceAll("-", ".")
+    .substring(0, 10);
+  return formattedDate;
+};
+
+export const dateFomattingLine = (dateString: string) => {
+  const formattedDate = (dateString ?? "").toString().substring(0, 10);
+  return formattedDate;
 };
 
 export const dateSplice = (input: string) => {

@@ -1,10 +1,14 @@
 import styled from "styled-components";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { SubTextSmall } from "../../../constants/fonts";
-interface DetailTitleProps {
+type DetailTitleProps = {
   name: string;
   content: any;
-}
+};
+
+type DetailButtonProps = DetailTitleProps & {
+  onClick?: () => void;
+};
 
 export const DetailTitle = (props: DetailTitleProps) => {
   return (
@@ -14,6 +18,20 @@ export const DetailTitle = (props: DetailTitleProps) => {
         {props.name}
       </SubContentTitle>
       <SubContentContent>{props.content}</SubContentContent>
+    </SubContainer>
+  );
+};
+export const DetailButton = (props: DetailButtonProps) => {
+  const { name, content, onClick } = props;
+  return (
+    <SubContainer>
+      <SubContentTitle>
+        <PeopleAltIcon />
+        {props.name}
+      </SubContentTitle>
+      <SubContentContentButton onClick={onClick}>
+        {content}
+      </SubContentContentButton>
     </SubContainer>
   );
 };
@@ -38,4 +56,13 @@ const SubContentTitle = styled.span`
 `;
 const SubContainer = styled.div`
   display: flex;
+`;
+
+const SubContentContentButton = styled.div`
+  margin-top: 10px;
+  ${SubTextSmall};
+  cursor: pointer;
+  &.cursor-style {
+    cursor: pointer;
+  }
 `;

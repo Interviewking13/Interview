@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import { TitleText, SubTextThin, SubTextSmall } from "../../constants/fonts";
 import { useMutation, useQueryClient } from "react-query";
 import { axiosInstance } from "../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import { getUserData } from "../../api/api-user";
 
 const postCommunity = async (data: {
   title: string;
@@ -27,7 +28,17 @@ const CommunityCreatePage: React.FC = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [file, setFile] = useState<File | null>(null);
+
+  const [useId, setUserId] = useState("");
   // const [file, setFile] = useState(null);
+
+  useEffect(() => {
+    getUserData(String(localStorage.getItem("token"))).then((response) => {
+      setUserId(response.data.user_id);
+      console.log(response.data.user_id);
+      console.log(response.data);
+    });
+  });
 
   const handleTitleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -71,13 +82,12 @@ const CommunityCreatePage: React.FC = () => {
   const handleSubmit = () => {
     // 호출
 
-    // "community_id": 11,
     postCommunityMutate({
       title: title,
       content: content,
       attach: "",
-      user_id: "6481bc83cd2bf33d75c6b3d4",
-      community_id: 43,
+      user_id: useId,
+      community_id: 0,
     });
   };
 

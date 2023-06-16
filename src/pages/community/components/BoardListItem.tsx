@@ -8,20 +8,33 @@ import {
 } from "../../../constants/fonts";
 import { getAllCommunityData } from "../../../api/api-community";
 import { useNavigate } from "react-router-dom";
+import { getUserData } from "../../../api/api-user";
+import { dateSplice } from "../../../utils/dateFomatting";
 
-const BoardListItem: React.FC = () => {
-  const [tap, setTap] = useState(1);
+interface BoardListItemProps {
+  tap: number;
+}
+
+const BoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
   const [startPage, setStartPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
+  const [useId, setUserId] = useState("");
   const [allPosts, setAllPosts] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
   const navigate = useNavigate(); // useNavigate 훅 사용
-
+  useEffect(() => {
+    getUserData(String(localStorage.getItem("token"))).then((response) => {
+      setUserId(response.data.user_id);
+      console.log(response.data.user_id);
+      console.log(response.data);
+    });
+  });
   useEffect(() => {
     getAllCommunityData()
       .then((response) => {
         const { data } = response;
-        setAllPosts(data.data.reverse());
+        setAllPosts(data.data);
+        console.log(data.data.reverse());
         setLastPage(Math.ceil(data.data.length / 10));
         setPosts(data.data.slice(0, 10));
       })
@@ -56,37 +69,26 @@ const BoardListItem: React.FC = () => {
     console.log(e.currentTarget.id);
   };
 
-  const onClickTotalTap = (e: any) => {
-    console.log("토탈");
-    setTap(1);
-  };
-  const onClickMyTap = (e: any) => {
-    console.log("마이");
-    setTap(0);
-  };
   return (
     <StyledPostListItem>
-      <div>
-        <button onClick={onClickTotalTap}>전체</button>
-        <button onClick={onClickMyTap}>내가 쓴 글</button>
-      </div>
       {tap == 1 ? (
         <StyledPostListItemBox>
-          {posts.map((post) => (
+          {posts.map((post, index) => (
             <StyledPostItems
               onClick={onItemClick}
-              key={post.community_id}
+              key={index}
               id={post.community_id}
             >
               <StyledLeftPostItem>
                 <StyledPostTitle>{post.title}</StyledPostTitle>
               </StyledLeftPostItem>
               <StyledRightPostItem>
+                <StyledPostItem>댓글 수 : {post.reply_count}</StyledPostItem>
                 <StyledPostItem>
-                  조회 수: {post.read_users.length}
+                  조회 수 : {post.read_users.length}
                 </StyledPostItem>
                 <StyledPostItem>{post.user_name}</StyledPostItem>
-                <StyledPostItem>{post.timestamps}</StyledPostItem>
+                <StyledPostItem>{dateSplice(post.updatedAt)}</StyledPostItem>
               </StyledRightPostItem>
             </StyledPostItems>
           ))}
@@ -105,7 +107,33 @@ const BoardListItem: React.FC = () => {
           </PageNation>
         </StyledPostListItemBox>
       ) : (
-        <div>내가쓴글이다</div>
+        <StyledPostListItemBox>
+          {posts
+            .filter((post) => post.user_id === useId)
+            .map((filteredPost, index) => (
+              <StyledPostItems
+                onClick={onItemClick}
+                id={filteredPost.community_id}
+                key={index}
+              >
+                <StyledLeftPostItem>
+                  <StyledPostTitle>{filteredPost.title}</StyledPostTitle>
+                </StyledLeftPostItem>
+                <StyledRightPostItem>
+                  <StyledPostItem>
+                    댓글 수 : {filteredPost.reply_count}
+                  </StyledPostItem>
+                  <StyledPostItem>
+                    조회 수 : {filteredPost.read_users.length}
+                  </StyledPostItem>
+                  <StyledPostItem>{filteredPost.user_name}</StyledPostItem>
+                  <StyledPostItem>
+                    {dateSplice(filteredPost.updatedAt)}
+                  </StyledPostItem>
+                </StyledRightPostItem>
+              </StyledPostItems>
+            ))}
+        </StyledPostListItemBox>
       )}
     </StyledPostListItem>
   );
