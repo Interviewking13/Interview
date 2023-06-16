@@ -15,12 +15,24 @@ const Layout = (props: LayoutProps) => {
   const isShow = !blaklist.some((path) => pathname.includes(path));
 
   return (
-    <div>
-      {isShow && <Header />}
-      <div>{props.children}</div>
-      {isShow && <Footer />}
-    </div>
+    <StyledBody>
+      <Wrap>
+        {isShow && <Header />}
+        <div>{props.children}</div>
+        {isShow && <Footer />}
+      </Wrap>
+    </StyledBody>
   );
 };
 
 export default Layout;
+
+const StyledBody = styled.div`
+  height: 100vh;
+`;
+
+const Wrap = styled.div`
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 165px;
+`;

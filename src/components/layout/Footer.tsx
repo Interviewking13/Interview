@@ -4,11 +4,11 @@ import { colors } from "../../constants/colors";
 import { TitleText } from "../../constants/fonts";
 
 const StyledFooterWrapper = styled.div`
-  position: relative;
+  position: absolute;
   bottom: 0;
   width: 100%;
   background-color: ${colors.back_navy};
-  padding-bottom: 50px;
+  padding-bottom: 30px;
   margin-top: 165px;
 `;
 
