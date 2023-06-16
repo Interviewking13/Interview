@@ -29,10 +29,7 @@ const CommunityPage: React.FC<BoardListItemContainerProps> = ({ tap }) => {
         <StyledTitle>커뮤니티</StyledTitle>
         <StyledText>회원들과 정보를 공유해보세요.</StyledText>
         <CommunityListInputArea>
-          <StyledInput type="text" name="search" id="" placeholder="검색하기" />
-          <StyledInputBtn>
-            <StyledIcon src={SearchIconSrc} />
-          </StyledInputBtn>
+          <StyledInputBtn></StyledInputBtn>
           <StyledLink to={`/community/communityCreatePage`}>
             <CommonButton>
               <ButtonText>글 쓰기</ButtonText>
