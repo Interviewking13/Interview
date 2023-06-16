@@ -19,12 +19,8 @@ import Information from "./pages/study/Information";
 import CommunityCreatePage from "./pages/community/CommunityCreatePage";
 import CommunityPage from "./pages/community/CommunityPage";
 import { CommunityDetailPage } from "./pages/community/ComunityDetailPage";
-<<<<<<< HEAD
 import CommunityEditPage from "./pages/community/CommunityEditPage";
 import TestGetUser from "./components/mypage/TestGetUser";
-=======
-import StudyManage from "./pages/study/StudyManage";
->>>>>>> d8482ef09d438cf50d6ebf9b9b2d9de4a25f6519
 
 const queryClient = new QueryClient();
 
@@ -49,7 +45,7 @@ function App() {
               <Route path="/study/feedback/:id" element={<Feedback />} />
               <Route path="/study/:id" element={<Information />} />
               <Route path="/study/create" element={<CreateStudy />} />
-              <Route path="/management" element={<StudyManage />} />
+              {/* <Route path="/management" element={<StudyManage />} /> */}
               <Route
                 path="/Community/CommunityPage"
                 element={<CommunityPage tap={1} />}

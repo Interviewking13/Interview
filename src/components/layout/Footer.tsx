@@ -9,9 +9,10 @@ const StyledFooterWrapper = styled.div`
   width: 100%;
   background-color: ${colors.back_navy};
   padding-bottom: 50px;
+  margin-top: 165px;
 `;
+
 const Divider = styled.div`
-  margin-top: 35px;
   margin-bottom: 40px;
   border-bottom: 1px solid ${colors.gray_stroke};
 `;

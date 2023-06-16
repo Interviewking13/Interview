@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useLocation } from "react-router-dom";
+import styled from "styled-components";
 
 type LayoutProps = {
   children: ReactNode;
