@@ -23,9 +23,10 @@ interface StudyAcceptData {
 }
 
 const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
+  // 신청 수락
   const accept = 1;
+  // 신청 거절
   const unAccept = 2;
-  // {/* 변경 */}
   const onAcceptButton = async (index: number) => {
     const userId = studyAcceptData[index].user_id;
     console.log(
@@ -51,15 +52,7 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
       unAccept
     );
   };
-  // const onAcceptButton = () => {};
-  // const onDeleteButton = () => {};
-  // getStudyAccept(studyId, accept).then((res) => {
-  //   console.log("1234");
-  // });
-  // console.log(String(localStorage.getItem("token")));
-  // console.log(studyId);
 
-  // {/* 변경 */}
   const {
     data: studyAcceptData,
     isLoading,
@@ -94,17 +87,14 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
         <CardContainer key={index}>
           <CardContent>
             <StyledName onClick={handleOpenUserInfoModal}>
-              {/* 변경 */}
               {member.user_name}
             </StyledName>
             <Modal open={userInfoModalOpen} onClose={handleCloseUserInfoModal}>
               <UserInfoModal
-                // {/* 변경 */}
                 userId={member.user_id}
                 handleModalClose={handleCloseUserInfoModal}
               />
             </Modal>
-            {/* 변경 */}
             <StyledDescription>{member.goal}</StyledDescription>
           </CardContent>
           <StyledCommonButton
