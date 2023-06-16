@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useMutation, useQuery } from "react-query";
-import { getUserData, putUserData } from "../../api/api-user";
+import React, { useState } from "react";
+import { useQuery } from "react-query";
+import { getUserData } from "../../api/api-user";
 import { Button, Typography, TextField, Grid, Box } from "@mui/material";
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
@@ -10,11 +10,10 @@ import FileUploader from "../UI/FileUploader";
 const Modify = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    putUserdataMutate(customUserData);
   };
 
   const token =
-    localStorage.getItem("token"); /**회원정보조회를 위한 토큰 가져오기*/
+    localStorage.getItem("token") || ""; /**회원정보조회를 위한 토큰 가져오기*/
   const {
     data: userData,
     isLoading,
@@ -30,22 +29,14 @@ const Modify = () => {
   }
   // token 값을 활용하여 필요한 작업을 수행
   console.log("UserData", userData);
-  const { user_name, phone_number, email, password } = userData?.data || {};
+  const { user_name, phone_number, email, file_key, file_name } =
+    userData?.data || {};
 
   //유저 데이터 정보.
   const [customUserData, setCustomUserData] = useState({
-    userName: user_name,
     userPhoneNumber: phone_number,
-    userEmail: email,
-    userPassword: password,
-    userFileName: "",
-    userFIlekey: "",
-  });
-  const { mutate: putUserdataMutate } = useMutation(putUserData, {
-    onError: (error) => {
-      console.error("Error:", error);
-    },
-    onSuccess: (data) => {},
+    userFileName: file_key,
+    userFIlekey: file_name,
   });
 
   return (
@@ -74,7 +65,7 @@ const Modify = () => {
           <Grid item xs={10}>
             <StyledTextField
               variant="outlined"
-              defaultValue={customUserData.userName}
+              defaultValue={user_name}
               InputProps={{
                 readOnly: true,
               }}
@@ -103,7 +94,7 @@ const Modify = () => {
           <Grid item xs={10}>
             <StyledTextField
               variant="outlined"
-              defaultValue={customUserData.userEmail}
+              defaultValue={email}
               InputProps={{
                 readOnly: true,
               }}
@@ -116,7 +107,6 @@ const Modify = () => {
           <Grid item xs={10}>
             <StyledTextField
               variant="outlined"
-              defaultValue={customUserData.userPassword}
               onChange={(e) =>
                 setCustomUserData((prevData) => ({
                   ...prevData,
@@ -131,12 +121,7 @@ const Modify = () => {
             <StyledInfoName>비밀번호확인</StyledInfoName>
           </Grid>
           <Grid item xs={10}>
-            <StyledTextField
-              variant="outlined"
-              type="password"
-              defaultValue={customUserData.userPassword}
-              fullWidth
-            />
+            <StyledTextField variant="outlined" type="password" fullWidth />
           </Grid>
           <Grid item xs={12}></Grid>
           <Grid container>
