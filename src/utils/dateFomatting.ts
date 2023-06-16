@@ -6,6 +6,11 @@ export const dateFomatting = (dateString: string) => {
   return formattedDate;
 };
 
+export const dateFomattingLine = (dateString: string) => {
+  const formattedDate = (dateString ?? "").toString().substring(0, 10);
+  return formattedDate;
+};
+
 export const dateSplice = (input: string) => {
   const dateString = input;
   const date = new Date(dateString);
