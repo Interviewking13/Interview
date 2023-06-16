@@ -110,15 +110,15 @@ const FileUploader = () => {
           <>
             <Grid item xs={2}></Grid>
             <Grid item xs={6}>
-              <StyledFileButton onClick={handleDownload}>
+              <StyledFileDownButton onClick={handleDownload}>
                 {uploadedFile}
-              </StyledFileButton>
+              </StyledFileDownButton>
             </Grid>
             <Grid item xs={2}>
               <Grid container justifyContent="flex-end">
-                <StyledDeleteButton onClick={handleDelete}>
+                <StyledFileDeleteButton onClick={handleDelete}>
                   삭제
-                </StyledDeleteButton>{" "}
+                </StyledFileDeleteButton>{" "}
               </Grid>
             </Grid>
             <Grid item xs={2}></Grid>
@@ -157,7 +157,7 @@ const StyledFindButton = styled(Button)`
   }
 `;
 
-const StyledDeleteButton = styled(Button)`
+const StyledFileDeleteButton = styled(Button)`
   && {
     color: ${colors.main_red};
     ${fonts.SubTextThinSmall}
@@ -165,7 +165,7 @@ const StyledDeleteButton = styled(Button)`
   }
 `;
 
-const StyledFileButton = styled(Button)`
+const StyledFileDownButton = styled(Button)`
   && {
     color: ${colors.darkgray_navy};
     ${fonts.SubTextSmall}

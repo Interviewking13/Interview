@@ -1,39 +1,67 @@
 import React, { useState } from "react";
+
 import { Typography, Grid, Box, Divider, IconButton } from "@mui/material";
 
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
+import { useQuery } from "react-query";
+import { getUserData } from "../../api/api-user";
+import AWS from "aws-sdk";
 
-type userDate = {
-  name: string;
-  email: string;
-  phone_number: string;
-  password: string;
-};
-
-const Dummy = {
-  name: "박세진",
-  email: "cobaltcyan.park@gmail.com",
-  password: "tpwls1234",
-  privacy_use_yn: "Y",
-  marketing_use_yn: "N",
-  intro_yn: "00030001_202305300019.pdf", // 또는 NULL
-  phone_number: "010-4916-4244",
-  admin_yn: false,
-  dts_insert: "202305291250",
-  dts_update: "202306100421",
-};
+//1. s3 스토리지 플러그인가져오기
+AWS.config.update({
+  //스토리지인증키작성
+  accessKeyId: "AKIA4WQLMJXFZI2K7J2F",
+  secretAccessKey: "Wemv6lnsr0k3h4YCkBe2s4yEqnGkZXYkVIor1Le5",
+  region: "ap-northeast-2",
+});
 
 const UserInfo = () => {
-  const [userData, setUesrDate] = useState(Dummy);
-
   const navigate = useNavigate();
   const onClickModify = () => {
     navigate("/mypage/userinfo/Modify"); // useNavigate 사용하여 페이지 이동
+  };
+  const token =
+    localStorage.getItem("token") || ""; /**회원정보조회를 위한 토큰 가져오기*/
+  const {
+    data: userData,
+    isLoading,
+    isError,
+  } = useQuery(["userData"], () => getUserData(token as string)); //useQuery로 getdata
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching token</div>;
+  }
+  // token 값을 활용하여 필요한 작업을 수행
+  console.log("UserData", userData);
+  const { user_name, phone_number, email, file_key, file_name, intro_yn } =
+    userData?.data || {};
+
+  const onClickfileDownload = () => {
+    const s3 = new AWS.S3();
+    const bucketName = "13team";
+
+    const params = {
+      Bucket: bucketName,
+      Key: { file_key },
+    };
+
+    s3.getSignedUrl("getObject", params, (err, url) => {
+      if (err) {
+        console.error("Error generating download URL:", err);
+        return;
+      }
+      console.log("Download URL:", url);
+      // 생성된 다운로드 URL을 사용하거나, 이를 표시할 다이얼로그 또는 링크로 전달하여 사용자에게 제공합니다.
+      window.open(url, "_blank");
+    });
   };
 
   return (
@@ -41,7 +69,7 @@ const UserInfo = () => {
       <Grid container rowSpacing={2} alignItems={"center"}>
         <Grid item xs={11.5}>
           <StyledSayHello noWrap>
-            면접왕 <b>{userData.name}</b> 님, 어서오세요.
+            면접왕 <b>{user_name}</b> 님, 어서오세요.
           </StyledSayHello>
         </Grid>
         <Grid item xs={0.5}>
@@ -60,27 +88,18 @@ const UserInfo = () => {
               <StyledInfoText>아이디</StyledInfoText>
             </Grid>
             <Grid item>
-              <StyledInfoValue> {userData.email}</StyledInfoValue>
+              <StyledInfoValue> {email}</StyledInfoValue>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Grid container>
-            <Grid item xs={2}>
-              <StyledInfoText>비밀번호</StyledInfoText>
-            </Grid>
-            <Grid item>
-              <StyledInfoValue>{userData.password}</StyledInfoValue>
-            </Grid>
-          </Grid>
-        </Grid>
+
         <Grid item xs={12}>
           <Grid container>
             <Grid item xs={2}>
               <StyledInfoText>연락처</StyledInfoText>
             </Grid>
             <Grid item>
-              <StyledInfoValue>{userData.phone_number}</StyledInfoValue>
+              <StyledInfoValue>{phone_number}</StyledInfoValue>
             </Grid>
           </Grid>
         </Grid>
@@ -89,7 +108,9 @@ const UserInfo = () => {
             <Grid item xs={2}>
               <StyledInfoText>자기소개서</StyledInfoText>
             </Grid>
-            <Grid item>dasdsㅁㄴㅇㅁㄴ</Grid>
+            <Grid item>
+              <button onClick={onClickfileDownload}>{file_name}</button>
+            </Grid>
           </Grid>
         </Grid>
       </StyledInfo>
