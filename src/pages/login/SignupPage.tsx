@@ -12,6 +12,12 @@ const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const navigate = useNavigate();
 
   const onClickSubmit = async (e: React.FormEvent) => {
@@ -27,37 +33,46 @@ const SignupPage = () => {
     );
 
     if (!name || !phone || !email || !password || !confirmPassword) {
-      console.log("모든 필드를 입력해야 합니다.");
+      alert("모든 필드를 입력해야 합니다.");
       return;
     }
 
-    // if (nameValidated.length < 2) {
-    //   console.log("이름은 최소 2자 이상이어야 합니다.");
-    //   return;
-    // }
+    if (nameValidated.length < 2) {
+      setNameError("이름은 최소 2자 이상이어야 합니다.");
+      return;
+    } else {
+      setNameError("");
+    }
 
-    // if (phoneValidated !== phone) {
-    //   console.log("전화번호는 숫자와 - 기호로만 입력해야 합니다.");
-    //   return;
-    // }
+    if (phoneValidated !== phone) {
+      setPhoneError("전화번호는 숫자와 - 기호로만 입력해야 합니다.");
+      return;
+    } else {
+      setPhoneError("");
+    }
 
-    // const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    // if (!emailRegex.test(email)) {
-    //   console.log("유효한 이메일 주소를 입력해야 합니다.");
-    //   return;
-    // }
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("잘못된 유형의 이메일 주소입니다. @와 .을 포함해야합니다.");
+      return;
+    } else {
+      setEmailError("");
+    }
 
-    // if (passwordValidated.length < 6) {
-    //   console.log("비밀번호는 6자 이상으로 설정해주세요.");
-    //   return;
-    // }
+    if (passwordValidated.length < 4) {
+      setPasswordError("비밀번호는 4자 이상으로 설정해주세요.");
+      return;
+    } else {
+      setPasswordError("");
+    }
 
-    // if (password !== confirmPassword) {
-    //   console.log("비밀번호가 일치하지 않습니다.");
-    //   return;
-    // }
-    // postSignUp(name, email, password, passwordValidated);
-    // console.log(postSignUp);
+    if (password !== confirmPassword) {
+      setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
+      return;
+    } else {
+      setConfirmPasswordError("");
+    }
+
     // API 호출
     try {
       const response = await postSignUp(name, email, password, passwordValidated);
@@ -66,7 +81,7 @@ const SignupPage = () => {
       // 가입 성공 후 로그인 페이지로 이동
       navigate("/login");
     } catch (error) {
-      console.log("가입 실패:", error);
+      setError("회원가입 실패");
     }
 
   };
@@ -103,30 +118,45 @@ const SignupPage = () => {
               value={name}
               onChange={onChangeName}
             />
+            {nameError && (
+              <StyledErrorMessage>{nameError.toString()}</StyledErrorMessage>
+            )}
             <StyledSignupInput
               type="tel"
               placeholder="전화번호"
               value={phone}
               onChange={onChangePhone}
             />
+            {phoneError && (
+              <StyledErrorMessage>{phoneError.toString()}</StyledErrorMessage>
+            )}
             <StyledSignupInput
               type="email"
               placeholder="이메일"
               value={email}
               onChange={onChangeEmail}
             />
+            {emailError && (
+              <StyledErrorMessage>{emailError.toString()}</StyledErrorMessage>
+            )}
             <StyledSignupInput
               type="password"
               placeholder="비밀번호"
               value={password}
               onChange={onChangePassword}
             />
+            {passwordError && (
+              <StyledErrorMessage>{passwordError.toString()}</StyledErrorMessage>
+            )}
             <StyledSignupInput
               type="password"
               placeholder="비밀번호 확인"
               value={confirmPassword}
               onChange={onChangePasswordConfirm}
             />
+            {confirmPasswordError && (
+              <StyledErrorMessage>{confirmPasswordError.toString()}</StyledErrorMessage>
+            )}
             <StyledSignupBtn variant="contained" color="primary" type="submit">
               가입하기
             </StyledSignupBtn>
@@ -209,6 +239,14 @@ const StyledSignupCopyright = styled.div`
   text-align: center;
   font-size: 14px;
   color: #c0c3e5;
+`;
+
+const StyledErrorMessage = styled.p`
+  color: ${colors.main_red};
+  font-size: 14px;
+  margin-left: auto;
+  margin-top: 5px;
+  margin-bottom: 0;
 `;
 
 export default SignupPage;

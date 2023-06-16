@@ -24,7 +24,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     if (!email || !password) {
-      console.log("모든 필드를 입력해야 합니다.");
+      alert("모든 필드를 입력해 주세요.");
       return;
     }
 
@@ -34,7 +34,7 @@ const LoginPage = () => {
       if (response && response.data.resultCode === "200") {
         localStorage.setItem("token", response.data.data.token);
       } else if (response && response.data.resultCode === "400") {
-        setError("이메일을 다시 확인해 주세요.");
+        setError("이메일을 다시 확인하세요.");
         return;
       }
 
@@ -42,7 +42,7 @@ const LoginPage = () => {
       console.log(response);
       navigate("/");
     } catch (error) {
-      setError("비밀번호를 다시 확인해 주세요");
+      setError("이메일 또는 비밀번호를 다시 확인하세요.");
     }
   };
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
