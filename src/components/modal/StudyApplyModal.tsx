@@ -89,7 +89,7 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
             studyLeader={leader_name}
           />
           <TextInput
-            placeholder="한 줄 소개를 입력하시오. (60자 이내)"
+            placeholder="한 줄 소개를 입력해 주세요. (60자 이내)"
             value={goal}
             onChange={handleGoalChange}
           />
@@ -165,6 +165,7 @@ const StyledTitleTextNavy = styled.p`
 `;
 
 const TextInput = styled.textarea`
+  padding: 10px 0 0 10px;
   width: 923px;
   height: 172px;
   border-radius: 10px;
