@@ -6,11 +6,25 @@ import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
 import PencilIconSrc from "../../img/pencil_mint.svg";
 import { getInfoAllStudyData, postCreateStudy } from "../../api/api-study";
+import { getUserData } from "../../api/api-user";
 import { dateSplice } from "../../utils/dateFomatting";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const StudyList = (): JSX.Element => {
+  const [error, setError] = useState("");
+  const [studyData, setStudyData] = useState<StudyData[]>([]);
+  const [studyName, setStudyName] = useState("");
+  const [studyDescription, setStudyDescription] = useState("");
+  const [meetingLink, setMeetingLink] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [recruitmentDeadline, setRecruitmentDeadline] = useState("");
+  const [recruitmentCount, setRecruitmentCount] = useState(0);
+  const [userId, setUserId] = useState("");
+  const [userName, setUserName] = useState("");
+  const navigate = useNavigate();
+
   type StudyData = {
     _id: string;
     title: string;
@@ -20,6 +34,7 @@ const StudyList = (): JSX.Element => {
     end: string;
     deadline: string;
     leader_name: string;
+    leader_id: string;
     study_name: string;
     content: string;
     chat_link: string;
@@ -27,27 +42,34 @@ const StudyList = (): JSX.Element => {
   };
 
   React.useEffect(() => {
-    getInfoAllStudyData()
+    getUserData(String(localStorage.getItem("token")))
       .then((response) => {
+        setUserId(response.data.user_id);
+        setUserName(response.data.user_name);
+        console.log(response.data.user_id);
+        console.log(response.data.user_name);
         console.log(response.data);
-        setStudyData(response.data);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   }, []);
 
-  // post
-  const [studyData, setStudyData] = useState<StudyData[]>([]);
-  const [studyName, setStudyName] = useState("");
-  const [studyDescription, setStudyDescription] = useState("");
-  const [meetingLink, setMeetingLink] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [recruitmentDeadline, setRecruitmentDeadline] = useState("");
-  const [recruitmentCount, setRecruitmentCount] = useState(0);
-
   const handleCreateStudy = () => {
+    // 입력 필드 확인
+    if (
+      !studyName ||
+      !studyDescription ||
+      !meetingLink ||
+      !startDate ||
+      !endDate ||
+      !recruitmentDeadline ||
+      recruitmentCount === 0
+    ) {
+      setError("모든 항목을 입력해주세요.");
+      return;
+    }
+
     const newStudyData: StudyData = {
       _id: "",
       study_name: studyName,
@@ -60,10 +82,13 @@ const StudyList = (): JSX.Element => {
       status: 1,
       start: startDate,
       end: endDate,
-      leader_name: "",
+      leader_name: userName, // 사용자 이름을 leader_name에 할당
+      leader_id: userId, // 사용자 ID를 leader_id에 할당
     };
 
     postCreateStudy(
+      String(localStorage.getItem("token")),
+      newStudyData._id,
       newStudyData.study_name,
       newStudyData.title,
       newStudyData.content,
@@ -73,16 +98,21 @@ const StudyList = (): JSX.Element => {
       newStudyData.status,
       newStudyData.start,
       newStudyData.end,
-      newStudyData.leader_name
+      newStudyData.leader_name,
+      newStudyData.leader_id      
     )
       .then((response) => {
         if (response.data.success) {
           newStudyData._id = response.data.studyId;
           setStudyData((prevStudyData) => [newStudyData, ...prevStudyData]);
+          // 스터디 목록 페이지로 이동
+          navigate("/study");
+        } else {
+          navigate("/study");
         }
       })
       .catch((error) => {
-        // 오류 처리
+        setError("오류가 발생했습니다.");
       });
   };
 
@@ -152,11 +182,12 @@ const StudyList = (): JSX.Element => {
           />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateBtnArea>
-          <StyledLink to={`/study`} onClick={handleCreateStudy}>
+          <StyledLink to={`/study/create`} onClick={handleCreateStudy}>
             <StyledCommonButton>
               <StyledButtonText>만들기</StyledButtonText>
             </StyledCommonButton>
           </StyledLink>
+          {error && <StyledErrorMessage>{error}</StyledErrorMessage>}
         </StyledStudyCreateBtnArea>
       </StyledStudyCreateArea>
     </CommonContainer>
@@ -286,6 +317,7 @@ const StyledStudyCreateBtnArea = styled.div`
   width: 1270px;
   display: flex;
   flex-direction: row-reverse;
+  align-items: baseline;
 `;
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -303,4 +335,10 @@ const StyledCommonButton = styled.div`
 const StyledButtonText = styled.p`
   font-family: ${fonts.SubTextBig};
   color: ${colors.main_black};
+`;
+
+const StyledErrorMessage = styled.p`
+  color: red;
+  font-size: 14px;
+  margin: 0 15px 0 0;
 `;
