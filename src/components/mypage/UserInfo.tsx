@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Grid, Box, Divider, IconButton } from "@mui/material";
 
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -7,6 +7,7 @@ import styled from "styled-components";
 
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
+import { getUserData } from "../../api/api-user";
 
 type userDate = {
   name: string;
@@ -30,7 +31,12 @@ const Dummy = {
 
 const UserInfo = () => {
   const [userData, setUesrDate] = useState(Dummy);
-
+  useEffect(() => {
+    getUserData(String(localStorage.getItem("token"))).then((response) => {
+      console.log(response.data.user_id);
+      console.log(response.data);
+    });
+  }, []);
   const navigate = useNavigate();
   const onClickModify = () => {
     navigate("/mypage/userinfo/Modify"); // useNavigate 사용하여 페이지 이동
