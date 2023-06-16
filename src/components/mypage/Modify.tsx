@@ -1,45 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { getUserData } from "../../api/api-user";
+import { useMutation, useQuery } from "react-query";
+import { getUserData, putUserData } from "../../api/api-user";
 import { Button, Typography, TextField, Grid, Box } from "@mui/material";
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import FileUploader from "../UI/FileUploader";
 
-type userDate = {
-  user_name: string;
-  email: string;
-  phone_number: string;
-  password: string;
-};
-
-const MenuButton = () => {
-  return (
-    <>
-      <Grid item>
-        <StyledDeleteButton variant="contained" sx={{ gap: "5px" }}>
-          회원탈퇴
-        </StyledDeleteButton>
-      </Grid>
-      <Grid item>
-        <StyledModifyButton variant="contained">수정하기</StyledModifyButton>
-      </Grid>
-    </>
-  );
-};
-
 const Modify = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
+    putUserdataMutate(customUserData);
   };
 
-  const token = localStorage.getItem("token");
+  const token =
+    localStorage.getItem("token"); /**회원정보조회를 위한 토큰 가져오기*/
   const {
     data: userData,
     isLoading,
     isError,
-  } = useQuery(["userData"], () => getUserData(token as string)); // 수정요망
+  } = useQuery(["userData"], () => getUserData(token as string)); //useQuery로 getdata
   if (isLoading) {
     // 로딩 상태를 표시
     return <div>Loading...</div>;
@@ -51,6 +31,22 @@ const Modify = () => {
   // token 값을 활용하여 필요한 작업을 수행
   console.log("UserData", userData);
   const { user_name, phone_number, email, password } = userData?.data || {};
+
+  //유저 데이터 정보.
+  const [customUserData, setCustomUserData] = useState({
+    userName: user_name,
+    userPhoneNumber: phone_number,
+    userEmail: email,
+    userPassword: password,
+    userFileName: "",
+    userFIlekey: "",
+  });
+  const { mutate: putUserdataMutate } = useMutation(putUserData, {
+    onError: (error) => {
+      console.error("Error:", error);
+    },
+    onSuccess: (data) => {},
+  });
 
   return (
     <StyledContainer>
@@ -65,84 +61,111 @@ const Modify = () => {
         </Grid>
       </Grid>
       {/**  페이지내용 */}
-      {/* <form onSubmit={handleSubmit}> */}
-      <Grid
-        container
-        rowSpacing={2}
-        alignItems="center"
-        sx={{ marginTop: "7px" }}
-      >
-        <Grid item xs={2}>
-          <StyledInfoName>이름</StyledInfoName>
-        </Grid>
-        <Grid item xs={10}>
-          <StyledTextField
-            variant="outlined"
-            defaultValue={user_name}
-            InputProps={{
-              readOnly: true,
-            }}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <StyledInfoName>연락처</StyledInfoName>
-        </Grid>
-        <Grid item xs={10}>
-          <StyledTextField
-            variant="outlined"
-            defaultValue={phone_number}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <StyledInfoName>아이디</StyledInfoName>
-        </Grid>
-        <Grid item xs={10}>
-          <StyledTextField
-            variant="outlined"
-            defaultValue={email}
-            InputProps={{
-              readOnly: true,
-            }}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <StyledInfoName>비밀번호</StyledInfoName>
-        </Grid>
-        <Grid item xs={10}>
-          <StyledTextField
-            variant="outlined"
-            defaultValue={password}
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <StyledInfoName>비밀번호확인</StyledInfoName>
-        </Grid>
-        <Grid item xs={10}>
-          <StyledTextField variant="outlined" fullWidth />
-        </Grid>
-        <Grid item xs={12}></Grid>
-        <Grid container>
-          <Grid item xs={2}>
-            <StyledInfoName>자기소개서첨부</StyledInfoName>
-          </Grid>
-          <FileUploader />
-        </Grid>
-
-        {/* 버튼1, 버튼2 */}
+      <form onSubmit={handleSubmit}>
         <Grid
           container
-          spacing={1}
+          rowSpacing={2}
+          alignItems="center"
           sx={{ marginTop: "7px" }}
-          justifyContent="flex-end"
         >
-          <MenuButton />
+          <Grid item xs={2}>
+            <StyledInfoName>이름</StyledInfoName>
+          </Grid>
+          <Grid item xs={10}>
+            <StyledTextField
+              variant="outlined"
+              defaultValue={customUserData.userName}
+              InputProps={{
+                readOnly: true,
+              }}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <StyledInfoName>연락처</StyledInfoName>
+          </Grid>
+          <Grid item xs={10}>
+            <StyledTextField
+              variant="outlined"
+              defaultValue={customUserData.userPhoneNumber}
+              onChange={(e) =>
+                setCustomUserData((prevData) => ({
+                  ...prevData,
+                  userPhoneNumber: e.target.value,
+                }))
+              }
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <StyledInfoName>아이디</StyledInfoName>
+          </Grid>
+          <Grid item xs={10}>
+            <StyledTextField
+              variant="outlined"
+              defaultValue={customUserData.userEmail}
+              InputProps={{
+                readOnly: true,
+              }}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <StyledInfoName>비밀번호</StyledInfoName>
+          </Grid>
+          <Grid item xs={10}>
+            <StyledTextField
+              variant="outlined"
+              defaultValue={customUserData.userPassword}
+              onChange={(e) =>
+                setCustomUserData((prevData) => ({
+                  ...prevData,
+                  userPassword: e.target.value,
+                }))
+              }
+              type="password"
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <StyledInfoName>비밀번호확인</StyledInfoName>
+          </Grid>
+          <Grid item xs={10}>
+            <StyledTextField
+              variant="outlined"
+              type="password"
+              defaultValue={customUserData.userPassword}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12}></Grid>
+          <Grid container>
+            <Grid item xs={2}>
+              <StyledInfoName>자기소개서첨부</StyledInfoName>
+            </Grid>
+            <FileUploader />
+          </Grid>
+
+          {/* 버튼1, 버튼2 */}
+          <Grid
+            container
+            spacing={1}
+            sx={{ marginTop: "7px" }}
+            justifyContent="flex-end"
+          >
+            <Grid item>
+              <StyledDeleteButton variant="contained" sx={{ gap: "5px" }}>
+                회원탈퇴
+              </StyledDeleteButton>
+            </Grid>
+            <Grid item>
+              <StyledModifyButton variant="contained">
+                수정하기
+              </StyledModifyButton>
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
-      {/* </form> */}
+      </form>
     </StyledContainer>
   );
 };
