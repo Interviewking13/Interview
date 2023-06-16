@@ -319,7 +319,9 @@ const userApi = {
                     "user_name": true,
                     "email": true,
                     "intro_yn": true,
-                    "phone_number": true
+                    "phone_number": true,
+                    "file_key": true, 
+                    "file_name": true
                 }
             );
             
@@ -464,7 +466,7 @@ const userApi = {
                 message: "내 정보 수정 성공",
                 data: {
                     user_id: updatedUser._id,
-                    user_name: findUser.user_name,
+                    user_name: updatedUser.user_name,
                     email: updatedUser.email,
                     intro_yn: updatedUser.intro_yn,
                     phone_number: updatedUser.phone_number, 
