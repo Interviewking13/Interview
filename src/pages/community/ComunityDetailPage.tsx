@@ -144,9 +144,14 @@ export const CommunityDetailPage: React.FC = () => {
             </StyledCommunitySunInfo>
           </StyledCommunityInfoContainer>
           {useId === writerId ? (
-            <FixButton onClick={writeHandleDelete}>
-              삭제 <ClearIcon></ClearIcon>
-            </FixButton>
+            <FixButtonContainer>
+              <FixButton onClick={() => navigate(`/community/communityPage`)}>
+                수정 <ClearIcon></ClearIcon>
+              </FixButton>
+              <FixButton onClick={writeHandleDelete}>
+                삭제 <ClearIcon></ClearIcon>
+              </FixButton>
+            </FixButtonContainer>
           ) : (
             <div></div>
           )}
@@ -189,14 +194,19 @@ export const CommunityDetailPage: React.FC = () => {
     </StyledCommonContainer>
   );
 };
+
+const FixButtonContainer = styled.div`
+  display: flex;
+`;
 const FixButton = styled.div`
+  margin: 0px 20px;
   color: red;
   display: flex;
   align-items: center;
   justify-content: center;
   background: none;
   border: none;
-  width: 100px;
+  width: 80px;
   height: 20px;
   font-size: 20px;
   cursor: pointer;
