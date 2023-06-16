@@ -42,7 +42,9 @@ const StyledBestTitle = styled.div`
 `;
 
 const StyledPostItems = styled.div`
-  border-bottom: 1px solid ${colors.main_navy};
+  border-top: none;
+  border-radius: 5px;
+  background-color: ${colors.dark_navy};
   cursor: pointer;
   margin: 0;
   display: flex;
@@ -52,8 +54,9 @@ const StyledPostItems = styled.div`
 
 const StyledBestPostListItemBox = styled.div`
   border: 1px solid ${colors.main_navy};
-  border-radius: 10px;
+  border-radius: 5px;
   margin-bottom: 15px;
+  border-top: none;
 `;
 
 export const StyledLeftPostItem = styled.div``;
@@ -65,7 +68,9 @@ const StyledRightPostItem = styled.div`
 
 const StyledPostItem = styled.div`
   width: 100px;
-  color: ${colors.darkgray_navy};
+
+  color: ${colors.main_mint};
   ${SubTextThin};
-  margin-left: 20px;
+  margin-right: 20px;
+  font-weight: 700;
 `;

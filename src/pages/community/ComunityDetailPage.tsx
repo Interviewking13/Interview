@@ -14,6 +14,8 @@ import { postReply } from "../../api/api-community";
 import { getUserData } from "../../api/api-user";
 import ClearIcon from "@mui/icons-material/Clear";
 import React from "react";
+import { useRecoilState } from "recoil";
+import { EditContent } from "../../utils/CommunitiEdit";
 export const CommunityDetailPage: React.FC = () => {
   const [a, setA] = useState({
     content: "",
@@ -25,6 +27,7 @@ export const CommunityDetailPage: React.FC = () => {
   });
 
   const navigate = useNavigate(); // useNavigate 훅 사용
+  const [data, setData] = useRecoilState(EditContent);
   const [b, setB] = useState<any[]>([]);
   const [text, setText] = useState("");
   const [useId, setUserId] = useState("1");
@@ -49,13 +52,19 @@ export const CommunityDetailPage: React.FC = () => {
       setA(getDataByCommunityResponse.data.data.updateContent);
       setWriterId(getDataByCommunityResponse.data.data.updateContent.user_id);
       setB(getDataByCommunityResponse.data.data.findReply);
-      console.log(getDataByCommunityResponse.data.data.updateContent);
+      console.log(getDataByCommunityResponse.data.data.updateContent.title);
+      console.log(getDataByCommunityResponse.data.data.updateContent.content);
       console.log(getDataByCommunityResponse.data.data.findReply);
+
+      setData((a) => ({
+        ...a,
+        title: getDataByCommunityResponse.data.data.updateContent.title,
+        content: getDataByCommunityResponse.data.data.updateContent.content,
+      }));
     } catch (e) {
       console.log(e);
     }
   };
-
   const handleTextChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -99,6 +108,14 @@ export const CommunityDetailPage: React.FC = () => {
       alert("삭제 되었습니다");
 
       navigate(`/community/communityPage`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const writeHandleEdit = async () => {
+    try {
+      navigate(`/Community/CommunityEditPage/${lastPathSegment}`);
     } catch (error) {
       console.log(error);
     }
