@@ -12,28 +12,44 @@ type StudyApplicantListProps = {
   studyId: string;
 };
 
+//변경 {/* 변경 */}
 const members = [
   { name: "고병욱", description: "힘내자 힘", userId: "1232" },
   { name: "이예준", description: "열심히 하자", userId: "1234" },
   { name: "박지원", description: "화이팅!", userId: "1235" },
 ];
 
-const onDelete = () => {};
-const accept = 0;
 const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
-  const response = getStudyAccept(
-    String(localStorage.getItem("token")),
-    studyId,
-    accept
-  );
+  const accept = 0;
+  const unAccept = 1;
+  // {/* 변경 */}
+  // const onAcceptButton = async () => {
+  //   await putAcceptStudy(String(localStorage.getItem("token")),
+  //     study_id,
+  //     member_id,
+  //     accept);
+  // };
+  // const onDeleteButton = async () => {
+  //   await putAcceptStudy(String(localStorage.getItem("token")),
+  //   study_id,
+  //   member_id,
+  //   unAccept);
+  // };
+  const onAcceptButton = () => {};
+  const onDeleteButton = () => {};
+  getStudyAccept(studyId, accept).then((res) => {
+    console.log("1234");
+  });
+  console.log(String(localStorage.getItem("token")));
   console.log(studyId);
 
+  // {/* 변경 */}
   // const {
   //   data: studyAcceptData,
   //   isLoading,
   //   isError,
   // } = useQuery(["studyAcceptData"], () =>
-  //   getStudyAccept(String(localStorage.getItem("token")), studyId, 0).then(
+  //   getStudyAccept( studyId, 0).then(
   //     (response) => response.data
   //   )
   // );
@@ -48,7 +64,7 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
   // }
 
   // console.log(`studyAcceptData:`, studyAcceptData);
-  // const { title, status } = studyAcceptData;
+  // const { user_id, user_name,goal } = studyAcceptData;
   const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
 
   const handleOpenUserInfoModal = () => {
@@ -64,25 +80,28 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
         <CardContainer key={index}>
           <CardContent>
             <StyledName onClick={handleOpenUserInfoModal}>
+              {/* 변경 */}
               {member.name}
             </StyledName>
             <Modal open={userInfoModalOpen} onClose={handleCloseUserInfoModal}>
               <UserInfoModal
+                // {/* 변경 */}
                 userId={member.userId}
                 handleModalClose={handleCloseUserInfoModal}
               />
             </Modal>
+            {/* 변경 */}
             <StyledDescription>{member.description}</StyledDescription>
           </CardContent>
           <StyledCommonButton
             backgroundColor={colors.main_mint}
-            onClick={onDelete}
+            onClick={onAcceptButton}
           >
             신청 수락
           </StyledCommonButton>
           <StyledCommonButton
             backgroundColor={colors.main_red}
-            onClick={onDelete}
+            onClick={onDeleteButton}
           >
             회원 거절
           </StyledCommonButton>
