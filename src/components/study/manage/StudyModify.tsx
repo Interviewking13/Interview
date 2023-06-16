@@ -2,7 +2,7 @@ import { HTMLAttributes } from "react";
 import styled from "styled-components";
 import { colors } from "../../../constants/colors";
 import * as fonts from "../../../constants/fonts";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   deleteStudy,
   getInfoStudyData,
@@ -16,6 +16,8 @@ interface StudyModifyProps {
   studyId: string;
 }
 const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
+  console.log("studyId::", studyId);
+  const navigate = useNavigate();
   const {
     data: studyData,
     isLoading,
@@ -30,12 +32,11 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
   const [endDate, setEndDate] = useState(""); // 종료 날짜 상태 추가
   const [recruitmentDeadline, setRecruitmentDeadline] = useState(""); // 모집 마감일 상태 추가
   const [recruitmentCount, setRecruitmentCount] = useState(0); // 모집 인원 상태 추가
-
+  console.log("1");
   useEffect(() => {
     if (studyData) {
       const { title, content, chat_link, start, end, deadline, headcount } =
         studyData;
-      console.log(dateFomattingLine(start));
       setStudyName(title);
       setStudyDescription(content);
       setMeetingLink(chat_link);
@@ -72,7 +73,11 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
     // 스터디 삭제 로직을 처리하는 코드를 작성하세요.
     // 필요한 API 호출 등의 작업을 수행할 수 있습니다.
     console.log("studyId:", studyId);
-    deleteStudy(String(localStorage.getItem("token")), studyId);
+    deleteStudy(String(localStorage.getItem("token")), studyId).then((res) => {
+      console.log("1234");
+      navigate("/");
+      console.log("12345");
+    });
   };
   return (
     <>

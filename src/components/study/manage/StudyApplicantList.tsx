@@ -5,6 +5,8 @@ import * as fonts from "../../../constants/fonts";
 import React, { useEffect, useState } from "react";
 import { Modal } from "@mui/material";
 import UserInfoModal from "../../modal/UserInfoModal";
+import { useQuery } from "react-query";
+import { getStudyAccept } from "../../../api/api-study";
 
 type StudyApplicantListProps = {
   studyId: string;
@@ -19,6 +21,32 @@ const members = [
 const onDelete = () => {};
 
 const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
+  const response = getStudyAccept(
+    String(localStorage.getItem("token")),
+    studyId,
+    0
+  );
+  // const {
+  //   data: studyAcceptData,
+  //   isLoading,
+  //   isError,
+  // } = useQuery(["studyAcceptData"], () =>
+  //   getStudyAccept(String(localStorage.getItem("token")), studyId, 0).then(
+  //     (response) => response.data
+  //   )
+  // );
+  // if (isLoading) {
+  //   // 로딩 상태를 표시
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (isError) {
+  //   // 에러 상태를 표시
+  //   return <div>Error occurred while fetching data</div>;
+  // }
+
+  // console.log(`studyAcceptData:`, studyAcceptData);
+  // const { title, status } = studyAcceptData;
   const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
 
   const handleOpenUserInfoModal = () => {

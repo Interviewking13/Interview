@@ -63,7 +63,7 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
     handleModalClose();
   };
   const onApplyButtonHandler = () => {
-    postApplyStudy(study_id, goal);
+    postApplyStudy(String(localStorage.getItem("token")), studyId, goal);
     alert("스터디가 신청되었습니다!");
     handleModalClose();
 
