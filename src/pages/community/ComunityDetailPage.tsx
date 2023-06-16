@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { colors } from "../../constants/colors";
 import {
+  deleteCommunityByCommunity_no,
   deleteReply,
   getDataByCommunity_noAndUser_id,
 } from "../../api/api-community";
@@ -22,10 +23,12 @@ export const CommunityDetailPage: React.FC = () => {
     read_users: [],
     file_name: "",
   });
+
+  const navigate = useNavigate(); // useNavigate 훅 사용
   const [b, setB] = useState<any[]>([]);
   const [text, setText] = useState("");
-  const [useId, setUserId] = useState("");
-  const [writerId, setWriterId] = useState("");
+  const [useId, setUserId] = useState("1");
+  const [writerId, setWriterId] = useState("2");
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
@@ -87,37 +90,19 @@ export const CommunityDetailPage: React.FC = () => {
     }
   };
 
-  const writeHandleDelete = async (targetId: number) => {
+  const writeHandleDelete = async () => {
     try {
-      const deleteMyReply = await deleteReply(
-        targetId,
+      const deleteMyReply = await deleteCommunityByCommunity_no(
+        Number(lastPathSegment),
         String(localStorage.getItem("token"))
       );
-      getDataByCommunity(useId);
+      alert("삭제 되었습니다");
+
+      navigate(`/community/communityPage`);
     } catch (error) {
       console.log(error);
     }
   };
-  // const handleDelete = (e: any) => {
-  //   console.log(Number(e.target.id));
-  //   deleteReply(Number(e.target.id))
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       getDataByCommunity_noAndUser_id(
-  //         Number(lastPathSegment),
-  //         "6487ea3c2188ede075315499"
-  //       )
-  //         .then((response) => {
-  //           setB(response.data.data.findReply);
-  //         })
-  //         .catch((error) => {
-  //           console.error(error);
-  //         });
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
 
   return (
     <StyledCommonContainer>
@@ -139,9 +124,18 @@ export const CommunityDetailPage: React.FC = () => {
             </StyledCommunitySunInfo>
           </StyledCommunityInfoContainer>
           {useId === writerId ? (
-            <FixButton>
-              삭제 <ClearIcon></ClearIcon>
-            </FixButton>
+            <FixButtonContainer>
+              <FixButton
+                onClick={() =>
+                  navigate(`/Community/CommunityEditPage/${lastPathSegment}`)
+                }
+              >
+                수정 <ClearIcon></ClearIcon>
+              </FixButton>
+              <FixButton onClick={writeHandleDelete}>
+                삭제 <ClearIcon></ClearIcon>
+              </FixButton>
+            </FixButtonContainer>
           ) : (
             <div></div>
           )}
@@ -184,14 +178,19 @@ export const CommunityDetailPage: React.FC = () => {
     </StyledCommonContainer>
   );
 };
-const FixButton = styled.button`
+
+const FixButtonContainer = styled.div`
+  display: flex;
+`;
+const FixButton = styled.div`
+  margin: 0px 20px;
   color: red;
   display: flex;
   align-items: center;
   justify-content: center;
   background: none;
   border: none;
-  width: 100px;
+  width: 80px;
   height: 20px;
   font-size: 20px;
   cursor: pointer;

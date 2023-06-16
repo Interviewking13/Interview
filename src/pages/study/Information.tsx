@@ -15,15 +15,15 @@ import StudyApplyModal from "../../components/modal/StudyApplyModal";
 import { useQuery } from "react-query";
 import UserInfoModal from "../../components/modal/UserInfoModal";
 import { getUserData } from "../../api/api-user";
-
+import SettingsIcon from "@mui/icons-material/Settings";
 const Information: React.FC = () => {
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
   const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
   const [studyApplyModalOpen, setStudyApplyModalOpen] = React.useState(false);
-  const [useId, setUserId] = useState("");
-  const [leaderId, setLeaderId] = useState("");
+  const [useId, setUserId] = useState("1");
+  const [leaderId, setLeaderId] = useState("2");
 
   useEffect(() => {
     getUserData(String(localStorage.getItem("token"))).then((response) => {
@@ -95,7 +95,7 @@ const Information: React.FC = () => {
         <StudyTaps />
         {useId === leaderId ? (
           <StyledStudyManageButton onClick={handleStudyManageButtonClick}>
-            스터디 관리로 가는 버튼
+            <SettingsIcon fontSize="large"></SettingsIcon>
           </StyledStudyManageButton>
         ) : (
           <div></div>
@@ -159,7 +159,9 @@ const StyeldTapContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `;
-const StyledStudyManageButton = styled.button``;
+const StyledStudyManageButton = styled.div`
+  cursor: pointer;
+`;
 
 export const Title = styled.span`
   margin-top: 10px;
