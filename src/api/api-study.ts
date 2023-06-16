@@ -18,7 +18,7 @@ export const postCreateStudy = async (
   start: string,
   end: string,
   leader_name: string,
-  leader_id: string  
+  leader_id: string
 ) => {
   const response = await axiosInstance.post("study/create", {
     study_name,
@@ -38,8 +38,13 @@ export const postCreateStudy = async (
 };
 
 /** 2. 스터디 신청 (원) post */
-export const postApplyStudy = async (study_id: string, goal: string) => {
+export const postApplyStudy = async (
+  token: string,
+  study_id: string,
+  goal: string
+) => {
   const response = await axiosInstance.post("study/apply", {
+    token,
     study_id,
     goal,
   });
@@ -47,10 +52,19 @@ export const postApplyStudy = async (study_id: string, goal: string) => {
 };
 
 /** 3. 스터디 신청 수락 (장)  put */
-export const putAcceptStudy = async (study_id: number, accept: number) => {
-  const response = await axiosInstance.put(`study/accept/${study_id}`, {
-    accept,
-  });
+export const putAcceptStudy = async (
+  token: string,
+  study_id: string,
+  member_id: string,
+  accept: number
+) => {
+  const response = await axiosInstance.put(
+    `study/accept/${study_id}/${member_id}`,
+    {
+      token,
+      accept,
+    }
+  );
   return response;
 };
 
@@ -80,7 +94,7 @@ export const getInfoStudyData = async (study_id: string) => {
   return response;
 };
 
-/** 6. 스터디 정보 수정 (장)  get */
+/** 6. 스터디 정보 수정 (장)  put */
 export const putInfoStudy = async (
   study_id: string,
   data: {
@@ -94,7 +108,7 @@ export const putInfoStudy = async (
     status: number;
   }
 ) => {
-  const response = await axiosInstance.put(`info/${study_id}`, {
+  const response = await axiosInstance.put(`study/info/${study_id}`, {
     token: data.token,
     study_name: data.study_name,
     title: data.title,
@@ -107,16 +121,32 @@ export const putInfoStudy = async (
   return response;
 };
 
-/** 7. 스터디 회원 관리 (장)  get */
-export const deleteStudyMember = async (member_id: string) => {
-  const response = await axiosInstance.delete(`study/${member_id}`);
+/** 7. 스터디 회원 관리 (장)  delete */
+export const deleteStudyMember = async (
+  token: string,
+  study_id: string,
+  member_id: string
+) => {
+  const response = await axiosInstance.delete(
+    `study/${study_id}/${member_id}`,
+    {
+      data: { token: token }, // 토큰을 바디로 보내기 위해 data 속성에 객체 형태로 설정
+    }
+  );
   return response;
 };
-
-/** 8. 스터디 삭제 (장)  get */
+/** 8. 스터디 삭제 (장)  delete */
 export const deleteStudy = async (token: string, study_id: string) => {
   const response = await axiosInstance.delete(`study/${study_id}`, {
     data: { token: token }, // 토큰을 바디로 보내기 위해 data 속성에 객체 형태로 설정
   });
+  return response;
+};
+
+/** 9. 스터디 신청원 조회  get */
+export const getStudyAccept = async (study_id: string, accept: number) => {
+  const response = await axiosInstance.get(
+    `study/accept/${study_id}/${accept}`
+  );
   return response;
 };
