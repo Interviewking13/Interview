@@ -45,7 +45,6 @@ const communityApi = {
             const findUser = await User.findOne({ _id: user_id }).populate("_id").exec();
             const user_name = findUser.user_name;
 
-            const file_etag = req.body.file_etag;
             const file_name = req.body.file_name;
             const file_key = req.body.file_key;
 
@@ -70,8 +69,8 @@ const communityApi = {
                 title,
                 content,
                 file_key,
-                file_etag,
                 file_name,
+                reply_count: 0,
             });
 
             if (!newContent) {
@@ -147,7 +146,7 @@ const communityApi = {
     /** 게시글수정 */
     async modifyContent(req, res) {
         try {
-            const { community_id, title, content, file_etag, file_name, file_key } = req.body;
+            const { community_id, title, content, file_name, file_key } = req.body;
             const findContent = await Community.findOne({ community_id });
 
             /** 회원 유효성 확인 : 본인 글 수정 시 */
@@ -164,7 +163,6 @@ const communityApi = {
                 title,
                 content,
                 file_key,
-                file_etag,
                 file_name,
             }, { new: true });
             
@@ -198,7 +196,7 @@ const communityApi = {
                 return res.status(400).json({ message: "게시글삭제 실패" });
             }
 
-            const deleteContent = await Community.deleteOne({ community_id: req.query.community_id });
+            const deleteContent = await Community.deleteOne({ community_id: req.body.community_id });
             
             return res.status(200).json({
                 message: "게시글삭제 성공",
@@ -236,10 +234,19 @@ const communityApi = {
                 reply_content,
                 community_id,
             });
-    
+
             if(!newContent) {
                 return res.status(400).json({ message: "댓글등록 실패" });
             }
+
+            /** 댓글수 증가 */
+            const replyCount = await CommunityReply.countDocuments({ community_id });
+
+            const replyCountIncrease = await Community.findOneAndUpdate({ community_id }, {
+                reply_count: replyCount,
+            }, { new: true });
+
+            console.log('replyCountIncrease: ', replyCountIncrease);
 
             return res.status(200).json({ 
                 message: "댓글등록 성공",
@@ -258,7 +265,7 @@ const communityApi = {
             const { reply_id, reply_content } = req.body;
             const findReply = await CommunityReply.findOne({ reply_id });
 
-            /** 회원 유효성 확인 : 본인 글 수정 시 */
+            /** 회원 유효성 확인 : 본인 댓글 수정 시 */
             const user_id = req.user.user_id;
             if(!user_id){
                 return res.status(400).json({ message: "유효하지 않은 사용자" });
@@ -287,7 +294,7 @@ const communityApi = {
         try {
             const findReply = await CommunityReply.findOne({ reply_id: req.body.reply_id });
 
-            /** 회원 유효성 확인 : 본인 글 수정 시 */
+            /** 회원 유효성 확인 : 본인 글 삭제 시 */
             const user_id = req.user.user_id;
             if(!user_id){
                 return res.status(400).json({ message: "유효하지 않은 사용자" });
@@ -297,7 +304,7 @@ const communityApi = {
                 return res.status(400).json({ message: "댓글삭제 실패" });
             }
 
-            const deleteContent = await CommunityReply.deleteOne({ reply_id: req.query.reply_id });
+            const deleteContent = await CommunityReply.deleteOne({ reply_id: req.body.reply_id });
                 
             return res.status(200).json({
                 message: "댓글삭제 성공"
