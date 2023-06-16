@@ -59,8 +59,13 @@ export const putCommunity = async ({
 };
 
 /** 5. 커뮤니티 게시글 삭제  delete */
+// export const deleteCommunityByCommunity_no = async (community_id: number) => {
+//   const response = await axiosInstance.delete(`community/detl/${community_id}`);
+//   return response;
+// };
+
 export const deleteCommunityByCommunity_no = async (community_id: number) => {
-  const response = await axiosInstance.delete(`community/detl/${community_id}`);
+  const response = await axiosInstance.delete("community/detl/" + community_id);
   return response;
 };
 
@@ -88,10 +93,13 @@ export const putReply = async (reply_id: number, reply_content: string) => {
 };
 
 /** 8. 커뮤니티 댓글 삭제  delete */
-export const deleteReply = async (reply_id: number) => {
-  const response = await axiosInstance.delete(
-    `community/reply?reply_id=${reply_id}`
-  );
+export const deleteReply = async (reply_id: number, token: string) => {
+  const response = await axiosInstance.delete(`community/reply`, {
+    data: {
+      reply_id: reply_id,
+      token: token,
+    },
+  });
   return response;
 };
 
