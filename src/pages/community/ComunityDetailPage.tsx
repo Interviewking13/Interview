@@ -159,10 +159,7 @@ export const CommunityDetailPage: React.FC = () => {
         </StyledCommunityInfo>
         <Divider />
         <StyledContent>{a.content}</StyledContent>
-        <StyledFileDownloadBtn>
-          첨부파일1.docx{a.file_name}
-          <MdOutlineFileDownload size={16} />
-        </StyledFileDownloadBtn>
+
         <StyledReplyInputContainer>
           <StyledReplyInput
             value={text}
