@@ -33,13 +33,16 @@ const LoginPage = () => {
 
       if (response && response.data.resultCode === "200") {
         localStorage.setItem("token", response.data.data.token);
+      } else if (response && response.data.resultCode === "400") {
+        setError("이메일을 다시 확인해 주세요.");
+        return;
       }
 
       queryClient.invalidateQueries("userData");
       console.log(response);
       navigate("/");
     } catch (error) {
-      setError("로그인에 실패했습니다.");
+      setError("비밀번호를 다시 확인해 주세요");
     }
   };
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
@@ -189,9 +192,10 @@ const StyledLoginBtn = styled(Button)`
 `;
 
 const StyledErrorMessage = styled.p`
-  color: red;
+  color: ${colors.main_red};
   font-size: 14px;
-  margin-top: 10px;
+  margin-top: 30px;
+  margin-left: auto;
 `;
 
 const StyledSignupCopyright = styled.div`
