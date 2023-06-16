@@ -42,6 +42,9 @@ const StyledFooterInfo = styled.div`
   font-weight: 300;
   color: #909090;
   margin-left: 125px;
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 300;
 `;
 
 const StyledFooterCopyright = styled.div`
@@ -62,27 +65,27 @@ const Footer = () => {
         </StyledFooterLogoContainer>
         <StyledFooterInfoContainer>
           <StyledFooterInfo>
-            footerfooterfooterfooter
+            COMPANY: Interview King
             <br />
-            footerfooterfooterfooterfooterfooterfooter
+            ADRESS: 서울특별시 강남구 선릉로 433
             <br />
-            footerfooterfooter
+            OWNER: 엘리스 SW 트랙 4기 13팀
           </StyledFooterInfo>
           <StyledFooterInfo>
-            footerfooterfooterfooter
+            BUSINESS LICENSE: 1234-5678-13team
             <br />
-            footerfooterfooterfooterfooterfooterfooter
+            MAIL: contact@EliceSwTeam13.io
             <br />
-            footerfooterfooter
+            Elice SW 4th Gen, Engineer Track Team 13
           </StyledFooterInfo>
         </StyledFooterInfoContainer>
         <StyledFooterCopyright>
-          footerfooterfooterfooter
+          CUSTOMER CENTER : 1234-5678
           <br />
-          footerfooterfooter
+          MONDAY-FRIDAY 10:00 - 17:00
           <br />
           <br />
-          Copyright © 2023 SW4.CARCAR All Rights Reserved.
+          Copyright ⓒ 2023 EliceSw4Team13 Inc. All Rights Reserved.
         </StyledFooterCopyright>
       </StyledFooterContainer>
     </StyledFooterWrapper>
