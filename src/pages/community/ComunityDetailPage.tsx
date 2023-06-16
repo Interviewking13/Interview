@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { colors } from "../../constants/colors";
 import {
+  deleteCommunityByCommunity_no,
   deleteReply,
   getDataByCommunity_noAndUser_id,
 } from "../../api/api-community";
@@ -10,8 +11,9 @@ import { dateSplice } from "../../utils/dateFomatting";
 import * as fonts from "../../constants/fonts";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { postReply } from "../../api/api-community";
-import { response } from "express";
-
+import { getUserData } from "../../api/api-user";
+import ClearIcon from "@mui/icons-material/Clear";
+import React from "react";
 export const CommunityDetailPage: React.FC = () => {
   const [a, setA] = useState({
     content: "",
@@ -21,48 +23,38 @@ export const CommunityDetailPage: React.FC = () => {
     read_users: [],
     file_name: "",
   });
-  const [b, setB] = useState<any[]>([]);
 
+  const navigate = useNavigate(); // useNavigate 훅 사용
+  const [b, setB] = useState<any[]>([]);
+  const [text, setText] = useState("");
+  const [useId, setUserId] = useState("1");
+  const [writerId, setWriterId] = useState("2");
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
-
   useEffect(() => {
-    getDataByCommunity();
+    getUserData(String(localStorage.getItem("token"))).then((response) => {
+      setUserId(response.data.user_id);
+      console.log(response.data.user_id);
+      getDataByCommunity(response.data.user_id);
+    });
   }, []);
-  const getDataByCommunity = async () => {
+
+  const getDataByCommunity = async (user_id: string) => {
     try {
       const getDataByCommunityResponse = await getDataByCommunity_noAndUser_id(
         Number(lastPathSegment),
-        "6483fe05cd2bf33d75c6c632"
+        user_id
       );
-
       setA(getDataByCommunityResponse.data.data.updateContent);
+      setWriterId(getDataByCommunityResponse.data.data.updateContent.user_id);
       setB(getDataByCommunityResponse.data.data.findReply);
+      console.log(getDataByCommunityResponse.data.data.updateContent);
       console.log(getDataByCommunityResponse.data.data.findReply);
     } catch (e) {
       console.log(e);
     }
   };
-
-  // then 체이닝 보다 async/await을 사용하면 가독성이더 좋아질 것이다
-  // const getDataByCommunity = () => {
-  //   getDataByCommunity_noAndUser_id(
-  //     Number(lastPathSegment),
-  //     "6487ea3c2188ede075315499"
-  //   )
-  //     .then((response) => {
-  //       setA(response.data.data.updateContent);
-  //       setB(response.data.data.findReply);
-  //       console.log(response.data.data.updateContent);
-  //       console.log(response.data.data.findReply);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
-
-  const [text, setText] = useState("");
 
   const handleTextChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -73,14 +65,14 @@ export const CommunityDetailPage: React.FC = () => {
   const handleSubmit = async (e: any) => {
     try {
       const postReplyResponse = await postReply(
-        "6483fe05cd2bf33d75c6c632",
+        useId,
         text,
         Number(lastPathSegment)
       );
       if (!postReplyResponse.data) {
         throw Error("댓글 작성 실패");
       }
-      getDataByCommunity();
+      getDataByCommunity(useId);
       setText("");
     } catch (error) {
       console.log(error);
@@ -90,34 +82,27 @@ export const CommunityDetailPage: React.FC = () => {
     try {
       const deleteMyReply = await deleteReply(
         targetId,
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4M2ZlMDVjZDJiZjMzZDc1YzZjNjMyIiwiaWF0IjoxNjg2ODU5MzI5LCJleHAiOjE2ODcxMTg1Mjl9.Pk0Ux-i6VAqP7czJVdRwUVoPMUs5Z4JShximmDH4Uo0"
+        String(localStorage.getItem("token"))
       );
-      getDataByCommunity();
+      getDataByCommunity(useId);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // const handleDelete = (e: any) => {
-  //   console.log(Number(e.target.id));
-  //   deleteReply(Number(e.target.id))
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       getDataByCommunity_noAndUser_id(
-  //         Number(lastPathSegment),
-  //         "6487ea3c2188ede075315499"
-  //       )
-  //         .then((response) => {
-  //           setB(response.data.data.findReply);
-  //         })
-  //         .catch((error) => {
-  //           console.error(error);
-  //         });
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
+  const writeHandleDelete = async () => {
+    try {
+      const deleteMyReply = await deleteCommunityByCommunity_no(
+        Number(lastPathSegment),
+        String(localStorage.getItem("token"))
+      );
+      alert("삭제 되었습니다");
+
+      navigate(`/community/communityPage`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <StyledCommonContainer>
@@ -129,13 +114,31 @@ export const CommunityDetailPage: React.FC = () => {
         <DividerNavy />
         <StyledCommunityTitle>{a.title}</StyledCommunityTitle>
         <StyledCommunityInfo>
-          <StyledCommunitySunInfo>{a.user_name}</StyledCommunitySunInfo>
-          <StyledCommunitySunInfo>
-            {dateSplice(a.updatedAt)}
-          </StyledCommunitySunInfo>
-          <StyledCommunitySunInfo>
-            조회 : {a.read_users.length}
-          </StyledCommunitySunInfo>
+          <StyledCommunityInfoContainer>
+            <StyledCommunitySunInfo>{a.user_name}</StyledCommunitySunInfo>
+            <StyledCommunitySunInfo>
+              {dateSplice(a.updatedAt)}
+            </StyledCommunitySunInfo>
+            <StyledCommunitySunInfo>
+              조회 : {a.read_users.length}
+            </StyledCommunitySunInfo>
+          </StyledCommunityInfoContainer>
+          {useId === writerId ? (
+            <FixButtonContainer>
+              <FixButton
+                onClick={() =>
+                  navigate(`/Community/CommunityEditPage/${lastPathSegment}`)
+                }
+              >
+                수정 <ClearIcon></ClearIcon>
+              </FixButton>
+              <FixButton onClick={writeHandleDelete}>
+                삭제 <ClearIcon></ClearIcon>
+              </FixButton>
+            </FixButtonContainer>
+          ) : (
+            <div></div>
+          )}
         </StyledCommunityInfo>
         <Divider />
         <StyledContent>{a.content}</StyledContent>
@@ -159,7 +162,7 @@ export const CommunityDetailPage: React.FC = () => {
               <StyledReplyContainer>
                 <StyledReplyUserName>{b.reply_user_name}</StyledReplyUserName>
                 <StyledReplyText>{b.reply_content}</StyledReplyText>
-                {b.reply_user_id === "6483fe05cd2bf33d75c6c632" ? (
+                {b.reply_user_id === useId ? (
                   <StyledDelButton onClick={() => handleDelete(b.reply_id)}>
                     삭제
                   </StyledDelButton>
@@ -176,6 +179,25 @@ export const CommunityDetailPage: React.FC = () => {
   );
 };
 
+const FixButtonContainer = styled.div`
+  display: flex;
+`;
+const FixButton = styled.div`
+  margin: 0px 20px;
+  color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  width: 80px;
+  height: 20px;
+  font-size: 20px;
+  cursor: pointer;
+`;
+const StyledCommunityInfoContainer = styled.div`
+  display: flex;
+`;
 const StyledCommonContainer = styled.div`
   width: 1270px;
   margin: 0px auto;
@@ -219,6 +241,7 @@ const StyledCommunityTitle = styled.div`
 
 const StyledCommunityInfo = styled.div`
   display: flex;
+  justify-content: space-between;
   ${fonts.SubTextThinSmall};
   color: ${colors.darkgray_navy};
   margin-bottom: 15px;

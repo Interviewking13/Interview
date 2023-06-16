@@ -10,9 +10,11 @@ import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
 import MenuTapBtn from "../../components/UI/MenuTapBtn";
+
 const StudyManage = () => {
-  //준영님 페이지에서 받아와야함 studyId
-  const userId: string = "12345";
+  const path = location.pathname;
+  const studyId = path.substring(path.lastIndexOf("/") + 1);
+  //준영님 페이지에서도 url 넘겨야함 studyId
   const [activePage, setActivePage] = useState("modify");
 
   const onClickStudyManageMain = () => {
@@ -76,9 +78,9 @@ const StudyManage = () => {
           </>
         )}
 
-        {activePage === "modify" && <StudyModify />}
-        {activePage === "member" && <StudyMemberManagement />}
-        {activePage === "applicant" && <StudyApplicantList userId={userId} />}
+        {activePage === "modify" && <StudyModify studyId={studyId} />}
+        {activePage === "member" && <StudyMemberManagement studyId={studyId} />}
+        {activePage === "applicant" && <StudyApplicantList studyId={studyId} />}
       </CommonContainer>
     </div>
   );
