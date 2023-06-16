@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Button, Typography, Grid, Box } from "@mui/material";
 import { Create, Person, Checklist } from "@mui/icons-material"; //MUI icon import
@@ -9,16 +9,18 @@ import MenuTapBtn from "../../components/UI/MenuTapBtn";
 
 const Mypage = () => {
   const navigate = useNavigate();
-
+  useEffect(() => {
+    onClickUserInfo();
+  }, []);
   const onClickMypageMain = () => {
     navigate("/mypage"); // useNavigate 사용하여 페이지 이동
   };
-  const onClickUserStudy = () => {
-    navigate("/mypage/userstudy");
-  };
-  const onClickStudyApply = () => {
-    navigate("/mypage/studyapply");
-  };
+  // const onClickUserStudy = () => {
+  //   navigate("/mypage/userstudy");
+  // };
+  // const onClickStudyApply = () => {
+  //   navigate("/mypage/studyapply");
+  // };
   const onClickUserInfo = () => {
     navigate("/mypage/userInfo");
   };
@@ -45,14 +47,14 @@ const Mypage = () => {
         {/* 버튼1, 버튼2, 버튼3 */}
         <Grid item xs={12}>
           <Grid container spacing={1} justifyContent="flex-start">
-            <MenuTapBtn onClick={onClickUserStudy}>
+            {/* <MenuTapBtn onClick={onClickUserStudy}>
               <Create />
               나의 스터디
             </MenuTapBtn>
             <MenuTapBtn onClick={onClickStudyApply}>
               <Checklist />
               스터디 신청
-            </MenuTapBtn>
+            </MenuTapBtn> */}
             <MenuTapBtn onClick={onClickUserInfo}>
               <Person />내 정보
             </MenuTapBtn>

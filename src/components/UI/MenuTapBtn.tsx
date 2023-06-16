@@ -29,12 +29,9 @@ const StyledButtonMui = styled(Button)`
   && {
     padding-left: 0;
     ${fonts.SubTextBig}
-    color: ${colors.gray_mint}; /* 적절한 색상으로 변경 */
+    color: ${colors.main_black}; /* 적절한 색상으로 변경 */
     &:hover {
       color: ${colors.main_mint}; /* 호버 시 변경할 색상 */
-    }
-    &:active {
-      background-color: #0000ff; /* 선택 시 변경할 색상 */
     }
   }
 `;

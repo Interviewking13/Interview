@@ -21,7 +21,6 @@ const Header = (): JSX.Element => {
         <StyledNavItemContainer>
           <StyledNavItem to="/study">스터디</StyledNavItem>
           <StyledNavItem to="/community/communityPage">커뮤니티</StyledNavItem>
-          <StyledNavItem to="/userstudy">나의 스터디</StyledNavItem>
         </StyledNavItemContainer>
         <StyledLoginItemContainer>
           {!token ? (
@@ -32,7 +31,9 @@ const Header = (): JSX.Element => {
             </>
           ) : (
             <>
-              <StyledLogOutButton to="" onClick={handleLogout}>로그아웃</StyledLogOutButton>
+              <StyledLogOutButton to="" onClick={handleLogout}>
+                로그아웃
+              </StyledLogOutButton>
               <StyledLoginItem to="/mypage">마이페이지</StyledLoginItem>
             </>
           )}
@@ -71,7 +72,7 @@ const StyledLogo = styled(Link)`
 const StyledNavItemContainer = styled.div``;
 
 const StyledNavItem = styled(Link)`
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: ${colors.main_black};
   margin-left: 40px;
@@ -81,7 +82,7 @@ const StyledLoginItemContainer = styled.div``;
 
 const StyledLoginItem = styled(Link)`
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 600;
   color: ${colors.main_gray};
   margin-left: 35px;
   text-decoration: none;
@@ -89,7 +90,7 @@ const StyledLoginItem = styled(Link)`
 
 const StyledLogOutButton = styled(Link)`
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 600;
   color: ${colors.main_gray};
   margin-left: 35px;
   text-decoration: none;
