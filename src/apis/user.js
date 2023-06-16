@@ -77,23 +77,47 @@ const userApi = {
         next();
     },
     
-    /** user 정보 전체 DB 조회 테스트 */
-    async getAllUserInfo(req, res, next) {
+    /** user_id 로 사용자 정보 조회 */
+    async getUserIdInfo(req, res, next) {
         try {
-            const findAllUser = await User.find({});
-
-            if (!findAllUser) {
-                return res.status(400).json({
-                    resultCode: "400",
-                    message: "조회 실패"
+            // 클라이언트로부터 전달된 헤더(토큰값) 사용 - token header로 로그인 유무 판단
+            const token = req.headers.authorization;    
+            console.log(token + '/ userAPI - getUserInfo - getUserIdInfo');
+            
+            const decoded = jwt.verify(token, secretKey);
+            
+            if (!decoded) {
+                return res.status(401).json({
+                resultCode: "401",
+                message: "유효하지 않은 토큰입니다.",
+                token: token
                 });
             }
 
-            res.status(200).json({
-                resultCode: "200",
-                message: "조회 성공",
-            })
+            const { user_id } = req.params;
 
+            const findUser = await User.findOne({ "_id": user_id });    //나중에 user_id 값 사용가능하면? 사용가능할듯.
+            
+            if (!findUser) {
+                return res.status(400).json({
+                    resultCode: "400",
+                    message: "해당 사용자를 찾을 수 없습니다."
+                });
+            }
+
+            return res.status(200).json({
+                resultCode: "200", 
+                message: "사용자 정보 조회 성공",
+                data: {
+                    user_id: findUser._id,
+                    user_name: findUser.user_name,
+                    email: findUser.email,
+                    intro_yn: findUser.intro_yn,
+                    phone_number: findUser.phone_number, 
+                    file_key: findUser.file_key, 
+                    file_name: findUser.file_name
+                }
+            });
         } catch (err) {
             console.error(err);
             res.status(500).json({
@@ -101,7 +125,9 @@ const userApi = {
                 message: "서버오류"
             });
         }
+
     },
+
 
     /** 회원가입 */
     async registerUser(req, res, next) {
@@ -189,6 +215,14 @@ const userApi = {
                     resultCode: 400,
                     message: "정보를 모두 입력하세요."
                 });
+            }
+
+            // 이메일 형식 유효성 검사
+            if (!validateEmail(email)) {
+                return res.status(400).json({
+                    resultCode: "400",
+                    message: "올바른 이메일 형식이 아닙니다."
+                })
             }
 
             // 기존 사용자 유무 검사
@@ -305,7 +339,9 @@ const userApi = {
                     email: findUser.email,
                     intro_yn: findUser.intro_yn,
                     phone_number: findUser.phone_number,
-                    token: token
+                    file_key: findUser.file_key, 
+                    file_name: findUser.file_name
+                    // token: token
                 }
             });
         } catch (err) {
@@ -337,7 +373,7 @@ const userApi = {
             // console.log('middleware 에서 불러온 decoded값' + decodedUserId);
 
             // const { user_id, email, password, intro_yn, phone_number } = req.body;
-            const { email, password, intro_yn, phone_number } = req.body;
+            const { email, password, intro_yn, phone_number, file_key, file_name } = req.body;
 
             const findUser = await User.findOne({ "_id": user_id });    //나중에 user_id 값 사용가능하면? 사용가능할듯.
             // const findUser = await User.findOne({ "email": email });
@@ -355,6 +391,8 @@ const userApi = {
             const findUserPassword = findUser.password;
             const findUserIntro_yn = findUser.intro_yn;
             const findUserPhoneNumber = findUser.phone_number;
+            const findUserFileKey = findUser.file_key;
+            const findUserFileName = findUser.file_name;
 
             // 변경사항 있는지 확인
             let isModified = false;
@@ -375,6 +413,15 @@ const userApi = {
                 findUser.phone_number = phone_number;
                 isModified = true;
             }
+            if (file_key !== findUserFileKey) {
+                findUser.phone_number = file_key;
+                isModified = true;
+            }
+            if (file_name !== findUserFileName) {
+                findUser.phone_number = file_name;
+                isModified = true;
+            }
+
 
             // 변경사항이 없는 경우의 처리 로직
             if(!isModified) {
@@ -394,7 +441,9 @@ const userApi = {
                     "password": hashedPassword,
                     "intro_yn": intro_yn,
                     "phone_number": phone_number,
-                    "dts_update": dateString + timeString
+                    "dts_update": dateString + timeString,
+                    "file_key": file_key,
+                    "file_name": file_name
                 }
             });
 
@@ -405,7 +454,9 @@ const userApi = {
                     "user_name": true,
                     "email": true,
                     "intro_yn": true,
-                    "phone_number": true
+                    "phone_number": true,
+                    "file_key": true, 
+                    "file_name": true
                 });
 
             return res.status(200).json({
@@ -417,7 +468,9 @@ const userApi = {
                     email: updatedUser.email,
                     intro_yn: updatedUser.intro_yn,
                     phone_number: updatedUser.phone_number, 
-                    token: token
+                    file_key: updatedUser.file_key, 
+                    file_name: updatedUser.file_name
+                    // token: token
                 }
                 
             });
