@@ -3,6 +3,42 @@ import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import { TitleText } from "../../constants/fonts";
 
+const Header = (): JSX.Element => {
+  const onClickLogOut = () => {
+    localStorage.removeItem("token");
+  };
+  return (
+    <>
+      <StyledContainer>
+        <StyledLogoContainer>
+          <StyledLogo to="/">면접왕</StyledLogo>
+        </StyledLogoContainer>
+        <StyledNavItemContainer>
+          <StyledNavItem to="/study">스터디</StyledNavItem>
+          <StyledNavItem to="/community/communityPage">커뮤니티</StyledNavItem>
+          <StyledNavItem to="/userstudy">나의 스터디</StyledNavItem>
+        </StyledNavItemContainer>
+        <StyledLoginItemContainer>
+          {localStorage.getItem("token") == null ||
+          localStorage.getItem("token") == "" ? (
+            <StyledLoginItem to="/login">로그인</StyledLoginItem>
+          ) : (
+            <StyledLoginItem onClick={onClickLogOut} to="/login">
+              로그아웃
+            </StyledLoginItem>
+          )}
+
+          <StyledLoginItem to="/login/signup">회원가입</StyledLoginItem>
+          <StyledLoginItem to="/mypage">마이페이지</StyledLoginItem>
+        </StyledLoginItemContainer>
+      </StyledContainer>
+      <Divider></Divider>
+    </>
+  );
+};
+
+export default Header;
+
 const Divider = styled.div`
   margin-top: 15px;
   border-bottom: 1px solid ${colors.gray_stroke};
@@ -44,6 +80,7 @@ const StyledLoginItem = styled(Link)`
   margin-left: 35px;
   text-decoration: none;
 `;
+<<<<<<< HEAD
 
 const StyledLogOutButton = styled(Link)`
   font-size: 16px;
@@ -97,3 +134,5 @@ const Header = (): JSX.Element => {
 };
 
 export default Header;
+=======
+>>>>>>> d8482ef09d438cf50d6ebf9b9b2d9de4a25f6519
