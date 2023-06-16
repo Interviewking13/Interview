@@ -88,7 +88,7 @@ const BoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
                   조회 수 : {post.read_users.length}
                 </StyledPostItem>
                 <StyledPostItem>{post.user_name}</StyledPostItem>
-                <StyledPostItem>{dateSplice(post.updatedAt)}</StyledPostItem>
+                <StyledPostItem>{dateSplice(post.createdAt)}</StyledPostItem>
               </StyledRightPostItem>
             </StyledPostItems>
           ))}

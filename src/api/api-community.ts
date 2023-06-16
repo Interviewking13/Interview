@@ -41,19 +41,17 @@ export const getDataByCommunity_noAndUser_id = async (
 };
 
 /** 4. 커뮤니티 게시글 수정  put */
-export const putCommunity = async ({
-  community_no,
-  title,
-  content,
-}: {
-  community_no: number;
-  title: string;
-  content: string;
-}) => {
+export const putCommunity = async (
+  community_id: number,
+  title: string,
+  content: string,
+  token: string
+) => {
   const response = await axiosInstance.put(`community/detl`, {
-    community_no,
+    community_id,
     title,
     content,
+    token,
   });
   return response;
 };
@@ -110,20 +108,3 @@ export const deleteReply = async (reply_id: number, token: string) => {
   });
   return response;
 };
-
-// export function postData() {
-//   return axiosInstance
-//     .post("community/detl",
-//     {
-//       title: "게시글 제목 이용섭테스트",
-//       content: "게시글 내용 이용섭테스트",
-//       attach: "",
-//     }
-//     )
-//     .then((response) => {
-//       console.log(response.data);
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// }
