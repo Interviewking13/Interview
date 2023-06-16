@@ -10,6 +10,7 @@ import { dateSplice } from "../../utils/dateFomatting";
 import * as fonts from "../../constants/fonts";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { postReply } from "../../api/api-community";
+import { response } from "express";
 
 export const CommunityDetailPage: React.FC = () => {
   const [a, setA] = useState({
@@ -33,10 +34,12 @@ export const CommunityDetailPage: React.FC = () => {
     try {
       const getDataByCommunityResponse = await getDataByCommunity_noAndUser_id(
         Number(lastPathSegment),
-        "6487ea3c2188ede075315499"
+        "6483fe05cd2bf33d75c6c632"
       );
+
       setA(getDataByCommunityResponse.data.data.updateContent);
       setB(getDataByCommunityResponse.data.data.findReply);
+      console.log(getDataByCommunityResponse.data.data.findReply);
     } catch (e) {
       console.log(e);
     }
@@ -70,7 +73,7 @@ export const CommunityDetailPage: React.FC = () => {
   const handleSubmit = async (e: any) => {
     try {
       const postReplyResponse = await postReply(
-        "6487ea3c2188ede075315499",
+        "6483fe05cd2bf33d75c6c632",
         text,
         Number(lastPathSegment)
       );
@@ -83,9 +86,12 @@ export const CommunityDetailPage: React.FC = () => {
       console.log(error);
     }
   };
-  const handleDelete = async (e: any) => {
+  const handleDelete = async (targetId: number) => {
     try {
-      const deleteMyReply = await deleteReply(Number(e.target.id));
+      const deleteMyReply = await deleteReply(
+        targetId,
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4M2ZlMDVjZDJiZjMzZDc1YzZjNjMyIiwiaWF0IjoxNjg2ODU5MzI5LCJleHAiOjE2ODcxMTg1Mjl9.Pk0Ux-i6VAqP7czJVdRwUVoPMUs5Z4JShximmDH4Uo0"
+      );
       getDataByCommunity();
     } catch (error) {
       console.log(error);
@@ -153,8 +159,8 @@ export const CommunityDetailPage: React.FC = () => {
               <StyledReplyContainer>
                 <StyledReplyUserName>{b.reply_user_name}</StyledReplyUserName>
                 <StyledReplyText>{b.reply_content}</StyledReplyText>
-                {b.reply_user_id === "6487ea3c2188ede075315499" ? (
-                  <StyledDelButton id={b.reply_id} onClick={handleDelete}>
+                {b.reply_user_id === "6483fe05cd2bf33d75c6c632" ? (
+                  <StyledDelButton onClick={() => handleDelete(b.reply_id)}>
                     삭제
                   </StyledDelButton>
                 ) : (

@@ -7,12 +7,14 @@ import { axiosInstance } from "./axiosInstance";
 export const postFeedback = async (
   content_type: number,
   content: string,
-  study_id: string
+  study_id: string,
+  token: string
 ) => {
   const response = await axiosInstance.post(`/feedback/create`, {
     content_type,
     content,
     study_id,
+    token,
   });
   return response;
 };
