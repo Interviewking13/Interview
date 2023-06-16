@@ -8,7 +8,7 @@ const StyledFooterWrapper = styled.div`
   bottom: 0;
   width: 100%;
   background-color: ${colors.back_navy};
-  padding-bottom: 35px;
+  padding-bottom: 40px;
 `;
 
 const Divider = styled.div`
