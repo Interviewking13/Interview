@@ -54,8 +54,8 @@ export const postApplyStudy = async (
 /** 3. 스터디 신청 수락 (장)  put */
 export const putAcceptStudy = async (
   token: string,
-  study_id: number,
-  member_id: number,
+  study_id: string,
+  member_id: string,
   accept: number
 ) => {
   const response = await axiosInstance.put(
@@ -137,11 +137,8 @@ export const deleteStudy = async (token: string, study_id: string) => {
 
 /** 9. 스터디 신청원 조회  get */
 export const getStudyAccept = async (study_id: string, accept: number) => {
-  const response = await axiosInstance.get(`study/accept`, {
-    params: {
-      study_id: study_id,
-      accept: accept,
-    },
-  });
+  const response = await axiosInstance.get(
+    `study/accept/${study_id}/${accept}`
+  );
   return response;
 };
