@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { colors } from "../../constants/colors";
 import {
+  deleteCommunityByCommunity_no,
   deleteReply,
   getDataByCommunity_noAndUser_id,
 } from "../../api/api-community";
@@ -22,10 +23,12 @@ export const CommunityDetailPage: React.FC = () => {
     read_users: [],
     file_name: "",
   });
+
+  const navigate = useNavigate(); // useNavigate 훅 사용
   const [b, setB] = useState<any[]>([]);
   const [text, setText] = useState("");
-  const [useId, setUserId] = useState("");
-  const [writerId, setWriterId] = useState("");
+  const [useId, setUserId] = useState("1");
+  const [writerId, setWriterId] = useState("2");
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
@@ -87,13 +90,15 @@ export const CommunityDetailPage: React.FC = () => {
     }
   };
 
-  const writeHandleDelete = async (targetId: number) => {
+  const writeHandleDelete = async () => {
     try {
-      const deleteMyReply = await deleteReply(
-        targetId,
+      const deleteMyReply = await deleteCommunityByCommunity_no(
+        Number(lastPathSegment),
         String(localStorage.getItem("token"))
       );
-      getDataByCommunity(useId);
+      alert("삭제 되었습니다");
+
+      navigate(`/community/communityPage`);
     } catch (error) {
       console.log(error);
     }
@@ -139,7 +144,7 @@ export const CommunityDetailPage: React.FC = () => {
             </StyledCommunitySunInfo>
           </StyledCommunityInfoContainer>
           {useId === writerId ? (
-            <FixButton>
+            <FixButton onClick={writeHandleDelete}>
               삭제 <ClearIcon></ClearIcon>
             </FixButton>
           ) : (
@@ -184,7 +189,7 @@ export const CommunityDetailPage: React.FC = () => {
     </StyledCommonContainer>
   );
 };
-const FixButton = styled.button`
+const FixButton = styled.div`
   color: red;
   display: flex;
   align-items: center;
