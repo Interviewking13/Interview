@@ -79,6 +79,7 @@ export const getInfoStudyData = async (study_id: string) => {
 export const putInfoStudy = async (
   study_id: string,
   data: {
+    token: string;
     study_name: string;
     title: string;
     content: string;
@@ -89,6 +90,7 @@ export const putInfoStudy = async (
   }
 ) => {
   const response = await axiosInstance.put(`info/${study_id}`, {
+    token: data.token,
     study_name: data.study_name,
     title: data.title,
     content: data.content,
@@ -108,7 +110,7 @@ export const deleteStudyMember = async (member_id: string) => {
 
 /** 8. 스터디 삭제 (장)  get */
 export const deleteStudy = async (token: string, study_id: string) => {
-  const response = await axiosInstance.delete(`study/info/${study_id}`, {
+  const response = await axiosInstance.delete(`study/${study_id}`, {
     data: { token: token }, // 토큰을 바디로 보내기 위해 data 속성에 객체 형태로 설정
   });
   return response;

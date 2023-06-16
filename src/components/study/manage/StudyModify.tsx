@@ -3,7 +3,11 @@ import styled from "styled-components";
 import { colors } from "../../../constants/colors";
 import * as fonts from "../../../constants/fonts";
 import { Link } from "react-router-dom";
-import { deleteStudy, getInfoStudyData } from "../../../api/api-study";
+import {
+  deleteStudy,
+  getInfoStudyData,
+  putInfoStudy,
+} from "../../../api/api-study";
 import { useQuery } from "react-query";
 import React, { useState, useEffect } from "react";
 import { dateFomatting, dateFomattingLine } from "../../../utils/dateFomatting";
@@ -51,12 +55,23 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
     return <div>Error occurred while fetching data</div>;
   }
   const handleModifyClick: React.MouseEventHandler<HTMLDivElement> = () => {
-    // 스터디 수정 로직을 처리하는 코드를 작성하세요.
-    // 입력된 상태값들을 사용하여 API 호출 등의 작업을 수행할 수 있습니다.
+    const updatedStudy = {
+      study_name: studyName,
+      title: studyName,
+      content: studyDescription,
+      deadline: recruitmentDeadline,
+      headcount: recruitmentCount,
+      chat_link: meetingLink,
+      status: 0, // 예시로 status 값을 0으로 설정
+      token: String(localStorage.getItem("token")), // 인증 토큰 전달
+    };
+
+    putInfoStudy(studyId, updatedStudy);
   };
   const handleDeleteClick: React.MouseEventHandler<HTMLDivElement> = () => {
     // 스터디 삭제 로직을 처리하는 코드를 작성하세요.
     // 필요한 API 호출 등의 작업을 수행할 수 있습니다.
+    console.log("studyId:", studyId);
     deleteStudy(String(localStorage.getItem("token")), studyId);
   };
   return (
