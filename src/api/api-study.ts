@@ -33,8 +33,13 @@ export const postCreateStudy = async (
 };
 
 /** 2. 스터디 신청 (원) post */
-export const postApplyStudy = async (study_id: string, goal: string) => {
+export const postApplyStudy = async (
+  token: string,
+  study_id: string,
+  goal: string
+) => {
   const response = await axiosInstance.post("study/apply", {
+    token,
     study_id,
     goal,
   });
@@ -89,7 +94,7 @@ export const putInfoStudy = async (
     status: number;
   }
 ) => {
-  const response = await axiosInstance.put(`info/${study_id}`, {
+  const response = await axiosInstance.put(`study/info/${study_id}`, {
     token: data.token,
     study_name: data.study_name,
     title: data.title,
@@ -112,6 +117,18 @@ export const deleteStudyMember = async (member_id: string) => {
 export const deleteStudy = async (token: string, study_id: string) => {
   const response = await axiosInstance.delete(`study/${study_id}`, {
     data: { token: token }, // 토큰을 바디로 보내기 위해 data 속성에 객체 형태로 설정
+  });
+  return response;
+};
+
+/** 9. 스터디 삭제 (장)  get */
+export const getStudyAccept = async (
+  token: string,
+  study_id: string,
+  accept: number
+) => {
+  const response = await axiosInstance.get(`study/accept`, {
+    data: { token: token, study_id: study_id, accept: accept },
   });
   return response;
 };
