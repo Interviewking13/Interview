@@ -10,6 +10,7 @@ import {
   StyledPostItems,
 } from "./BoardListItem";
 import { SubText } from "../../../constants/fonts";
+import { dateSplice } from "../../../utils/dateFomatting";
 
 const BestBoardListItem: React.FC = () => {
   const [bestPosts, setBestPosts] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
@@ -50,7 +51,7 @@ const BestBoardListItem: React.FC = () => {
             <StyledRightPostItem>
               <StyledPostItem>조회 수: {post.read_users.length}</StyledPostItem>
               <StyledPostItem>{post.user_name}</StyledPostItem>
-              <StyledPostItem>{post.timestamps}</StyledPostItem>
+              <StyledPostItem>{dateSplice(post.updatedAt)}</StyledPostItem>
             </StyledRightPostItem>
           </StyledPostItems>
         ))}
