@@ -7,10 +7,22 @@ import * as fonts from "../../constants/fonts";
 import PencilIconSrc from "../../img/pencil_mint.svg";
 import { getInfoAllStudyData, postCreateStudy } from "../../api/api-study";
 import { dateSplice } from "../../utils/dateFomatting";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
 const StudyList = (): JSX.Element => {
+
+  const [error, setError] = useState("");
+  const [studyData, setStudyData] = useState<StudyData[]>([]);
+  const [studyName, setStudyName] = useState("");
+  const [studyDescription, setStudyDescription] = useState("");
+  const [meetingLink, setMeetingLink] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [recruitmentDeadline, setRecruitmentDeadline] = useState("");
+  const [recruitmentCount, setRecruitmentCount] = useState(0);
+  const navigate = useNavigate();
 
   type StudyData = {
     _id: string,
@@ -37,18 +49,22 @@ const StudyList = (): JSX.Element => {
         console.error("Error:", error);
       });
   }, []);
-  
-  // post
-  const [studyData, setStudyData] = useState<StudyData[]>([]);
-  const [studyName, setStudyName] = useState("");
-  const [studyDescription, setStudyDescription] = useState("");
-  const [meetingLink, setMeetingLink] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [recruitmentDeadline, setRecruitmentDeadline] = useState("");
-  const [recruitmentCount, setRecruitmentCount] = useState(0);
 
   const handleCreateStudy = () => {
+    // 입력 필드 확인
+    if (
+      !studyName ||
+      !studyDescription ||
+      !meetingLink ||
+      !startDate ||
+      !endDate ||
+      !recruitmentDeadline ||
+      recruitmentCount === 0
+    ) {
+      setError("모든 항목을 입력해주세요.");
+      return;
+    }
+
     const newStudyData: StudyData = {
       _id: "",
       study_name: studyName,
@@ -81,10 +97,14 @@ const StudyList = (): JSX.Element => {
         if (response.data.success) {
           newStudyData._id = response.data.studyId;
           setStudyData((prevStudyData) => [newStudyData, ...prevStudyData]);
+          // 스터디 목록 페이지로 이동
+          navigate("/study");
+        } else {
+          setError("스터디 생성에 실패했습니다.");
         }
       })
       .catch((error) => {
-        // 오류 처리
+        setError("오류가 발생했습니다.");
       });
   };
 
@@ -126,11 +146,12 @@ const StudyList = (): JSX.Element => {
           <StyledStudyInputNumber type="number" min="1" placeholder="모집 인원을 입력하세요." onChange={event => setRecruitmentCount(parseInt(event.target.value))} />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateBtnArea>
-          <StyledLink to={`/study`} onClick={handleCreateStudy}>
+          <StyledLink to={`/study/create`} onClick={handleCreateStudy}>
             <StyledCommonButton>
               <StyledButtonText>만들기</StyledButtonText>
             </StyledCommonButton>
           </StyledLink>
+          {error && <StyledErrorMessage>{error}</StyledErrorMessage>}
         </StyledStudyCreateBtnArea>
       </StyledStudyCreateArea>
 
@@ -170,6 +191,7 @@ const StyledStudyCreateArea = styled.div`
     display: flex;
     flex-wrap: wrap;
     align-content: space-between;
+
 `
 const StyledStudyCreateInputArea = styled.div`
     height: 45px;
@@ -261,6 +283,7 @@ const StyledStudyCreateBtnArea = styled.div`
     width: 1270px;
     display: flex;
     flex-direction: row-reverse;
+    align-items: baseline;
 `
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -278,4 +301,10 @@ const StyledCommonButton = styled.div`
 const StyledButtonText = styled.p`
   font-family: ${fonts.SubTextBig};
   color: ${colors.main_black};
+`;
+
+const StyledErrorMessage = styled.p`
+  color: red;
+  font-size: 14px;
+  margin: 0 15px 0 0;
 `;
