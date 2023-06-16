@@ -63,8 +63,8 @@ const SignupPage = () => {
       const response = await postSignUp(name, email, password, passwordValidated);
       console.log("가입 성공:", response);
 
-      // 가입 성공 후 마이페이지로 이동
-      navigate("../mypage");
+      // 가입 성공 후 홈으로 이동
+      navigate("/");
     } catch (error) {
       console.log("가입 실패:", error);
     }
