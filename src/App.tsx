@@ -46,7 +46,7 @@ function App() {
               <Route path="/management" element={<StudyManage />} />
               <Route
                 path="/Community/CommunityPage"
-                element={<CommunityPage />}
+                element={<CommunityPage tap={1} />}
               />
               <Route
                 path="/Community/CommunityCreatePage"
