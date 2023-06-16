@@ -14,14 +14,29 @@ import { Modal } from "@mui/material";
 import StudyApplyModal from "../../components/modal/StudyApplyModal";
 import { useQuery } from "react-query";
 import UserInfoModal from "../../components/modal/UserInfoModal";
-
+import { getUserData } from "../../api/api-user";
+import SettingsIcon from "@mui/icons-material/Settings";
 const Information: React.FC = () => {
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
   const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
   const [studyApplyModalOpen, setStudyApplyModalOpen] = React.useState(false);
+  const [useId, setUserId] = useState("1");
+  const [leaderId, setLeaderId] = useState("2");
 
+  useEffect(() => {
+    getUserData(String(localStorage.getItem("token"))).then((response) => {
+      console.log(response.data.user_id);
+      setUserId(response.data.user_id);
+    });
+  }, []);
+  useEffect(() => {
+    getInfoStudyData(String(lastPathSegment)).then((response) => {
+      console.log(response.data.leader_id);
+      setLeaderId(response.data.leader_id);
+    });
+  }, []);
   const handleOpenUserInfoModal = () => {
     setUserInfoModalOpen(true);
   };
@@ -38,11 +53,15 @@ const Information: React.FC = () => {
     setStudyApplyModalOpen(false);
   };
 
+  const handleStudyManageButtonClick = () => {
+    window.location.href = `/management/${_id}`;
+  };
+
   const {
     data: studyData,
     isLoading,
     isError,
-  } = useQuery("studyData", () =>
+  } = useQuery(["studyData"], () =>
     getInfoStudyData(lastPathSegment).then((response) => response.data)
   );
   if (isLoading) {
@@ -67,11 +86,21 @@ const Information: React.FC = () => {
     acceptcount,
     leader_name,
     leader_id,
+    _id,
   } = studyData;
   return (
     <Container>
-      <Mystudy>{status !== 0 ? "스터디정보" : "나의 스터디"}</Mystudy>
-      <StudyTaps />
+      <Mystudy>스터디정보</Mystudy>
+      <StyeldTapContainer>
+        <StudyTaps />
+        {useId === leaderId ? (
+          <StyledStudyManageButton onClick={handleStudyManageButtonClick}>
+            <SettingsIcon fontSize="large"></SettingsIcon>
+          </StyledStudyManageButton>
+        ) : (
+          <div></div>
+        )}
+      </StyeldTapContainer>
       <Title>{title}</Title>
       <SubTitle>
         <DetailTitle
@@ -119,9 +148,19 @@ const Information: React.FC = () => {
   );
 };
 const Container = styled.div`
-  margin: 30px 100px;
+  margin: 0 auto;
+  width: 1270px;
   display: flex;
   flex-direction: column;
+`;
+
+const StyeldTapContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+const StyledStudyManageButton = styled.div`
+  cursor: pointer;
 `;
 
 export const Title = styled.span`

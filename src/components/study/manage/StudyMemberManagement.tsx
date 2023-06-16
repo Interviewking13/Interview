@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { colors } from "../../../constants/colors";
 import * as fonts from "../../../constants/fonts";
 import { Link } from "react-router-dom";
-
+interface StudyMemberManagementProps {
+  studyId: string;
+}
 interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
   backgroundColor?: string;
 }
@@ -16,7 +18,12 @@ const members = [
 
 const onDelete = () => {};
 
-const StudyMemberManagement = () => {
+const StudyMemberManagement: React.FC<StudyMemberManagementProps> = ({
+  studyId,
+}) => {
+  // studyId를 사용하는 코드 작성
+  // ...
+
   return (
     <>
       {members.map((member, index) => (

@@ -1,98 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import { TitleText, SubTextThin, SubTextSmall } from "../../constants/fonts";
-import { useMutation, useQueryClient } from "react-query";
-import { axiosInstance } from "../../api/axiosInstance";
-import { useNavigate } from "react-router-dom";
-import { getUserData } from "../../api/api-user";
+import { useLocation, useNavigate } from "react-router-dom";
+import { putCommunity } from "../../api/api-community";
 
-const postCommunity = async (data: {
-  title: string;
-  content: string;
-  attach: string;
-  user_id: string;
-  community_id: number;
-}) => {
-  try {
-    console.log("Posted Data:", data);
-    const response = await axiosInstance.post("/community/detl", data);
-    return response.data;
-  } catch (error) {
-    console.error("Error:", error);
-    throw error;
-  }
-};
-
-const CommunityCreatePage: React.FC = () => {
+const CommunityEditPage: React.FC = ({}) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [file, setFile] = useState<File | null>(null);
-
-  const [useId, setUserId] = useState("");
-  // const [file, setFile] = useState(null);
-
-  useEffect(() => {
-    getUserData(String(localStorage.getItem("token"))).then((response) => {
-      setUserId(response.data.user_id);
-      console.log(response.data.user_id);
-      console.log(response.data);
-    });
-  });
-
-  const handleTitleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.pathname;
+  const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
+  const token = localStorage.getItem("token");
+  const onChangeTitleInput = (e: any) => {
+    console.log(e.target.value);
     setTitle(e.target.value);
   };
 
-  const handleContentChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setContent(e.target.value);
+  const onChangeContentsInput = (e: any) => {
+    console.log(e.target.value);
+    setTitle(e.target.value);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = e.target.files;
-    if (selectedFiles && selectedFiles.length > 0) {
-      const selectedFile = selectedFiles[0];
-      setFile(selectedFile);
-    }
-  };
-
-  // 미리 선언해둔 postCommunity api service함수를 가져와서 사용했습니다.
-  // useMutation의 반환값인 postCommunityMutate을 호출하면 해당 api가 호출됩니다.
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-
-  const { mutate: postCommunityMutate } = useMutation(postCommunity, {
-    // useQuery와 동일합니다 에러가 나면 실행되는 함수입니다.
-    onError: (error) => {
-      console.error("Error:", error);
-    },
-    // 성공하면 실행되는 함수
-    // 글을 생성하는 post니까 성공했을 땐 여기서 queryClient.invalidates([{postListAPI의 키값}])같은 코드를 넣어주면 글쓰기가 성공했을 때 자동으로 업데이트되겠죠?
-    onSuccess: (data) => {
-      console.log("성공: ", data);
-      // queryClient.invalidateQueries("communityList");
-      navigate(`/Community/communityDetailPage/${data.data.community_id}`);
-    },
-  });
-
-  const handleSubmit = () => {
-    // 호출
-
-    postCommunityMutate({
-      title: title,
-      content: content,
-      attach: "",
-      user_id: useId,
-      community_id: 0,
-    });
-  };
-
-  const handleDelete = () => {
-    setFile(null);
+  const onClickEdit = () => {
+    putCommunity(
+      Number(lastPathSegment),
+      title,
+      content,
+      String(localStorage.getItem("token"))
+    );
+    alert("수정 되었습니다");
+    navigate(`/Community/communityDetailPage/${lastPathSegment}`);
   };
 
   return (
@@ -100,7 +39,7 @@ const CommunityCreatePage: React.FC = () => {
       <StyledCreatePageContainer>
         <StyledTitleWrapper>
           <StyledTitleContainer>
-            <StyledCreatePageTitle>커뮤니티 글 쓰기</StyledCreatePageTitle>
+            <StyledCreatePageTitle>커뮤니티 글 수정</StyledCreatePageTitle>
           </StyledTitleContainer>
           <StyledSubTitleContainer>
             <StyledCreatePageSubtitle>
@@ -110,45 +49,30 @@ const CommunityCreatePage: React.FC = () => {
         </StyledTitleWrapper>
         <StyledInputWrapper>
           <StyledTitle>제목</StyledTitle>
-          <StyledInput
-            value={title}
-            onChange={handleTitleChange}
-            placeholder="제목을 입력하세요."
-          />
+          <StyledInput onChange={onChangeTitleInput} />
         </StyledInputWrapper>
 
         <StyledInputWrapper className="second-input-wrapper">
           <StyledTitle>내용</StyledTitle>
-          <StyledTextarea
-            value={content}
-            onChange={handleContentChange}
-            placeholder="내용을 입력하세요."
-          />
+          <StyledTextarea onChange={onChangeContentsInput} />
         </StyledInputWrapper>
 
         <StyledFileInputWrapper>
           <StyledFileInputContainer>
             <StyledTitle>파일 첨부</StyledTitle>
             <StyledSubtitle>파일을 첨부하세요.</StyledSubtitle>
-            <FileInput type="file" id="fileInput" onChange={handleFileChange} />
+            <FileInput type="file" id="fileInput" />
             {/* <FileUploader /> */}
             <StyledFileButton htmlFor="fileInput">파일찾기</StyledFileButton>
           </StyledFileInputContainer>
           <StyledAttachedFileListContainer>
-            {file && (
-              <FileList>
-                <FileListItem>
-                  <FileAttachment href={URL.createObjectURL(file)} download>
-                    {file.name}
-                  </FileAttachment>
-                </FileListItem>
-              </FileList>
-            )}
-            <StyledDelButton onClick={handleDelete}>삭제</StyledDelButton>
+            <StyledDelButton>삭제</StyledDelButton>
           </StyledAttachedFileListContainer>
         </StyledFileInputWrapper>
         <StyledFileButtonWrapper>
-          <StyledCreateButton onClick={handleSubmit}>글쓰기</StyledCreateButton>
+          <StyledCreateButton onClick={onClickEdit}>
+            수정하기
+          </StyledCreateButton>
         </StyledFileButtonWrapper>
       </StyledCreatePageContainer>
     </StyledCommonContainer>
@@ -367,4 +291,4 @@ const StyledDelButton = styled.button`
   width: 45px;
 `;
 
-export default CommunityCreatePage;
+export default CommunityEditPage;
