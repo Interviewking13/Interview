@@ -31,15 +31,6 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
   } = useQuery("studyData", () =>
     getInfoStudyData(studyId).then((response) => response.data)
   );
-  if (isLoading) {
-    // 로딩 상태를 표시
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    // 에러 상태를 표시
-    return <div>Error occurred while fetching data</div>;
-  }
 
   //받아온 스터디의 데이터 분해구조 할당
   const {
@@ -63,12 +54,22 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
     handleModalClose();
   };
   const onApplyButtonHandler = () => {
-    postApplyStudy(study_id, goal);
+    postApplyStudy(String(localStorage.getItem("token")), studyId, goal);
     alert("스터디가 신청되었습니다!");
     handleModalClose();
 
     //information에서 정보 재랜더링 해야함 쿼리로.
   };
+
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching data</div>;
+  }
   return (
     <div>
       <StyledBox>

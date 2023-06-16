@@ -74,7 +74,7 @@ const CommunityCreatePage: React.FC = () => {
     // 글을 생성하는 post니까 성공했을 땐 여기서 queryClient.invalidates([{postListAPI의 키값}])같은 코드를 넣어주면 글쓰기가 성공했을 때 자동으로 업데이트되겠죠?
     onSuccess: (data) => {
       console.log("성공: ", data);
-      queryClient.invalidateQueries("communityList");
+      // queryClient.invalidateQueries("communityList");
       navigate(`/Community/communityDetailPage/${data.data.community_id}`);
     },
   });
@@ -89,10 +89,6 @@ const CommunityCreatePage: React.FC = () => {
       user_id: useId,
       community_id: 0,
     });
-  };
-
-  const handleDelete = () => {
-    setFile(null);
   };
 
   return (
@@ -127,25 +123,7 @@ const CommunityCreatePage: React.FC = () => {
         </StyledInputWrapper>
 
         <StyledFileInputWrapper>
-          <StyledFileInputContainer>
-            <StyledTitle>파일 첨부</StyledTitle>
-            <StyledSubtitle>파일을 첨부하세요.</StyledSubtitle>
-            <FileInput type="file" id="fileInput" onChange={handleFileChange} />
-            {/* <FileUploader /> */}
-            <StyledFileButton htmlFor="fileInput">파일찾기</StyledFileButton>
-          </StyledFileInputContainer>
-          <StyledAttachedFileListContainer>
-            {file && (
-              <FileList>
-                <FileListItem>
-                  <FileAttachment href={URL.createObjectURL(file)} download>
-                    {file.name}
-                  </FileAttachment>
-                </FileListItem>
-              </FileList>
-            )}
-            <StyledDelButton onClick={handleDelete}>삭제</StyledDelButton>
-          </StyledAttachedFileListContainer>
+          <StyledFileInputContainer></StyledFileInputContainer>
         </StyledFileInputWrapper>
         <StyledFileButtonWrapper>
           <StyledCreateButton onClick={handleSubmit}>글쓰기</StyledCreateButton>
@@ -282,63 +260,6 @@ const StyledFileInputWrapper = styled.div`
   }
 `;
 
-const StyledAttachedFileListContainer = styled.div`
-  width: 1270px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 20px 0;
-`;
-
-const StyledSubtitle = styled.p`
-  margin: 0;
-  width: 960px;
-  height: 45px;
-  border: 1px solid ${colors.main_navy};
-  border-radius: 10px;
-  color: ${colors.darkgray_navy};
-  font-size: 18px;
-  font-weight: 300;
-  box-sizing: border-box;
-  line-height: 45px;
-  padding-left: 20px;
-`;
-
-const FileInput = styled.input`
-  display: none;
-`;
-
-const StyledFileButton = styled.label`
-  width: 132px;
-  height: 45px;
-  font-size: 18px;
-  font-weight: 600;
-  background-color: ${colors.dark_navy};
-  border-radius: 10px;
-  text-align: center;
-  line-height: 45px;
-  color: #fff;
-  cursor: pointer;
-  margin-left: 15px;
-`;
-
-const FileList = styled.div`
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  color: ${colors.darkgray_navy};
-  ${SubTextSmall};
-  width: 1060px;
-`;
-
-const FileListItem = styled.div``;
-
-const FileAttachment = styled.a`
-  display: block;
-  text-decoration: none;
-  color: inherit;
-`;
-
 const StyledFileButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -355,16 +276,6 @@ const StyledCreateButton = styled.button`
   cursor: pointer;
   margin-left: auto;
   margin-bottom: 80px;
-`;
-
-const StyledDelButton = styled.button`
-  color: ${colors.main_red};
-  ${SubTextSmall};
-  border: none;
-  background-color: #ffffff;
-  display: flex;
-  justify-content: flex-end;
-  width: 45px;
 `;
 
 export default CommunityCreatePage;

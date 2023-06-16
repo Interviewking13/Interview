@@ -1,12 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import { TitleText } from "../../constants/fonts";
 
 const Header = (): JSX.Element => {
-  const onClickLogOut = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  const handleLogout = () => {
     localStorage.removeItem("token");
+    navigate("/login");
   };
+
   return (
     <>
       <StyledContainer>
@@ -19,17 +24,18 @@ const Header = (): JSX.Element => {
           <StyledNavItem to="/userstudy">나의 스터디</StyledNavItem>
         </StyledNavItemContainer>
         <StyledLoginItemContainer>
-          {localStorage.getItem("token") == null ||
-          localStorage.getItem("token") == "" ? (
-            <StyledLoginItem to="/login">로그인</StyledLoginItem>
+          {!token ? (
+            <>
+              <StyledLoginItem to="/login">로그인</StyledLoginItem>
+              <StyledLoginItem to="/login/signup">회원가입</StyledLoginItem>
+              <StyledLoginItem to="/login">마이페이지</StyledLoginItem>
+            </>
           ) : (
-            <StyledLoginItem onClick={onClickLogOut} to="/login">
-              로그아웃
-            </StyledLoginItem>
+            <>
+              <StyledLogOutButton to="" onClick={handleLogout}>로그아웃</StyledLogOutButton>
+              <StyledLoginItem to="/mypage">마이페이지</StyledLoginItem>
+            </>
           )}
-
-          <StyledLoginItem to="/login/signup">회원가입</StyledLoginItem>
-          <StyledLoginItem to="/mypage">마이페이지</StyledLoginItem>
         </StyledLoginItemContainer>
       </StyledContainer>
       <Divider></Divider>
@@ -79,4 +85,13 @@ const StyledLoginItem = styled(Link)`
   color: ${colors.main_gray};
   margin-left: 35px;
   text-decoration: none;
+`;
+
+const StyledLogOutButton = styled(Link)`
+  font-size: 16px;
+  font-weight: 300;
+  color: ${colors.main_gray};
+  margin-left: 35px;
+  text-decoration: none;
+  cursor: pointer;
 `;

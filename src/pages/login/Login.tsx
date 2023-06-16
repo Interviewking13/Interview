@@ -4,15 +4,22 @@ import { colors } from "../../constants/colors";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import LeftSignContainer from "../../components/auth/LeftSignContainer";
-import { getUserData, postSignIn } from "../../api/api-user";
-import { response } from "express";
+import { postSignIn } from "../../api/api-user";
+import { useMutation, useQueryClient } from "react-query";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [error, setError] = useState("");
 
+  const loginMutation = useMutation(
+    (credentials: { email: string; password: string }) =>
+      postSignIn(credentials.email, credentials.password)
+  );
+
+  // 로그인 버튼 클릭 시 동작
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -20,16 +27,23 @@ const LoginPage = () => {
       console.log("모든 필드를 입력해야 합니다.");
       return;
     }
-    postSignIn(email, password).then((response) => {
-      console.log(response.data);
-      if (response.data.resultCode == "200")
-        localStorage.setItem("token", response.data.data.token);
-      getUserData(String(localStorage.getItem("token"))).then((response) =>
-        console.log(response)
-      );
 
-      navigate("/"); // useNavigate 사용하여 페이지 이동
-    });
+    try {
+      const response = await loginMutation.mutateAsync({ email, password });
+
+      if (response && response.data.resultCode === "200") {
+        localStorage.setItem("token", response.data.data.token);
+      } else if (response && response.data.resultCode === "400") {
+        setError("이메일을 다시 확인해 주세요.");
+        return;
+      }
+
+      queryClient.invalidateQueries("userData");
+      console.log(response);
+      navigate("/");
+    } catch (error) {
+      setError("비밀번호를 다시 확인해 주세요");
+    }
   };
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     const email = e.target.value;
@@ -178,9 +192,10 @@ const StyledLoginBtn = styled(Button)`
 `;
 
 const StyledErrorMessage = styled.p`
-  color: red;
+  color: ${colors.main_red};
   font-size: 14px;
-  margin-top: 10px;
+  margin-top: 30px;
+  margin-left: auto;
 `;
 
 const StyledSignupCopyright = styled.div`

@@ -44,7 +44,24 @@ export const putFeedbackByUserId = async (
 };
 
 /** 5. 피드백, 댓글 삭제  delete */
-export const deleteFeedbackByUserId = async (user_id: string) => {
-  const response = await axiosInstance.delete(`feedback/${user_id}`);
+export const deleteFeedbackByUserId = async (
+  study_id: string,
+  token: string
+) => {
+  const response = await axiosInstance.delete(`feedback/${study_id}`, {
+    data: {
+      token: token,
+    },
+  });
+  return response;
+};
+
+export const deleteReply = async (reply_id: number, token: string) => {
+  const response = await axiosInstance.delete(`community/reply`, {
+    data: {
+      reply_id: reply_id,
+      token: token,
+    },
+  });
   return response;
 };
