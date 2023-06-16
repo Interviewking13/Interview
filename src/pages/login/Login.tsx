@@ -4,7 +4,8 @@ import { colors } from "../../constants/colors";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import LeftSignContainer from "../../components/auth/LeftSignContainer";
-import { postSignIn } from "../../api/api-user";
+import { getUserData, postSignIn } from "../../api/api-user";
+import { response } from "express";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +13,6 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
-  // 로그인 버튼 클릭 시 동작
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -24,6 +24,9 @@ const LoginPage = () => {
       console.log(response.data);
       if (response.data.resultCode == "200")
         localStorage.setItem("token", response.data.data.token);
+      getUserData(String(localStorage.getItem("token"))).then((response) =>
+        console.log(response)
+      );
 
       navigate("/"); // useNavigate 사용하여 페이지 이동
     });
