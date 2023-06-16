@@ -18,6 +18,7 @@ export const postSignUp = async (
   return response;
 };
 
+/** 2. 로그인 POST */
 export const postSignIn = async (email: string, password: string) => {
   const response = await axiosInstance.post("user/login", {
     email,
@@ -27,6 +28,7 @@ export const postSignIn = async (email: string, password: string) => {
   return response;
 };
 
+/** 3. 내 정보 조회 GET*/
 export const getUserData = async (token: string) => {
   const response = await axiosInstance.get("user/mypage", {
     headers: {
@@ -35,11 +37,6 @@ export const getUserData = async (token: string) => {
   });
   return response.data;
 };
-// /** 3. 내 정보 조회 GET */
-// // export const getUserData = async () => {
-// //   const response = await axiosInstance.get(`user/mypage/`);
-// //   return response;
-// // };
 
 /** 4. 내 정보 수정 PUT */
 export const putUserData = async (
