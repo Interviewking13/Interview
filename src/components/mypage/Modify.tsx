@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import { useQuery } from "react-query";
-import { getUserData } from "../../api/api-user";
+import { getUserData, putUserData } from "../../api/api-user";
 import { Button, Typography, TextField, Grid, Box } from "@mui/material";
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import AWS from "aws-sdk";
+import axios from "axios";
 
 AWS.config.update({
   accessKeyId: "AKIA4WQLMJXFZI2K7J2F",
@@ -13,9 +14,34 @@ AWS.config.update({
   region: "ap-northeast-2",
 });
 
-const FileUploader = () => {
-  const [uploadedFile, setUploadedFile] = useState<string | null>(null);
-  const [uploadedKey, setUploadedKey] = useState<string | null>(null);
+const Modify = () => {
+  const token =
+    localStorage.getItem("token") || ""; /**회원정보조회를 위한 토큰 가져오기*/
+
+  const {
+    data: userData,
+    isLoading,
+    isError,
+  } = useQuery(["userData"], () => getUserData(token as string)); //useQuery로 getdata
+
+  // token 값을 활용하여 필요한 작업을 수행
+  console.log("UserData", userData);
+  const { user_name, phone_number, email, file_key, file_name } =
+    userData?.data || {};
+
+  const [uploadedFile, setUploadedFile] = useState<string | null>(file_name);
+  const [uploadedKey, setUploadedKey] = useState<string | null>(file_key);
+  const [userPhoneNumber, setUserPhoneNumber] = useState<string | null>(
+    phone_number
+  );
+  const [userPassword, setUserPassword] = useState<string | null>("");
+
+  const onChangePhone = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserPhoneNumber(e.target.value);
+  };
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserPassword(e.target.value);
+  };
 
   const handleFindButtonClick = async () => {
     const inputFile = document.getElementById("input-file");
@@ -23,7 +49,6 @@ const FileUploader = () => {
       inputFile.click();
     }
   };
-
   const handleFileChange = async (event: any) => {
     const selectedFile = event.target.files[0];
 
@@ -81,68 +106,28 @@ const FileUploader = () => {
       inputFile.value = "";
     }
   };
-  return (
-    <>
-      <Grid item xs={8}>
-        <StyledTextField
-          variant="outlined"
-          placeholder="파일을 선택하세요"
-          InputProps={{
-            readOnly: true,
-          }}
-          onClick={handleFindButtonClick}
-          fullWidth
-        />
-      </Grid>
-      <Grid item xs={2} container justifyContent="flex-end">
-        <label htmlFor="input-file">
-          <input
-            type="file"
-            onChange={handleFileChange}
-            id="input-file"
-            style={{ display: "none" }}
-          />
-          <StyledFindButton onClick={handleFindButtonClick} variant="contained">
-            파일찾기
-          </StyledFindButton>
-        </label>
-      </Grid>
-      <Grid container>
-        {uploadedFile && (
-          <>
-            <Grid item xs={2}></Grid>
-            <Grid item xs={6}>
-              <StyledFileDownButton onClick={handleDownload}>
-                {uploadedFile}
-              </StyledFileDownButton>
-            </Grid>
-            <Grid item xs={2}>
-              <Grid container justifyContent="flex-end">
-                <StyledFileDeleteButton onClick={handleDelete}>
-                  삭제
-                </StyledFileDeleteButton>{" "}
-              </Grid>
-            </Grid>
-            <Grid item xs={2}></Grid>
-          </>
-        )}
-      </Grid>
-    </>
-  );
-};
 
-const Modify = () => {
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
+
+    const updatedData = {
+      file_key: uploadedKey,
+      file_name: uploadedFile,
+      phone_number: userPhoneNumber,
+      password: userPassword,
+      token: token,
+    };
+    try {
+      // PUT 요청을 보내서 서버에 변경된 정보 전송
+      await axios.put("http://34.22.79.51:5000/api/user/mypage", updatedData);
+
+      // 성공적으로 정보를 업데이트한 경우, 필요한 후속 작업을 수행하거나 사용자에게 피드백을 제공할 수 있습니다.
+    } catch (error) {
+      // 오류가 발생한 경우, 오류 처리를 수행합니다.
+      console.error("Error updating user data:", error);
+    }
   };
 
-  const token =
-    localStorage.getItem("token") || ""; /**회원정보조회를 위한 토큰 가져오기*/
-  const {
-    data: userData,
-    isLoading,
-    isError,
-  } = useQuery(["userData"], () => getUserData(token as string)); //useQuery로 getdata
   if (isLoading) {
     // 로딩 상태를 표시
     return <div>Loading...</div>;
@@ -151,12 +136,7 @@ const Modify = () => {
     // 에러 상태를 표시
     return <div>Error occurred while fetching token</div>;
   }
-  // token 값을 활용하여 필요한 작업을 수행
-  console.log("UserData", userData);
-  const { user_name, phone_number, email, file_key, file_name } =
-    userData?.data || {};
 
-  //유저 데이터 정보.
   return (
     <StyledContainer>
       <Grid container spacing={2}>
@@ -196,13 +176,8 @@ const Modify = () => {
           <Grid item xs={10}>
             <StyledTextField
               variant="outlined"
-              defaultValue={phone_number}
-              // onChange={(e) =>
-              //   setCustomUserData((prevData) => ({
-              //     ...prevData,
-              //     userPhoneNumber: e.target.value,
-              //   }))
-              // }
+              defaultValue={userPhoneNumber}
+              onChange={onChangePhone}
               fullWidth
             />
           </Grid>
@@ -225,14 +200,9 @@ const Modify = () => {
           <Grid item xs={10}>
             <StyledTextField
               variant="outlined"
-              // onChange={(e) =>
-              //   setCustomUserData((prevData) => ({
-              //     ...prevData,
-              //     userPassword: e.target.value,
-              //   }))
-              // }
               type="password"
               fullWidth
+              onChange={onChangePassword}
             />
           </Grid>
           <Grid item xs={2}>
@@ -246,7 +216,53 @@ const Modify = () => {
             <Grid item xs={2}>
               <StyledInfoName>자기소개서첨부</StyledInfoName>
             </Grid>
-            <FileUploader />
+            <Grid item xs={8}>
+              <StyledTextField
+                variant="outlined"
+                placeholder="파일을 선택하세요"
+                InputProps={{
+                  readOnly: true,
+                }}
+                onClick={handleFindButtonClick}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={2} container justifyContent="flex-end">
+              <label htmlFor="input-file">
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  id="input-file"
+                  style={{ display: "none" }}
+                />
+                <StyledFindButton
+                  onClick={handleFindButtonClick}
+                  variant="contained"
+                >
+                  파일찾기
+                </StyledFindButton>
+              </label>
+            </Grid>
+            <Grid container>
+              {uploadedFile && (
+                <>
+                  <Grid item xs={2}></Grid>
+                  <Grid item xs={6}>
+                    <StyledFileDownButton onClick={handleDownload}>
+                      {uploadedFile}
+                    </StyledFileDownButton>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <Grid container justifyContent="flex-end">
+                      <StyledFileDeleteButton onClick={handleDelete}>
+                        삭제
+                      </StyledFileDeleteButton>{" "}
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={2}></Grid>
+                </>
+              )}
+            </Grid>
           </Grid>
 
           {/* 버튼1, 버튼2 */}
@@ -262,7 +278,7 @@ const Modify = () => {
               </StyledDeleteButton>
             </Grid>
             <Grid item>
-              <StyledModifyButton variant="contained">
+              <StyledModifyButton variant="contained" type="submit">
                 수정하기
               </StyledModifyButton>
             </Grid>
@@ -359,7 +375,6 @@ const StyledFindButton = styled(Button)`
     }
   }
 `;
-
 const StyledFileDeleteButton = styled(Button)`
   && {
     color: ${colors.main_red};
