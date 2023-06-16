@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { StudyTaps } from "./common/StudyTap";
+
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { Mystudy, Title } from "./Information";
-import { getInfoStudyData } from "../../api/api-study";
 import {
   getFeedbackDataByStudyId,
   postFeedback,
@@ -10,6 +11,7 @@ import {
 } from "../../api/api-study-feedback";
 import { colors } from "../../constants/colors";
 import { useLocation } from "react-router-dom";
+import { TitleText } from "../../constants/fonts";
 
 export const Feedback = () => {
   const [feedbackInput, setFeedbackInput] = useState("");
@@ -30,21 +32,46 @@ export const Feedback = () => {
         console.error("Error:", error);
       });
   }, []);
-
   const postFeedbackBtn = () => {
     postFeedback(
       0,
       feedbackInput,
       lastPathSegment,
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4M2ZlMDVjZDJiZjMzZDc1YzZjNjMyIiwiaWF0IjoxNjg2ODU5MzI5LCJleHAiOjE2ODcxMTg1Mjl9.Pk0Ux-i6VAqP7czJVdRwUVoPMUs5Z4JShximmDH4Uo0"
+      String(localStorage.getItem("token"))
     ).then((response) => {
       console.log(response.data);
     });
+    getFeedbackDataByStudyId(lastPathSegment)
+      .then((response) => {
+        console.log(response.data);
+        setFeedbackData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
-  // const DeleteFeedbackBtn = () => {
-  //   postFeedback(0, feedbackInput, lastPathSegment).then((response) => {
-  //     console.log(response.data);
-  //   });
+  const DeleteFeedbackBtn = () => {
+    deleteFeedbackByUserId(
+      lastPathSegment,
+      String(localStorage.getItem("token"))
+    );
+  };
+
+  // const handleSubmit = async (e: any) => {
+  //   try {
+  //     const postReplyResponse = await postReply(
+  //       useId,
+  //       text,
+  //       Number(lastPathSegment)
+  //     );
+  //     if (!postReplyResponse.data) {
+  //       throw Error("댓글 작성 실패");
+  //     }
+  //     getDataByCommunity(useId);
+  //     setText("");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
   // };
   const onChangeArea = (e: any) => {
     setFeedbackInput(e.target.value);
@@ -59,13 +86,18 @@ export const Feedback = () => {
           placeholder="피드백을 입력해주세요"
           onChange={onChangeArea}
         ></InputArea>
-        <FeedbackBtn onClick={postFeedbackBtn}>입력</FeedbackBtn>
-        <FeedbackBtn>삭제</FeedbackBtn>
+        <FeedbackBtn onClick={postFeedbackBtn}>새 피드백 남기기</FeedbackBtn>
       </FeedbackContainer>
       {feedbackData.map((post, index) => (
         <FeedbackContainer key={post._id} id={post.user_id}>
-          <FeedbackContentContainer>{post.user_name}</FeedbackContentContainer>
-          <FeedbackContentContainer>{post.content}</FeedbackContentContainer>
+          <FeedbackContainerContent>
+            <FeedbackUserContainer>
+              <PeopleAltIcon />
+              {post.user_name}
+            </FeedbackUserContainer>
+            <FeedbackContentContainer>{post.content}</FeedbackContentContainer>
+          </FeedbackContainerContent>
+          <FeedbackBtn onClick={DeleteFeedbackBtn}>삭제</FeedbackBtn>
         </FeedbackContainer>
       ))}
     </Container>
@@ -73,7 +105,7 @@ export const Feedback = () => {
 };
 
 const InputArea = styled.textarea`
-  height: 80px;
+  height: 90px;
   width: 80%;
   margin-left: 20px;
   font-size: 20px;
@@ -101,7 +133,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
+const FeedbackContainerContent = styled.div`
+  display: flex;
+`;
 //피드백 개별 박스
 const FeedbackContainer = styled.div`
   display: flex;
@@ -113,12 +147,20 @@ const FeedbackContainer = styled.div`
   border: 1px solid black;
   border-radius: 5px;
   display: flex;
-  width: 100%;
+  width: 90%;
   margin-top: 5px;
+`;
+
+const FeedbackUserContainer = styled.div`
+  display: flex;
+  color: ${colors.main_navy};
+  font-size: 18px;
+  margin: 0px 30px;
 `;
 
 const FeedbackContentContainer = styled.div`
   display: flex;
-
-  margin-right: 100px;
+  margin-left: 30px;
+  color: ${colors.darkgray_navy};
+  font-size: 18px;
 `;

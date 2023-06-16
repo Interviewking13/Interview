@@ -93,20 +93,23 @@ const HomePage = (): JSX.Element => {
         </StyledItemNameArea>
 
         <StudyListItemArea>
-          {studyData.slice(0, 4).map((study) => (
-            <StyledLink to={`/study/${study._id}`} key={study._id}>
-              <StudyListItem
-                id={study._id}
-                title={study.title}
-                currentParticipants={study.acceptcount}
-                maxParticipants={study.headcount}
-                startDate={dateSplice(study.start)}
-                endDate={dateSplice(study.end)}
-                recruitDeadline={dateSplice(study.deadline)}
-                master={study.leader_name}
-              />
-            </StyledLink>
-          ))}
+          {studyData
+            .reverse()
+            .slice(0, 4)
+            .map((study) => (
+              <StyledLink to={`/study/${study._id}`} key={study._id}>
+                <StudyListItem
+                  id={study._id}
+                  title={study.title}
+                  currentParticipants={study.acceptcount}
+                  maxParticipants={study.headcount}
+                  startDate={dateSplice(study.start)}
+                  endDate={dateSplice(study.end)}
+                  recruitDeadline={dateSplice(study.deadline)}
+                  master={study.leader_name}
+                />
+              </StyledLink>
+            ))}
         </StudyListItemArea>
 
         <StyledMainStudyBtnArea>
