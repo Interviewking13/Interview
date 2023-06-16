@@ -2,7 +2,8 @@ import { ReactNode } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { colors } from "../../constants/colors";
 
 type LayoutProps = {
   children: ReactNode;
@@ -16,7 +17,7 @@ const Layout = (props: LayoutProps) => {
 
   return (
     <StyledBody>
-      <Wrap>
+      <Wrap isShow={isShow}>
         {isShow && <Header />}
         <div>{props.children}</div>
         {isShow && <Footer />}
@@ -31,8 +32,15 @@ const StyledBody = styled.div`
   height: 100vh;
 `;
 
-const Wrap = styled.div`
+const Wrap = styled.div<{ isShow: boolean }>`
   position: relative;
   min-height: 100%;
   padding-bottom: 165px;
+
+  ${({ isShow }) =>
+    !isShow &&
+    css`
+      padding-bottom: 0px;
+      background-color: ${colors.back_navy};
+  `}
 `;
