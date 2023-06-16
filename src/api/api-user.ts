@@ -50,12 +50,12 @@ export const putUserData = async (
   token: string
 ) => {
   const response = await axiosInstance.put("user/mypage", {
-    data: { email, password, intro_yn, phone_number },
+    data: { token, email, password, intro_yn, phone_number },
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   });
-  return response;
+  return response.data;
 };
 
 /** 5. 회원탈퇴 DELETE */
