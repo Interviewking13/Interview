@@ -79,6 +79,7 @@ export const getInfoStudyData = async (study_id: string) => {
 export const putInfoStudy = async (
   study_id: string,
   data: {
+    token: string;
     study_name: string;
     title: string;
     content: string;
@@ -89,6 +90,7 @@ export const putInfoStudy = async (
   }
 ) => {
   const response = await axiosInstance.put(`info/${study_id}`, {
+    token: data.token,
     study_name: data.study_name,
     title: data.title,
     content: data.content,
