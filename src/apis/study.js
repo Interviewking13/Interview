@@ -129,13 +129,13 @@ const studyApi = {
   /**스터디 신청 완료 or 신청 수락 명단 조회*/
   async acceptRelation(req, res, next) {
     try {
-      const { study_id, accept } = req.body;
-      const leader_id = req.user.user_id;
+      const { study_id, accept } = req.params;
+      // const leader_id = req.user.user_id;
 
-      // 스터디장 권한 판단
-      const leader = await StudyRelation.findOne({ user_id: leader_id, study_id });
-      if (!leader || leader.is_leader === false) throw new Error('Not leader');
-      console.log(leader);
+      // // 스터디장 권한 판단
+      // const leader = await StudyRelation.findOne({ user_id: leader_id, study_id });
+      // if (!leader || leader.is_leader === false) throw new Error('Not leader');
+      // console.log(leader);
 
       // 명단 조회
       const foundRelation = await StudyRelation.find({ study_id, accept });
