@@ -5,7 +5,7 @@ import { DetailButton, DetailTitle } from "./common/DetailTitle";
 import { StudyTaps } from "./common/StudyTap";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../constants/colors";
-import { SubTextBig, TitleText } from "../../constants/fonts";
+import { SubTextBig, TitleText, SubTextThin } from "../../constants/fonts";
 import { getInfoAllStudyData, getInfoStudyData } from "../../api/api-study";
 import { SubmitButton } from "./common/SubmitButton";
 import { dateSplice } from "../../utils/dateFomatting";
@@ -91,7 +91,10 @@ const Information: React.FC = () => {
 
   return (
     <Container>
-      <Mystudy>스터디정보</Mystudy>
+      <MystudyContainer>
+        <Mystudy>스터디 정보</Mystudy>
+        <MystudySubtitle>스터디 상세 정보를 둘러보고 신청하세요.</MystudySubtitle>
+      </MystudyContainer>
       <StyeldTapContainer>
         <StudyTaps />
         {useId === leaderId ? (
@@ -156,6 +159,7 @@ const Container = styled.div`
 `;
 
 const StyeldTapContainer = styled.div`
+  margin: 20px 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -165,24 +169,36 @@ const StyledStudyManageButton = styled.div`
 `;
 
 export const Title = styled.span`
-  margin-top: 10px;
   ${TitleText};
   color: ${colors.main_navy};
   font-size: 48px;
 `;
-export const Mystudy = styled.span`
-  margin-top: 20px;
+
+const MystudyContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: end;
+`;
+
+export const Mystudy = styled.div`
+  margin-top: 60px;
   ${TitleText};
   color: ${colors.main_navy};
   font-size: 32px;
+  margin-right: 30px;
 `;
+const MystudySubtitle = styled.div`
+  ${SubTextThin};
+  color: ${colors.darkgray_navy};
+`
 const SubTitle = styled.div`
   display: flex;
   flex-direction: column;
+  margin: 30px 0;
 `;
 const Divider = styled.div`
-  margin: 15px 0px;
-  border-bottom: 1px solid #000;
+  margin-bottom: 20px;
+  border-bottom: 1px solid ${colors.gray_stroke};
 `;
 
 const StudyIntro = styled.div`
@@ -191,6 +207,7 @@ const StudyIntro = styled.div`
   ${SubTextBig};
   color: ${colors.main_navy};
 `;
+
 const StyledDetailTitle = styled(DetailTitle)`
   cursor: pointer;
   &.cursor-style {
