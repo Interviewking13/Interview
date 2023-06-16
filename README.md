@@ -31,12 +31,12 @@
 
 
 **5. 기술스택** <br />
-![13team_tech_stack_230617](/uploads/cdbe2fc9c565d1e155ed4bad5d192c5f/13team_tech_stack_230617.jpg)
+![13team_tech_stack_230617](/uploads/1ab20358dc175fe8bf941c8955576676/13team_tech_stack_230617.jpg)
 <br/><br />
 가. 프론트엔드<br/>
 - React, TypeScript<br/>
-- Fetch: Axios, 리액트쿼리(부분적으로 사용)<br/>
-- UI: 스타일컴포넌트, MUI(부분적으로 사용)<br/>
+- Fetch: Axios, 리액트쿼리<br/>
+- UI: 스타일컴포넌트, MUI<br/>
 - 상태관리: Recoil<br/>
 
 나. 백엔드<br/>
@@ -52,20 +52,16 @@
 <br/>
 
 
-**6. 인프라 구조**
-- 그림 삽입 예정
-<br/><br/>
-
-**7. 데모영상**
-▼ 회원가입
-▼ 로그인
-▼ 스터디 개설
-▼ 스터디 정보관리
-▼ 커뮤니티
+**6. 데모영상**<br />
+▼ 회원가입<br />
+▼ 로그인<br />
+▼ 스터디 개설<br />
+▼ 스터디 정보관리<br />
+▼ 커뮤니티<br />
 <br/><br/>
 
 
-**8. 구성원 역할 및 상세**<br/>
+**7. 구성원 역할 및 상세**<br/>
 
 | 이름   | 담당 업무 |
 | ------ | --------- |
@@ -112,16 +108,16 @@
 <br />
 
 **9. 폴더 구조**
-- 프론트 : src/pages, src/components, src/img, src/fonts 폴더
+- 프론트 : src/pages, src/components, src/img, src/fonts 폴더<br />
 - 백엔드 : 프론트 폴더 이외 src 폴더 내 전체<br />
 <br />
 
-**10. 데이터 구조**
+**8. 데이터 구조**
 <br/>
 ![13team_InterviewKing_ERD_2](/uploads/0f1fe70f0e6c90fb54d99e2897b3bd86/13team_InterviewKing_ERD_2.png)
 <br />
 
-**11. 협업툴**
+**9. 협업툴**
 - Figma : 서비스 기획 및 화면 UI 디자인<br />
 - Notion : 회의록 작성, API 명세, 구현기능 확인 등<br />
 - Discord : 스크럼, 진행상황 공유 등<br />
@@ -130,14 +126,14 @@
 - Postman Teams : API 테스트 진행<br />
 <br />
 
-**12. 스크럼**<br />
+**10. 스크럼**<br />
 - 평일 오후 9시를 기본으로 Discord 에서 진행하되, 탄력적으로 운영.<br />
 - YTB(Yesterday, Today, Blocking) 기반 스크럼 회의 진행<br />
     - 어제할일, 오늘할일, 막히는 상황 스크럼 회의때 공유<br />
 - 필요시 수시로 프론트/백엔드/전체 스크럼 잡아서 진행<br />
 <br />
 
-**13. 코드 컨벤션**<br />
+**11. 코드 컨벤션**<br />
 - 컴포넌트는 함수형으로 작성<br />
 - 컴포넌트 함수명은 PascalCase으로 작성<br />
 - 일반 함수명, 변수명은 lower Camel Case 사용<br />
@@ -147,7 +143,7 @@
 - 백엔드 : commonJS 문법 사용<br />
 <br />
 
-**14. Git 컨벤션**<br />
+**12. Git 컨벤션**<br />
 - 커밋 유형은 영어 대문자로 작성하기<br />
 - Feat: 새로운 기능추가<br />
 - Fix: 수정사항 발생시, 버그 수정<br />
@@ -164,7 +160,7 @@
 - !HOTFIX: 급하게 치명적인 버그를 고쳐야 하는 경우<br />
 <br />
 
-**15. 브랜치 전략**<br />
+**13. 브랜치 전략**<br />
 - 배포 : master 브랜치<br />
 - 파트 별로 dev-BE, dev-FE 브랜치 내 feature 브랜치 생성<br />
 - feature 기능 구현 후 dev 에 pull request<br />
@@ -173,22 +169,29 @@
 
 <br />
 
-**16. 배포**
-- NGINX, PM2
-
-**17. 실행방법**<br />
+**14. 배포**
+- NGINX, PM2 를 이용한 배포<br />
 <br />
 
-**18. env**<br />
+**15. 실행방법**<br />
+```javascript
+git clone {.....repository_name}.git
+cd {repository_name}
+npm install
+npm run start
 ```
-DB_Link = 'DB링크'
-PORT = 포트번호
+<br />
 
-SECRET_KEY = '비밀키'
+**16. env 설정**<br />
+```javascript
+DB_Link = {DB링크}
+PORT = {포트번호}
 
-AWS_ACCESS = '아마존'
-AWS_SECRET = '아마존키'
-AWS_REGION = '지역'
+SECRET_KEY = {비밀키}
+
+AWS_ACCESS = {아마존}
+AWS_SECRET = {아마존키}
+AWS_REGION = {지역}
 ```
 <br />
 
