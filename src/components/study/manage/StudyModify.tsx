@@ -57,6 +57,7 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
   const handleDeleteClick: React.MouseEventHandler<HTMLDivElement> = () => {
     // 스터디 삭제 로직을 처리하는 코드를 작성하세요.
     // 필요한 API 호출 등의 작업을 수행할 수 있습니다.
+    console.log("studyId:", studyId);
     deleteStudy(String(localStorage.getItem("token")), studyId);
   };
   return (
