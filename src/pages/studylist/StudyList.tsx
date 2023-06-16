@@ -21,6 +21,7 @@ const StudyList = (): JSX.Element => {
     leader_name: string;
   };
 
+  const [searchQuery, setSearchQuery] = React.useState(""); // 검색하기
   const [studyData, setStudyData] = React.useState<StudyData[]>([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const itemsPerPage = 12;
@@ -34,13 +35,19 @@ const StudyList = (): JSX.Element => {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, []);
+  }, [searchQuery]);
 
   const getDisplayedStudyData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return studyData.slice(startIndex, endIndex);
-  };
+  
+    // 검색 쿼리에 따라 studyData를 필터링합니다.
+    const filteredData = studyData.filter(study =>
+      study.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  
+    return filteredData.slice(startIndex, endIndex);
+  };  
 
   const totalPages = Math.ceil(studyData.length / itemsPerPage);
 
@@ -64,6 +71,8 @@ const StudyList = (): JSX.Element => {
     return paginationNumbers;
   };
 
+  
+
   return (
     <CommonContainer>
       <StudyListTopArea>
@@ -73,7 +82,15 @@ const StudyList = (): JSX.Element => {
         </StyledSubTextThin>
 
         <StudyListInputArea>
-          <StyledInput type="text" name="search" id="" placeholder="검색하기" />
+        <StyledInput
+          type="text"
+          name="search"
+          id=""
+          placeholder="검색하기"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+          
           <StyledInputBtn>
             <StyledIcon src={SearchIconSrc} />
           </StyledInputBtn>

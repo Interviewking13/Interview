@@ -25,7 +25,7 @@ const LoginPage = () => {
       if (response.data.resultCode == "200")
         localStorage.setItem("token", response.data.data.token);
       getUserData(String(localStorage.getItem("token"))).then((response) =>
-        console.log("response")
+        console.log(response)
       );
 
       navigate("/"); // useNavigate 사용하여 페이지 이동
