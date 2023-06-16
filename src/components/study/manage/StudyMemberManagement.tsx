@@ -7,6 +7,7 @@ import { Modal } from "@mui/material";
 import UserInfoModal from "../../modal/UserInfoModal";
 import { useQuery } from "react-query";
 import { deleteStudyMember, getStudyAccept } from "../../../api/api-study";
+import { useQueryClient } from "react-query";
 type StudyMemberManagementProps = {
   studyId: string;
 };
@@ -21,6 +22,7 @@ type StudyAcceptData = {
 };
 
 const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
+  const queryClient = useQueryClient();
   const apply = 0;
   // 신청 수락
   const accept = 1;
@@ -33,6 +35,7 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
       studyId,
       userId
     );
+    queryClient.invalidateQueries(["studyAcceptData"]);
   };
 
   const {

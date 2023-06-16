@@ -47,6 +47,7 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
       userId,
       unAccept
     );
+    queryClient.invalidateQueries(["studyAcceptData"]);
   };
 
   const {
