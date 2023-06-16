@@ -26,17 +26,17 @@
 **4. API 설계문서**<br/>
 - [노션페이지 참고](https://www.notion.so/elice/13-f3aabba967fe4fbeb0138da5d788012d?p=2bc36f954548418e8b58297e10234fa2&pm=s)
 <br/><br/>
-![13team_main_logo](/uploads/37a96843cad510bed9e772a1e0630786/13team_main_logo.png)
+![13team_main_logo_230617](/uploads/84d85e4a39db1835229ef11a8e072971/13team_main_logo_230617.png)
 <br/>
 
 
 **5. 기술스택** <br />
-![13team_tech_stack](/uploads/8c168e69a4118cdee0f97994068b4f48/13team_tech_stack.jpg)
+![13team_tech_stack_230617](/uploads/1ab20358dc175fe8bf941c8955576676/13team_tech_stack_230617.jpg)
 <br/><br />
 가. 프론트엔드<br/>
 - React, TypeScript<br/>
-- Fetch: Axios, 리액트쿼리(부분적으로 사용)<br/>
-- UI: 스타일컴포넌트, MUI(부분적으로 사용)<br/>
+- Fetch: Axios, 리액트쿼리<br/>
+- UI: 스타일컴포넌트, MUI<br/>
 - 상태관리: Recoil<br/>
 
 나. 백엔드<br/>
@@ -52,38 +52,35 @@
 <br/>
 
 
-**6. 인프라 구조**
-- 그림 삽입 예정
-<br/><br/>
-
-**7. 데모영상**
-- ** 각자 영상 촬영하여 주세요!
-- 회원가입
-- 로그인
-- 스터디 개설
-- 스터디 정보관리
-- 커뮤니티 페이지
-- ...
+**6. 데모영상**<br />
+▼ 회원가입<br />
+▼ 로그인<br />
+▼ 스터디 개설<br />
+▼ 스터디 정보관리<br />
+▼ 커뮤니티<br />
 <br/><br/>
 
 
-**8. 구성원 역할 및 상세**<br/>
+**7. 구성원 역할 및 상세**<br/>
 
 | 이름   | 담당 업무 |
 | ------ | --------- |
 | 고병욱 | FE(팀장)  |
 | 공지아 | FE(부팀장)  |
-| 이용섭 | FE(프론트팀장)        |
+| 이용섭 | FE(프론트리더)        |
 | 임준영 | FE        |
 | 정채진 | FE        |
-| 박세진 | BE(백엔드팀장)        |
+| 박세진 | BE(백엔드리더)        |
 | 강혜리 | BE        |
 | 윤혜진 | BE        |
 
 <br />
 
 ### 프론트엔드
-- react, reactQuery, .. <- 기술 기재
+- React, ReactQuery
+- TypeScript
+- amazon S3
+- Recoil
 - 병욱
     - 스터디 신청 페이지, 스터디 관리(스터디장)
 - 지아
@@ -95,26 +92,32 @@
 - 채진
     - 페이지 레이아웃, 화면 UI 디자인, 메인/스터디정보 검색 페이지 
 
+
 ### 백엔드
 - node, express
+- CommonJS
 - mongoDB, moongose
-- cors
 - amazon S3
+- cors, JWT Token, bcrypt
 - 세진 : user 관련 기능 구현<br />
     - 회원가입, 로그인, 내 정보조회, 회원탈퇴 등<br />
 - 혜리 : study 관련 기능 구현 <br />
     - 스터디 개설, 신청, 화상채팅, 피드백, 스터디 정보조회 등<br />
 - 혜진 : community 관련 기능 구현<br />
     - 게시글 및 댓글 작성·수정·삭제, 파일 업로드 및 다운로드 기능 등<br />
-
+<br />
 
 **9. 폴더 구조**
-- 프론트 : src/pages, src/components, src/img, src/fonts 폴더
-- 백엔드 : 프론트 폴더 이외 src 폴더 내 전체
+- 프론트 : src/pages, src/components, src/img, src/fonts 폴더<br />
+- 백엔드 : 프론트 폴더 이외 src 폴더 내 전체<br />
+<br />
 
-**10. 데이터 구조**
+**8. 데이터 구조**
+<br/>
+![13team_InterviewKing_ERD_2](/uploads/0f1fe70f0e6c90fb54d99e2897b3bd86/13team_InterviewKing_ERD_2.png)
+<br />
 
-**11. 협업툴**
+**9. 협업툴**
 - Figma : 서비스 기획 및 화면 UI 디자인<br />
 - Notion : 회의록 작성, API 명세, 구현기능 확인 등<br />
 - Discord : 스크럼, 진행상황 공유 등<br />
@@ -123,14 +126,14 @@
 - Postman Teams : API 테스트 진행<br />
 <br />
 
-**12. 스크럼**<br />
+**10. 스크럼**<br />
 - 평일 오후 9시를 기본으로 Discord 에서 진행하되, 탄력적으로 운영.<br />
 - YTB(Yesterday, Today, Blocking) 기반 스크럼 회의 진행<br />
     - 어제할일, 오늘할일, 막히는 상황 스크럼 회의때 공유<br />
 - 필요시 수시로 프론트/백엔드/전체 스크럼 잡아서 진행<br />
 <br />
 
-**13. 코드 컨벤션**<br />
+**11. 코드 컨벤션**<br />
 - 컴포넌트는 함수형으로 작성<br />
 - 컴포넌트 함수명은 PascalCase으로 작성<br />
 - 일반 함수명, 변수명은 lower Camel Case 사용<br />
@@ -140,7 +143,7 @@
 - 백엔드 : commonJS 문법 사용<br />
 <br />
 
-**14. Git 컨벤션**<br />
+**12. Git 컨벤션**<br />
 - 커밋 유형은 영어 대문자로 작성하기<br />
 - Feat: 새로운 기능추가<br />
 - Fix: 수정사항 발생시, 버그 수정<br />
@@ -157,29 +160,44 @@
 - !HOTFIX: 급하게 치명적인 버그를 고쳐야 하는 경우<br />
 <br />
 
-**15. 브랜치 전략**<br />
+**13. 브랜치 전략**<br />
 - 배포 : master 브랜치<br />
 - 파트 별로 dev-BE, dev-FE 브랜치 내 feature 브랜치 생성<br />
 - feature 기능 구현 후 dev 에 pull request<br />
+<br />
+![13team_git_branch_0617](/uploads/c3cb7471e57e54afad31f8a280310cba/13team_git_branch_0617.png)
 
-![13team_git_branch](/uploads/9a6cdd56c5d707b8aa4facfe351a2ed1/13team_git_branch.jpg)
+<br />
 
+**14. 배포**
+- NGINX, PM2 를 이용한 배포<br />
+<br />
 
+**15. 실행방법**<br />
+```javascript
+git clone {.....repository_name}.git
+cd {repository_name}
+npm install
+npm run start
+```
+<br />
 
+**16. env 설정**<br />
+```javascript
+DB_Link = {DB링크}
+PORT = {포트번호}
 
-(
+SECRET_KEY = {비밀키}
 
-16. 배포
-
-17. 실행방법
-
-18. .env....
-
-)
+AWS_ACCESS = {아마존}
+AWS_SECRET = {아마존키}
+AWS_REGION = {지역}
+```
+<br />
 
 ------------------------------------------------------------------------------------------------------
 
-본 프로젝트에서 제공하는 모든 코드 등은 저작권법에 의해 보호 받으며, 13팀 및 (주)엘리스의 자산입니다.<br />
+본 프로젝트에서 제공하는 모든 코드 등은 저작권법에 의해 보호 받고 있으며, 엘리스 SW4기 13팀 및 (주)엘리스의 자산입니다.<br />
 무단 사용 및 도용, 복제 및 배포를 금합니다.<br />
-Copyright 2022 엘리스 Inc. All rights reserved.<br />
+Copyright 2023 엘리스 Inc. All rights reserved.<br />
 
