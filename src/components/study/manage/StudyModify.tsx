@@ -143,7 +143,7 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
           />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateBtnArea>
-          <StyledLink to={`/study/modify`}>
+          <StyledLink>
             <SubButtonContainer>
               <StyledCommonButton
                 backgroundColor={colors.main_mint}
@@ -153,7 +153,7 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
               </StyledCommonButton>
             </SubButtonContainer>
           </StyledLink>
-          <StyledLink to={`/study/delete`}>
+          <StyledLink>
             <SubButtonContainer>
               <StyledCommonButton
                 backgroundColor={colors.main_red}
@@ -270,7 +270,7 @@ const StyledStudyCreateBtnArea = styled.div`
   flex-direction: row-reverse;
   gap: 20px;
 `;
-const StyledLink = styled(Link)`
+const StyledLink = styled.div`
   text-decoration: none;
   color: ${colors.main_black};
   display: flex;

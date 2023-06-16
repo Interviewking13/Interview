@@ -18,7 +18,7 @@ export const postCreateStudy = async (
   start: string,
   end: string,
   leader_name: string,
-  leader_id: string  
+  leader_id: string
 ) => {
   const response = await axiosInstance.post("study/create", {
     study_name,
@@ -126,7 +126,7 @@ export const deleteStudy = async (token: string, study_id: string) => {
   return response;
 };
 
-/** 9. 스터디 삭제 (장)  get */
+/** 9. 스터디 신청원 조회  get */
 export const getStudyAccept = async (
   token: string,
   study_id: string,

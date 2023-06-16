@@ -19,13 +19,15 @@ const members = [
 ];
 
 const onDelete = () => {};
-
+const accept = 0;
 const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
   const response = getStudyAccept(
     String(localStorage.getItem("token")),
     studyId,
-    0
+    accept
   );
+  console.log(studyId);
+
   // const {
   //   data: studyAcceptData,
   //   isLoading,
