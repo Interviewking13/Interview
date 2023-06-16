@@ -21,7 +21,10 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({
   const handleCloseModal = () => {
     handleModalClose();
   };
-  // 모달 내용 및 로직 구현
+
+  // getUserData(userId) 해서
+  // 더미데이터 변경
+  // 파일 다운로드 구현
   const name = " 정채진";
   const introName = "첨부파일.word";
   return (

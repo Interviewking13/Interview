@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import BoardListItemContainer from "../community/components/BoardListItemContainer";
 import BestBoardListItemContainer from "./components/BestBoardListItemContainer";
-import CommunityTaps from "../community/components/CommunityTap";
+
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import SearchIconSrc from "../../img/search_navy.svg";
 import { Link } from "react-router-dom";
+
+import CreateIcon from "@mui/icons-material/Create";
 interface BoardListItemContainerProps {
   tap: number;
 }
@@ -38,16 +40,41 @@ const CommunityPage: React.FC<BoardListItemContainerProps> = ({ tap }) => {
           </StyledLink>
         </CommunityListInputArea>
       </StyledHeadContainer>
-      {/* <CommunityTaps></CommunityTaps> */}
-      <button onClick={onClickTotalTap}>전체</button>
-      <button onClick={onClickMyTap}>내가쓴글</button>
+      <StydyTapContainer>
+        <StydyTap onClick={onClickTotalTap}>
+          <CreateIcon />
+          &nbsp;전체
+        </StydyTap>
+        <StydyTap onClick={onClickMyTap}>
+          <CreateIcon />
+          &nbsp;내가쓴 글
+        </StydyTap>
+      </StydyTapContainer>
+
       {/* 게시판 목록 컨테이너, 아이템 컴포넌트 불러오기 */}
-      <BestBoardListItemContainer />
+      <BestBoardListItemContainer tap={taps} />
       <BoardListItemContainer tap={taps} />
     </StyledCommonContainer>
   );
 };
 
+const StydyTapContainer = styled.div`
+  margin: 20px 0px;
+  display: flex;
+`;
+const StydyTap = styled.div`
+  cursor: pointer;
+  display: flex;
+
+  font-size: 20px;
+  &:not(:first-child) {
+    margin-left: 30px;
+  }
+  color: ${colors.main_mint};
+  &:hover {
+    color: skyblue; /* 호버 시 변경할 색상 */
+  }
+`;
 const StyledTitle = styled.div`
   height: fit-content;
   ${fonts.TitleText}
