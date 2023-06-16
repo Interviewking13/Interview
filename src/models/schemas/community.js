@@ -28,12 +28,12 @@ const CommunitySchema = new Schema(
         file_key: {
             type: String,
         }, 
-        file_etag: {
-            type: String,
-        }, 
         file_name: {
             type: String,
-        }   
+        },
+        reply_count: {
+            type: Number,
+        }
     },
     {
         timestamps: true,
