@@ -88,6 +88,7 @@ const Information: React.FC = () => {
     leader_id,
     _id,
   } = studyData;
+
   return (
     <Container>
       <Mystudy>스터디정보</Mystudy>
