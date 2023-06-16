@@ -54,11 +54,11 @@ function App() {
                 element={<CommunityCreatePage />}
               />
               <Route
-                path="/Community/CommunityEditPage:id"
+                path="/Community/CommunityEditPage/:community_id"
                 element={<CommunityEditPage />}
               />
               <Route
-                path="/Community/CommunityDetailPage/:id"
+                path="/Community/CommunityDetailPage/:community_id"
                 element={<CommunityDetailPage />}
               />
             </Routes>
