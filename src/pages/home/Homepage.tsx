@@ -17,15 +17,15 @@ import { Link } from "react-router-dom";
 
 const HomePage = (): JSX.Element => {
   type StudyData = {
-    _id: string,
-    title: string,
-    acceptcount: number,
-    headcount: number,
-    start: string,
-    end: string,
-    deadline: string,
-    leader_name: string
-  }
+    _id: string;
+    title: string;
+    acceptcount: number;
+    headcount: number;
+    start: string;
+    end: string;
+    deadline: string;
+    leader_name: string;
+  };
 
   const [studyData, setStudyData] = React.useState<StudyData[]>([]);
 
@@ -109,11 +109,9 @@ const HomePage = (): JSX.Element => {
           ))}
         </StudyListItemArea>
 
-        
-        <StyledMainStudyBtnArea> 
-          <StyledLink to={`/study`}>     
+        <StyledMainStudyBtnArea>
+          <StyledLink to={`/study`}>
             <StyledMainStudyBtn>
-
               <StyeldBtnTextArea>
                 <StyeldBtnTitleArea>
                   <StyledIcon src={PencilIconSrc} />
@@ -124,38 +122,31 @@ const HomePage = (): JSX.Element => {
                   참여하고 싶은 스터디를 찾고, 자신있는 면접을 준비해보세요!
                 </StyledMainBtnSub>
               </StyeldBtnTextArea>
-
-
             </StyledMainStudyBtn>
           </StyledLink>
 
-          <StyledLink to={`/study/create`}> 
+          <StyledLink to={`/study/create`}>
             <StyledMainStudyBtn>
-
               <StyeldBtnTextArea>
-
                 <StyeldBtnTitleArea>
                   <StyledIcon src={PencilIconSrc} />
-                  <StyledMainBtnTitle>
-                    스터디 만들기
-                  </StyledMainBtnTitle>
+                  <StyledMainBtnTitle>스터디 만들기</StyledMainBtnTitle>
                 </StyeldBtnTitleArea>
 
                 <StyledMainBtnSub>
                   알맞는 스터디가 없다면 직접 스터디를 개설해보세요!
                 </StyledMainBtnSub>
               </StyeldBtnTextArea>
-
             </StyledMainStudyBtn>
           </StyledLink>
-        </StyledMainStudyBtnArea>    
+        </StyledMainStudyBtnArea>
 
         <StyledItemNameArea>
           <StyledTitleText>커뮤니티 소식</StyledTitleText>
         </StyledItemNameArea>
 
         <StyledMainCommunityArea>
-          <BestBoardListItemContainer />
+          <BestBoardListItemContainer tap={1} />
         </StyledMainCommunityArea>
       </StyledCommonContainer>
     </>
@@ -290,4 +281,4 @@ const StyledLink = styled(Link)`
     transform: scale(1.007);
     transition: 0.3s;
   }
-`
+`;

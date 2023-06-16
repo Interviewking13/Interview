@@ -11,8 +11,10 @@ import {
 } from "./BoardListItem";
 import { SubText } from "../../../constants/fonts";
 import { dateSplice } from "../../../utils/dateFomatting";
-
-const BestBoardListItem: React.FC = () => {
+interface BoardListItemProps {
+  tap: number;
+}
+const BestBoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
   const [bestPosts, setBestPosts] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
 
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -39,34 +41,42 @@ const BestBoardListItem: React.FC = () => {
   return (
     <div>
       <StyledPostListItem>
-        {bestPosts.map((post) => (
-          <StyledPostItems
-            onClick={onItemClick}
-            key={post.community_id}
-            id={post.community_id}
-          >
-            <StyledLeftPostItem>
-              <StyledPostTitle>{post.title}</StyledPostTitle>
-            </StyledLeftPostItem>
-            <StyledRightPostItem>
-              <StyledPostItem>댓글 수 : {post.reply_count}</StyledPostItem>
-              <StyledPostItem>조회 수: {post.read_users.length}</StyledPostItem>
-              <StyledPostItem>{post.user_name}</StyledPostItem>
-              <StyledPostItem>{dateSplice(post.updatedAt)}</StyledPostItem>
-            </StyledRightPostItem>
-          </StyledPostItems>
-        ))}
+        {tap === 1 ? (
+          bestPosts.map((post) => (
+            <StyledPostItems
+              onClick={onItemClick}
+              key={post.community_id}
+              id={post.community_id}
+            >
+              <StyledLeftPostItem>
+                <StyledPostTitle>{post.title}</StyledPostTitle>
+              </StyledLeftPostItem>
+              <StyledRightPostItem>
+                <StyledPostItem>댓글 수 : {post.reply_count}</StyledPostItem>
+                <StyledPostItem>
+                  조회 수: {post.read_users.length}
+                </StyledPostItem>
+                <StyledPostItem>{post.user_name}</StyledPostItem>
+                <StyledPostItem>{dateSplice(post.createdAt)}</StyledPostItem>
+              </StyledRightPostItem>
+            </StyledPostItems>
+          ))
+        ) : (
+          <div></div>
+        )}
       </StyledPostListItem>
     </div>
   );
 };
-
-const App = () => {
+interface BoardListItemProps {
+  tap: number;
+}
+const App: React.FC<BoardListItemProps> = ({ tap }) => {
   const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <BestBoardListItem />
+      <BestBoardListItem tap={tap} />
     </QueryClientProvider>
   );
 };

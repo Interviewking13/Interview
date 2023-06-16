@@ -3,22 +3,31 @@ import styled from "styled-components";
 import { colors } from "../../../constants/colors";
 import BestBoardListItem from "./BestBoardListItem";
 import { SubTextBig, SubTextThin } from "../../../constants/fonts";
+interface BoardListItemContainerProps {
+  tap: number;
+}
 
-const BestBoardListItemContainer: React.FC = () => {
+const BestBoardListItemContainer: React.FC<BoardListItemContainerProps> = ({
+  tap,
+}) => {
   return (
     <div>
-      <StyledBestPostListItemBox>
-        <StyledPostItems>
-          <StyledBestTitle>인기 글</StyledBestTitle>
-          <StyledRightPostItem>
-            <StyledPostItem>댓글</StyledPostItem>
-            <StyledPostItem>조회</StyledPostItem>
-            <StyledPostItem>작성자</StyledPostItem>
-            <StyledPostItem>게시일</StyledPostItem>
-          </StyledRightPostItem>
-        </StyledPostItems>
-        <BestBoardListItem />
-      </StyledBestPostListItemBox>
+      {tap === 1 ? (
+        <StyledBestPostListItemBox>
+          <StyledPostItems>
+            <StyledBestTitle>인기 글</StyledBestTitle>
+            <StyledRightPostItem>
+              <StyledPostItem>댓글</StyledPostItem>
+              <StyledPostItem>조회</StyledPostItem>
+              <StyledPostItem>작성자</StyledPostItem>
+              <StyledPostItem>게시일</StyledPostItem>
+            </StyledRightPostItem>
+          </StyledPostItems>
+          <BestBoardListItem tap={tap} />
+        </StyledBestPostListItemBox>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 };

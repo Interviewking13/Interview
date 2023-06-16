@@ -22,8 +22,8 @@ const Information: React.FC = () => {
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
   const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
   const [studyApplyModalOpen, setStudyApplyModalOpen] = React.useState(false);
-  const [useId, setUserId] = useState("");
-  const [leaderId, setLeaderId] = useState("");
+  const [useId, setUserId] = useState("1");
+  const [leaderId, setLeaderId] = useState("2");
 
   useEffect(() => {
     getUserData(String(localStorage.getItem("token"))).then((response) => {

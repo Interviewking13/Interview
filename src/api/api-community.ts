@@ -110,20 +110,3 @@ export const deleteReply = async (reply_id: number, token: string) => {
   });
   return response;
 };
-
-// export function postData() {
-//   return axiosInstance
-//     .post("community/detl",
-//     {
-//       title: "게시글 제목 이용섭테스트",
-//       content: "게시글 내용 이용섭테스트",
-//       attach: "",
-//     }
-//     )
-//     .then((response) => {
-//       console.log(response.data);
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// }
