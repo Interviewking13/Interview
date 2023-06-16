@@ -12,6 +12,7 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import { postReply } from "../../api/api-community";
 import { getUserData } from "../../api/api-user";
 import ClearIcon from "@mui/icons-material/Clear";
+import React from "react";
 export const CommunityDetailPage: React.FC = () => {
   const [a, setA] = useState({
     content: "",
@@ -86,6 +87,17 @@ export const CommunityDetailPage: React.FC = () => {
     }
   };
 
+  const writeHandleDelete = async (targetId: number) => {
+    try {
+      const deleteMyReply = await deleteReply(
+        targetId,
+        String(localStorage.getItem("token"))
+      );
+      getDataByCommunity(useId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // const handleDelete = (e: any) => {
   //   console.log(Number(e.target.id));
   //   deleteReply(Number(e.target.id))
