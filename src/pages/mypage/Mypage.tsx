@@ -40,7 +40,7 @@ const Mypage = () => {
             </Grid>
             <Grid item>
               <StyledSubTitle variant="subtitle1">
-                나의 정보를 확인하세요
+                나의 정보를 확인하세요.
               </StyledSubTitle>
             </Grid>
           </Grid>
@@ -75,23 +75,20 @@ export default Mypage;
 
 const StyledContainer = styled(Box)`
   && {
-    width: 100%;
-    max-width: 1920px;
+    width: 1270px;
+    margin: 0 auto;
   }
 `;
 const StyledContent = styled(Grid)`
   && {
-    width: 66.1%;
-    max-width: 1270px;
-    margin: 0 auto;
-    padding-left: 0;
+    margin-top: 40px;
   }
 `;
 
 const StyledTitle = styled(Button)`
   && {
     ${fonts.TitleText}
-    color: ${colors.main_mint};
+    color: ${colors.main_navy};
   }
 `;
 

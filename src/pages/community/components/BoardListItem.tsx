@@ -83,9 +83,9 @@ const BoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
                 <StyledPostTitle>{post.title}</StyledPostTitle>
               </StyledLeftPostItem>
               <StyledRightPostItem>
-                <StyledPostItem>댓글 수 : {post.reply_count}</StyledPostItem>
+                <StyledPostItem>{post.reply_count}</StyledPostItem>
                 <StyledPostItem>
-                  조회 수 : {post.read_users.length}
+                  {post.read_users.length}
                 </StyledPostItem>
                 <StyledPostItem>{post.user_name}</StyledPostItem>
                 <StyledPostItem>{dateSplice(post.createdAt)}</StyledPostItem>
@@ -121,10 +121,10 @@ const BoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
                 </StyledLeftPostItem>
                 <StyledRightPostItem>
                   <StyledPostItem>
-                    댓글 수 : {filteredPost.reply_count}
+                    {filteredPost.reply_count}
                   </StyledPostItem>
                   <StyledPostItem>
-                    조회 수 : {filteredPost.read_users.length}
+                    {filteredPost.read_users.length}
                   </StyledPostItem>
                   <StyledPostItem>{filteredPost.user_name}</StyledPostItem>
                   <StyledPostItem>
