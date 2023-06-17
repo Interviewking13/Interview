@@ -34,7 +34,7 @@ const UserInfo = () => {
 
   // token 값을 활용하여 필요한 작업을 수행
   console.log("UserData", userData);
-  const { user_name, phone_number, email, file_key, file_name, intro_yn } =
+  const { user_name, phone_number, email, file_key, file_name } =
     userData?.data || {};
 
   const onClickfileDownload = () => {
@@ -100,7 +100,7 @@ const UserInfo = () => {
               <StyledInfoText>연락처</StyledInfoText>
             </Grid>
             <Grid item>
-              <StyledInfoValue>{phone_number}</StyledInfoValue>
+              <StyledInfoValue>01023445678</StyledInfoValue>
             </Grid>
           </Grid>
         </Grid>
