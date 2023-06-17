@@ -11,11 +11,12 @@ import {
 import { useQuery } from "react-query";
 import React, { useState, useEffect } from "react";
 import { dateFomatting, dateFomattingLine } from "../../../utils/dateFomatting";
-
+import { useQueryClient } from "react-query";
 interface StudyModifyProps {
   studyId: string;
 }
 const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
+  const queryClient = useQueryClient();
   console.log("studyId::", studyId);
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,6 +26,7 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
     data: studyData,
     isLoading,
     isError,
+    refetch,
   } = useQuery(["studyData"], () =>
     getInfoStudyData(studyId).then((response) => response.data)
   );
@@ -35,7 +37,16 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
   const [endDate, setEndDate] = useState(""); // 종료 날짜 상태 추가
   const [recruitmentDeadline, setRecruitmentDeadline] = useState(""); // 모집 마감일 상태 추가
   const [recruitmentCount, setRecruitmentCount] = useState(0); // 모집 인원 상태 추가
-  console.log("1");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 500); // 5초마다 데이터 업데이트 및 새로고침
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
   useEffect(() => {
     if (studyData) {
       const { title, content, chat_link, start, end, deadline, headcount } =
@@ -49,21 +60,11 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
       setRecruitmentCount(headcount);
     }
   }, [studyData]);
-  if (isLoading) {
-    // 로딩 상태를 표시
-    return <div>Loading...</div>;
-  }
 
   if (isError) {
     // 에러 상태를 표시
     return <div>Error occurred while fetching data</div>;
   }
-
-  const onClickEdit = () => {
-    alert("수정이 완료되었습니다");
-
-    navigate(`/study/${lastPathSegment}`);
-  };
   const handleModifyClick: React.MouseEventHandler<HTMLDivElement> = () => {
     const updatedStudy = {
       study_name: studyName,
@@ -77,6 +78,8 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
     };
 
     putInfoStudy(studyId, updatedStudy);
+    navigate(`/study/${studyId}`);
+    queryClient.invalidateQueries(["studyData"]);
   };
   const handleDeleteClick: React.MouseEventHandler<HTMLDivElement> = () => {
     // 스터디 삭제 로직을 처리하는 코드를 작성하세요.
@@ -88,6 +91,15 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
       console.log("12345");
     });
   };
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching data</div>;
+  }
   return (
     <>
       <StyledStudyCreateArea>
@@ -158,9 +170,7 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
                 backgroundColor={colors.main_mint}
                 onClick={handleModifyClick} // onClick 이벤트 핸들러 추가
               >
-                <StyledButtonTextDelete onClick={onClickEdit}>
-                  수정하기
-                </StyledButtonTextDelete>
+                <StyledButtonTextDelete>수정하기</StyledButtonTextDelete>
               </StyledCommonButton>
             </SubButtonContainer>
           </StyledLink>
