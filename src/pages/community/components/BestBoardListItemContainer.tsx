@@ -48,7 +48,7 @@ const StyledPostItems = styled.div`
   cursor: pointer;
   margin: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 `;
 
@@ -59,9 +59,8 @@ const StyledBestPostListItemBox = styled.div`
   border-top: none;
 `;
 
-export const StyledLeftPostItem = styled.div``;
-
 const StyledRightPostItem = styled.div`
+  margin-left: auto;
   display: flex;
   justify-content: space-between;
 `;
@@ -71,6 +70,13 @@ const StyledPostItem = styled.div`
 
   color: ${colors.main_mint};
   ${SubTextThin};
-  margin-right: 20px;
+  margin-right: 27px;
   font-weight: 700;
+
+  &:nth-child(3) {
+    margin-right: 25px;
+  }
+  &:nth-child(4) {
+    margin-right: 16px;
+  }
 `;
