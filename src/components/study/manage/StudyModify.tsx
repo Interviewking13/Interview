@@ -2,7 +2,7 @@ import { HTMLAttributes } from "react";
 import styled from "styled-components";
 import { colors } from "../../../constants/colors";
 import * as fonts from "../../../constants/fonts";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   deleteStudy,
   getInfoStudyData,
@@ -18,6 +18,9 @@ interface StudyModifyProps {
 const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
   console.log("studyId::", studyId);
   const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.pathname;
+  const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
   const {
     data: studyData,
     isLoading,
@@ -55,6 +58,12 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
     // 에러 상태를 표시
     return <div>Error occurred while fetching data</div>;
   }
+
+  const onClickEdit = () => {
+    alert("수정이 완료되었습니다");
+
+    navigate(`/study/${lastPathSegment}`);
+  };
   const handleModifyClick: React.MouseEventHandler<HTMLDivElement> = () => {
     const updatedStudy = {
       study_name: studyName,
@@ -149,7 +158,9 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
                 backgroundColor={colors.main_mint}
                 onClick={handleModifyClick} // onClick 이벤트 핸들러 추가
               >
-                <StyledButtonTextDelete>수정하기</StyledButtonTextDelete>
+                <StyledButtonTextDelete onClick={onClickEdit}>
+                  수정하기
+                </StyledButtonTextDelete>
               </StyledCommonButton>
             </SubButtonContainer>
           </StyledLink>
