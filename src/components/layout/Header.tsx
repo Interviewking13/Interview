@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
-import { TitleText } from "../../constants/fonts";
+import { TitleText, SubText, SubTextThinSmall } from "../../constants/fonts";
 
 const Header = (): JSX.Element => {
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ const StyledContainer = styled.div`
   width: 1270px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
 `;
 
 const StyledLogoContainer = styled.div`
@@ -64,7 +64,7 @@ const StyledLogoContainer = styled.div`
 `;
 
 const StyledLogo = styled(Link)`
-  margin-right: 95px;
+  margin-right: 100px;
   color: ${colors.main_navy};
   text-decoration: none;
 `;
@@ -72,25 +72,24 @@ const StyledLogo = styled(Link)`
 const StyledNavItemContainer = styled.div``;
 
 const StyledNavItem = styled(Link)`
-  font-size: 20px;
-  font-weight: 600;
+  ${SubText};
   color: ${colors.main_black};
-  margin-left: 40px;
+  margin-right: 40px;
   text-decoration: none;
 `;
-const StyledLoginItemContainer = styled.div``;
+const StyledLoginItemContainer = styled.div`
+  margin-left: auto;
+`;
 
 const StyledLoginItem = styled(Link)`
-  font-size: 16px;
-  font-weight: 600;
+  ${SubTextThinSmall};   
   color: ${colors.main_gray};
   margin-left: 35px;
   text-decoration: none;
 `;
 
 const StyledLogOutButton = styled(Link)`
-  font-size: 16px;
-  font-weight: 600;
+  ${SubTextThinSmall};
   color: ${colors.main_gray};
   margin-left: 35px;
   text-decoration: none;
