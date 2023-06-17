@@ -93,7 +93,9 @@ const Information: React.FC = () => {
     <Container>
       <MystudyContainer>
         <Mystudy>스터디 정보</Mystudy>
-        <MystudySubtitle>스터디 상세 정보를 둘러보고 신청하세요.</MystudySubtitle>
+        <MystudySubtitle>
+          스터디 상세 정보를 둘러보고 신청하세요.
+        </MystudySubtitle>
       </MystudyContainer>
       <StyeldTapContainer>
         <StudyTaps />
@@ -140,7 +142,7 @@ const Information: React.FC = () => {
         <PeopleAltIcon />
         &nbsp;스터디 소개
       </StudyIntro>
-      <p>{content}</p>
+      <InfoContent>{content}</InfoContent>
       <SubmitButton onClick={handleOpenStudyApplyModal} />
       <Modal open={studyApplyModalOpen} onClose={handleCloseStudyApplyModal}>
         <StudyApplyModal
@@ -151,6 +153,10 @@ const Information: React.FC = () => {
     </Container>
   );
 };
+const InfoContent = styled.p`
+  font-size: 20px;
+  padding: 10px;
+`;
 const Container = styled.div`
   margin: 0 auto;
   width: 1270px;
@@ -190,7 +196,7 @@ export const Mystudy = styled.div`
 const MystudySubtitle = styled.div`
   ${SubTextThin};
   color: ${colors.darkgray_navy};
-`
+`;
 const SubTitle = styled.div`
   display: flex;
   flex-direction: column;

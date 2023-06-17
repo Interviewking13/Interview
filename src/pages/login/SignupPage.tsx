@@ -75,7 +75,13 @@ const SignupPage = () => {
 
     // API 호출
     try {
-      const response = await postSignUp(name, email, password, passwordValidated);
+      const response = await postSignUp(
+        name,
+        email,
+        password,
+        passwordValidated,
+        Number(phone)
+      );
       console.log("가입 성공:", response);
 
       // 가입 성공 후 로그인 페이지로 이동
@@ -83,7 +89,6 @@ const SignupPage = () => {
     } catch (error) {
       setError("회원가입 실패");
     }
-
   };
 
   const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -146,7 +151,9 @@ const SignupPage = () => {
               onChange={onChangePassword}
             />
             {passwordError && (
-              <StyledErrorMessage>{passwordError.toString()}</StyledErrorMessage>
+              <StyledErrorMessage>
+                {passwordError.toString()}
+              </StyledErrorMessage>
             )}
             <StyledSignupInput
               type="password"
@@ -155,7 +162,9 @@ const SignupPage = () => {
               onChange={onChangePasswordConfirm}
             />
             {confirmPasswordError && (
-              <StyledErrorMessage>{confirmPasswordError.toString()}</StyledErrorMessage>
+              <StyledErrorMessage>
+                {confirmPasswordError.toString()}
+              </StyledErrorMessage>
             )}
             <StyledSignupBtn variant="contained" color="primary" type="submit">
               가입하기
