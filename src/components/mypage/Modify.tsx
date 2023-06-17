@@ -65,16 +65,16 @@ const Modify = () => {
 
   return (
     <StyledContainer>
-      <Grid container spacing={2}>
+      <StyledContent container spacing={2}>
         <Grid item>
-          <StyledTitle variant="h5">내 정보수정</StyledTitle>
+          <StyledTitle variant="h5">내 정보 수정</StyledTitle>
         </Grid>
         <Grid item>
           <StyledSubTitle variant="subtitle1">
-            나의 회원정보를 수정합니다.
+            나의 회원 정보를 수정합니다.
           </StyledSubTitle>
         </Grid>
-      </Grid>
+      </StyledContent>
       {/**  페이지내용 */}
       {/* <form onSubmit={handleSubmit}> */}
       <Grid
@@ -161,17 +161,21 @@ export default Modify;
 
 const StyledContainer = styled(Box)`
   && {
-    width: 66.1%;
-    max-width: 1270px;
-    margin-left: 325px;
-    padding-left: 0;
+    width: 1270px;
+    margin: 0 auto;
+  }
+`;
+const StyledContent = styled(Grid)`
+  && {
+    margin-top: 40px;
   }
 `;
 // 내정보수정 타이틀 스타일
 const StyledTitle = styled(Typography)`
   && {
-    ${fonts.TitleText}
-    color:${colors.main_mint}
+    ${fonts.TitleText};
+    color:${colors.main_mint};
+    padding: 0;
   }
 `;
 // 내정보를 수정하세요 서브타이틀 스타일
@@ -179,6 +183,9 @@ const StyledSubTitle = styled(Typography)`
   && {
     ${fonts.SubTextThin}
     color: ${colors.darkgray_navy};
+    padding: 0;
+    margin-left: 30px;
+    line-height: 50px;
   }
 `;
 //각정보타이틀 스타일지정
