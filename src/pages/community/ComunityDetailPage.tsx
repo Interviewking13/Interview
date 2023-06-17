@@ -7,6 +7,7 @@ import {
   getDataByCommunity_noAndUser_id,
 } from "../../api/api-community";
 import { useEffect, useState } from "react";
+import ChangeHistoryIcon from "@mui/icons-material/ChangeHistory";
 import { dateSplice } from "../../utils/dateFomatting";
 import * as fonts from "../../constants/fonts";
 import { MdOutlineFileDownload } from "react-icons/md";
@@ -147,11 +148,11 @@ export const CommunityDetailPage: React.FC = () => {
                   navigate(`/Community/CommunityEditPage/${lastPathSegment}`)
                 }
               >
-                수정 <ClearIcon></ClearIcon>
+                수정 <ChangeHistoryIcon></ChangeHistoryIcon>
               </FixButton>
-              <FixButton onClick={writeHandleDelete}>
+              <DeleteButton onClick={writeHandleDelete}>
                 삭제 <ClearIcon></ClearIcon>
-              </FixButton>
+              </DeleteButton>
             </FixButtonContainer>
           ) : (
             <div></div>
@@ -196,9 +197,10 @@ export const CommunityDetailPage: React.FC = () => {
 const FixButtonContainer = styled.div`
   display: flex;
 `;
-const FixButton = styled.div`
+const DeleteButton = styled.div`
+  ${fonts.TitleText};
   margin: 0px 20px;
-  color: red;
+  color: ${colors.main_red};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -206,7 +208,21 @@ const FixButton = styled.div`
   border: none;
   width: 80px;
   height: 20px;
-  font-size: 20px;
+  font-size: 25px;
+  cursor: pointer;
+`;
+const FixButton = styled.div`
+  margin: 0px 20px;
+  ${fonts.TitleText};
+  color: ${colors.main_yellow};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  width: 80px;
+  height: 20px;
+  font-size: 25px;
   cursor: pointer;
 `;
 const StyledCommunityInfoContainer = styled.div`
