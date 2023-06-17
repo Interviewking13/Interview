@@ -7,13 +7,15 @@ export const postSignUp = async (
   user_name: string,
   email: string,
   password: string,
-  passwordCheck: string
+  passwordCheck: string,
+  phone_number: number
 ) => {
   const response = await axiosInstance.post("user/register", {
     user_name,
     email,
     password,
     passwordCheck,
+    phone_number,
   });
   return response;
 };
