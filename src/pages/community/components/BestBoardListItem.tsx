@@ -52,9 +52,9 @@ const BestBoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
                 <StyledPostTitle>{post.title}</StyledPostTitle>
               </StyledLeftPostItem>
               <StyledRightPostItem>
-                <StyledPostItem>댓글 수 : {post.reply_count}</StyledPostItem>
+                <StyledPostItem>{post.reply_count}</StyledPostItem>
                 <StyledPostItem>
-                  조회 수: {post.read_users.length}
+                  {post.read_users.length}
                 </StyledPostItem>
                 <StyledPostItem>{post.user_name}</StyledPostItem>
                 <StyledPostItem>{dateSplice(post.createdAt)}</StyledPostItem>
