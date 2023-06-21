@@ -20,7 +20,7 @@
 
 **3. 데모 사이트**<br/>
 
-- http://34.22.79.51/
+- https://web-interview-dihik2mlj5tbghi.sel4.cloudtype.app/
   <br/>
 
 **4. API 설계문서**<br/>
