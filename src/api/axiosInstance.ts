@@ -1,7 +1,8 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: "http://34.22.79.51:5000/api/",
+  baseURL:
+    "https://port-0-interviewking13-7xwyjq992llj5sps0m.sel4.cloudtype.app/api/",
 });
 
 // export const axiosInstance = axios.create({
