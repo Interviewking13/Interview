@@ -133,6 +133,7 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
 
 export default StudyApplyModal;
 
+/** 박스 mui(box)를 스타일드 컴포넌트 */
 const StyledBox = styled(Box)`
   height: 594px;
   width: 1004px;
@@ -145,23 +146,27 @@ const StyledBox = styled(Box)`
   display: flex;
 `;
 
+/** 상단 컨테이너 div */
 const StyledTopContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
 
+/** 자기소개서 설명 컨테이너 div */
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: row;
 `;
 
+/** 전체 컨테이너 div */
 const StyledContainer = styled.div`
   margin: 40px;
   display: flex;
   flex-direction: column;
 `;
 
+/** 신청하기 제목 개요 p */
 const StyledTitleText = styled.p`
   margin: 0px;
   margin-bottom: 22px;
@@ -169,6 +174,7 @@ const StyledTitleText = styled.p`
   color: ${colors.main_mint}
 `;
 
+/** 신청하기 제목 p */
 const StyledTitleTextNavy = styled.p`
   margin: 0px;
   margin-bottom: 22px;
@@ -176,6 +182,7 @@ const StyledTitleTextNavy = styled.p`
   color: ${colors.main_navy}
 `;
 
+/** 입력란 textarea */
 const TextInput = styled.textarea`
   padding: 10px 0 0 10px;
   width: 923px;
@@ -184,18 +191,22 @@ const TextInput = styled.textarea`
   font-size: 18px;
 `;
 
+/** 자기소개서 설명 개요 p */
 const StyledP = styled.p`
   font-size: 14px;
   margin: 0;
   margin-right: 10px;
 `;
 
+/** 자기소개서 링크 mul(link) */
 const StyledA = styled(Link)`
   font-size: 14px;
   text-decoration: none;
   color: #000;
   text-decoration: underline;
 `;
+
+/** 취소 버튼 button */
 const StyledCancelButton = styled.button`
   width: 23px;
   height: 23px;
@@ -206,22 +217,28 @@ const StyledCancelButton = styled.button`
   cursor: pointer; /* 클릭 커서 스타일 추가 */
 `;
 
+/** 취소 버튼 img */
 const CancelButtonImage = styled.img`
   width: 100%;
   height: 100%;
 `;
 
 const BottomContainer = styled.div``;
+
+/** 바텀 div */
 const StyledBottom = styled.div`
   margin-top: 30px;
   display: flex;
   flex-direction: row;
   font-family: ${fonts.SubTextThinSmall};
 `;
+
+/** 신청 버튼 컨테이너 타입지정 */
 interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
   backgroundColor?: string;
 }
 
+/** 신청 버튼 컨테이너 div*/
 const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   margin-left: auto;
   cursor: pointer;
@@ -242,6 +259,7 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   ${fonts.SubText}
 `;
 
+/** 신청하기 텍스트 p */
 const StyledButtonTextField = styled.p`
   font-family: ${fonts.SubTextBig};
 `;
