@@ -5,22 +5,24 @@ import BestBoardListItemContainer from "./components/BestBoardListItemContainer"
 
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
-import SearchIconSrc from "../../img/search_navy.svg";
 import { Link } from "react-router-dom";
-
 import CreateIcon from "@mui/icons-material/Create";
-interface BoardListItemContainerProps {
+
+/** 커뮤니티 전체글 / 내가쓴글을 나누기 위해 props설정 */
+type BoardListItemContainerProps = {
   tap: number;
-}
+};
 
 const CommunityPage: React.FC<BoardListItemContainerProps> = ({ tap }) => {
   const [taps, setTap] = useState(1);
+
+  /** 클릭시 전체글을 보여줌 */
   const onClickTotalTap = (e: any) => {
-    console.log("토탈");
     setTap(1);
   };
+
+  /** 클릭시 내가쓴글을 보여줌 */
   const onClickMyTap = (e: any) => {
-    console.log("마이");
     setTap(0);
   };
   return (
@@ -47,13 +49,18 @@ const CommunityPage: React.FC<BoardListItemContainerProps> = ({ tap }) => {
           &nbsp;내가쓴 글
         </StydyTap>
       </StydyTapContainer>
-
       {/* 게시판 목록 컨테이너, 아이템 컴포넌트 불러오기 */}
       <BestBoardListItemContainer tap={taps} />
       <BoardListItemContainer tap={taps} />
     </StyledCommonContainer>
   );
 };
+
+/** 커뮤니티페이지 전체 컨테이너*/
+const StyledCommonContainer = styled.div`
+  width: 1270px;
+  margin: 0px auto;
+`;
 
 const StydyTapContainer = styled.div`
   margin: 20px 0px;
@@ -91,11 +98,6 @@ const StyledText = styled.div`
 export const StyledC = styled.div`
   margin-top: 20px;
   display: flex;
-`;
-
-const StyledCommonContainer = styled.div`
-  width: 1270px;
-  margin: 0px auto;
 `;
 
 const StyledHeadContainer = styled.div`
