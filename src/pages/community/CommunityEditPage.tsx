@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
-import { TitleText, SubTextThin, SubTextSmall } from "../../constants/fonts";
+import { TitleText, SubTextThin } from "../../constants/fonts";
 import { useLocation, useNavigate } from "react-router-dom";
 import { putCommunity } from "../../api/api-community";
 import { useRecoilState } from "recoil";
@@ -9,21 +9,24 @@ import { EditContent } from "../../utils/CommunitiEdit";
 
 const CommunityEditPage: React.FC = ({}) => {
   const [data, setData] = useRecoilState(EditContent);
-  const [title, setTitle] = useState(data.title);
-  const [content, setContent] = useState(data.content);
+  const [title, setTitle] = useState<string>(data.title);
+  const [content, setContent] = useState<string>(data.content);
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
 
-  const onChangeTitleInput = (e: any) => {
+  /** 커뮤니티글 제목 변경 */
+  const onChangeTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
 
-  const onChangeContentsInput = (e: any) => {
+  /** 커뮤니티글 내용 변경 */
+  const onChangeContentsInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
   };
 
+  /** 커뮤니티글 수정함수 */
   const onClickEdit = () => {
     putCommunity(
       Number(lastPathSegment),
@@ -152,6 +155,7 @@ const StyledTextarea = styled.textarea`
     font-weight: bold;
     font-size: 18px;
   }
+
   ::-webkit-scrollbar {
     width: 20px; /* 스크롤바 너비 */
   }
