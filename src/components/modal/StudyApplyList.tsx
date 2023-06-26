@@ -3,7 +3,7 @@ import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 
-/** 모달에 들어가는 리스트 아이템의 타입 지정 */
+/** 모달에 들어가는 리스트 아이템의 props 타입 지정 */
 type ListItemProps = {
   textTitle: string;
   textContent: string;
@@ -56,6 +56,7 @@ const StudyApplyList: React.FC<ApplyListProps> = ({
       />
       <ListItem
         textTitle="모집인원"
+        // 현재인원 / 모집인원
         textContent={`${currentCount}/${headCount}명`}
         imageSrc="/study-icon-img.png"
       />
