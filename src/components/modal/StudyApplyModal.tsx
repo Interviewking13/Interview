@@ -11,19 +11,24 @@ import * as fonts from "../../constants/fonts";
 import { getInfoStudyData, postApplyStudy } from "../../api/api-study";
 import { useQuery } from "react-query";
 
+/** 스터디 신청 모달에 전달되는 props 타입지정 */
 type StudyApplyModalProps = {
   studyId: string;
   handleModalClose: () => void;
 };
 
+/** 스터디 신청 모달 컴포넌트 props : (studyId, handleModalClose) */
 const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
   studyId,
   handleModalClose,
 }) => {
+
+  // 신청 목표 상태관리
   const [goal, setGoal] = useState("");
-  const handleGoalChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setGoal(event.target.value);
-  };
+  // 취소버튼 이미지 링크
+  const imageSrc = "/cancel-button.png";
+
+  /** 스터디 데이터를 리액트 쿼리로 받아옴 */
   const {
     data: studyData,
     isLoading,
@@ -32,7 +37,7 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
     getInfoStudyData(studyId).then((response) => response.data)
   );
 
-  //받아온 스터디의 데이터 분해구조 할당
+  //받아온 스터디의 데이터들을 분해구조 할당
   const {
     title,
     start,
@@ -48,16 +53,22 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
     status,
   } = studyData;
 
-  //취소버튼 이미지 링크
-  const imageSrc = "/cancel-button.png";
+  /** 신청 목표 체인지 핸들러  */
+  const handleGoalChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setGoal(event.target.value);
+  };
+
+  /** 모달 닫는 핸들러 */
   const handleCloseModal = () => {
     handleModalClose();
   };
+
+  /** 스터디 신청 버튼 핸들러 */
   const onApplyButtonHandler = () => {
+    // 스터디 신청 버튼 클릭시 로컬스토리지에서 토큰을 가져와서 스터디 신청 api 요청 -> alert -> 모달 종료 -> 재랜더링
     postApplyStudy(String(localStorage.getItem("token")), studyId, goal);
     alert("스터디가 신청되었습니다!");
     handleModalClose();
-
     //information에서 정보 재랜더링 해야함 쿼리로.
   };
 
@@ -70,6 +81,7 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
     // 에러 상태를 표시
     return <div>Error occurred while fetching data</div>;
   }
+  
   return (
     <div>
       <StyledBox>
@@ -209,6 +221,7 @@ const StyledBottom = styled.div`
 interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
   backgroundColor?: string;
 }
+
 const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   margin-left: auto;
   cursor: pointer;
