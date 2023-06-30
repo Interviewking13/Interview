@@ -21,12 +21,30 @@ const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    
 
 const userApi = {
 
-    /** user API middleware 테스트 */
-    async userMiddlewareApiTest(req, res, next) {
-        console.log('미들웨어 실행! userApi 도착!');
-        // 미들웨어 로직 처리
-        console.log(req.cookies.token);
-        next();
+    /** user 정보 전체 DB 조회 테스트 */
+    async getAllUserInfo(req, res, next) {
+        try {
+            const findAllUser = await User.find({});
+
+            if (!findAllUser) {
+                return res.status(400).json({
+                    resultCode: "400",
+                    message: "조회 실패"
+                });
+            }
+
+            res.status(200).json({
+                resultCode: "200",
+                message: "조회 성공",
+            })
+
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                resultCode: "500",
+                message: "서버오류"
+            });
+        }
     },
 
     /** 로그인 유효성 검사 테스트 */

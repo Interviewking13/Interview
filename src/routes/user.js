@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // user API 테스트
-router.get('/userInfo', userApi.getAllUserInfo);
+router.get('/userApiTest', userApi.getAllUserInfo);
 
 // middleware
 const userTokenValidate = require("../middlewares/userTokenValidate");
