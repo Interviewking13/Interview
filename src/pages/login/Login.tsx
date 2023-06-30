@@ -7,6 +7,7 @@ import LeftSignContainer from "../../components/auth/LeftSignContainer";
 import { postSignIn } from "../../api/api-user";
 import { useMutation, useQueryClient } from "react-query";
 
+/** refactor */
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
