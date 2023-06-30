@@ -1,8 +1,8 @@
-require('dotenv').config({ path: '.env' });
+// require('dotenv').config({ path: '.env' });
 
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT;
+// const PORT = process.env.PORT;
 
 // Router
 const indexRouter = require('./src/routes/index');
@@ -18,5 +18,6 @@ app.use('/', indexRouter);
 
 // PORT
 app.listen(PORT, () => {
-  console.log(`Server on http://localhost:${PORT}`);
+  // console.log(`Server on http://localhost:${PORT}`);
+  console.log('Server on 5010');
 });
