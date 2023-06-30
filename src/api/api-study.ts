@@ -135,6 +135,7 @@ export const deleteStudyMember = async (
   );
   return response;
 };
+
 /** 8. 스터디 삭제 (장)  delete */
 export const deleteStudy = async (token: string, study_id: string) => {
   const response = await axiosInstance.delete(`study/${study_id}`, {

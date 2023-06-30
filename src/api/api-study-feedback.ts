@@ -56,12 +56,3 @@ export const deleteFeedbackByUserId = async (
   return response;
 };
 
-export const deleteReply = async (reply_id: number, token: string) => {
-  const response = await axiosInstance.delete(`community/reply`, {
-    data: {
-      reply_id: reply_id,
-      token: token,
-    },
-  });
-  return response;
-};
