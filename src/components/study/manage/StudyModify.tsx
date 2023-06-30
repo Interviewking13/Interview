@@ -12,16 +12,22 @@ import { useQuery } from "react-query";
 import React, { useState, useEffect } from "react";
 import { dateFomatting, dateFomattingLine } from "../../../utils/dateFomatting";
 import { useQueryClient } from "react-query";
-interface StudyModifyProps {
+
+/** 스터디 수정 컴포넌트 타입지정 */
+type StudyModifyProps = {
   studyId: string;
 }
+
+/** 스터디 수정 컴포넌트 props : (studyId) */
 const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
+
   const queryClient = useQueryClient();
-  console.log("studyId::", studyId);
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
+
+  // 리액트 쿼리로 유저 데이터를 불러옴
   const {
     data: studyData,
     isLoading,
@@ -30,25 +36,36 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
   } = useQuery(["studyData"], () =>
     getInfoStudyData(studyId).then((response) => response.data)
   );
-  const [studyName, setStudyName] = useState(""); // 스터디 이름 상태 추가
-  const [studyDescription, setStudyDescription] = useState(""); // 스터디 설명 상태 추가
-  const [meetingLink, setMeetingLink] = useState(""); // 회의 링크 상태 추가
-  const [startDate, setStartDate] = useState(""); // 시작 날짜 상태 추가
-  const [endDate, setEndDate] = useState(""); // 종료 날짜 상태 추가
-  const [recruitmentDeadline, setRecruitmentDeadline] = useState(""); // 모집 마감일 상태 추가
-  const [recruitmentCount, setRecruitmentCount] = useState(0); // 모집 인원 상태 추가
 
+  // 스터디 이름 상태 추가
+  const [studyName, setStudyName] = useState(""); 
+  // 스터디 설명 상태 추가
+  const [studyDescription, setStudyDescription] = useState(""); 
+  // 회의 링크 상태 추가
+  const [meetingLink, setMeetingLink] = useState(""); 
+  // 시작 날짜 상태 추가
+  const [startDate, setStartDate] = useState(""); 
+  // 종료 날짜 상태 추가
+  const [endDate, setEndDate] = useState(""); 
+  // 모집 마감일 상태 추가
+  const [recruitmentDeadline, setRecruitmentDeadline] = useState(""); 
+  // 모집 인원 상태 추가
+  const [recruitmentCount, setRecruitmentCount] = useState(0); 
+
+  // refetch 쓰는부분
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
     }, 500); // 5초마다 데이터 업데이트 및 새로고침
-
     return () => {
       clearInterval(interval);
     };
   }, []);
+
+  // studyData에서 불러온 값들을 상태관리 set함수로 넣어 줌.
   useEffect(() => {
     if (studyData) {
+      // studyData 분해구조 할당
       const { title, content, chat_link, start, end, deadline, headcount } =
         studyData;
       setStudyName(title);
@@ -61,11 +78,10 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
     }
   }, [studyData]);
 
-  if (isError) {
-    // 에러 상태를 표시
-    return <div>Error occurred while fetching data</div>;
-  }
+  /** 스터디 수정버튼 핸들러 */
   const handleModifyClick: React.MouseEventHandler<HTMLDivElement> = () => {
+
+    // 수정된 스터디 내용을 updatedStudy객체로 저장.
     const updatedStudy = {
       study_name: studyName,
       title: studyName,
@@ -76,21 +92,24 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
       status: 0, // 예시로 status 값을 0으로 설정
       token: String(localStorage.getItem("token")), // 인증 토큰 전달
     };
-
+    // 스터디 수정 api 요청.
     putInfoStudy(studyId, updatedStudy);
+    // 링크 이동
     navigate(`/study/${studyId}`);
+    // studyData 키값으로 재 랜더링
     queryClient.invalidateQueries(["studyData"]);
   };
+
+  /** 스터디 삭제 핸들러 */
   const handleDeleteClick: React.MouseEventHandler<HTMLDivElement> = () => {
-    // 스터디 삭제 로직을 처리하는 코드를 작성하세요.
-    // 필요한 API 호출 등의 작업을 수행할 수 있습니다.
-    console.log("studyId:", studyId);
+    
+    // 스터디 삭제 api 요청
     deleteStudy(String(localStorage.getItem("token")), studyId).then((res) => {
-      console.log("1234");
+      // 메인페이지로 이동
       navigate("/");
-      console.log("12345");
     });
   };
+
   if (isLoading) {
     // 로딩 상태를 표시
     return <div>Loading...</div>;
@@ -100,6 +119,7 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
     // 에러 상태를 표시
     return <div>Error occurred while fetching data</div>;
   }
+
   return (
     <>
       <StyledStudyCreateArea>
@@ -164,7 +184,7 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
           />
         </StyledStudyCreateInputArea>
         <StyledStudyCreateBtnArea>
-          <StyledLink>
+          <StyledBtnContainer>
             <SubButtonContainer>
               <StyledCommonButton
                 backgroundColor={colors.main_mint}
@@ -173,8 +193,8 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
                 <StyledButtonTextDelete>수정하기</StyledButtonTextDelete>
               </StyledCommonButton>
             </SubButtonContainer>
-          </StyledLink>
-          <StyledLink>
+          </StyledBtnContainer>
+          <StyledBtnContainer>
             <SubButtonContainer>
               <StyledCommonButton
                 backgroundColor={colors.main_red}
@@ -183,7 +203,7 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
                 <StyledButtonTextDelete>스터디 삭제</StyledButtonTextDelete>
               </StyledCommonButton>
             </SubButtonContainer>
-          </StyledLink>
+          </StyledBtnContainer>
         </StyledStudyCreateBtnArea>
       </StyledStudyCreateArea>
     </>
@@ -192,6 +212,7 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
 
 export default StudyModify;
 
+/** 스터디 수정 컨테이너 div */
 const StyledStudyCreateArea = styled.div`
   height: 760px;
   margin: 20px 0 20px 0;
@@ -199,15 +220,21 @@ const StyledStudyCreateArea = styled.div`
   flex-wrap: wrap;
   align-content: space-between;
 `;
+
+/** 스터디 수정 input 컨테이너 div */
 const StyledStudyCreateInputArea = styled.div`
   height: 45px;
   display: flex;
   align-items: center;
 `;
+
+/** 스터디 소개, 설명 컨테이너 div */
 const StyledStudyCreateInputAreaBig = styled.div`
   height: 400px;
   display: flex;
 `;
+
+/** 스터디 모집마감, 인원 p */
 const StyledStudyCreateText = styled.p`
   width: 163px;
   margin: 0;
@@ -216,6 +243,7 @@ const StyledStudyCreateText = styled.p`
   color: ${colors.main_gray};
 `;
 
+/** 스터디 이름, 회의주소 input */
 const StyledStudyInput = styled.input`
   width: 1080px;
   height: 45px;
@@ -225,6 +253,8 @@ const StyledStudyInput = styled.input`
   padding-left: 20px;
   font-family: ${fonts.SubTextThinSmall};
 `;
+
+/** 스터디 모집인원 input */
 const StyledStudyInputNumber = styled.input`
   width: 447px;
   height: 45px;
@@ -235,17 +265,23 @@ const StyledStudyInputNumber = styled.input`
   font-family: sans-serif;
   font-size: 16px;
 `;
+
+/** 스터디 기간 div */
 const StyledDateArea = styled.div`
   width: 1103px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
+
+/** 스터디 기간 ~표시 p */
 const StyledStudyDateText = styled.p`
   margin: 0;
   font-family: ${fonts.SubText};
   color: ${colors.main_gray};
 `;
+
+/** 스터디 날짜 input */
 const StyledStudyDate = styled.input`
   width: 447px;
   height: 45px;
@@ -256,6 +292,8 @@ const StyledStudyDate = styled.input`
   font-family: sans-serif;
   font-size: 16px;
 `;
+
+/** 스터디 설명을 입력 컨테이너 textarea */
 const StyledStudyInputBig = styled.textarea`
   width: 1082px;
   height: 380px;
@@ -285,21 +323,28 @@ const StyledStudyInputBig = styled.textarea`
   }
 `;
 
+/** 스터디 버튼 전체 컨테이너 div */
 const StyledStudyCreateBtnArea = styled.div`
   width: 1270px;
   display: flex;
   flex-direction: row-reverse;
   gap: 20px;
 `;
-const StyledLink = styled.div`
+
+/** 스터디 버튼 컨테이너 div */
+const StyledBtnContainer = styled.div`
   text-decoration: none;
   color: ${colors.main_black};
   display: flex;
   align-items: center;
 `;
+
+/** 스터디 버튼 타입지정 */
 interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
   backgroundColor?: string;
 }
+
+/** 스터디 수정 버튼 div*/
 const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   cursor: pointer;
   width: 132px;
@@ -318,11 +363,13 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   ${fonts.SubText}
 `;
 
+/** 스터디 취소 버튼 p*/
 const StyledButtonTextDelete = styled.p`
   font-family: ${fonts.SubTextBig};
   color: ${colors.back_navy};
 `;
 
+/** 스터디 버튼 서브 컨테이너 div*/
 const SubButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
