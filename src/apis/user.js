@@ -21,6 +21,14 @@ const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    
 
 const userApi = {
 
+    /** user API middleware 테스트 */
+    async userMiddlewareApiTest(req, res, next) {
+        console.log('미들웨어 실행! userApi 도착!');
+        // 미들웨어 로직 처리
+        console.log(req.cookies.token);
+        next();
+    },
+
     /** 로그인 유효성 검사 테스트 */
     async userApiIsLoginValidate(req, res) {
         console.log('로그인 유효성 검사 테스트!');
