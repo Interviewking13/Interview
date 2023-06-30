@@ -5,19 +5,29 @@ import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+
+// 다운로드 이미지 링크
 const downImageSrc = "/download.png";
+// 취소 이미지 링크
 const cancelImageSrc = "/cancel-button.png";
-interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
-  backgroundColor?: string;
-}
+
+/** 자기소개서 모달 타입지정 */
 type UserInfoModalProps = {
   userId: string;
   handleModalClose: () => void;
 };
+
+/** 자기소개서 모달 컴포넌트 props : (userId, handleModalClose) */
 const UserInfoModal: React.FC<UserInfoModalProps> = ({
   userId,
   handleModalClose,
 }) => {
+
+  // 더미 데이터
+  const name = " 정채진";
+  const introName = "첨부파일.word";
+
+  /** 모달 닫기 핸들러 */
   const handleCloseModal = () => {
     handleModalClose();
   };
@@ -25,8 +35,7 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({
   // getUserData(userId) 해서
   // 더미데이터 변경
   // 파일 다운로드 구현
-  const name = " 정채진";
-  const introName = "첨부파일.word";
+  
   return (
     <StyledBox>
       <StyledContainer>
@@ -52,7 +61,7 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({
         <SubButtonContainer>
           <StyledCommonButton backgroundColor={colors.main_mint}>
             <StyledIntroTextField>{introName}</StyledIntroTextField>
-            <StyledDownloadImg src={downImageSrc} alt="Cancel Button" />
+            <StyledDownloadImg src={downImageSrc} alt="downImage" />
           </StyledCommonButton>
         </SubButtonContainer>
       </StyledContainer>
@@ -62,6 +71,7 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({
 
 export default UserInfoModal;
 
+/** 최상단 Box */
 const StyledBox = styled(Box)`
   height: 218px;
   width: 1004px;
@@ -74,22 +84,28 @@ const StyledBox = styled(Box)`
   display: flex;
 `;
 
-const StyledTopContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
+/** 전체 컨테이너 div */
 const StyledContainer = styled.div`
   margin: 40px;
   width: 100%;
   display: flex;
   flex-direction: column;
 `;
+
+/** 상단 컨테이너 div */
+const StyledTopContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+/** Text 컨테이너 div */
 const StyledContainerText = styled.div`
   display: flex;
   align-items: center;
 `;
+
+/** 설명 및 내용 Text p */
 const StyledTitleText = styled.p`
   margin: 0px;
   ${fonts.TitleText}
@@ -98,14 +114,7 @@ const StyledTitleText = styled.p`
   padding-right: 10px;
 `;
 
-const StyledInfoButton = styled.button`
-  margin-top: 30px;
-  ${fonts.SubTextThin}
-  font-size: 16px;
-  color: ${colors.main_mint};
-  background-color: ${colors.dark_navy};
-`;
-
+/** 취소버튼 button */
 const StyledCancelButton = styled.button`
   width: 23px;
   height: 23px;
@@ -116,17 +125,18 @@ const StyledCancelButton = styled.button`
   cursor: pointer; /* 클릭 커서 스타일 추가 */
 `;
 
+/** 취소버튼 img */
 const CancelButtonImage = styled.img`
   width: 100%;
   height: 100%;
 `;
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: ${colors.main_black};
-  display: flex;
-  align-items: center;
-`;
 
+/** StyledCommonButton 타입지정 */
+interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
+  backgroundColor?: string;
+}
+
+/** 자기소개서 다운 버튼 div */
 const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   cursor: pointer;
   height: 45px;
@@ -144,6 +154,7 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   ${fonts.SubText}
 `;
 
+/** 자기소개서 text p */
 const StyledIntroTextField = styled.p`
   color: ${colors.back_navy};
   ${fonts.SubTextThin}
@@ -152,12 +163,14 @@ const StyledIntroTextField = styled.p`
   margin: 20px;
 `;
 
+/** 자기소개서 버튼 컨테이너 div */
 const SubButtonContainer = styled.div`
   display: flex;
   margin-top: 30px;
   color: ${colors.main_mint};
 `;
 
+/** 자기소개서 버튼 컨테이너 div */
 const StyledDownloadImg = styled.img`
   width: 16px;
   height: 16px;
