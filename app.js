@@ -17,7 +17,9 @@ app.use(express.static('public'));
 app.use('/', indexRouter);
 
 // PORT
-app.listen(PORT, () => {
+app.listen();
+
+// PORT
+// app.listen(PORT, () => {
   // console.log(`Server on http://localhost:${PORT}`);
-  console.log('Server on 5010');
-});
+// });
