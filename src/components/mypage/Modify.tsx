@@ -131,17 +131,17 @@ const Modify = () => {
 
   return (
     <StyledContainer>
+      {/* 타이틀 */}
       <StyledLowContent>
         <StyledTitle>내 정보 수정</StyledTitle>
         <StyledSubTitle variant="subtitle1">
           나의 회원 정보를 수정합니다.
         </StyledSubTitle>
       </StyledLowContent>
-      {/**  페이지내용 */}
+      {/* 회원정보 입력 */}
       <form>
         <StyledLowContent>
           <StyledInfoName>이름</StyledInfoName>
-
           <StyledTextField
             variant="outlined"
             InputProps={{
@@ -155,7 +155,7 @@ const Modify = () => {
 
           <StyledTextField
             variant="outlined"
-            defaultValue="01023445678"
+            // defaultValue="01023445678"
             fullWidth
           />
         </StyledLowContent>
@@ -180,6 +180,7 @@ const Modify = () => {
           <StyledTextField variant="outlined" type="password" fullWidth />
         </StyledLowContent>
 
+        {/* 파일첨부 부분 */}
         <StyledLowContent>
           <StyledInfoName>자기소개서첨부</StyledInfoName>
 
@@ -197,7 +198,7 @@ const Modify = () => {
           </label>
         </StyledLowContent>
 
-        {/* 버튼1, 버튼2 */}
+        {/* 회원탈퇴, 수정 버튼 */}
         <StyledLowContent>
           <StyledDeleteButton variant="contained" sx={{ gap: "5px" }}>
             회원탈퇴
@@ -212,12 +213,14 @@ const Modify = () => {
 };
 export default Modify;
 
+/** 페이지 전체 감싸는 div*/
 const StyledContainer = styled.div`
   width: 1270px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
 `;
+/** 각 요소 가로배열 */
 const StyledLowContent = styled.div`
   margin-top: 40px;
   display: flex;
@@ -225,7 +228,7 @@ const StyledLowContent = styled.div`
   align-items: center;
   width: 1269px;
 `;
-// 내정보수정 타이틀 스타일
+/** title :내 정보수정*/
 const StyledTitle = styled(Typography)`
   && {
     ${fonts.TitleText};
@@ -233,7 +236,7 @@ const StyledTitle = styled(Typography)`
     padding: 0;
   }
 `;
-// 내정보를 수정하세요 서브타이틀 스타일
+/** subTitle: 나의 회원정보수정 */
 const StyledSubTitle = styled(Typography)`
   && {
     ${fonts.SubTextThin}
@@ -243,7 +246,7 @@ const StyledSubTitle = styled(Typography)`
     line-height: 50px;
   }
 `;
-//각정보타이틀 스타일지정
+/** 각 요소 텍스트*/
 const StyledInfoName = styled.div`
   && {
     ${fonts.SubTextBig}
@@ -251,7 +254,7 @@ const StyledInfoName = styled.div`
     width: 160px;
   }
 `;
-//텍스트필드 스타일지정
+/** MUI input 입력란 스타일*/
 const StyledTextField = styled(TextField)(({ theme }) => ({
   "& .MuiInputBase-root": {
     height: "45px",
@@ -260,6 +263,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     width: "1100px",
   },
 }));
+/** MUI input 파일찾기  */
 const StyledFileFindTextField = styled(TextField)(({ theme }) => ({
   "& .MuiInputBase-root": {
     height: "45px",
@@ -269,8 +273,7 @@ const StyledFileFindTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-//버튼 스타일
-
+/** 수정하기버튼 스타일 */
 const StyledModifyButton = styled(Button)`
   && {
     border-radius: 10px;
@@ -286,6 +289,7 @@ const StyledModifyButton = styled(Button)`
     }
   }
 `;
+/** 회원탈퇴 버튼 스타일 */
 const StyledDeleteButton = styled(Button)`
   && {
     border-radius: 10px;
@@ -301,6 +305,7 @@ const StyledDeleteButton = styled(Button)`
     }
   }
 `;
+/** 파일찾기버튼 스타일 */
 const StyledFindButton = styled(Button)`
   && {
     border-radius: 10px;
@@ -316,6 +321,7 @@ const StyledFindButton = styled(Button)`
     }
   }
 `;
+/**업로드된 파일 삭제 텍스트버튼  */
 const StyledFileDeleteButton = styled(Button)`
   && {
     color: ${colors.main_red};
@@ -323,7 +329,7 @@ const StyledFileDeleteButton = styled(Button)`
     cursor: pointer;
   }
 `;
-
+/**업로드된 파일 다운로드 텍스트버튼 */
 const StyledFileDownButton = styled(Button)`
   && {
     color: ${colors.darkgray_navy};
