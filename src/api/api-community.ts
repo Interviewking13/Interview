@@ -57,11 +57,6 @@ export const putCommunity = async (
 };
 
 /** 5. 커뮤니티 게시글 삭제  delete */
-// export const deleteCommunityByCommunity_no = async (community_id: number) => {
-//   const response = await axiosInstance.delete(`community/detl/${community_id}`);
-//   return response;
-// };
-
 export const deleteCommunityByCommunity_no = async (
   community_id: number,
   token: string
@@ -108,3 +103,5 @@ export const deleteReply = async (reply_id: number, token: string) => {
   });
   return response;
 };
+
+
