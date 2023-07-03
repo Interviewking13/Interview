@@ -30,13 +30,21 @@ export const CommunityDetailPage: React.FC = () => {
     read_users: [],
     file_name: "",
   });
-
   const [data, setData] = useRecoilState(EditContent);
   const [b, setB] = useState<any[]>([]);
   const [text, setText] = useState("");
   const [useId, setUserId] = useState("1");
   const [writerId, setWriterId] = useState("2");
 
+  /** 나의정보를 불러와서 댓글을쓸때 아이디를 바로 반영하기위한 함수 */
+  useEffect(() => {
+    getUserData(String(localStorage.getItem("token"))).then((response) => {
+      setUserId(response.data.user_id);
+      getDataByCommunity(response.data.user_id);
+    });
+  }, []);
+
+  /** 커뮤니티상세  내용컨테이너 */
   const getDataByCommunity = async (user_id: string) => {
     try {
       const getDataByCommunityResponse = await getDataByCommunity_noAndUser_id(
@@ -56,20 +64,15 @@ export const CommunityDetailPage: React.FC = () => {
       console.log(e);
     }
   };
-  useEffect(() => {
-    getUserData(String(localStorage.getItem("token"))).then((response) => {
-      setUserId(response.data.user_id);
-      getDataByCommunity(response.data.user_id);
-    });
-  }, []);
 
-  const handleTextChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  /** 커뮤니티 댓글입력  */
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
   };
 
   //마찬가지로 async await 사용하면 가독성이 더 좋아질 듯 -> 바꿀거임
+
+  /** 댓글 등록 함수 */
   const handleSubmit = async (e: any) => {
     try {
       const postReplyResponse = await postReply(
@@ -86,6 +89,8 @@ export const CommunityDetailPage: React.FC = () => {
       console.log(error);
     }
   };
+
+  /** 커뮤니티 댓글 삭제 함수 */
   const handleDelete = async (targetId: number) => {
     try {
       const deleteMyReply = await deleteReply(
@@ -98,6 +103,7 @@ export const CommunityDetailPage: React.FC = () => {
     }
   };
 
+  /** 커뮤니티 글 삭제 함수 */
   const writeHandleDelete = async () => {
     try {
       const deleteMyReply = await deleteCommunityByCommunity_no(
@@ -185,15 +191,30 @@ export const CommunityDetailPage: React.FC = () => {
   );
 };
 
-/**커뮤니티상세 전체 박스 */
+/** 커뮤니티상세 전체 박스 */
 const StyledCommonContainer = styled.div`
   width: 1270px;
   margin: 0px auto;
 `;
 
+/** 커뮤니티상세 전체 박스 */
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const FixButtonContainer = styled.div`
   display: flex;
 `;
+
+/** 커뮤니티상세 상단바 컨테이너 */
+const StyledTitleTextContainer = styled.div`
+  margin: 60px 0 25px;
+  display: flex;
+  align-items: center;
+`;
+
+/** 커뮤니티상세 전체 박스 */
 const DeleteButton = styled.div`
   ${fonts.TitleText};
   margin: 0px 20px;
@@ -208,6 +229,8 @@ const DeleteButton = styled.div`
   font-size: 25px;
   cursor: pointer;
 `;
+
+/** 커뮤니티상세 수정버튼 */
 const FixButton = styled.div`
   margin: 0px 20px;
   ${fonts.TitleText};
@@ -222,27 +245,20 @@ const FixButton = styled.div`
   font-size: 25px;
   cursor: pointer;
 `;
+
+/** 커뮤니티상세 컨테이너 */
 const StyledCommunityInfoContainer = styled.div`
   display: flex;
 `;
 
-const StyledContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledTitleTextContainer = styled.div`
-  margin: 60px 0 25px;
-  display: flex;
-  align-items: center;
-`;
-
+/** 커뮤니티상세 타이틀 */
 const StyledTitle = styled.div`
   ${fonts.TitleText};
   color: ${colors.main_navy};
   margin-right: 20px;
 `;
 
+/** 커뮤니티상세 내용 */
 const StyledText = styled.div`
   ${fonts.SubTextThin};
   color: ${colors.darkgray_navy};
@@ -256,12 +272,14 @@ const Divider = styled.div`
   border: 1px solid ${colors.gray_stroke};
 `;
 
+/** 커뮤니티상세 수정버튼 */
 const StyledCommunityTitle = styled.div`
   color: ${colors.main_navy};
   ${fonts.SubTextBig};
   margin: 15px 0 10px;
 `;
 
+/** 커뮤니티상세 정보 */
 const StyledCommunityInfo = styled.div`
   display: flex;
   justify-content: space-between;
@@ -270,6 +288,7 @@ const StyledCommunityInfo = styled.div`
   margin-bottom: 15px;
 `;
 
+/** 커뮤니티상세 내용 */
 const StyledCommunitySunInfo = styled.div`
   margin-right: 15px;
   padding-right: 15px;
@@ -280,27 +299,14 @@ const StyledCommunitySunInfo = styled.div`
   }
 `;
 
+/** 커뮤니티상세 수정버튼 */
 const StyledContent = styled.div`
   margin: 25px 0 40px;
   width: 1270px;
   overflow-wrap: break-word;
 `;
 
-const StyledFileDownloadBtn = styled.button`
-  padding: 15px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  /* width: 200px;
-  height: 45px; */
-  width: fit-content;
-  ${fonts.SubTextThinSmall};
-  color: ${colors.darkgray_navy};
-  background-color: ${colors.back_navy};
-  border: none;
-  border-radius: 10px;
-`;
+/** 커뮤니티상세 댓글 내용 컨테이너 */
 const StyledReplyInputContainer = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -308,6 +314,7 @@ const StyledReplyInputContainer = styled.div`
   margin: 30px 0 10px;
 `;
 
+/** 커뮤니티상세 댓글 내용 */
 const StyledReplyInput = styled.input`
   margin: 0;
   width: 1123px;
@@ -325,6 +332,7 @@ const StyledReplyInput = styled.input`
   }
 `;
 
+/** 커뮤니티상세 댓글 등록버튼 */
 const StyledReplyAddButton = styled.label`
   width: 132px;
   height: 45px;
@@ -339,27 +347,32 @@ const StyledReplyAddButton = styled.label`
   margin-left: 15px;
 `;
 
+/** 커뮤니티상세 댓글 컨테이너 Wrapper */
 const StyledReplyContainerWrapper = styled.div`
   margin-bottom: 90px;
 `;
 
+/** 커뮤니티상세 댓글 컨테이너 */
 const StyledReplyContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   margin: 20px 0;
 `;
 
+/** 커뮤니티상세 댓글 유저네임 */
 const StyledReplyUserName = styled.div`
   color: ${colors.main_navy};
   ${fonts.SubTextSmall};
   margin-right: 40px;
 `;
 
+/** 커뮤니티상세 댓글 텍스트 */
 const StyledReplyText = styled.div`
   color: ${colors.main_black};
   ${fonts.SubTextThinSmall};
 `;
 
+/** 커뮤니티 상세 댓글삭제버튼 */
 const StyledDelButton = styled.button`
   cursor: pointer;
   color: ${colors.darkgray_navy};

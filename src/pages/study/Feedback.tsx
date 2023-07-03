@@ -11,15 +11,13 @@ import {
 } from "../../api/api-study-feedback";
 import { colors } from "../../constants/colors";
 import { useLocation } from "react-router-dom";
-import { SubTextThin, TitleText } from "../../constants/fonts";
+import { SubTextThin } from "../../constants/fonts";
 
 export const Feedback = () => {
-  const [feedbackInput, setFeedbackInput] = useState("");
   const location = useLocation();
   const path = location.pathname;
+  const [feedbackInput, setFeedbackInput] = useState("");
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
-  //스터디 id값을
-
   const [feedbackData, setFeedbackData] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
 
   useEffect(() => {
