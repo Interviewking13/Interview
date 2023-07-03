@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { HTMLAttributes } from "react";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect , useState} from "react";
+import { useQuery } from "react-query";
+import { getUserData, getUserDataById } from "../../api/api-user";
 
 // 다운로드 이미지 링크
 const downImageSrc = "/download.png";
@@ -23,26 +24,57 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({
   handleModalClose,
 }) => {
 
-  // 더미 데이터
-  const name = " 정채진";
-  const introName = "첨부파일.word";
+  // 리액트 쿼리로 유저 데이터 userData에 저장
+  const {
+    data: userData,
+    isLoading,
+    isError,
+  } = useQuery(["userData"], () =>
+  getUserDataById(String(localStorage.getItem("token")),userId)
+  );
+
+   // 유저 이름 상태 관리
+   const [userName, setUserName] = useState(""); 
+   // 유저 자기소개서 이름 상태 관리
+   const [introName, setIntroName] = useState(""); 
+
+  useEffect(() => {
+    if (userData) {
+      // userData 분해구조 할당
+      const { user_name, user_id, email, intro_yn, phone_number, file_key, file_name } =
+      userData.data;
+      setUserName(user_name);
+      setIntroName(file_name);
+    }
+  }, [userData]);
 
   /** 모달 닫기 핸들러 */
   const handleCloseModal = () => {
     handleModalClose();
   };
 
-  // getUserData(userId) 해서
-  // 더미데이터 변경
-  // 파일 다운로드 구현
-  
+  /** 자기소개서 다운로드 버튼 핸들러 */
+  const introDownloadButtonHandler=()=>{
+    // 파일 다운로드 구현
+  }
+
+  if (isLoading) {
+    // 로딩 상태를 표시
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    // 에러 상태를 표시
+    return <div>Error occurred while fetching data</div>;
+  }
+
   return (
     <StyledBox>
       <StyledContainer>
         <StyledTopContainer>
           <StyledContainerText>
             <StyledTitleText color={colors.darkgray_navy}>
-              <StyledTitleText color={colors.main_mint}>{name}</StyledTitleText>
+              <StyledTitleText color={colors.main_mint}>{userName}</StyledTitleText>
               님의
             </StyledTitleText>
           </StyledContainerText>
@@ -59,7 +91,7 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({
           </StyledTitleText>
         </StyledContainerText>
         <SubButtonContainer>
-          <StyledCommonButton backgroundColor={colors.main_mint}>
+          <StyledCommonButton backgroundColor={colors.main_mint} onClick={introDownloadButtonHandler}>
             <StyledIntroTextField>{introName}</StyledIntroTextField>
             <StyledDownloadImg src={downImageSrc} alt="downImage" />
           </StyledCommonButton>

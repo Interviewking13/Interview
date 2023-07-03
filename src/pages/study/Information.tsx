@@ -27,13 +27,11 @@ const Information: React.FC = () => {
 
   useEffect(() => {
     getUserData(String(localStorage.getItem("token"))).then((response) => {
-      console.log(response.data.user_id);
       setUserId(response.data.user_id);
     });
   }, []);
   useEffect(() => {
     getInfoStudyData(String(lastPathSegment)).then((response) => {
-      console.log(response.data.leader_id);
       setLeaderId(response.data.leader_id);
     });
   }, []);
@@ -74,7 +72,6 @@ const Information: React.FC = () => {
     return <div>Error occurred while fetching data</div>;
   }
 
-  console.log(`path is: ${lastPathSegment}:`, studyData);
   const {
     title,
     status,
