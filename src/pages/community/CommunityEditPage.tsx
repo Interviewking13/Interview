@@ -8,10 +8,10 @@ import { useRecoilState } from "recoil";
 import { EditContent } from "../../utils/CommunitiEdit";
 
 const CommunityEditPage: React.FC = ({}) => {
+  const navigate = useNavigate();
   const [data, setData] = useRecoilState(EditContent);
   const [title, setTitle] = useState<string>(data.title);
   const [content, setContent] = useState<string>(data.content);
-  const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
@@ -78,6 +78,7 @@ const CommunityEditPage: React.FC = ({}) => {
   );
 };
 
+/** 커뮤니티수정 전체 컨테이너 */
 const StyledCommonContainer = styled.div`
   width: 1270px;
   margin: 0 auto;
