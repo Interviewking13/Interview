@@ -10,7 +10,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const secretKey = process.env.SECRET_KEY;
+// const secretKey = process.env.SECRET_KEY;
 
 const userTokenValidate = async (req, res, next) => {
   // json body (localStorage 값 사용)
