@@ -27,7 +27,8 @@ export const CommunityDetailPage: React.FC = () => {
     file_name: "",
   });
 
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  // useNavigate 훅 사용
+  const navigate = useNavigate();
   const [data, setData] = useRecoilState(EditContent);
   const [b, setB] = useState<any[]>([]);
   const [text, setText] = useState("");

@@ -7,16 +7,22 @@ import LeftSignContainer from "../../components/auth/LeftSignContainer";
 import { postSignIn } from "../../api/api-user";
 import { useMutation, useQueryClient } from "react-query";
 
-/** refactor test 123 */
+// LoginPage 컴포넌트 선언
 const LoginPage = () => {
+  // 이메일 상태 추가(이메일 입력 필드의 값 관리)
   const [email, setEmail] = useState("");
+  // 비밀번호 상태 추가(비밀번호 입력 필드의 값 관리)
   const [password, setPassword] = useState("");
+  // 이메일 확인 상태 추가(이메일 오류 메시지 표시)
   const [emailError, setEmailError] = useState("");
+  // 비밀번호 확인 상태 추가(비밀번호 오류 메시지 표시)
   const [passwordError, setPasswordError] = useState("");
+  // navigate 훅 사용 (라우터 이동을 위한 함수)
   const navigate = useNavigate();
+  // queryClient 사용 (쿼리 데이터 관리를 위한 객체)
   const queryClient = useQueryClient();
 
-
+  // loginMutation 사용 (로그인 요청을 처리하는 mutation)
   const loginMutation = useMutation(
     (credentials: { email: string; password: string }) =>
       postSignIn(credentials.email, credentials.password)
@@ -34,22 +40,30 @@ const LoginPage = () => {
     try {
       const response = await loginMutation.mutateAsync({ email, password });
 
+      // 로그인 성공 시 토큰을 localStorage에 저장
       if (response && response.data.resultCode === "200") {
         localStorage.setItem("token", response.data.data.token);
       }
 
+      // 로그인 실패 시 이메일 관련 오류 메시지 설정
       else if (response && response.data.resultCode === "400") {
         setEmailError(response.data.message);
         return;
       }
 
+      // userData 쿼리를 다시 불러오기 위해 캐시를 무효화
       queryClient.invalidateQueries("userData");
-      console.log(response);
+      // 메인페이지로 이동
       navigate("/");
     } catch (passwordError) {
+      // 비밀번호 오류 시 오류 메시지 설정
       setPasswordError("비밀번호를 확인하세요.")
+      // 이메일 오류 메세지 초기화
+      setEmailError("");
     }
   };
+
+  /** 이메일 입력 값 변경 시 동작 */
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     const email = e.target.value;
     setEmail(email);
@@ -113,18 +127,20 @@ const LoginPage = () => {
   );
 };
 
-/** 페이지 컨테이너 */
+/** 페이지 컨테이너 div (로그인 페이지 전체 배경색 지정) */
 const StyledPageContainer = styled.div`
   background-color: ${colors.back_navy};
 `;
 
-/** 공통 컨테이너 */
+/** 공통 컨테이너 div (가운데 정렬 및 레이아웃 크기 지정) */
 const StyledCommonContainer = styled.div`
-  width: 1270px;
+  width: 100%;
+  max-width: 1270px;
   margin: 0 auto;
   padding-bottom: 30px;
 `;
 
+/** 로그인 컨테이너 div (좌/우 컴포넌트 가운데 정렬) */
 const StyledLoginContainer = styled.div`
   height: 100vh;
   display: flex;
@@ -132,13 +148,15 @@ const StyledLoginContainer = styled.div`
   align-items: center;
 `;
 
-const StyledRightSignContainer = styled.form`
+/** 오른쪽 컴포넌트 컨테이너 div */
+const StyledRightSignContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-left: auto;
 `;
 
+/** 이메일, 비밀번호 input */
 const StyledLoginInput = styled.input`
   width: 457px;
   height: 45px;
@@ -162,7 +180,8 @@ const StyledLoginInput = styled.input`
   }
 `;
 
-const StyledBtnWrapper = styled.div`
+/** 버튼 Wrapper form */
+const StyledBtnWrapper = styled.form`
   display: flex;
   margin-top: 40px;
   margin-left: auto;
