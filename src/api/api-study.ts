@@ -84,7 +84,6 @@ export const getInfoStudyData1: QueryFunction<any, string[]> = async ({
 
   const study_id = queryKey[1];
   const response = await axiosInstance.get(`study/info/${study_id}`);
-  console.log(response);
   return response.data;
 };
 
