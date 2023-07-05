@@ -93,11 +93,15 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
       token: String(localStorage.getItem("token")), // 인증 토큰 전달
     };
     // 스터디 수정 api 요청.
-    putInfoStudy(studyId, updatedStudy);
+    putInfoStudy(studyId, updatedStudy).then(() => {
+    // studyData 키값으로 캐시 무효화
+    queryClient.invalidateQueries(["studyData"]);
+    // 데이터 새로고침
+    refetch();
+    });
     // 링크 이동
     navigate(`/study/${studyId}`);
-    // studyData 키값으로 재 랜더링
-    queryClient.invalidateQueries(["studyData"]);
+    
   };
 
   /** 스터디 삭제 핸들러 */
