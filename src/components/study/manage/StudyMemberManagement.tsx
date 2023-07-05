@@ -36,24 +36,12 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
   // 신청 거절
   const unAccept = 2;
 
-  /** 스터디원 삭제 버튼 핸들러 */
-  const onDelete = async (index: number) => {
-    // studyAcceptData의 해당 index의 유저아이디를 userId에 저장.
-    const userId = studyAcceptData[index].user_id;
-    // 스터디원 삭제 api 요청 
-    await deleteStudyMember(
-      String(localStorage.getItem("token")),
-      studyId,
-      userId
-    );
-    queryClient.invalidateQueries(["studyAcceptData"]);
-  };
-
   // 리액트 쿼리를 통해 studyAcceptData에 수락인원 데이터 저장
   const {
     data: studyAcceptData,
     isLoading,
     isError,
+    refetch,
   } = useQuery(["studyAcceptData"], () =>
     getStudyAccept(studyId, accept).then((response) => response.data)
   );
@@ -71,6 +59,23 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
   /** 자기소개서 모달 Close 핸들러 */
   const handleCloseUserInfoModal = () => {
     setUserInfoModalOpen(false);
+  };
+
+  /** 스터디원 삭제 버튼 핸들러 */
+  const onDeleteMember = async (index: number) => {
+    // studyAcceptData의 해당 index의 유저아이디를 userId에 저장.
+    const userId = studyAcceptData[index].user_id;
+    // 스터디원 삭제 api 요청 
+    deleteStudyMember(
+      String(localStorage.getItem("token")),
+      studyId,
+      userId
+    ).then(() => {
+      // studyData 키값으로 캐시 무효화
+      queryClient.invalidateQueries(["studyAcceptData"]);
+      // 데이터 새로고침
+      refetch();
+      });;
   };
 
   if (isLoading) {
@@ -97,12 +102,12 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
                 userId={member.user_id}
                 handleModalClose={handleCloseUserInfoModal}
               />
-            </Modal>
+            </Modal>member.user_id
             <StyledDescription>{member.goal}</StyledDescription>
           </CardContent>
           <StyledCommonButton
             backgroundColor={colors.main_red}
-            onClick={() => onDelete(index)}
+            onClick={() => onDeleteMember(index)}
           >
             회원 삭제
           </StyledCommonButton>
