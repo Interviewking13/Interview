@@ -11,6 +11,12 @@ import { useQuery } from "react-query";
 import { getUserData } from "../../api/api-user";
 
 const UserInfo = () => {
+  const navigate = useNavigate();
+
+  const onClickModify = () => {
+    navigate("/");
+  };
+
   return (
     <StyledDiv>
       <StyledLowContent>
@@ -50,6 +56,7 @@ const StyledWelcome = styled(Typography)`
     ${fonts.SubTextBig};
     color: ${colors.main_navy};
     margin: 22px;
+    margin-right: 1000px;
   }
 `;
 /** 배경 테두리 */
@@ -70,7 +77,7 @@ const StyledInfo = styled.div`
 
 /** 각 요소 가로배열 */
 const StyledLowContent = styled.div`
-  margin-top: 15px;
+  margin-top: 10px;
   display: flex;
   flex-direction: low;
   align-items: center;

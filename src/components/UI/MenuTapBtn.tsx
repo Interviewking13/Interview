@@ -15,9 +15,9 @@ const MenuTapBtn = ({ children, onClick }: props) => {
   };
   return (
     <Grid item>
-      <StyledButtonMui sx={{ gap: "5px" }} onClick={clickHandler}>
+      <StyledTapButton sx={{ gap: "5px" }} onClick={clickHandler}>
         {children}
-      </StyledButtonMui>
+      </StyledTapButton>
     </Grid>
   );
 };
@@ -25,7 +25,7 @@ const MenuTapBtn = ({ children, onClick }: props) => {
 export default MenuTapBtn;
 
 //버튼 스타일
-const StyledButtonMui = styled(Button)`
+const StyledTapButton = styled(Button)`
   && {
     padding-left: 0;
     ${fonts.SubTextBig}
