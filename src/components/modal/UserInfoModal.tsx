@@ -75,7 +75,8 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({
           <StyledContainerText>
             <StyledTitleText color={colors.darkgray_navy}>
               <StyledTitleText color={colors.main_mint}>{userName}</StyledTitleText>
-              님의
+              {/* 자기소개서 유무에 따른 설명란 */}
+              {introName ? "님의" : "님은"}
             </StyledTitleText>
           </StyledContainerText>
           <StyledCancelButton onClick={handleCloseModal}>
@@ -87,15 +88,19 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({
             <StyledTitleText color={colors.main_navy}>
               자기소개서
             </StyledTitleText>
-            입니다.
+            {/* 자기소개서 유무에 따른 설명란 */}
+            {introName ? "입니다." : "가 미작성된 회원입니다."}
           </StyledTitleText>
         </StyledContainerText>
+        {/* 자기소개서 유무에 따라 버튼 활성화 */}
+        {introName && (
         <SubButtonContainer>
           <StyledCommonButton backgroundColor={colors.main_mint} onClick={introDownloadButtonHandler}>
             <StyledIntroTextField>{introName}</StyledIntroTextField>
             <StyledDownloadImg src={downImageSrc} alt="downImage" />
           </StyledCommonButton>
         </SubButtonContainer>
+        )}
       </StyledContainer>
     </StyledBox>
   );
@@ -191,8 +196,8 @@ const StyledIntroTextField = styled.p`
   color: ${colors.back_navy};
   ${fonts.SubTextThin}
   font-size: 16px;
-
   margin: 20px;
+  min-width: 80px;
 `;
 
 /** 자기소개서 버튼 컨테이너 div */
