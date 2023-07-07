@@ -106,7 +106,7 @@ const Information: React.FC = () => {
         <DetailTitle
           name="&nbsp;회의링크"
           content={
-            <Link color="#00e595;" href="http://naver.com">
+            <Link color="#00e595;" href={`${chat_link}`}>
               {chat_link}
             </Link>
           }
