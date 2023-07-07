@@ -38,21 +38,19 @@ const Mypage = () => {
       </StyledTitleContainer>
 
       {/* 메뉴컴포넌트가 그리드로 작업되어서 그대로 남았음, 추후 변경 가능 */}
-      <Grid item xs={12}>
-        <Grid container spacing={1} justifyContent="flex-start">
-          <MenuTapBtn onClick={onClickUserStudy}>
-            <Create />
-            나의 스터디
-          </MenuTapBtn>
-          <MenuTapBtn onClick={onClickStudyApply}>
-            <Checklist />
-            스터디 신청
-          </MenuTapBtn>
-          <MenuTapBtn onClick={onClickUserInfo}>
-            <Person />내 정보
-          </MenuTapBtn>
-        </Grid>
-      </Grid>
+      <StyledTapbuttonContainer>
+        <MenuTapBtn onClick={onClickUserStudy}>
+          <Create />
+          나의 스터디
+        </MenuTapBtn>
+        <MenuTapBtn onClick={onClickStudyApply}>
+          <Checklist />
+          스터디 신청
+        </MenuTapBtn>
+        <MenuTapBtn onClick={onClickUserInfo}>
+          <Person />내 정보
+        </MenuTapBtn>
+      </StyledTapbuttonContainer>
 
       <Outlet />
     </StyledContainer>
@@ -89,4 +87,10 @@ const StyledSubTitle = styled(Typography)`
     ${fonts.SubTextThin}
     color: ${colors.darkgray_navy};
   }
+`;
+
+const StyledTapbuttonContainer = styled.div`
+  display: flex;
+  flex-direction: low;
+  margin-bottom: 20px;
 `;
