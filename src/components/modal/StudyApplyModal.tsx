@@ -113,7 +113,7 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({
                   신청 시 입력한 한 줄 소개와 등록된 자기소개서가 스터디장에게
                   발송됩니다.
                 </StyledP>
-                <StyledA to="/mypage-modify">
+                <StyledA to="/mypage/userinfo/Modify">
                   자기소개서 등록을 안 하셨나요?
                 </StyledA>
               </InfoContainer>
