@@ -6,7 +6,7 @@ import { StudyTaps } from "./common/StudyTap";
 import React, { useEffect, useState } from "react";
 import { colors } from "../../constants/colors";
 import { SubTextBig, TitleText, SubTextThin } from "../../constants/fonts";
-import { getInfoAllStudyData, getInfoStudyData } from "../../api/api-study";
+import { getInfoStudyData } from "../../api/api-study";
 import { SubmitButton } from "./common/SubmitButton";
 import { dateSplice } from "../../utils/dateFomatting";
 import { useLocation } from "react-router-dom";
@@ -20,25 +20,22 @@ const Information: React.FC = () => {
   const location = useLocation();
   const path = location.pathname;
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
-  const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
-  const [studyApplyModalOpen, setStudyApplyModalOpen] = React.useState(false);
+  const [userInfoModalOpen, setUserInfoModalOpen] = useState(false);
+  const [studyApplyModalOpen, setStudyApplyModalOpen] = useState(false);
   const [useId, setUserId] = useState("1");
-  const [leaderId, setLeaderId] = useState("2");
 
   useEffect(() => {
     getUserData(String(localStorage.getItem("token"))).then((response) => {
-      setUserId(response.data.user_id);
+      setUserId(response.data.user_id); //현재 유저 id
     });
   }, []);
-  useEffect(() => {
-    getInfoStudyData(String(lastPathSegment)).then((response) => {
-      setLeaderId(response.data.leader_id);
-    });
-  }, []);
+
+  /** 모달창 오픈 */
   const handleOpenUserInfoModal = () => {
     setUserInfoModalOpen(true);
   };
 
+  /** 모달창 클로즈 */
   const handleCloseUserInfoModal = () => {
     setUserInfoModalOpen(false);
   };
@@ -51,6 +48,7 @@ const Information: React.FC = () => {
     setStudyApplyModalOpen(false);
   };
 
+  /** 스터디 관리로 가는 함수 */
   const handleStudyManageButtonClick = () => {
     window.location.href = `/management/${_id}`;
   };
@@ -74,7 +72,6 @@ const Information: React.FC = () => {
 
   const {
     title,
-    status,
     content,
     start,
     end,
@@ -96,7 +93,7 @@ const Information: React.FC = () => {
       </MystudyContainer>
       <StyeldTapContainer>
         <StudyTaps />
-        {useId === leaderId ? (
+        {useId === leader_id ? (
           <StyledStudyManageButton onClick={handleStudyManageButtonClick}>
             <SettingsIcon fontSize="large"></SettingsIcon>
           </StyledStudyManageButton>
@@ -109,7 +106,7 @@ const Information: React.FC = () => {
         <DetailTitle
           name="&nbsp;회의링크"
           content={
-            <Link color="#00e595;" href="http://naver.com">
+            <Link color="#00e595;" href={`${chat_link}`}>
               {chat_link}
             </Link>
           }
@@ -150,10 +147,8 @@ const Information: React.FC = () => {
     </Container>
   );
 };
-const InfoContent = styled.p`
-  font-size: 20px;
-  padding: 10px;
-`;
+
+/** 전체 컨테이너 */
 const Container = styled.div`
   margin: 0 auto;
   width: 1270px;
@@ -161,28 +156,14 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const StyeldTapContainer = styled.div`
-  margin: 20px 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-const StyledStudyManageButton = styled.div`
-  cursor: pointer;
-`;
-
-export const Title = styled.span`
-  ${TitleText};
-  color: ${colors.main_navy};
-  font-size: 48px;
-`;
-
+/** 스터디 정보 컨테이너 */
 const MystudyContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: end;
 `;
 
+/** 스터디 정보 타이틀 */
 export const Mystudy = styled.div`
   margin-top: 60px;
   ${TitleText};
@@ -190,10 +171,37 @@ export const Mystudy = styled.div`
   font-size: 32px;
   margin-right: 30px;
 `;
+
+/** 스터디 정보 세부 타이틀 */
 const MystudySubtitle = styled.div`
   ${SubTextThin};
   color: ${colors.darkgray_navy};
 `;
+const InfoContent = styled.p`
+  font-size: 20px;
+  padding: 10px;
+`;
+
+/** 스터디 정보탭 컨테이너 */
+const StyeldTapContainer = styled.div`
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+/** 스터디 관리버튼 */
+const StyledStudyManageButton = styled.div`
+  cursor: pointer;
+`;
+
+/** 스터디정보 타이틀 */
+export const Title = styled.span`
+  ${TitleText};
+  color: ${colors.main_navy};
+  font-size: 48px;
+`;
+
 const SubTitle = styled.div`
   display: flex;
   flex-direction: column;
@@ -204,18 +212,12 @@ const Divider = styled.div`
   border-bottom: 1px solid ${colors.gray_stroke};
 `;
 
+/** 스터디 소개 */
 const StudyIntro = styled.div`
   display: flex;
   margin: 10px 0px;
   ${SubTextBig};
   color: ${colors.main_navy};
-`;
-
-const StyledDetailTitle = styled(DetailTitle)`
-  cursor: pointer;
-  &.cursor-style {
-    cursor: pointer;
-  }
 `;
 
 export default Information;

@@ -18,6 +18,7 @@ const BestBoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
   const [bestPosts, setBestPosts] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
 
   const navigate = useNavigate(); // useNavigate 훅 사용
+
   useEffect(() => {
     getAllCommunityData()
       .then((response) => {
@@ -53,9 +54,7 @@ const BestBoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
               </StyledLeftPostItem>
               <StyledRightPostItem>
                 <StyledPostItem>{post.reply_count}</StyledPostItem>
-                <StyledPostItem>
-                  {post.read_users.length}
-                </StyledPostItem>
+                <StyledPostItem>{post.read_users.length}</StyledPostItem>
                 <StyledPostItem>{post.user_name}</StyledPostItem>
                 <StyledPostItem>{dateSplice(post.createdAt)}</StyledPostItem>
               </StyledRightPostItem>
