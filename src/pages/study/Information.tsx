@@ -105,10 +105,15 @@ const Information: React.FC = () => {
       </StyeldTapContainer>
       <Title>{title}</Title>
       <SubTitle>
-        <DetailTitle
+      <DetailTitle
           name="&nbsp;회의링크"
           content={
-            <Link color="#00e595;" href={`${chat_link}`}>
+            <Link
+              href={chat_link}
+              target="_blank"
+              rel="noopener"
+              color="#00e595"
+            >
               {chat_link}
             </Link>
           }
