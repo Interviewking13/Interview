@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import LeftSignContainer from "../../components/auth/LeftSignContainer";
 import { postSignIn } from "../../api/api-user";
 import { useMutation, useQueryClient } from "react-query";
+import SearchIdModal from "./SearchIdModal";
+import SearchPasswordModal from "./SearchPasswordModal";
 
 // LoginPage 컴포넌트 선언
 const LoginPage = () => {
@@ -17,6 +19,10 @@ const LoginPage = () => {
   const [emailError, setEmailError] = useState("");
   // 비밀번호 확인 상태 추가(비밀번호 오류 메시지 표시)
   const [passwordError, setPasswordError] = useState("");
+  // 아이디 찾기 모달 상태 추가
+  const [searchIdModalOpen, setSearchIdModalOpen] = useState(false);
+  // 비밀번호 찾기 모달 상태 추가
+  const [searchPasswordModalOpen, setSearchPasswordModalOpen] = useState(false);
   // navigate 훅 사용 (라우터 이동을 위한 함수)
   const navigate = useNavigate();
   // queryClient 사용 (쿼리 데이터 관리를 위한 객체)
@@ -80,6 +86,23 @@ const LoginPage = () => {
     navigate("./signup");
   };
 
+  /** 아이디 찾기 버튼 클릭 시 동작 */
+  const openSearchIdModal = () => {
+    setSearchIdModalOpen(true);
+  };
+
+  const closeSearchIdModal = () => {
+    setSearchIdModalOpen(false);
+  };
+
+  const openSearchPasswordModal = () => {
+    setSearchPasswordModalOpen(true);
+  };
+
+  const closeSearchPasswordModal = () => {
+    setSearchPasswordModalOpen(false);
+  };
+
   return (
     <StyledPageContainer>
       <StyledCommonContainer>
@@ -117,6 +140,12 @@ const LoginPage = () => {
                 로그인
               </StyledLoginBtn>
             </StyledBtnWrapper>
+            <StyledSearchUserInfo>
+              <StyledSearchId onClick={openSearchIdModal}>아이디 찾기</StyledSearchId>
+              <StyledSearchPassword onClick={openSearchPasswordModal}>비밀번호 찾기</StyledSearchPassword>
+            </StyledSearchUserInfo>
+            {searchIdModalOpen && <SearchIdModal closeModal={closeSearchIdModal} />}
+            {searchPasswordModalOpen && <SearchPasswordModal closeModal={closeSearchPasswordModal} />}
           </StyledRightSignContainer>
         </StyledLoginContainer>
         <StyledSignupCopyright>
@@ -237,5 +266,28 @@ const StyledSignupCopyright = styled.div`
   font-size: 14px;
   color: ${colors.gray_navy};
 `;
+
+/** 아이디/비밀번호 찾기 container div */
+const StyledSearchUserInfo = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin-left: auto; /** 오른쪽 정렬시키기 */
+  color: ${colors.darkgray_navy};
+  font-size: 18px;
+  font-weight:300;
+  margin-top: 40px;
+`
+
+/** 아이디 찾기 div */
+const StyledSearchId = styled.div`
+  
+`
+
+/** 비밀번호 찾기 div */
+const StyledSearchPassword = styled.div`
+  border-left: 1px solid ${colors.darkgray_navy};
+  margin-left: 10px;
+  padding-left:10px;
+`
 
 export default LoginPage;
