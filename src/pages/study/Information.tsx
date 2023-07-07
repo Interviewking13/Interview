@@ -16,6 +16,7 @@ import { useQuery } from "react-query";
 import UserInfoModal from "../../components/modal/UserInfoModal";
 import { getUserData } from "../../api/api-user";
 import SettingsIcon from "@mui/icons-material/Settings";
+
 const Information: React.FC = () => {
   const location = useLocation();
   const path = location.pathname;
@@ -60,6 +61,7 @@ const Information: React.FC = () => {
   } = useQuery(["studyData"], () =>
     getInfoStudyData(lastPathSegment).then((response) => response.data)
   );
+  
   if (isLoading) {
     // 로딩 상태를 표시
     return <div>Loading...</div>;
@@ -137,7 +139,11 @@ const Information: React.FC = () => {
         &nbsp;스터디 소개
       </StudyIntro>
       <InfoContent>{content}</InfoContent>
+      {useId !== leader_id ? (
       <SubmitButton onClick={handleOpenStudyApplyModal} />
+      ) : (
+        <></>
+      )}
       <Modal open={studyApplyModalOpen} onClose={handleCloseStudyApplyModal}>
         <StudyApplyModal
           studyId={lastPathSegment}
