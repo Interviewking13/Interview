@@ -14,14 +14,14 @@ const UserInfo = () => {
   const navigate = useNavigate();
 
   const onClickModify = () => {
-    navigate("/");
+    navigate("/mypage/userinfo/modify");
   };
 
   return (
     <StyledDiv>
       <StyledLowContent>
         <StyledWelcome noWrap>면접왕 님, 어서오세요.</StyledWelcome>
-        <IconButton>
+        <IconButton onClick={onClickModify}>
           <SettingsIcon />
         </IconButton>
       </StyledLowContent>

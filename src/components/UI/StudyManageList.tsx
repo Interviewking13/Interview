@@ -16,7 +16,7 @@ const items = [
   },
 ];
 
-const onDelete = () => {};
+const onClick = ({}) => {};
 
 const StudyManageList = () => {
   return (
@@ -29,7 +29,7 @@ const StudyManageList = () => {
           </CardContent>
           <StyledCommonButton
             backgroundColor={colors.main_red}
-            onClick={onDelete}
+            onClick={onClick}
           >
             {item.children}
           </StyledCommonButton>
