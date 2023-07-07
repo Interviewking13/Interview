@@ -49,16 +49,19 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
   const members = studyAcceptData;
 
   // 자기소개서 모달 open 상태관리
-  const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
+  const [userInfoModalOpen, setUserInfoModalOpen] = React.useState<{
+    open: boolean;
+    userId: string;
+  }>({ open: false, userId: "" });
 
   /** 자기소개서 모달 open 핸들러 */
-  const handleOpenUserInfoModal = () => {
-    setUserInfoModalOpen(true);
+  const handleOpenUserInfoModal = (userId: string) => {
+    setUserInfoModalOpen({ open: true, userId });
   };
 
   /** 자기소개서 모달 Close 핸들러 */
   const handleCloseUserInfoModal = () => {
-    setUserInfoModalOpen(false);
+    setUserInfoModalOpen({ open: false, userId: "" });
   };
 
   /** 스터디원 삭제 버튼 핸들러 */
@@ -94,15 +97,15 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
       {members.map((member: StudyAcceptData, index: number) => (
         <CardContainer key={index}>
           <CardContent>
-            <StyledName onClick={handleOpenUserInfoModal}>
+            <StyledName onClick={() => handleOpenUserInfoModal(member.user_id)}>
               {member.user_name}
             </StyledName>
-            <Modal open={userInfoModalOpen} onClose={handleCloseUserInfoModal}>
+            <Modal open={userInfoModalOpen.open} onClose={handleCloseUserInfoModal}>
               <UserInfoModal
-                userId={member.user_id}
-                handleModalClose={handleCloseUserInfoModal}
+               userId={userInfoModalOpen.userId}
+               handleModalClose={handleCloseUserInfoModal}
               />
-            </Modal>member.user_id
+            </Modal>
             <StyledDescription>{member.goal}</StyledDescription>
           </CardContent>
           <StyledCommonButton
@@ -139,7 +142,8 @@ const CardContent = styled.div`
 /** Name p */
 const StyledName = styled.p`
   font-weight: bold;
-  margin-right: 10px;
+  width: 150px;
+  margin-right: 20px;
   margin-left: 20px;
   cursor: pointer;
 `;
