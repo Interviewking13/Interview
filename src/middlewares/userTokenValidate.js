@@ -14,12 +14,18 @@ const secretKey = process.env.SECRET_KEY;
 
 const userTokenValidate = async (req, res, next) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 370402ba4b12cfb101ad0f98bd5f4fe34137b784
   // console.log('미들웨어 실행!');
 
   // 쿠키값 사용 주석 처리
   // const token = req.cookies.token;
 
+<<<<<<< HEAD
+>>>>>>> 370402ba4b12cfb101ad0f98bd5f4fe34137b784
+=======
 >>>>>>> 370402ba4b12cfb101ad0f98bd5f4fe34137b784
   // json body (localStorage 값 사용)
   const { token } = req.body;
@@ -35,9 +41,12 @@ const userTokenValidate = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, secretKey);
 <<<<<<< HEAD
+<<<<<<< HEAD
     req.user = decoded;
 
 =======
+=======
+>>>>>>> 370402ba4b12cfb101ad0f98bd5f4fe34137b784
 
     // 토큰이 유효한 경우
     req.user = decoded;
@@ -66,6 +75,9 @@ const userTokenValidate = async (req, res, next) => {
     //         }
     //     });
     // }    
+<<<<<<< HEAD
+>>>>>>> 370402ba4b12cfb101ad0f98bd5f4fe34137b784
+=======
 >>>>>>> 370402ba4b12cfb101ad0f98bd5f4fe34137b784
     next();
   } catch (err) {
