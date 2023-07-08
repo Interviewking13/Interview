@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 
 // DB 연결
 mongoose
-  // .connect(process.env.DB_Link, {
-  .connect(DB_Link, {
+  .connect(process.env.DB_Link, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     serverSelectionTimeoutMS: 10000, // 10초
