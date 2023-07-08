@@ -108,6 +108,7 @@ const userApi = {
         try {
             // 클라이언트로부터 전달된 헤더(토큰값) 사용 - token header로 로그인 유무 판단
             const token = req.headers.authorization;    
+            console.log(token + '/ userAPI - getUserInfo - getUserIdInfo');
             
             const decoded = jwt.verify(token, secretKey);
             

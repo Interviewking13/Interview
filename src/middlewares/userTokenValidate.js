@@ -13,6 +13,14 @@ const bcrypt = require('bcrypt');
 const secretKey = process.env.SECRET_KEY;
 
 const userTokenValidate = async (req, res, next) => {
+<<<<<<< HEAD
+=======
+  // console.log('미들웨어 실행!');
+
+  // 쿠키값 사용 주석 처리
+  // const token = req.cookies.token;
+
+>>>>>>> 370402ba4b12cfb101ad0f98bd5f4fe34137b784
   // json body (localStorage 값 사용)
   const { token } = req.body;
   console.log(token);
@@ -26,8 +34,39 @@ const userTokenValidate = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, secretKey);
+<<<<<<< HEAD
     req.user = decoded;
 
+=======
+
+    // 토큰이 유효한 경우
+    req.user = decoded;
+    // console.log(decoded.user_id);
+    // console.log(req.user.user_id);
+
+    // TO-DO: 현재 사용자 검사 (isLoginValidate 의 user_id 와 비교해서 안되면 팅겨버리는 로직 추가하자)
+
+    // 현재 사용자 검사(기본) -> 이렇게 하면 다른곳에서도 currentUser 정보를 사용할 수 있겠네.. !
+    // response값을 더 줘서 값을 활용 많이하계끔해야하나?
+    // const currentUser = await User.findOne({ "_id": user_id });
+
+    // if (!currentUser) {
+    //   return res.status(400).json({
+    //       resultCode: "400",
+    //       message: "해당 사용자를 찾을 수 없습니다."
+    //   });
+    // }
+
+    // if (currentUser) {
+    //     return res.status(400).json({
+    //         resultCode: "400",
+    //         message: "사용자 정보가 존재합니다.",
+    //         data: {
+    //             user_id: currentUser._id
+    //         }
+    //     });
+    // }    
+>>>>>>> 370402ba4b12cfb101ad0f98bd5f4fe34137b784
     next();
   } catch (err) {
     if (err.name === 'JsonWebTokenError') {
