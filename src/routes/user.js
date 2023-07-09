@@ -1,5 +1,3 @@
-// const { Router } = require('express');
-// const router = Router();
 const express = require('express');
 const router = express.Router();
 
@@ -8,6 +6,9 @@ const userTokenValidate = require("../middlewares/userTokenValidate");
 
 const userApi = require("../apis/user");
 const isLoginValidate = require("../middlewares/isLoginValidate");
+
+// user API 테스트
+router.get('/userApiTest', userApi.getAllUserInfo);
 
 router.get('/login', isLoginValidate);                              // user 로그인 유효성 검사 테스트
 router.get('/userInfo/:user_id', userApi.getUserIdInfo);            // user_id 로 해당 사용자 정보 조회
@@ -19,4 +20,3 @@ router.delete('/mypage', userTokenValidate, userApi.deleteUser);
 router.post('/logout', userTokenValidate, userApi.logoutUser);
 
 module.exports = router;
-
