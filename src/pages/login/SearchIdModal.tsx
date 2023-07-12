@@ -28,7 +28,7 @@ const SearchIdModal = ({ closeModal }: { closeModal: () => void }) => {
             <CancelButtonImage src={imageSrc} alt="Cancel Button" />
           </StyledCancelButton>
         </StyledTopContainer>
-        <ModalText>가입하신 이름과 전화번호를 입력해주세요.</ModalText>
+        <ModalText>가입하신 정보를 입력해주세요.</ModalText>
         <ModalInputContainer>
           <ModalInput placeholder='가입하신 이름을 입력해주세요.'></ModalInput>
           <ModalInput placeholder='가입하신 전화번호를 입력해주세요.'></ModalInput>
