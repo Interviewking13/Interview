@@ -29,7 +29,6 @@ const StudyList = (): JSX.Element => {
   React.useEffect(() => {
     getInfoAllStudyData()
       .then((response) => {
-        console.log(response.data);
         setStudyData(response.data.reverse());
       })
       .catch((error) => {
