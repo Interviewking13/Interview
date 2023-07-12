@@ -18,7 +18,7 @@ const CreateStudy = (): JSX.Element => {
     const [studyData, setStudyData] = useState<StudyData[]>([]);
     const [studyName, setStudyName] = useState('');
     const [studyDescription, setStudyDescription] = useState('');
-    const [meetingLink, setMeetingLink] = useState('');
+    const [meetingLink, setMeetingLink] = useState('https://');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [recruitmentDeadline, setRecruitmentDeadline] = useState('');
@@ -48,9 +48,6 @@ const CreateStudy = (): JSX.Element => {
             .then((response) => {
                 setUserId(response.data.user_id);
                 setUserName(response.data.user_name);
-                console.log(response.data.user_id);
-                console.log(response.data.user_name);
-                console.log(response.data);
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -71,19 +68,19 @@ const CreateStudy = (): JSX.Element => {
         const currentDate = getCurrentDate();
 
         if (startDate < currentDate) {
-            setError('시작 날짜는 오늘 날짜 이후여야 합니다.');
-            return;
-        }
-        if (endDate < currentDate) {
-            setError('종료 날짜는 오늘 날짜 이후여야 합니다.');
+            setError(`시작일은 ${currentDate}일 이후로 지정해 주세요.`);
             return;
         }
         if (endDate <= startDate) {
-            setError('종료 날짜는 시작 날짜보다 뒤여야 합니다.');
+            setError(`종료일은 ${startDate}일 이후로 지정해 주세요.`);
+            return;
+        }
+        if (recruitmentDeadline < currentDate) {
+            setError(`모집 마감일은 ${currentDate}일 이후로 지정해 주세요.`);
             return;
         }
         if (recruitmentCount === 0) {
-            setError('모든 항목을 입력해주세요.');
+            setError('모집인원을 올바르게 설정해 주세요.');
             return;
         }
 
@@ -161,6 +158,7 @@ const CreateStudy = (): JSX.Element => {
                     <StyledStudyInput
                         type="url"
                         placeholder="화상 회의 주소를 입력하세요."
+                        value={meetingLink}
                         onChange={(event) => setMeetingLink(event.target.value)}
                     />
                 </StyledStudyCreateInputArea>
