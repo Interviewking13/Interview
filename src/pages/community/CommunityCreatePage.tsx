@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { axiosInstance } from "../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../api/api-user";
+import { useAuth } from "../../hooks/useAuth";
 
 const postCommunity = async (data: {
   title: string;
@@ -31,7 +32,7 @@ const CommunityCreatePage: React.FC = () => {
 
   const [useId, setUserId] = useState("");
   // const [file, setFile] = useState(null);
-
+  useAuth();
   useEffect(() => {
     getUserData(String(localStorage.getItem("token"))).then((response) => {
       setUserId(response.data.user_id);
