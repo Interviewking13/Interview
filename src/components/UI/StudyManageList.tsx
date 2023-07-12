@@ -8,6 +8,14 @@ interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
   backgroundColor?: string;
 }
 
+type StudyListProps = {
+  id: number;
+  title: string;
+  manager: string;
+  backgroundColor: string;
+  children: React.ReactNode;
+};
+
 const items = [
   {
     title: "아으 다롱디리 으으ㅏㅇ아으",
@@ -18,23 +26,24 @@ const items = [
 
 const onClick = ({}) => {};
 
-const StudyManageList = () => {
+const StudyManageList = ({
+  id,
+  title,
+  manager,
+  children,
+  backgroundColor,
+}: StudyListProps) => {
   return (
     <>
-      {items.map((item, index) => (
-        <CardContainer key={index}>
-          <CardContent>
-            <StyledName>{item.title}</StyledName>
-            <StyledDescription>{item.manager}</StyledDescription>
-          </CardContent>
-          <StyledCommonButton
-            backgroundColor={colors.main_red}
-            onClick={onClick}
-          >
-            {item.children}
-          </StyledCommonButton>
-        </CardContainer>
-      ))}
+      <CardContainer key={id}>
+        <CardContent>
+          <StyledName>{title}</StyledName>
+          <StyledDescription>{manager}</StyledDescription>
+        </CardContent>
+        <StyledCommonButton backgroundColor={backgroundColor} onClick={onClick}>
+          {children}
+        </StyledCommonButton>
+      </CardContainer>
     </>
   );
 };
@@ -62,7 +71,6 @@ const StyledName = styled.p`
 `;
 
 const StyledDescription = styled.p`
-  flex-grow: 1;
   margin-right: 10px;
   margin-left: 100px;
   ${fonts.SubTextThin}
