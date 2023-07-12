@@ -131,7 +131,7 @@ export const CommunityDetailPage: React.FC = () => {
           <StyledCommunityInfoContainer>
             <StyledCommunitySunInfo>{a.user_name}</StyledCommunitySunInfo>
             <StyledCommunitySunInfo>
-              {dateSplice(a.updatedAt)}
+              {a.updatedAt ? dateSplice(a.updatedAt) : ""}
             </StyledCommunitySunInfo>
             <StyledCommunitySunInfo>
               조회 : {a.read_users.length}
