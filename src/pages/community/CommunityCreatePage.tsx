@@ -1,11 +1,25 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
-import { TitleText, SubTextThin, SubTextSmall } from "../../constants/fonts";
+import { TitleText, SubTextThin } from "../../constants/fonts";
 import { useMutation, useQueryClient } from "react-query";
 import { axiosInstance } from "../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../api/api-user";
+
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
+const modules = {
+  toolbar: [
+    [{ header: [1, 2, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ color: [] }],
+    ["link", "image", "video"],
+    ["clean"],
+  ],
+};
 
 const postCommunity = async (data: {
   title: string;
@@ -26,11 +40,9 @@ const postCommunity = async (data: {
 
 const CommunityCreatePage: React.FC = () => {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
   const [file, setFile] = useState<File | null>(null);
-
   const [useId, setUserId] = useState("");
-  // const [file, setFile] = useState(null);
+  const [content, setContent] = useState("");
 
   useEffect(() => {
     getUserData(String(localStorage.getItem("token"))).then((response) => {
@@ -38,7 +50,7 @@ const CommunityCreatePage: React.FC = () => {
       console.log(response.data.user_id);
       console.log(response.data);
     });
-  });
+  }, []);
 
   const handleTitleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -46,19 +58,11 @@ const CommunityCreatePage: React.FC = () => {
     setTitle(e.target.value);
   };
 
-  const handleContentChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setContent(e.target.value);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = e.target.files;
-    if (selectedFiles && selectedFiles.length > 0) {
-      const selectedFile = selectedFiles[0];
-      setFile(selectedFile);
-    }
-  };
+  // const handleContentChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  // ) => {
+  //   setContent(e.target.value);
+  // };
 
   // 미리 선언해둔 postCommunity api service함수를 가져와서 사용했습니다.
   // useMutation의 반환값인 postCommunityMutate을 호출하면 해당 api가 호출됩니다.
@@ -79,7 +83,11 @@ const CommunityCreatePage: React.FC = () => {
     },
   });
 
-  const handleSubmit = () => {
+  const handleChange = (value: string) => {
+    setContent(value);
+  };
+
+  const onClickSubmit = () => {
     // 호출
 
     postCommunityMutate({
@@ -115,18 +123,24 @@ const CommunityCreatePage: React.FC = () => {
 
         <StyledInputWrapper className="second-input-wrapper">
           <StyledTitle>내용</StyledTitle>
+
+          {/* 
           <StyledTextarea
             value={content}
             onChange={handleContentChange}
             placeholder="내용을 입력하세요."
-          />
+          /> */}
+
+          <ReactQuillaear modules={modules} onChange={handleChange} />
         </StyledInputWrapper>
 
         <StyledFileInputWrapper>
           <StyledFileInputContainer></StyledFileInputContainer>
         </StyledFileInputWrapper>
         <StyledFileButtonWrapper>
-          <StyledCreateButton onClick={handleSubmit}>글쓰기</StyledCreateButton>
+          <StyledCreateButton onClick={onClickSubmit}>
+            글쓰기
+          </StyledCreateButton>
         </StyledFileButtonWrapper>
       </StyledCreatePageContainer>
     </StyledCommonContainer>
@@ -193,6 +207,12 @@ const StyledInput = styled.input`
     color: ${colors.gray_navy};
   }
 `;
+
+const ReactQuillaear = styled(ReactQuill)`
+  width: 1107px;
+  height: 400px;
+`;
+
 const StyledTextarea = styled.textarea`
   width: 1107px;
   height: 400px;
@@ -266,6 +286,7 @@ const StyledFileButtonWrapper = styled.div`
   width: 1270px;
 `;
 const StyledCreateButton = styled.button`
+  margin-top: 50px;
   padding: 10px 20px;
   background-color: ${colors.main_mint};
   border-radius: 10px;
