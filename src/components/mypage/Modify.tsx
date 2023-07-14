@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import { getUserData, putUserData } from "../../api/api-user";
 import { Button, Typography, TextField } from "@mui/material";
+import { Button, Typography, TextField } from "@mui/material";
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
@@ -124,6 +125,7 @@ const StyledTitle = styled(Typography)`
   && {
     ${fonts.TitleText};
     color: ${colors.main_mint};
+    color: ${colors.main_mint};
     padding: 0;
   }
 `;
@@ -142,6 +144,8 @@ const StyledInfoName = styled.div`
   && {
     ${fonts.SubTextBig}
     color:${colors.main_black};
+    width: 160px;
+    color: ${colors.main_black};
     width: 160px;
   }
 `;

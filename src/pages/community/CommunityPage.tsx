@@ -5,22 +5,24 @@ import BestBoardListItemContainer from "./components/BestBoardListItemContainer"
 
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
-import SearchIconSrc from "../../img/search_navy.svg";
 import { Link } from "react-router-dom";
-
 import CreateIcon from "@mui/icons-material/Create";
-interface BoardListItemContainerProps {
+
+/** 커뮤니티 전체글 / 내가쓴글을 나누기 위해 props설정 */
+type BoardListItemContainerProps = {
   tap: number;
-}
+};
 
 const CommunityPage: React.FC<BoardListItemContainerProps> = ({ tap }) => {
   const [taps, setTap] = useState(1);
+
+  /** 클릭시 전체글을 보여줌 */
   const onClickTotalTap = (e: any) => {
-    console.log("토탈");
     setTap(1);
   };
+
+  /** 클릭시 내가쓴글을 보여줌 */
   const onClickMyTap = (e: any) => {
-    console.log("마이");
     setTap(0);
   };
   return (
@@ -47,7 +49,6 @@ const CommunityPage: React.FC<BoardListItemContainerProps> = ({ tap }) => {
           &nbsp;내가쓴 글
         </StydyTap>
       </StydyTapContainer>
-
       {/* 게시판 목록 컨테이너, 아이템 컴포넌트 불러오기 */}
       <BestBoardListItemContainer tap={taps} />
       <BoardListItemContainer tap={taps} />
@@ -55,10 +56,45 @@ const CommunityPage: React.FC<BoardListItemContainerProps> = ({ tap }) => {
   );
 };
 
+/** 커뮤니티페이지 전체 컨테이너*/
+const StyledCommonContainer = styled.div`
+  width: 1270px;
+  margin: 0px auto;
+`;
+
+/** 커뮤니티페이지 상단바*/
+const StyledHeadContainer = styled.div`
+  margin: 50px 0 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+
+/** 커뮤니티페이지 타이틀*/
+const StyledTitle = styled.div`
+  height: fit-content;
+  ${fonts.TitleText}
+  color: ${colors.main_navy};
+  margin: 0 30px 0 0;
+`;
+
+/** 커뮤니티페이지 타이틀 텍스트*/
+const StyledText = styled.div`
+  width: 595px;
+  height: fit-content;
+  font-weight: light;
+  color: ${colors.darkgray_navy};
+  margin: 0;
+  ${fonts.SubTextThin}
+`;
+
+/** 커뮤니티텝 컨테이너*/
 const StydyTapContainer = styled.div`
   margin: 20px 0px;
   display: flex;
 `;
+
+/** 커뮤니티페이지 타이틀*/
 const StydyTap = styled.div`
   cursor: pointer;
   display: flex;
@@ -72,50 +108,8 @@ const StydyTap = styled.div`
     color: skyblue; /* 호버 시 변경할 색상 */
   }
 `;
-const StyledTitle = styled.div`
-  height: fit-content;
-  ${fonts.TitleText}
-  color: ${colors.main_navy};
-  margin: 0 30px 0 0;
-`;
 
-const StyledText = styled.div`
-  width: 595px;
-  height: fit-content;
-  font-weight: light;
-  color: ${colors.darkgray_navy};
-  margin: 0;
-  ${fonts.SubTextThin}
-`;
-
-export const StyledC = styled.div`
-  margin-top: 20px;
-  display: flex;
-`;
-
-const StyledCommonContainer = styled.div`
-  width: 1270px;
-  margin: 0px auto;
-`;
-
-const StyledHeadContainer = styled.div`
-  margin: 50px 0 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-`;
-
-const StyledInput = styled.input`
-  width: 325px;
-  height: 45px;
-  margin: 0;
-  border: solid 1px ${colors.main_navy};
-  box-sizing: border-box;
-  border-radius: 10px;
-  padding-left: 15px;
-  color: ${colors.main_navy};
-  ${fonts.SubTextThin}
-`;
+/** 커뮤니티페이지 버튼*/
 
 const StyledInputBtn = styled.button`
   background: none;
@@ -125,11 +119,7 @@ const StyledInputBtn = styled.button`
   cursor: pointer;
 `;
 
-const StyledIcon = styled.img`
-  width: 27px;
-  height: 27px;
-`;
-
+/** 커뮤니티페이지 버튼링크*/
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${colors.main_black};
@@ -141,12 +131,14 @@ const StyledLink = styled(Link)`
   }
 `;
 
+/** 커뮤니티페이지 목록전체컨테이너*/
 const CommunityListInputArea = styled.div`
   width: 472px;
   display: flex;
   justify-content: space-between;
 `;
 
+/** 글쓰기 버튼*/
 const CommonButton = styled.div`
   width: 132px;
   height: 45px;
@@ -158,6 +150,7 @@ const CommonButton = styled.div`
   ${fonts.SubText}
 `;
 
+/** 버튼텍스트*/
 const ButtonText = styled.p`
   font-size: 18px;
   margin-top: 11px;

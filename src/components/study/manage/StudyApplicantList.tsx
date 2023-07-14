@@ -8,11 +8,14 @@ import UserInfoModal from "../../modal/UserInfoModal";
 import { useQuery } from "react-query";
 import { getStudyAccept, putAcceptStudy } from "../../../api/api-study";
 import { useQueryClient } from "react-query";
+
+/** 스터디 신청 리스트 타입 */
 type StudyApplicantListProps = {
   studyId: string;
 };
 
-interface StudyAcceptData {
+/** 스터디 데이터 타입 지정 */
+type StudyAcceptData = {
   _id: string;
   study_id: string;
   user_id: string;
@@ -22,25 +25,38 @@ interface StudyAcceptData {
   accept: number;
 }
 
+/** 스터디 신청 리스트 컴포넌트 props: (studyId) */
 const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
+  
   const queryClient = useQueryClient();
+
+  // 신청한 상태 (기본)
   const apply = 0;
   // 신청 수락
   const accept = 1;
   // 신청 거절
   const unAccept = 2;
+
+  /** 신청 수락 버튼 핸들러 */
   const onAcceptButton = async (index: number) => {
+    // studyAcceptData의 해당 index의 유저아이디를 userId에 저장.
     const userId = studyAcceptData[index].user_id;
+    // 스터디 신청 api 요청 
     await putAcceptStudy(
       String(localStorage.getItem("token")),
       studyId,
       userId,
       accept
     );
+    // studyAcceptData 키를 통해 초기화, 랜더링
     queryClient.invalidateQueries(["studyAcceptData"]);
   };
+
+  /** 신청 거절 버튼 핸들러 */
   const onDeleteButton = async (index: number) => {
+    // studyAcceptData의 해당 index의 유저아이디를 userId에 저장.
     const userId = studyAcceptData[index].user_id;
+    // 스터디 거절 api 요청 
     await putAcceptStudy(
       String(localStorage.getItem("token")),
       studyId,
@@ -50,6 +66,7 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
     queryClient.invalidateQueries(["studyAcceptData"]);
   };
 
+  // 리액트 쿼리를 통해 studyAcceptData에 신청인원 데이터 저장
   const {
     data: studyAcceptData,
     isLoading,
@@ -58,18 +75,23 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
     getStudyAccept(studyId, apply).then((response) => response.data)
   );
 
-  console.log(`studyAcceptData:`, studyAcceptData);
   const members = studyAcceptData;
-  const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
 
-  const handleOpenUserInfoModal = () => {
-    setUserInfoModalOpen(true);
+  // 자기소개서 모달 open 상태관리
+  const [userInfoModalOpen, setUserInfoModalOpen] = React.useState<{
+    open: boolean;
+    userId: string;
+  }>({ open: false, userId: "" });
+
+  /** 자기소개서 모달 open 핸들러 */
+  const handleOpenUserInfoModal = (userId: string) => {
+    setUserInfoModalOpen({ open: true, userId });
   };
 
+  /** 자기소개서 모달 Close 핸들러 */
   const handleCloseUserInfoModal = () => {
-    setUserInfoModalOpen(false);
+    setUserInfoModalOpen({ open: false, userId: "" });
   };
-
   if (isLoading) {
     // 로딩 상태를 표시
     return <div>Loading...</div>;
@@ -79,17 +101,19 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
     // 에러 상태를 표시
     return <div>Error occurred while fetching data</div>;
   }
+
   return (
     <>
+    {/* members(studyAcceptData)를 index로 뿌림 */}
       {members.map((member: StudyAcceptData, index: number) => (
         <CardContainer key={index}>
           <CardContent>
-            <StyledName onClick={handleOpenUserInfoModal}>
-              {member.user_name}
-            </StyledName>
-            <Modal open={userInfoModalOpen} onClose={handleCloseUserInfoModal}>
+          <StyledName onClick={() => handleOpenUserInfoModal(member.user_id)}>
+            {member.user_name}
+          </StyledName>
+            <Modal open={userInfoModalOpen.open} onClose={handleCloseUserInfoModal}>
               <UserInfoModal
-                userId={member.user_id}
+                userId={userInfoModalOpen.userId}
                 handleModalClose={handleCloseUserInfoModal}
               />
             </Modal>
@@ -114,6 +138,7 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
 };
 export default StudyApplicantList;
 
+/** 전체 컨테이너 div */
 const CardContainer = styled.div`
   display: flex;
   align-items: center;
@@ -122,29 +147,37 @@ const CardContainer = styled.div`
   color: ${colors.main_navy};
 `;
 
+/** 내용 div */
 const CardContent = styled.div`
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  background-color: ${colors.back_navy}; /* 수정된 부분 */
-  border-radius: 10px; /* 수정된 부분 */
+  background-color: ${colors.back_navy}; 
+  border-radius: 10px; 
 `;
 
+/** Name p */
 const StyledName = styled.p`
   font-weight: bold;
-  margin-right: 10px;
+  width:150px;
+  margin-right: 20px;
   margin-left: 20px;
   cursor: pointer;
 `;
 
+/** 한줄소개 p */
 const StyledDescription = styled.p`
   flex-grow: 1;
   margin-right: 10px;
   margin-left: 100px;
 `;
+
+/** StyledCommonButton 타입지정 */
 interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
   backgroundColor?: string;
 }
+
+/** 신청 수락 및 거절 버튼 div */
 const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   cursor: pointer;
   margin-left: 20px;

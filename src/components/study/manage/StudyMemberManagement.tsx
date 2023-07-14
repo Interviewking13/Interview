@@ -8,9 +8,13 @@ import UserInfoModal from "../../modal/UserInfoModal";
 import { useQuery } from "react-query";
 import { deleteStudyMember, getStudyAccept } from "../../../api/api-study";
 import { useQueryClient } from "react-query";
+
+/** 스터디 맴버 관리 컴포넌트 타입지정 */
 type StudyMemberManagementProps = {
   studyId: string;
 };
+
+/** 스터디 신청 데이터 타입지정 */
 type StudyAcceptData = {
   _id: string;
   study_id: string;
@@ -21,42 +25,62 @@ type StudyAcceptData = {
   accept: number;
 };
 
+/** 스터디 맴버 관리 컴포넌트 props : (studyId) */
 const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
+
   const queryClient = useQueryClient();
+  // 신청 기본 상태
   const apply = 0;
   // 신청 수락
   const accept = 1;
   // 신청 거절
   const unAccept = 2;
-  const onDelete = async (index: number) => {
-    const userId = studyAcceptData[index].user_id;
-    await deleteStudyMember(
-      String(localStorage.getItem("token")),
-      studyId,
-      userId
-    );
-    queryClient.invalidateQueries(["studyAcceptData"]);
-  };
 
+  // 리액트 쿼리를 통해 studyAcceptData에 수락인원 데이터 저장
   const {
     data: studyAcceptData,
     isLoading,
     isError,
+    refetch,
   } = useQuery(["studyAcceptData"], () =>
     getStudyAccept(studyId, accept).then((response) => response.data)
   );
 
-  console.log(`studyAcceptData:`, studyAcceptData);
   const members = studyAcceptData;
-  const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
 
-  const handleOpenUserInfoModal = () => {
-    setUserInfoModalOpen(true);
+  // 자기소개서 모달 open 상태관리
+  const [userInfoModalOpen, setUserInfoModalOpen] = React.useState<{
+    open: boolean;
+    userId: string;
+  }>({ open: false, userId: "" });
+
+  /** 자기소개서 모달 open 핸들러 */
+  const handleOpenUserInfoModal = (userId: string) => {
+    setUserInfoModalOpen({ open: true, userId });
   };
 
+  /** 자기소개서 모달 Close 핸들러 */
   const handleCloseUserInfoModal = () => {
-    setUserInfoModalOpen(false);
+    setUserInfoModalOpen({ open: false, userId: "" });
   };
+
+  /** 스터디원 삭제 버튼 핸들러 */
+  const onDeleteMember = async (index: number) => {
+    // studyAcceptData의 해당 index의 유저아이디를 userId에 저장.
+    const userId = studyAcceptData[index].user_id;
+    // 스터디원 삭제 api 요청 
+    deleteStudyMember(
+      String(localStorage.getItem("token")),
+      studyId,
+      userId
+    ).then(() => {
+      // studyData 키값으로 캐시 무효화
+      queryClient.invalidateQueries(["studyAcceptData"]);
+      // 데이터 새로고침
+      refetch();
+      });;
+  };
+
   if (isLoading) {
     // 로딩 상태를 표시
     return <div>Loading...</div>;
@@ -66,25 +90,27 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
     // 에러 상태를 표시
     return <div>Error occurred while fetching data</div>;
   }
+
   return (
     <>
+    {/* members(studyAcceptData)를 index로 뿌림 */}
       {members.map((member: StudyAcceptData, index: number) => (
         <CardContainer key={index}>
           <CardContent>
-            <StyledName onClick={handleOpenUserInfoModal}>
+            <StyledName onClick={() => handleOpenUserInfoModal(member.user_id)}>
               {member.user_name}
             </StyledName>
-            <Modal open={userInfoModalOpen} onClose={handleCloseUserInfoModal}>
+            <Modal open={userInfoModalOpen.open} onClose={handleCloseUserInfoModal}>
               <UserInfoModal
-                userId={member.user_id}
-                handleModalClose={handleCloseUserInfoModal}
+               userId={userInfoModalOpen.userId}
+               handleModalClose={handleCloseUserInfoModal}
               />
             </Modal>
             <StyledDescription>{member.goal}</StyledDescription>
           </CardContent>
           <StyledCommonButton
             backgroundColor={colors.main_red}
-            onClick={() => onDelete(index)}
+            onClick={() => onDeleteMember(index)}
           >
             회원 삭제
           </StyledCommonButton>
@@ -95,6 +121,7 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
 };
 export default StudyMemberManagement;
 
+/** 전체 컨테이너 div */
 const CardContainer = styled.div`
   display: flex;
   align-items: center;
@@ -103,6 +130,7 @@ const CardContainer = styled.div`
   color: ${colors.main_navy};
 `;
 
+/** 내용 div */
 const CardContent = styled.div`
   display: flex;
   flex-direction: row;
@@ -111,21 +139,28 @@ const CardContent = styled.div`
   border-radius: 10px; /* 수정된 부분 */
 `;
 
+/** Name p */
 const StyledName = styled.p`
   font-weight: bold;
-  margin-right: 10px;
+  width: 150px;
+  margin-right: 20px;
   margin-left: 20px;
   cursor: pointer;
 `;
 
+/** 한줄소개 p */
 const StyledDescription = styled.p`
   flex-grow: 1;
   margin-right: 10px;
   margin-left: 100px;
 `;
+
+/** StyledCommonButton 타입지정 */
 interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
   backgroundColor?: string;
 }
+
+/** 신청 수락 및 거절 버튼 div */
 const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   cursor: pointer;
   margin-left: 20px;
