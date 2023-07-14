@@ -7,6 +7,19 @@ import { colors } from "../../constants/colors";
 import axios from "axios";
 
 const Modify = () => {
+  const userId = window.localStorage.getItem("token");
+  console.log(userId);
+
+  axios
+    .get(
+      `https://port-0-interviewking13-7xwyjq992llj5sps0m.sel4.cloudtype.app/api/user/userInfo/:${userId}`
+    )
+    .then((res) => {
+      const userInfo = res;
+      console.log(userInfo);
+    });
+  const [userInfoValue, setUserInfoValue] = useState({});
+
   return (
     <StyledContainer>
       {/* 타이틀 */}
