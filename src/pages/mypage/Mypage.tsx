@@ -1,23 +1,18 @@
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { Button, Typography, Grid } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Create, Person, Checklist } from "@mui/icons-material"; //MUI icon import
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import MenuTapBtn from "../../components/UI/MenuTapBtn";
-import { getUserData } from "../../api/api-user";
 
 const Mypage = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    onClickUserStudy();
-  }, []);
-
   /** 탭버튼 페이지 이동 */
   const onClickUserStudy = () => {
-    navigate("/mypage/userstudy");
+    navigate("/mypage");
   };
   const onClickStudyApply = () => {
     navigate("/mypage/studyapply");
@@ -36,7 +31,6 @@ const Mypage = () => {
           나의 정보를 확인하세요.
         </StyledSubTitle>
       </StyledTitleContainer>
-
       {/* 메뉴컴포넌트가 그리드로 작업되어서 그대로 남았음, 추후 변경 가능 */}
       <StyledTapbuttonContainer>
         <MenuTapBtn onClick={onClickUserStudy}>
@@ -51,7 +45,6 @@ const Mypage = () => {
           <Person />내 정보
         </MenuTapBtn>
       </StyledTapbuttonContainer>
-
       <Outlet />
     </StyledContainer>
   );
