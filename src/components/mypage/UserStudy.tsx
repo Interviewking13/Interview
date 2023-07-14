@@ -10,8 +10,8 @@ import StudyManageList from "../UI/StudyManageList";
 const UserStudy = () => {
   const [studyList, setStudyList] = useState<any[]>([]);
 
-  // const handleLeaveStudy = () => {};
   // const handle;
+  const handleLeaveStudy = () => {};
 
   const getData = () => {
     axios.get("https://jsonplaceholder.typicode.com/posts").then((res) => {

@@ -1,7 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 import { getUserData, putUserData } from "../../api/api-user";
 import { Button, Typography, TextField } from "@mui/material";
-import { Button, Typography, TextField } from "@mui/material";
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";

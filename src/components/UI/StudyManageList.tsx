@@ -16,14 +16,6 @@ type StudyListProps = {
   children: React.ReactNode;
 };
 
-const items = [
-  {
-    title: "아으 다롱디리 으으ㅏㅇ아으",
-    manager: "이병욱",
-    children: "스터디관리",
-  },
-];
-
 const onClick = ({}) => {};
 
 const StudyManageList = ({
