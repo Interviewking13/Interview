@@ -10,16 +10,18 @@ import { useMutation, useQueryClient } from "react-query";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [error, setError] = useState("");
+
 
   const loginMutation = useMutation(
     (credentials: { email: string; password: string }) =>
       postSignIn(credentials.email, credentials.password)
   );
 
-  // 로그인 버튼 클릭 시 동작
+  /** 로그인 버튼 클릭 시 동작 */
   const onClickSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -33,16 +35,18 @@ const LoginPage = () => {
 
       if (response && response.data.resultCode === "200") {
         localStorage.setItem("token", response.data.data.token);
-      } else if (response && response.data.resultCode === "400") {
-        setError("이메일을 다시 확인하세요.");
+      }
+
+      else if (response && response.data.resultCode === "400") {
+        setEmailError(response.data.message);
         return;
       }
 
       queryClient.invalidateQueries("userData");
       console.log(response);
       navigate("/");
-    } catch (error) {
-      setError("이메일 또는 비밀번호를 다시 확인하세요.");
+    } catch (passwordError) {
+      setPasswordError("비밀번호를 확인하세요.")
     }
   };
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,35 +54,41 @@ const LoginPage = () => {
     setEmail(email);
   };
 
-  // 비밀번호 입력 값 변경 시 동작
+  /** 비밀번호 입력 값 변경 시 동작 */
   const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value;
     setPassword(password);
   };
 
-  // 회원가입 페이지로 이동
+  /** 회원가입 페이지로 이동 */
   const onClickSignup = () => {
-    navigate("./signup"); // useNavigate 사용하여 페이지 이동
+    navigate("./signup");
   };
 
   return (
-    <StyledCommonContainer>
-      <StyledLoginWrapper>
+    <StyledPageContainer>
+      <StyledCommonContainer>
         <StyledLoginContainer>
           <LeftSignContainer />
-          <StyledSignupContainer onSubmit={onClickSubmit}>
-            <StyledSignupInput
+          <StyledRightSignContainer onSubmit={onClickSubmit}>
+            <StyledLoginInput
               type="email"
               placeholder="이메일"
               value={email}
               onChange={onChangeEmail}
             />
-            <StyledSignupInput
+            {emailError && (
+              <StyledErrorMessage>{emailError.toString()}</StyledErrorMessage>
+            )}
+            <StyledLoginInput
               type="password"
               placeholder="비밀번호"
               value={password}
               onChange={onChangePassword}
             />
+            {passwordError && (
+              <StyledErrorMessage>{passwordError.toString()}</StyledErrorMessage>
+            )}
             <StyledBtnWrapper>
               <StyledSignupBtn
                 variant="contained"
@@ -92,24 +102,23 @@ const LoginPage = () => {
                 로그인
               </StyledLoginBtn>
             </StyledBtnWrapper>
-            {error && (
-              <StyledErrorMessage>{error.toString()}</StyledErrorMessage>
-            )}
-          </StyledSignupContainer>
+          </StyledRightSignContainer>
         </StyledLoginContainer>
         <StyledSignupCopyright>
           Copyright © 2023 INTERVIEWKING All Rights Reserved.
         </StyledSignupCopyright>
-      </StyledLoginWrapper>
-    </StyledCommonContainer>
+      </StyledCommonContainer>
+    </StyledPageContainer>
   );
 };
 
-const StyledCommonContainer = styled.div`
+/** 페이지 컨테이너 */
+const StyledPageContainer = styled.div`
   background-color: ${colors.back_navy};
 `;
 
-const StyledLoginWrapper = styled.div`
+/** 공통 컨테이너 */
+const StyledCommonContainer = styled.div`
   width: 1270px;
   margin: 0 auto;
   padding-bottom: 30px;
@@ -122,14 +131,14 @@ const StyledLoginContainer = styled.div`
   align-items: center;
 `;
 
-const StyledSignupContainer = styled.form`
+const StyledRightSignContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-left: auto;
 `;
 
-const StyledSignupInput = styled.input`
+const StyledLoginInput = styled.input`
   width: 457px;
   height: 45px;
   margin-top: 15px;
@@ -158,6 +167,7 @@ const StyledBtnWrapper = styled.div`
   margin-left: auto;
 `;
 
+/** 회원가입 버튼 */
 const StyledSignupBtn = styled(Button)`
   && {
     width: 132px;
@@ -174,6 +184,7 @@ const StyledSignupBtn = styled(Button)`
   }
 `;
 
+/** 로그인 버튼 */
 const StyledLoginBtn = styled(Button)`
   && {
     width: 132px;
@@ -191,13 +202,16 @@ const StyledLoginBtn = styled(Button)`
   }
 `;
 
+/** 에러 메세지 */
 const StyledErrorMessage = styled.p`
   color: ${colors.main_red};
   font-size: 14px;
-  margin-top: 30px;
   margin-left: auto;
+  margin-top: 5px;
+  margin-bottom: 0;
 `;
 
+/** 카피라이터 */
 const StyledSignupCopyright = styled.div`
   text-align: center;
   font-size: 14px;
