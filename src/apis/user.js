@@ -453,7 +453,7 @@ const userApi = {
             if (user_id) {
                 res.setHeader('Authorization', '');
                 res.clearCookie('token');
-     
+
                 return res.status(200).json({
                     resultCode: "200",
                     message: "로그아웃 성공"
