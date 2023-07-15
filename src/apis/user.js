@@ -217,11 +217,9 @@ const userApi = {
                         user_id: findUser._id,
                         user_name: findUser.user_name,
                         email,
-                        // token
                     }
                 });
-            console.log(token);
-
+ 
         } catch (err) {
             console.error(err);
             return res.status(500).json({
@@ -234,10 +232,6 @@ const userApi = {
     /** 내 정보 조회 */
     async getUserInfo(req, res) {    
         try {
-
-            // const { user_id } = decoded;
-            // console.log(decoded);
-
             const { user_id } = req.user;
             console.log(user_id);
 
@@ -282,16 +276,10 @@ const userApi = {
     /** 내 정보 수정 */
     async modifyUserInfo(req, res, next) {
         try {
-            // json body (localStorage 값 사용)
-            // const { token } = req.body;
-            
-            // middleware 값 사용
-            // const { user_id } = req.user;
-            
             const { user_id } = req.user;
             console.log(user_id);
 
-            const { email, password, intro_yn, phone_number, file_key, file_name } = req.body;
+            const { email, password, passwordCheck, intro_yn, phone_number, file_key, file_name } = req.body;
 
             const findUser = await User.findOne({ "_id": user_id });    //나중에 user_id 값 사용가능하면? 사용가능할듯.
             // const findUser = await User.findOne({ "email": email });
@@ -303,6 +291,14 @@ const userApi = {
                 });
             }
 
+            // 비밀번호, 비밀번호 확인 값 검사
+            if (password !== passwordCheck) {
+                return res.status(400).json({
+                    resultCode: 400,
+                    message: "비밀번호가 일치하지 않습니다."
+                });
+            }
+            
             // 기존 사용자 정보
             const findUserId = findUser._id;
             const findUserEmail = findUser.email;
@@ -405,12 +401,6 @@ const userApi = {
     /** 회원탈퇴 */
     async deleteUser(req, res, next) {
         try {
-            // json body (localStorage 값 사용)
-            // const { token } = req.body;
-
-            // middleware 값 사용
-            // const { user_id } = req.user;
-            
             const { user_id } = req.user;
             console.log(user_id);
 
@@ -458,12 +448,6 @@ const userApi = {
     /** 로그아웃 */
     async logoutUser (req, res, next) {
         try {
-            // json body (localStorage 값 사용)            
-            // let { token } = req.body;
-
-            // middleware 값 사용
-            // const { user_id } = req.user;
-            
             const { user_id } = req.user;
             console.log(user_id);
 
