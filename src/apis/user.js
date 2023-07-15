@@ -11,7 +11,7 @@ const bcrypt = require('bcrypt');
 
 const secretKey = process.env.SECRET_KEY;
 
-const { validateEmail } = require('../utils/user.js')
+const validateEmail = require('../utils/user.js')
 
 // dts_insert, dts_update 필드에 삽입할 변수 값 설정
 const currentDate = new Date();
