@@ -1,0 +1,79 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
+
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
+const secretKey = process.env.SECRET_KEY;
+
+const validateEmail = require('../utils/user.js')
+
+// dts_insert, dts_update 필드에 삽입할 변수 값 설정
+const currentDate = new Date();
+const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, "");    // 현재 날짜를 "yyyymmdd" 형식으로 설정
+const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    // 현재 시간을 "hhmmss" 형식으로 설정
+
+const userService = require('../services/userService');
+
+const userController = {
+    async getUserIdInfo (req, res, next) {
+        try {
+
+            return res.status(200).json({
+                resultCode: "200", 
+                message: "사용자 정보 조회 성공",
+                data: {
+                    user_id: findUser._id,
+                    user_name: findUser.user_name,
+                    email: findUser.email,
+                    intro_yn: findUser.intro_yn,
+                    phone_number: findUser.phone_number, 
+                    file_key: findUser.file_key, 
+                    file_name: findUser.file_name
+                }
+            });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                resultCode: "500",
+                message: "서버오류"
+            });
+        }
+    },
+
+    async modifyUserInfo (req, res, next) {
+        try {
+            const { user_id } = req.user;
+            const { token, email, password, intro_yn, phone_number, file_key, file_name } = req.body;
+
+            const updatedUser = await userService.modifyUserInfo(user_id, email, password, intro_yn, phone_number, file_key, file_name);
+
+            return res.status(200).json({
+                resultCode: "200", 
+                message: "내 정보 수정 성공",
+                data: {
+                    user_id: updatedUser._id,
+                    user_name: updatedUser.user_name,
+                    email: updatedUser.email,
+                    intro_yn: updatedUser.intro_yn,
+                    phone_number: updatedUser.phone_number, 
+                    file_key: updatedUser.file_key, 
+                    file_name: updatedUser.file_name
+                }
+                
+            }); 
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                resultCode: "500",
+                message: "서버오류"
+            });
+        }
+    }
+}
+
+module.exports = userController;

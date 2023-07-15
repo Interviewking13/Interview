@@ -1,0 +1,101 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
+
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
+const secretKey = process.env.SECRET_KEY;
+
+const validateEmail = require('../utils/user.js')
+
+// dts_insert, dts_update 필드에 삽입할 변수 값 설정
+const currentDate = new Date();
+const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, "");    // 현재 날짜를 "yyyymmdd" 형식으로 설정
+const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    // 현재 시간을 "hhmmss" 형식으로 설정
+
+const userRepository = require('../repositories/userRepository');
+
+const userService = {
+  async getUserIdInfo(user_id) {
+    try {
+      const findUser = await userRepository.findUserById(user_id);
+      
+      if (!findUser) {
+        throw new Error("해당 사용자를 찾을 수 없습니다.");
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({
+          resultCode: "500",
+          message: "Invalid Error"
+      });
+    }
+  },
+
+  async modifyUserInfo(user_id, email, password, intro_yn, phone_number, file_key, file_name) {
+    try {
+        const findUser = await userRepository.findUserById(user_id);
+
+        if (!findUser) {
+          throw new Error("해당 사용자를 찾을 수 없습니다.");
+        }
+  
+        let isModified = false;
+        if (email !== findUser.email) {
+          findUser.email = email;
+          isModified = true;
+        }
+  
+        if (!isModified) {
+          throw new Error("변경사항이 없습니다.");
+        }
+  
+        const hashedPassword = await bcrypt.hash(password, 10);
+  
+        await UserRepository.updateUser(findUser.email, {
+          password: hashedPassword,
+          intro_yn: intro_yn,
+          phone_number: phone_number,
+          dts_update: dateString + timeString,
+          file_key: file_key,
+          file_name: file_name
+        });
+  
+        const updatedUser = await UserRepository.findUserById(findUser._id, [
+          "_id",
+          "user_name",
+          "email",
+          "intro_yn",
+          "phone_number",
+          "file_key",
+          "file_name"
+        ]);
+  
+        return res.status(200).json({
+          resultCode: "200", 
+          message: "내 정보 수정 성공",
+          data: {
+              user_id: updatedUser._id,
+              user_name: updatedUser.user_name,
+              email: updatedUser.email,
+              intro_yn: updatedUser.intro_yn,
+              phone_number: updatedUser.phone_number, 
+              file_key: updatedUser.file_key, 
+              file_name: updatedUser.file_name
+          }
+      }); 
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            resultCode: "500",
+            message: "Invalid Error"
+        });
+    }
+  }
+}
+
+module.exports = userService;
