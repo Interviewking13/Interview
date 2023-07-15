@@ -220,11 +220,7 @@ const studyApi = {
       const updatedStudy = await Study.updateOne({ _id: study_id }, updateInfo);
       res.status(200).json(updatedStudy);
     } catch (error) {
-<<<<<<< HEAD
-      console.log("Elice Check!!!", error);
-=======
       console.log(error);
->>>>>>> upstream/dev-BE
       res.status(402).json({
         code: 402,
         message: 'The member cannot have authorization to update.',

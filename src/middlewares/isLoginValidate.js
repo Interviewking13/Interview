@@ -14,17 +14,21 @@ const secretKey = process.env.SECRET_KEY;
 
 const isLoginValidate = async (req, res) => {     
     try {
-        console.log('로그인 유효성 검사 테스트!');
-        const { token } = req.body;
-        console.log(token + '/ userAPI');
+
+        // console.log('로그인 유효성 검사 테스트!');
+        // const { token } = req.body;
+        // console.log(token + '/ userAPI');
         
+        // 클라이언트로부터 전달된 헤더(토큰값) 사용 - token header로 로그인 유무 판단
+        const token = req.headers.authorization;
+                
         if (!token) {
             return res.status(401).json({
                 resultCode: "401",
                 message: "토큰이 없습니다. / 로그아웃상태"
             });
         }
-
+        
         const decoded = jwt.verify(token, secretKey);
 
         // 토큰이 유효한 경우
