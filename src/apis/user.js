@@ -1,7 +1,6 @@
 const { User }  = require('../models/index');
 
 const express = require('express');
-// const bodyParser = require('body-parser');
 const app = express();
 
 const mongoose = require('mongoose');
@@ -12,7 +11,7 @@ const bcrypt = require('bcrypt');
 
 const secretKey = process.env.SECRET_KEY;
 
-const validateEmail = require('../utils/user.js')
+const { validateEmail } = require('../utils/user.js')
 
 // dts_insert, dts_update 필드에 삽입할 변수 값 설정
 const currentDate = new Date();
@@ -217,6 +216,7 @@ const userApi = {
                         user_id: findUser._id,
                         user_name: findUser.user_name,
                         email,
+                        token
                     }
                 });
  
@@ -384,7 +384,6 @@ const userApi = {
                     phone_number: updatedUser.phone_number, 
                     file_key: updatedUser.file_key, 
                     file_name: updatedUser.file_name
-                    // token: token
                 }
                 
             });
