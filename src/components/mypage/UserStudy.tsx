@@ -6,7 +6,6 @@ import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import axios from "axios";
 import StudyManageList from "../UI/StudyManageList";
-
 const UserStudy = () => {
   const [studyList, setStudyList] = useState<any[]>([]);
 
@@ -29,15 +28,18 @@ const UserStudy = () => {
     getData();
   }, []);
 
-  const filterMakedStudy = studyList.filter((item: any) => item.id >= 13);
-  const filterEnteredStudy = studyList.filter((item: any) => item.id < 13);
+  const filterMakedStudy = studyList.filter((item: any) => item.manager === 1);
+  const filterEnteredStudy = studyList.filter(
+    (item: any) => item.manager !== 1
+  );
 
+  console.log(filterMakedStudy);
   return (
     <StyledContainer>
       <StyledTitle>개설스터디</StyledTitle>
       {filterMakedStudy.map((item) => (
         <StudyManageList
-          id={item.id}
+          key={item.id}
           title={item.title}
           manager={item.manager}
           backgroundColor={colors.main_mint}
@@ -49,7 +51,7 @@ const UserStudy = () => {
       </StyledContent>
       {filterEnteredStudy.map((item) => (
         <StudyManageList
-          id={item.id}
+          key={item.id}
           title={item.title}
           manager={item.manager}
           backgroundColor={colors.main_red}
