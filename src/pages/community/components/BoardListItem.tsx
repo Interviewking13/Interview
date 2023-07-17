@@ -84,9 +84,7 @@ const BoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
               </StyledLeftPostItem>
               <StyledRightPostItem>
                 <StyledPostItem>{post.reply_count}</StyledPostItem>
-                <StyledPostItem>
-                  {post.read_users.length}
-                </StyledPostItem>
+                <StyledPostItem>{post.read_users.length}</StyledPostItem>
                 <StyledPostItem>{post.user_name}</StyledPostItem>
                 <StyledPostItem>{dateSplice(post.createdAt)}</StyledPostItem>
               </StyledRightPostItem>
@@ -120,9 +118,7 @@ const BoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
                   <StyledPostTitle>{filteredPost.title}</StyledPostTitle>
                 </StyledLeftPostItem>
                 <StyledRightPostItem>
-                  <StyledPostItem>
-                    {filteredPost.reply_count}
-                  </StyledPostItem>
+                  <StyledPostItem>{filteredPost.reply_count}</StyledPostItem>
                   <StyledPostItem>
                     {filteredPost.read_users.length}
                   </StyledPostItem>

@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { axiosInstance } from "../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../api/api-user";
+import { useAuth } from "../../hooks/useAuth";
 
 // 커뮤니티 글 작성을 위한 API 호출
 const postCommunity = async (data: {
@@ -41,6 +42,8 @@ const CommunityCreatePage: React.FC = () => {
   const navigate = useNavigate();
 
   // 로컬 스토리지에서 토큰 가져와서 사용자 데이터 요청하기
+  // const [file, setFile] = useState(null);
+  useAuth();
   useEffect(() => {
     getUserData(String(localStorage.getItem("token"))).then((response) => {
       setUserId(response.data.user_id);
