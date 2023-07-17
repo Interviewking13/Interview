@@ -9,7 +9,7 @@ interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 type StudyListProps = {
-  id: number;
+  key: number;
   title: string;
   manager: string;
   backgroundColor: string;
@@ -19,7 +19,7 @@ type StudyListProps = {
 const onClick = ({}) => {};
 
 const StudyManageList = ({
-  id,
+  key,
   title,
   manager,
   children,
@@ -27,7 +27,7 @@ const StudyManageList = ({
 }: StudyListProps) => {
   return (
     <>
-      <CardContainer key={id}>
+      <CardContainer key={key}>
         <CardContent>
           <StyledName>{title}</StyledName>
           <StyledDescription>{manager}</StyledDescription>

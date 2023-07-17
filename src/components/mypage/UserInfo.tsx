@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Typography, Grid, Box, Divider, IconButton } from "@mui/material";
 
@@ -10,17 +10,53 @@ import { colors } from "../../constants/colors";
 import { useQuery } from "react-query";
 import { getUserData } from "../../api/api-user";
 
+type UserData = {
+  email: string;
+  user_name: string;
+  phone_number: string;
+  user_id: string;
+  file_key: string;
+  file_name: string;
+};
+
 const UserInfo = () => {
   const navigate = useNavigate();
 
   const onClickModify = () => {
     navigate("/mypage/userinfo/modify");
   };
+  const [userDataValue, setUserDataValue] = useState<UserData>({
+    email: "",
+    user_name: "",
+    phone_number: "",
+    user_id: "",
+    file_key: "",
+    file_name: "",
+  });
+
+  const getData = async () => {
+    try {
+      const token = String(localStorage.getItem("token"));
+      const data = await getUserData(token);
+      console.log(data);
+      setUserDataValue(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+  console.log(userDataValue);
+  console.log(userDataValue.user_name);
 
   return (
     <StyledDiv>
       <StyledLowContent>
-        <StyledWelcome noWrap>면접왕 님, 어서오세요.</StyledWelcome>
+        <StyledWelcome noWrap>
+          면접왕 {userDataValue.user_name} 님, 어서오세요.
+        </StyledWelcome>
         <IconButton onClick={onClickModify}>
           <SettingsIcon />
         </IconButton>
@@ -32,17 +68,17 @@ const UserInfo = () => {
       <StyledInfo>
         <StyledLowContent>
           <StyledInfoText>아이디</StyledInfoText>
-          <StyledInfoValue>면접왕</StyledInfoValue>
+          <StyledInfoValue>{userDataValue.email}</StyledInfoValue>
         </StyledLowContent>
 
         <StyledLowContent>
           <StyledInfoText>연락처</StyledInfoText>
-          <StyledInfoValue>01023445678</StyledInfoValue>
+          <StyledInfoValue> {userDataValue.phone_number} </StyledInfoValue>
         </StyledLowContent>
 
         <StyledLowContent>
           <StyledInfoText>자기소개서</StyledInfoText>
-          <button>파일 버튼 텍스트 버튼</button>
+          <button>{userDataValue.file_name}</button>
         </StyledLowContent>
       </StyledInfo>
     </StyledDiv>
