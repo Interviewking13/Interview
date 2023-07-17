@@ -7,5 +7,5 @@ export const EditContent = atom({
 
 export const accessTokenState = atom({
   key: "accessTokenState",
-  default: "",
+  default: localStorage.getItem("token") || "",
 });
