@@ -51,7 +51,6 @@ export const putCommunity = async (
     community_id,
     title,
     content,
-    token,
   });
   return response;
 };
@@ -64,7 +63,6 @@ export const deleteCommunityByCommunity_no = async (
   const response = await axiosInstance.delete("community/detl", {
     data: {
       community_id: community_id,
-      token: token,
     },
   });
   return response;
@@ -98,10 +96,8 @@ export const deleteReply = async (reply_id: number, token: string) => {
   const response = await axiosInstance.delete(`community/reply`, {
     data: {
       reply_id: reply_id,
-      token: token,
     },
   });
   return response;
 };
-
 

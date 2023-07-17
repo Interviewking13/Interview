@@ -1,3 +1,4 @@
+// 쿠키를 위해 구현한 기능 -> 현재 사용 안함
 // 토큰 값을 쿠키에 저장
 
 export const storeTokenInCookie = (token: string) => {
