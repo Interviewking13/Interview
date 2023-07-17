@@ -14,24 +14,25 @@ const MenuTapBtn = ({ children, onClick }: props) => {
     onClick();
   };
   return (
-    <Grid item>
-      <StyledButtonMui sx={{ gap: "5px" }} onClick={clickHandler}>
+    <>
+      <StyledTapButton sx={{ gap: "5px" }} onClick={clickHandler}>
         {children}
-      </StyledButtonMui>
-    </Grid>
+      </StyledTapButton>
+    </>
   );
 };
 
 export default MenuTapBtn;
 
 //버튼 스타일
-const StyledButtonMui = styled(Button)`
+const StyledTapButton = styled(Button)`
   && {
     padding-left: 0;
     ${fonts.SubTextBig}
-    color: ${colors.main_black}; /* 적절한 색상으로 변경 */
+    color: ${colors.gray_mint};
+    margin-right: 10px;
     &:hover {
-      color: ${colors.main_mint}; /* 호버 시 변경할 색상 */
+      color: ${colors.main_mint};
     }
   }
 `;

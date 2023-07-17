@@ -1,239 +1,256 @@
-import React, { useState, ChangeEvent } from "react";
-import { getUserData, putUserData } from "../../api/api-user";
-import { Button, Typography, TextField } from "@mui/material";
+import React, { useState, useEffect, useRef } from "react";
+import { getUserData, putUserData, deleteUser } from "../../api/api-user";
+import { Button, Typography } from "@mui/material";
 import styled from "styled-components";
 import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+type UserData = {
+  email: string;
+  user_name: string;
+  phone_number: string;
+  user_id: string;
+  file_key: string;
+  file_name: string;
+  password: string;
+  verPassword: string;
+};
 
 const Modify = () => {
-  // const token =
-  //   localStorage.getItem("token") || ""; /**회원정보조회를 위한 토큰 가져오기*/
+  const [password, setPassword] = useState("");
+  const [passwordc, setPasswordc] = useState("");
+  const navigate = useNavigate();
+  const writePassword = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<any>(null);
 
-  // const {
-  //   data: userData,
-  //   isLoading,
-  //   isError,
-  // } = useQuery(["userData"], () => getUserData(token as string)); //useQuery로 getdata
+  const onChangePassword = (e: any) => {
+    setPassword(e.target.value);
+  };
+  const onChangePassworda = (e: any) => {
+    setPasswordc(e.target.value);
+  };
 
-  // // token 값을 활용하여 필요한 작업을 수행
-  // console.log("UserData", userData);
-  // const { user_name, phone_number, email, file_key, file_name } =
-  //   userData?.data || {};
+  useEffect(() => {
+    getData();
+  }, []);
 
-  // const [uploadedFile, setUploadedFile] = useState<string | null>(file_name);
-  // const [uploadedKey, setUploadedKey] = useState<string | null>(file_key);
-  // const [userPhoneNumber, setUserPhoneNumber] = useState<string | null>(
-  //   phone_number
-  // );
-  // const [userPassword, setUserPassword] = useState<string | null>("");
+  const [userDataValue, setUserDataValue] = useState<UserData>({
+    email: "",
+    user_name: "",
+    phone_number: "",
+    user_id: "",
+    file_key: "",
+    file_name: "",
+    password: "",
+    verPassword: "",
+  });
+  const handleChangeState = (e: any) => {
+    setUserDataValue({
+      ...userDataValue,
+      [e.target.name]: e.target.value, //내용이 적히는 요소의 이름===key,적히는 내용===value를 이용함
+      //   // content: state.contant를 스프레드 연산자로 간단하게 복사가능
+      //   //스프레드 연산자는 변경값 앞에 덧씌운다.
+    });
+  };
 
-  // const onChangePhone = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setUserPhoneNumber(e.target.value);
-  // };
-  // const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setUserPassword(e.target.value);
-  // };
+  const handleChangePassword = (e: any) => {
+    setUserDataValue({
+      ...userDataValue,
+      [e.target.name]: String(e.target.value),
+    });
+  };
+  const getData = async () => {
+    try {
+      const token = String(localStorage.getItem("token"));
+      const data = await getUserData(token);
+      console.log(data);
+      setUserDataValue(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  // const handleFindButtonClick = async () => {
-  //   const inputFile = document.getElementById("input-file");
-  //   if (inputFile) {
-  //     inputFile.click();
-  //   }
-  // };
-  // const handleFileChange = async (event: any) => {
-  //   const selectedFile = event.target.files[0];
+  const onChangeFileInput = (e: React.FormEvent) => {
+    e.preventDefault();
+    fileInputRef.current?.click();
+  };
+  const handleFileUpload = () => {
+    const file = fileInputRef.current?.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
 
-  //   if (selectedFile) {
-  //     const timecodeForUpload = Date.now(); //파일명이 같은 파일을 위한 시간코드.
-  //     const key = `community/${timecodeForUpload}_${selectedFile.name}`;
-  //     const fileName = selectedFile.name;
+      console.log("File upload:", file);
+      setUserDataValue({ ...userDataValue, file_name: file.name });
+    }
+  };
+  console.log(userDataValue);
+  const onSubmitDelete = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (userDataValue.password === userDataValue.verPassword) {
+      if (window.confirm("회원탈퇴를 하시겠습니까?")) {
+        try {
+          const token = String(localStorage.getItem("token"));
+          const user_id = userDataValue.user_id;
+          const email = userDataValue.email;
+          password;
+          const response = await deleteUser(user_id, email, password, token);
+          console.log("User deleted successfully", response);
+          alert("이용해주셔서 감사합니다.");
+          navigate("/");
+          localStorage.removeItem("token");
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        alert("탈퇴가 취소되었습니다.");
+      }
+    } else {
+      alert("탈퇴를 위해 비밀번호를 작성해주세요");
+      writePassword.current?.focus();
+    }
+  };
 
-  //     const s3 = new AWS.S3();
-  //     const bucketName = "13team";
-  //     const uploadParams = {
-  //       Bucket: bucketName,
-  //       Key: key,
-  //       Body: selectedFile,
-  //     };
-
+  // const onSubmitModify = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (
+  //     userDataValue.password &&
+  //    userDataValue.password.length > 1&&
+  //     userDataValue.password === userDataValue.verPassword
+  //   ) {
   //     try {
-  //       await s3.putObject(uploadParams).promise();
-  //       console.log("File uploaded successfully:", key);
-  //       setUploadedFile(fileName);
-  //       setUploadedKey(key);
-  //     } catch (error) {
-  //       console.error("Error uploading file:", error);
+  //       const token = String(localStorage.getItem("token"));
+  //       const user_id = userDataValue.user_id;
+  //       const email = userDataValue.email;
+  //       const password = userDataValue.password;
+  //       // const response = await putUserData(user_id, email, password, token);
+  //       // console.log("User deleted successfully", response);
+  //       alert("정보가 수정되었습니다.");
+  //       navigate("/mypage/userInfo");
+  //     } catch (err) {
+  //       console.log(err);
   //     }
+  //   } else {
+  //     alert("정보수정을 위해 비밀번호를 작성해주세요");
+  //     writePassword.current?.focus();
   //   }
   // };
-  // const handleDownload = () => {
-  //   if (uploadedFile) {
-  //     const s3 = new AWS.S3();
-  //     const bucketName = "13team";
-
-  //     const params = {
-  //       Bucket: bucketName,
-  //       Key: uploadedKey,
-  //     };
-
-  //     s3.getSignedUrl("getObject", params, (err, url) => {
-  //       if (err) {
-  //         console.error("Error generating download URL:", err);
-  //         return;
-  //       }
-  //       console.log("Download URL:", url);
-  //       // 생성된 다운로드 URL을 사용하거나, 이를 표시할 다이얼로그 또는 링크로 전달하여 사용자에게 제공합니다.
-  //       window.open(url, "_blank");
-  //     });
-  //   }
+  // const onSubmitUpload = async (e: React.FormEvent) => {
+  //   e.preventDefault();
   // };
-
-  // const handleDelete = () => {
-  //   setUploadedFile(null);
-
-  //   // Reset the file input element value to enable re-uploading the same file
-  //   const inputFile = document.getElementById("input-file") as HTMLInputElement;
-  //   if (inputFile) {
-  //     inputFile.value = "";
-  //   }
-  // };
-
-  // const handleSubmit = async (event: any) => {
-  //   event.preventDefault();
-
-  //   const updatedData = {
-  //     file_key: uploadedKey,
-  //     file_name: uploadedFile,
-  //     phone_number: userPhoneNumber,
-  //     password: userPassword,
-  //     token: token,
-  //   };
-  //   try {
-  //     // PUT 요청을 보내서 서버에 변경된 정보 전송
-  //     await axios.put("http://34.22.79.51:5000/api/user/mypage", updatedData);
-
-  //     // 성공적으로 정보를 업데이트한 경우, 필요한 후속 작업을 수행하거나 사용자에게 피드백을 제공할 수 있습니다.
-  //   } catch (error) {
-  //     // 오류가 발생한 경우, 오류 처리를 수행합니다.
-  //     console.error("Error updating user data:", error);
-  //   }
-  // };
-
-  // if (isLoading) {
-  //   // 로딩 상태를 표시
-  //   return <div>Loading...</div>;
-  // }
-  // if (isError) {
-  //   // 에러 상태를 표시
-  //   return <div>Error occurred while fetching token</div>;
-  // }
 
   return (
     <StyledContainer>
+      {/* 타이틀 */}
       <StyledLowContent>
         <StyledTitle>내 정보 수정</StyledTitle>
         <StyledSubTitle variant="subtitle1">
           나의 회원 정보를 수정합니다.
         </StyledSubTitle>
       </StyledLowContent>
-      {/**  페이지내용 */}
+      {/* 회원정보 입력 */}
       <form>
         <StyledLowContent>
           <StyledInfoName>이름</StyledInfoName>
-
-          <StyledTextField
-            variant="outlined"
-            InputProps={{
-              readOnly: true,
-            }}
-            fullWidth
-          />
+          <StyledTextField defaultValue={userDataValue.user_name} readOnly />
         </StyledLowContent>
         <StyledLowContent>
           <StyledInfoName>연락처</StyledInfoName>
 
           <StyledTextField
-            variant="outlined"
-            defaultValue="01023445678"
-            fullWidth
+            defaultValue={userDataValue.phone_number}
+            onChange={handleChangeState}
+            // defaultValue="01023445678"
           />
         </StyledLowContent>
         <StyledLowContent>
           <StyledInfoName>아이디</StyledInfoName>
 
-          <StyledTextField
-            variant="outlined"
-            InputProps={{
-              readOnly: true,
-            }}
-            fullWidth
-          />
+          <StyledTextField defaultValue={userDataValue.email} readOnly />
         </StyledLowContent>
         <StyledLowContent>
           <StyledInfoName>비밀번호</StyledInfoName>
-          <StyledTextField variant="outlined" type="password" fullWidth />
+          <StyledTextField
+            ref={writePassword}
+            type="password"
+            onChange={onChangePassword}
+          />
         </StyledLowContent>
         <StyledLowContent>
           <StyledInfoName>비밀번호확인</StyledInfoName>
-
-          <StyledTextField variant="outlined" type="password" fullWidth />
+          <StyledTextField type="password" onChange={onChangePassworda} />
         </StyledLowContent>
+
+        {/* 파일첨부 부분 */}
 
         <StyledLowContent>
           <StyledInfoName>자기소개서첨부</StyledInfoName>
-
-          <StyledFileFindTextField
-            variant="outlined"
-            placeholder="파일을 선택하세요"
-            InputProps={{
-              readOnly: true,
-            }}
-            fullWidth
+          <StyledFileFindTextField placeholder="파일을 선택하세요" />
+          <input
+            type="file"
+            style={{ display: "none" }}
+            onChange={handleFileUpload}
+            ref={fileInputRef}
           />
-          <label htmlFor="input-file">
-            <input type="file" id="input-file" style={{ display: "none" }} />
-            <StyledFindButton variant="contained">파일찾기</StyledFindButton>
-          </label>
+          <StyledFindButton
+            // onSubmit={onSubmitUpload}
+            type="submit"
+            variant="contained"
+            onClick={onChangeFileInput}
+          >
+            파일찾기
+          </StyledFindButton>
         </StyledLowContent>
 
-        {/* 버튼1, 버튼2 */}
-        <StyledLowContent>
-          <StyledDeleteButton variant="contained" sx={{ gap: "5px" }}>
+        {/* 회원탈퇴, 수정 버튼 */}
+        <StyledButtonContent>
+          <StyledDeleteButton
+            onClick={onSubmitDelete}
+            type="submit"
+            variant="contained"
+          >
             회원탈퇴
           </StyledDeleteButton>
-          <StyledModifyButton variant="contained" type="submit">
+          <StyledModifyButton
+            // onClick={onSubmitModify}
+            variant="contained"
+            type="submit"
+          >
             수정하기
           </StyledModifyButton>
-        </StyledLowContent>
+        </StyledButtonContent>
       </form>
     </StyledContainer>
   );
 };
 export default Modify;
 
+/** 페이지 전체 감싸는 div*/
 const StyledContainer = styled.div`
   width: 1270px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
 `;
+/** 각 요소 가로배열 */
 const StyledLowContent = styled.div`
-  margin-top: 40px;
+  margin-top: 15px;
   display: flex;
-  flex-direction: low;
+  flex-direction: row;
   align-items: center;
   width: 1269px;
 `;
-// 내정보수정 타이틀 스타일
+/** title :내 정보수정*/
 const StyledTitle = styled(Typography)`
   && {
     ${fonts.TitleText};
     color: ${colors.main_mint};
+    color: ${colors.main_mint};
     padding: 0;
   }
 `;
-// 내정보를 수정하세요 서브타이틀 스타일
+/** subTitle: 나의 회원정보수정 */
 const StyledSubTitle = styled(Typography)`
   && {
     ${fonts.SubTextThin}
@@ -243,7 +260,7 @@ const StyledSubTitle = styled(Typography)`
     line-height: 50px;
   }
 `;
-//각정보타이틀 스타일지정
+/** 각 요소 텍스트*/
 const StyledInfoName = styled.div`
   && {
     ${fonts.SubTextBig}
@@ -251,28 +268,40 @@ const StyledInfoName = styled.div`
     width: 160px;
   }
 `;
-//텍스트필드 스타일지정
-const StyledTextField = styled(TextField)(({ theme }) => ({
-  "& .MuiInputBase-root": {
-    height: "45px",
-    borderRadius: "10px",
-    border: "1px #00057D solid",
-    width: "1100px",
-  },
-}));
-const StyledFileFindTextField = styled(TextField)(({ theme }) => ({
-  "& .MuiInputBase-root": {
-    height: "45px",
-    borderRadius: "10px",
-    border: "1px #00057D solid",
-    width: "960px",
-  },
-}));
+/** MUI input 입력란 스타일*/
+const StyledTextField = styled.input`
+  ${fonts.SubTextThinSmall};
+  color: ${colors.main_black};
+  height: 45px;
+  border-radius: 10px;
+  border: 1px #00057d solid;
+  width: 1100px;
+  padding-left: 20px;
+`;
+/** MUI input 파일찾기  */
+const StyledFileFindTextField = styled.input`
+  ${fonts.SubTextThinSmall};
+  color: ${colors.main_black};
+  height: 45px;
+  border-radius: 10px;
+  border: 1px #00057d solid;
+  width: 960px;
+  margin-right: 10px;
+  padding-left: 20px;
+`;
+/** 버튼 배치 스타일 */
+const StyledButtonContent = styled.div`
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  width: 1269px;
+`;
 
-//버튼 스타일
-
+/** 수정하기버튼 스타일 */
 const StyledModifyButton = styled(Button)`
   && {
+    margin-right: 10px;
     border-radius: 10px;
     width: 132px;
     height: 45px;
@@ -286,6 +315,7 @@ const StyledModifyButton = styled(Button)`
     }
   }
 `;
+/** 회원탈퇴 버튼 스타일 */
 const StyledDeleteButton = styled(Button)`
   && {
     border-radius: 10px;
@@ -301,6 +331,7 @@ const StyledDeleteButton = styled(Button)`
     }
   }
 `;
+/** 파일찾기버튼 스타일 */
 const StyledFindButton = styled(Button)`
   && {
     border-radius: 10px;
@@ -316,6 +347,7 @@ const StyledFindButton = styled(Button)`
     }
   }
 `;
+/**업로드된 파일 삭제 텍스트버튼  */
 const StyledFileDeleteButton = styled(Button)`
   && {
     color: ${colors.main_red};
@@ -323,7 +355,7 @@ const StyledFileDeleteButton = styled(Button)`
     cursor: pointer;
   }
 `;
-
+/**업로드된 파일 다운로드 텍스트버튼 */
 const StyledFileDownButton = styled(Button)`
   && {
     color: ${colors.darkgray_navy};

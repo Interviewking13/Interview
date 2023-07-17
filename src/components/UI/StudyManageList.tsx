@@ -8,33 +8,34 @@ interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
   backgroundColor?: string;
 }
 
-const items = [
-  {
-    title: "아으 다롱디리 으으ㅏㅇ아으",
-    manager: "이병욱",
-    children: "스터디관리",
-  },
-];
+type StudyListProps = {
+  key: number;
+  title: string;
+  manager: string;
+  backgroundColor: string;
+  children: React.ReactNode;
+};
 
-const onDelete = () => {};
+const onClick = ({}) => {};
 
-const StudyManageList = () => {
+const StudyManageList = ({
+  key,
+  title,
+  manager,
+  children,
+  backgroundColor,
+}: StudyListProps) => {
   return (
     <>
-      {items.map((item, index) => (
-        <CardContainer key={index}>
-          <CardContent>
-            <StyledName>{item.title}</StyledName>
-            <StyledDescription>{item.manager}</StyledDescription>
-          </CardContent>
-          <StyledCommonButton
-            backgroundColor={colors.main_red}
-            onClick={onDelete}
-          >
-            {item.children}
-          </StyledCommonButton>
-        </CardContainer>
-      ))}
+      <CardContainer key={key}>
+        <CardContent>
+          <StyledName>{title}</StyledName>
+          <StyledDescription>{manager}</StyledDescription>
+        </CardContent>
+        <StyledCommonButton backgroundColor={backgroundColor} onClick={onClick}>
+          {children}
+        </StyledCommonButton>
+      </CardContainer>
     </>
   );
 };
@@ -62,7 +63,6 @@ const StyledName = styled.p`
 `;
 
 const StyledDescription = styled.p`
-  flex-grow: 1;
   margin-right: 10px;
   margin-left: 100px;
   ${fonts.SubTextThin}
