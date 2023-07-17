@@ -70,30 +70,24 @@ export const putUserData = async (
 export const deleteUser = async (
   user_id: string,
   email: string,
-  password: string,
-  token: string
+  password: string
 ) => {
   const response = await axiosInstance.delete("user/mypage", {
     data: { user_id, email, password },
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
   });
   return response;
 };
 
 /** 6. 로그아웃 POST */
-export const postLogout = async (
-  token: string
-) => {
+export const postLogout = async (token: string) => {
   const response = await axiosInstance.post("user/logout", {
-    data: { token},
+    data: { token },
   });
   return response;
 };
 
 /** 7. 유저 정보 조회 GET */
-export const getUserDataById = async (token: string , user_id : string) => {
+export const getUserDataById = async (token: string, user_id: string) => {
   const response = await axiosInstance.get(`user/userInfo/${user_id}`, {
     headers: {
       Authorization: `${token}`,
