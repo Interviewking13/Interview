@@ -15,7 +15,7 @@ import { getUserData } from "../../api/api-user";
 import ClearIcon from "@mui/icons-material/Clear";
 import React from "react";
 import { useRecoilState } from "recoil";
-import { EditContent } from "../../utils/CommunitiEdit";
+import { EditContent } from "../../utils/recoil";
 import Dompurify from "dompurify";
 
 export const CommunityDetailPage: React.FC = () => {
