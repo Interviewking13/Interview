@@ -8,9 +8,12 @@ import { postSignIn } from "../../api/api-user";
 import { useMutation, useQueryClient } from "react-query";
 import SearchIdModal from "./SearchIdModal";
 import SearchPasswordModal from "./SearchPasswordModal";
+import { useRecoilState } from "recoil";
+import { accessTokenState } from "../../utils/recoil";
 
 // LoginPage 컴포넌트 선언
 const LoginPage = () => {
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   // 이메일 상태 추가(이메일 입력 필드의 값 관리)
   const [email, setEmail] = useState("");
   // 비밀번호 상태 추가(비밀번호 입력 필드의 값 관리)
@@ -45,9 +48,10 @@ const LoginPage = () => {
 
     try {
       const response = await loginMutation.mutateAsync({ email, password });
-
+      console.log(response);
       // 로그인 성공 시 토큰을 localStorage에 저장
       if (response && response.data.resultCode === "200") {
+        setAccessToken(response.data.data.token);
         localStorage.setItem("token", response.data.data.token);
       }
 
@@ -63,7 +67,7 @@ const LoginPage = () => {
       navigate("/");
     } catch (passwordError) {
       // 비밀번호 오류 시 오류 메시지 설정
-      setPasswordError("비밀번호를 확인하세요.")
+      setPasswordError("비밀번호를 확인하세요.");
       // 이메일 오류 메세지 초기화
       setEmailError("");
     }
@@ -125,7 +129,9 @@ const LoginPage = () => {
               onChange={onChangePassword}
             />
             {passwordError && (
-              <StyledErrorMessage>{passwordError.toString()}</StyledErrorMessage>
+              <StyledErrorMessage>
+                {passwordError.toString()}
+              </StyledErrorMessage>
             )}
             <StyledBtnWrapper>
               <StyledSignupBtn
@@ -141,11 +147,19 @@ const LoginPage = () => {
               </StyledLoginBtn>
             </StyledBtnWrapper>
             <StyledSearchUserInfo>
-              <StyledSearchId onClick={openSearchIdModal}>아이디 찾기</StyledSearchId>
-              <StyledSearchPassword onClick={openSearchPasswordModal}>비밀번호 찾기</StyledSearchPassword>
+              <StyledSearchId onClick={openSearchIdModal}>
+                아이디 찾기
+              </StyledSearchId>
+              <StyledSearchPassword onClick={openSearchPasswordModal}>
+                비밀번호 찾기
+              </StyledSearchPassword>
             </StyledSearchUserInfo>
-            {searchIdModalOpen && <SearchIdModal closeModal={closeSearchIdModal} />}
-            {searchPasswordModalOpen && <SearchPasswordModal closeModal={closeSearchPasswordModal} />}
+            {searchIdModalOpen && (
+              <SearchIdModal closeModal={closeSearchIdModal} />
+            )}
+            {searchPasswordModalOpen && (
+              <SearchPasswordModal closeModal={closeSearchPasswordModal} />
+            )}
           </StyledRightSignContainer>
         </StyledLoginContainer>
         <StyledSignupCopyright>
@@ -274,20 +288,18 @@ const StyledSearchUserInfo = styled.div`
   margin-left: auto; /** 오른쪽 정렬시키기 */
   color: ${colors.darkgray_navy};
   font-size: 18px;
-  font-weight:300;
+  font-weight: 300;
   margin-top: 40px;
-`
+`;
 
 /** 아이디 찾기 div */
-const StyledSearchId = styled.div`
-  
-`
+const StyledSearchId = styled.div``;
 
 /** 비밀번호 찾기 div */
 const StyledSearchPassword = styled.div`
   border-left: 1px solid ${colors.darkgray_navy};
   margin-left: 10px;
-  padding-left:10px;
-`
+  padding-left: 10px;
+`;
 
 export default LoginPage;
