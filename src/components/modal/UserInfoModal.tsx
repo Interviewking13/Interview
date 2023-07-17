@@ -102,7 +102,7 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ userId, handleModalClose 
 export default UserInfoModal;
 
 /** 최상단 Box */
-const StyledBox = styled.div`
+const StyledBox = styled(Box)`
     height: 218px;
     width: 1004px;
     background-color: #f1f4ff;
