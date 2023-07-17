@@ -36,24 +36,12 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
   // 신청 거절
   const unAccept = 2;
 
-  /** 스터디원 삭제 버튼 핸들러 */
-  const onDelete = async (index: number) => {
-    // studyAcceptData의 해당 index의 유저아이디를 userId에 저장.
-    const userId = studyAcceptData[index].user_id;
-    // 스터디원 삭제 api 요청 
-    await deleteStudyMember(
-      String(localStorage.getItem("token")),
-      studyId,
-      userId
-    );
-    queryClient.invalidateQueries(["studyAcceptData"]);
-  };
-
   // 리액트 쿼리를 통해 studyAcceptData에 수락인원 데이터 저장
   const {
     data: studyAcceptData,
     isLoading,
     isError,
+    refetch,
   } = useQuery(["studyAcceptData"], () =>
     getStudyAccept(studyId, accept).then((response) => response.data)
   );
@@ -61,16 +49,36 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
   const members = studyAcceptData;
 
   // 자기소개서 모달 open 상태관리
-  const [userInfoModalOpen, setUserInfoModalOpen] = React.useState(false);
+  const [userInfoModalOpen, setUserInfoModalOpen] = React.useState<{
+    open: boolean;
+    userId: string;
+  }>({ open: false, userId: "" });
 
   /** 자기소개서 모달 open 핸들러 */
-  const handleOpenUserInfoModal = () => {
-    setUserInfoModalOpen(true);
+  const handleOpenUserInfoModal = (userId: string) => {
+    setUserInfoModalOpen({ open: true, userId });
   };
 
   /** 자기소개서 모달 Close 핸들러 */
   const handleCloseUserInfoModal = () => {
-    setUserInfoModalOpen(false);
+    setUserInfoModalOpen({ open: false, userId: "" });
+  };
+
+  /** 스터디원 삭제 버튼 핸들러 */
+  const onDeleteMember = async (index: number) => {
+    // studyAcceptData의 해당 index의 유저아이디를 userId에 저장.
+    const userId = studyAcceptData[index].user_id;
+    // 스터디원 삭제 api 요청 
+    deleteStudyMember(
+      String(localStorage.getItem("token")),
+      studyId,
+      userId
+    ).then(() => {
+      // studyData 키값으로 캐시 무효화
+      queryClient.invalidateQueries(["studyAcceptData"]);
+      // 데이터 새로고침
+      refetch();
+      });;
   };
 
   if (isLoading) {
@@ -89,20 +97,20 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
       {members.map((member: StudyAcceptData, index: number) => (
         <CardContainer key={index}>
           <CardContent>
-            <StyledName onClick={handleOpenUserInfoModal}>
+            <StyledName onClick={() => handleOpenUserInfoModal(member.user_id)}>
               {member.user_name}
             </StyledName>
-            <Modal open={userInfoModalOpen} onClose={handleCloseUserInfoModal}>
+            <Modal open={userInfoModalOpen.open} onClose={handleCloseUserInfoModal}>
               <UserInfoModal
-                userId={member.user_id}
-                handleModalClose={handleCloseUserInfoModal}
+               userId={userInfoModalOpen.userId}
+               handleModalClose={handleCloseUserInfoModal}
               />
             </Modal>
             <StyledDescription>{member.goal}</StyledDescription>
           </CardContent>
           <StyledCommonButton
             backgroundColor={colors.main_red}
-            onClick={() => onDelete(index)}
+            onClick={() => onDeleteMember(index)}
           >
             회원 삭제
           </StyledCommonButton>
@@ -134,7 +142,8 @@ const CardContent = styled.div`
 /** Name p */
 const StyledName = styled.p`
   font-weight: bold;
-  margin-right: 10px;
+  width: 150px;
+  margin-right: 20px;
   margin-left: 20px;
   cursor: pointer;
 `;

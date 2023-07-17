@@ -4,40 +4,40 @@ import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import { TitleText, SubText, SubTextThinSmall } from "../../constants/fonts";
 import { getUserData } from "../../api/api-user";
+import { axiosInstance } from "../../api/axiosInstance";
 
 const Header = (): JSX.Element => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const storedName = localStorage.getItem("name");
-
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    if (token && storedName) {
-      setUserName(storedName);
-    } else if (token) {
-      // 토큰이 있으면 사용자 정보를 가져와서 이름을 설정합니다.
-      getUserInfo();
+    const fetchUserData = async () => {
+      try {
+        const response = await getUserData(token!); // 토큰을 인자로 getUserData 함수를 호출하여 사용자 정보를 가져옴
+        const userData = response.data;
+        console.log("사용자 데이터:", userData);
+        const userName = userData.user_name; // 응답 데이터에서 user_name 값 추출
+        setUserName(userName + "님"); // 사용자 정보에서 이름을 추출하여 설정
+      } catch (error) {
+        console.log("사용자 정보를 가져오는 데 실패했습니다.", error);
+      }
+    };
+
+    if (token) {
+      axiosInstance.defaults.headers.common["Authorization"] = token; // axiosInstance의 헤더에 토큰 값을 설정
+      fetchUserData(); // 토큰이 있으면 사용자 정보를 가져와서 이름표시
     }
-  }, [token, storedName]);
+  }, [token]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("token"); // 토큰 삭제
+    setUserName(""); // 사용자 이름 초기화
     navigate("/login");
   };
 
   const handleMyPageClick = () => {
     alert("로그인이 필요합니다.\n로그인 페이지로 이동합니다.");
-  };
-
-  const getUserInfo = async () => {
-    try {
-      const userData = await getUserData(token!); // 토큰을 인자로 getUserData 함수를 호출하여 사용자 정보를 가져옵니다.
-      const userName = userData.data.user_name; // 응답 데이터에서 user_name 값을 추출합니다.
-      setUserName(userName + "님"); // 사용자 정보에서 이름을 추출하여 설정합니다.
-    } catch (error) {
-      console.log("사용자 정보를 가져오는 데 실패했습니다.", error);
-    }
   };
 
   return (

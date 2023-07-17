@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import StudyListItem from "../../components/study/StudyListItem";
 import BestBoardListItemContainer from "../community/components/BestBoardListItemContainer";
-
 import { colors } from "../../constants/colors";
 import * as fonts from "../../constants/fonts";
 import PencilIconSrc from "../../img/pencil_mint.svg";
@@ -10,7 +9,6 @@ import CarouselImgSrc from "../../img/carousel_hand_img.svg";
 import Slider from "react-slick";
 import "./slick/slick-theme.css";
 import "./slick/slick.css";
-
 import { getInfoAllStudyData } from "../../api/api-study";
 import { dateSplice } from "../../utils/dateFomatting";
 import { Link } from "react-router-dom";
@@ -32,7 +30,6 @@ const HomePage = (): JSX.Element => {
   React.useEffect(() => {
     getInfoAllStudyData()
       .then((response) => {
-        console.log(response.data);
         setStudyData(response.data);
       })
       .catch((error) => {
