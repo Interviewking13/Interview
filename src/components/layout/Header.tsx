@@ -1,15 +1,43 @@
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { colors } from "../../constants/colors";
 import { TitleText, SubText, SubTextThinSmall } from "../../constants/fonts";
+import { getUserData } from "../../api/api-user";
+import { axiosInstance } from "../../api/axiosInstance";
 
 const Header = (): JSX.Element => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await getUserData(token!); // 토큰을 인자로 getUserData 함수를 호출하여 사용자 정보를 가져옴
+        const userData = response.data;
+        console.log("사용자 데이터:", userData);
+        const userName = userData.user_name; // 응답 데이터에서 user_name 값 추출
+        setUserName(userName + "님"); // 사용자 정보에서 이름을 추출하여 설정
+      } catch (error) {
+        console.log("사용자 정보를 가져오는 데 실패했습니다.", error);
+      }
+    };
+
+    if (token) {
+      axiosInstance.defaults.headers.common["Authorization"] = token; // axiosInstance의 헤더에 토큰 값을 설정
+      fetchUserData(); // 토큰이 있으면 사용자 정보를 가져와서 이름표시
+    }
+  }, [token]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("token"); // 토큰 삭제
+    setUserName(""); // 사용자 이름 초기화
     navigate("/login");
+  };
+
+  const handleMyPageClick = () => {
+    alert("로그인이 필요합니다.\n로그인 페이지로 이동합니다.");
   };
 
   return (
@@ -27,14 +55,14 @@ const Header = (): JSX.Element => {
             <>
               <StyledLoginItem to="/login">로그인</StyledLoginItem>
               <StyledLoginItem to="/login/signup">회원가입</StyledLoginItem>
-              <StyledLoginItem to="/login">마이페이지</StyledLoginItem>
+              <StyledLoginItem to="/login" onClick={handleMyPageClick}>마이페이지</StyledLoginItem>
             </>
           ) : (
             <>
               <StyledLogOutButton to="" onClick={handleLogout}>
                 로그아웃
               </StyledLogOutButton>
-              <StyledLoginItem to="/mypage">마이페이지</StyledLoginItem>
+              <StyledLoginItem to="/mypage">{userName ? userName : "마이페이지"}</StyledLoginItem>
             </>
           )}
         </StyledLoginItemContainer>

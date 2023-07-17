@@ -31,11 +31,7 @@ export const postSignIn = async (email: string, password: string) => {
 
 /** 3. 내 정보 조회 GET*/
 export const getUserData = async (token: string) => {
-  const response = await axiosInstance.get("user/mypage", {
-    headers: {
-      Authorization: `${token}`,
-    },
-  });
+  const response = await axiosInstance.get("user/mypage", {});
   return response.data;
 };
 
@@ -51,16 +47,13 @@ export const putUserData = async (
 ) => {
   const response = await axiosInstance.put("user/mypage", {
     data: {
-      token,
+      // token,
       email,
       password,
       intro_yn,
       phone_number,
       file_name,
       file_key,
-    },
-    headers: {
-      Authorization: `${token}`,
     },
   });
   return response.data;
@@ -75,9 +68,6 @@ export const deleteUser = async (
 ) => {
   const response = await axiosInstance.delete("user/mypage", {
     data: { user_id, email, password },
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
   });
   return response;
 };
@@ -86,18 +76,12 @@ export const deleteUser = async (
 export const postLogout = async (
   token: string
 ) => {
-  const response = await axiosInstance.post("user/logout", {
-    data: { token},
-  });
+  const response = await axiosInstance.post("user/logout", {});
   return response;
 };
 
 /** 7. 유저 정보 조회 GET */
 export const getUserDataById = async (token: string , user_id : string) => {
-  const response = await axiosInstance.get(`user/userInfo/${user_id}`, {
-    headers: {
-      Authorization: `${token}`,
-    },
-  });
+  const response = await axiosInstance.get(`user/userInfo/${user_id}`, {});
   return response.data;
 };
