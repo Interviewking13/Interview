@@ -20,19 +20,90 @@ const { User } = require('../models/index');
 
 const userRepository = {
 
+    async createUser(newUserInfo) {
+        try {
+            const newUser = await User.create(newUserInfo);
+            return newUser;            
+        } catch (err) {
+            console.error(err);
+            throw new Error('Invalid Error');
+        }
+    },
+
     async findUserById(user_id) {
         try {
             const findUser = await User.findOne({
                 "_id": user_id
             });
-            console.log(findUser + 'userRepository');
+            // console.log(findUser + 'userRepository');
             return findUser;
         } catch (err) {
             console.error(err);
             throw new Error('Invalid Error');
         }
-    }
+    },
 
+    async findUserByEmail(email) {
+        try {
+            const findUser = await User.findOne({
+                "email": email
+            });
+            // console.log(findUser + 'userRepository');
+            return findUser;
+        } catch (err) {
+            console.error(err);
+            throw new Error('Invalid Error');
+        }
+    },
+
+    async updateUser(updateUserInfo) {
+        try {
+            // 비밀번호 암호화
+            if (updateUserInfo.password) {
+                updateUserInfo.password = await bcrypt.hash(updateUserInfo.password, 10);
+            }
+
+            const updatedUser = await User.findByIdAndUpdate(
+                user_id,
+                { $set: { ...updateUserInfo, dts_update: new Date() } },
+                { new: true }
+            );
+
+            return updatedUser;
+            
+            // 비밀번호 암호화
+            // const hashedPassword = await bcrypt.hash(password, 10);        
+
+            // const updateUser = await User.updateOne( { "email": email },
+            // {
+            //     $set: {
+            //         "password": hashedPassword,
+            //         "intro_yn": intro_yn,
+            //         "phone_number": phone_number,
+            //         "dts_update": dateString + timeString,
+            //         "file_key": file_key,
+            //         "file_name": file_name
+            //     }
+            // });
+
+        } catch (err) {
+            console.error(err);
+            throw new Error('Invalid Error');
+        }
+    },
+
+    async deleteUser (deleteUserInfo) {
+        try {
+            // const deleteUser = await User.deleteOne({
+            //     "_id": user_id
+            // });
+            const deleteUser = await User.deleteOne(deletUserInfo);
+            return deleteUser;
+        } catch (err) {
+            console.error(err);
+            throw new Error('Invalid Error');
+        }
+    }
 }
 
 module.exports = userRepository;

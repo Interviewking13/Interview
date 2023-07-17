@@ -19,7 +19,13 @@ const isLoginValidate = require("../middlewares/isLoginValidate");
 
 // user API - Hierarchical Separation
 const userController = require("../controllers/userController");
-router.get('/userInfo/:user_id', userTokenValidate, userController.getUserIdInfo);
+
+router.get('/login', isLoginValidate);
+router.get('/userInfo/:user_id', userTokenValidate, userController.getUserInfoById);
+router.get('/mypage', userTokenValidate, userController.getUserInfoByHeader);
+router.post('/signup', userController.postSignup);
+router.post('userInfo', userTokenValidate, userController.postUserInfo);
+router.get('/mypage', userTokenValidate, userController.deleteUser);
 // router.post('/modify', isLoginValidate, userController.modifyUserInfo);
 
 module.exports = router;

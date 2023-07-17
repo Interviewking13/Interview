@@ -40,7 +40,7 @@ const isLoginValidate = async (req, res) => {
             message: "로그인 상태",
             data: {
                 user_id: req.user.user_id,
-                token: token
+                // token: token
             }
         });
 

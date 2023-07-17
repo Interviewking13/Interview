@@ -19,16 +19,100 @@ const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    
 const userRepository = require('../repositories/userRepository');
 
 const userService = {
-  async getUserByIdInfo(user_id) {
+
+  async postSignup(newUserInfo) {
+    try {
+      const { user_name, email, password, phone_number } = newUserInfo;
+
+      // 비밀번호 암호화
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const newUser = await userRepository.createUser({
+        user_name,
+        email,
+        password: hashedPassword,
+        phone_number,
+        dts_insert: dateString + timeString,
+        dts_update: null
+      });
+
+      return newUser;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Invalid Error');
+    }
+  },
+
+  async getUserInfoById(user_id) {
     try {
       const findUser = await userRepository.findUserById(user_id);    
-      console.log(findUser + 'userService');
+      // console.log(findUser + 'userService');
       return findUser;
     } catch (err) {
       console.error(err);
       throw new Error('Invalid Error');
     }
+  },
+
+  async getUserInfoByEmail(email) {
+    try {
+      const findUser = await userRepository.findUserByEmail(email);    
+      // console.log(findUser + 'userService');
+      return findUser;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Invalid Error');
+    }
+  },
+
+  async postUserInfo(updateUserInfo) {
+    try {
+      const updateUser = await userRepository.updateUser(updateUserInfo);
+      return updateUser;
+
+      // const { email, password,intro_yn, phone_number, file_key, file_name } = updateUserInfo;
+
+      // // 비밀번호 암호화
+      // const hashedPassword = await bcrypt.hash(password, 10);
+
+      // const updateUser = await userRepository.updateUser({
+      //   user_name,
+      //   email,
+      //   password: hashedPassword,
+      //   intro_yn,
+      //   phone_number,
+      //   dts_update: dateString + timeString,
+      //   file_key,
+      //   file_name
+      // });
+      // return updateUser;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Invalid Error');
+    }
+  },
+
+  async deleteUser(deleteUserInfo){
+    try {
+      const { email, password } = deleteUserInfo;
+
+      // 비밀번호 암호화
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const deleteUser = await userRepository.deleteUser({
+        user_id,
+        email,
+        password: hashedPassword
+      });
+
+      return deleteUser;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Invalid Error');
+    }
   }
+
+
 }
 
 module.exports = userService;

@@ -19,12 +19,84 @@ const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    
 const userService = require('../services/userService');
 
 const userController = {
-    async getUserIdInfo (req, res, next) {
+
+    /** 회원가입 */
+    async postSignup (req, res, next) {
+        try { 
+            const { user_name, email, password, passwordCheck, phone_number } = req.body;
+
+            // 입력값 검사
+            if (user_name === "" || email === "" || password === "" || passwordCheck === "" || phone_number === "") {
+                return res.status(400).json({
+                    resultCode: 400,
+                    message: "정보를 모두 입력하세요."
+                });
+            }
+
+            // 이메일 형식 유효성 검사
+            if (!validateEmail(email)) {
+                return res.status(400).json({
+                resultCode: "400",
+                message: "올바른 이메일 형식이 아닙니다.",
+                });
+            }
+
+            // 비밀번호, 비밀번호 확인 값 검사
+            if (password !== passwordCheck) {
+                return res.status(400).json({
+                resultCode: 400,
+                message: "비밀번호가 일치하지 않습니다.",
+                });
+            }
+
+            const findUser = await userService.getUserInfoByEmail(email);
+
+            if (findUser) {
+                return res.status(400).json({
+                    resultCode: "400",
+                    message: "기존에 가입되어 있는 회원입니다.",
+                    data: {
+                        user_id: findUser._id,
+                        email: findUser.email
+                    }
+                });
+            }
+            
+            const newUserInfo = {
+                user_name,
+                email,
+                password,
+                phone_number,
+            };
+            // console.log(newUserInfo);
+
+            // userService 함수에 회원가입 정보 전달
+            const newUser = await userService.postSignup(newUserInfo);
+
+            res.status(200).json({
+                resultCode: "200",
+                message: "회원가입 성공",
+                data: {
+                    user_id: newUser._id,
+                    email: newUser.email 
+                }
+            });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                resultCode: "500",
+                message: "Internal Server Error"
+            });
+        }
+    },
+
+    /** user ID 로 사용자 정보 조회 */
+    async getUserInfoById (req, res, next) {
         try {
             const { user_id } = req.params;
-            console.log(user_id);
+            // console.log(user_id);
 
-            const findUser = await userService.getUserByIdInfo(user_id);
+            const findUser = await userService.getUserInfoById(user_id);
 
             if (!findUser) {
                 return res.status(400).json({
@@ -32,8 +104,7 @@ const userController = {
                     message: "해당 사용자를 찾을 수 없습니다."
                 });
             }
-
-            console.log(findUser + 'userController');
+            // console.log(findUser + 'userController');
             return res.status(200).json({
                 resultCode: "200", 
                 message: "사용자 정보 조회 성공",
@@ -51,10 +122,171 @@ const userController = {
             console.error(err);
             res.status(500).json({
                 resultCode: "500",
-                message: "서버오류"
+                message: "Internal Server Error"
             });
         }
-    }
+    },
+    
+    /** 내 정보 조회 */
+    async getUserInfoByHeader (req, res, next) {
+        try {
+            // middleware token값 사용
+            const { user_id } = req.user;
+            console.log(user_id);
+
+            const findUser = await userService.getUserInfoById(user_id);
+
+            if (!findUser) {
+                return res.status(400).json({
+                    resultCode: "404",
+                    message: "내 정보를 조회할 수 없습니다."
+                });
+            }
+
+            res.status(200).json({
+                resultCode: "200",
+                message: "내 정보 조회 성공",
+                data: {
+                    user_id: findUser._id,
+                    user_name: findUser.user_name,
+                    email: findUser.email,
+                    intro_yn: findUser.intro_yn,
+                    phone_number: findUser.phone_number,
+                    file_key: findUser.file_key, 
+                    file_name: findUser.file_name
+                }
+            });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                resultCode: "500",
+                message: "Internal Server Error"
+            });
+        }
+    },
+
+
+    /** 내 정보 수정 */
+    async postUserInfo (req, res, next) {
+        try {
+            // 미들웨어에서 전달된 토큰값 사용
+            const { user_id } = req.user;
+
+            // const { email, password, intro_yn, phone_number, file_key, file_name } = req.body;
+            const { password, intro_yn, phone_number, file_key, file_name } = req.body;
+
+            // 사용자 정보 조회
+            const findUser = await userService.getUserInfoById(user_id);
+            if (!findUser) {
+                return res.status(400).json({
+                    resultCode: "404",
+                    message: "내 정보를 조회할 수 없습니다."
+                });
+            }
+
+            // 변경사항이 있는지 확인
+            let isModified = false;
+            if (email !== findUser.email) {
+                isModified = true;
+            }
+            // 다른 필드도 변경사항 확인 로직 추가하기
+
+            if (!isModified) {
+                return res.status(200).json({
+                    resultCode: "200",
+                    message: "변경사항이 없습니다."
+                });
+            }
+
+            // 변경사항이 있을 경우에만 업데이트
+            const updateUserInfo = {
+                email,
+                password,
+                intro_yn,
+                phone_number,
+                file_key,
+                file_name
+            };
+            const updatedUser = await userService.updateUserInfo(user_id, updateUserInfo);
+
+            return res.status(200).json({
+                resultCode: "200",
+                message: "내 정보 수정 성공",
+                data: {
+                    user_id: updatedUser._id,
+                    user_name: updatedUser.user_name,
+                    email: updatedUser.email,
+                    intro_yn: updatedUser.intro_yn,
+                    phone_number: updatedUser.phone_number,
+                    file_key: updatedUser.file_key,
+                    file_name: updatedUser.file_name
+                }
+            });
+
+            // middleware token값 사용
+            // const { user_id } = req.user;
+            // console.log(user_id);
+            
+            // const findUser = await userService.postUserInfo(updateUserInfo);
+
+            // res.status(200).json({
+            //     resultCode: "200",
+            //     message: "내 정보 조회 성공",
+            //     data: {
+            //         user_id: findUser._id,
+            //         user_name: findUser.user_name,
+            //         email: findUser.email,
+            //         intro_yn: findUser.intro_yn,
+            //         phone_number: findUser.phone_number,
+            //         file_key: findUser.file_key, 
+            //         file_name: findUser.file_name
+            //     }
+            // });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                resultCode: "500",
+                message: "Internal Server Error"
+            });
+        }
+    },
+
+    async deleteUser (req, res, next) {
+        try {
+            const { user_id } = req.user;
+            const { email, password } = req.body;
+
+            // 사용자 정보 조회
+            const findUser = await userService.getUserInfoById(user_id);
+            if (!findUser) {
+                return res.status(400).json({
+                    resultCode: "404",
+                    message: "내 정보를 조회할 수 없습니다."
+                });
+            }
+
+            const deleteUserInfo = {
+                email,
+                password,
+            };
+
+            await userService.deleteUser(deleteUserInfo);
+
+            res.setHeader('Authorization', '');
+            res.clearCookie('token');
+
+            res.status(200).json({
+                resultCode: "200",
+                message: "회원탈퇴 성공"
+            });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                resultCode: "500",
+                message: "Internal Server Error"
+            });
+        }
+    } 
 }
 
 module.exports = userController;
