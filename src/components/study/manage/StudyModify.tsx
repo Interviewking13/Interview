@@ -50,15 +50,15 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
     // 모집 인원 상태 추가
     const [recruitmentCount, setRecruitmentCount] = useState(0);
 
-    // refetch 쓰는부분
-    useEffect(() => {
-        const interval = setInterval(() => {
-            refetch();
-        }, 500); // 5초마다 데이터 업데이트 및 새로고침
-        return () => {
-            clearInterval(interval);
-        };
-    }, []);
+    // // refetch 쓰는부분
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         refetch();
+    //     }, 500); // 5초마다 데이터 업데이트 및 새로고침
+    //     return () => {
+    //         clearInterval(interval);
+    //     };
+    // }, []);
 
     // studyData에서 불러온 값들을 상태관리 set함수로 넣어 줌.
     useEffect(() => {
@@ -131,7 +131,7 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
             // studyData 키값으로 캐시 무효화
             queryClient.invalidateQueries(['studyData']);
             // 데이터 새로고침
-            refetch();
+            // refetch();
         });
         // 링크 이동
         navigate(`/study/${studyId}`);
