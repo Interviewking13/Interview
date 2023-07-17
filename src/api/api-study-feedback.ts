@@ -14,7 +14,6 @@ export const postFeedback = async (
     content_type,
     content,
     study_id,
-    token,
   });
   return response;
 };
@@ -48,11 +47,7 @@ export const deleteFeedbackByUserId = async (
   study_id: string,
   token: string
 ) => {
-  const response = await axiosInstance.delete(`feedback/${study_id}`, {
-    data: {
-      token: token,
-    },
-  });
+  const response = await axiosInstance.delete(`feedback/${study_id}`, {});
   return response;
 };
 

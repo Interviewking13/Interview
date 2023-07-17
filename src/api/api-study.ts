@@ -32,7 +32,6 @@ export const postCreateStudy = async (
         end,
         leader_name,
         leader_id,
-        token,
     });
     return response;
 };
@@ -40,7 +39,6 @@ export const postCreateStudy = async (
 /** 2. 스터디 신청 (원) post */
 export const postApplyStudy = async (token: string, study_id: string, goal: string) => {
     const response = await axiosInstance.post('study/apply', {
-        token,
         study_id,
         goal,
     });
@@ -50,7 +48,6 @@ export const postApplyStudy = async (token: string, study_id: string, goal: stri
 /** 3. 스터디 신청 수락 (장)  put */
 export const putAcceptStudy = async (token: string, study_id: string, member_id: string, accept: number) => {
     const response = await axiosInstance.put(`study/accept/${study_id}/${member_id}`, {
-        token,
         accept,
     });
     return response;
@@ -96,7 +93,7 @@ export const putInfoStudy = async (
     }
 ) => {
     const response = await axiosInstance.put(`study/info/${study_id}`, {
-        token: data.token,
+        // token: data.token,
         study_name: data.study_name,
         title: data.title,
         content: data.content,
@@ -113,7 +110,7 @@ export const putInfoStudy = async (
 /** 7. 스터디 회원 관리 (장)  delete */
 export const deleteStudyMember = async (token: string, study_id: string, member_id: string) => {
     const response = await axiosInstance.delete(`study/${study_id}/${member_id}`, {
-        data: { token: token }, // 토큰을 바디로 보내기 위해 data 속성에 객체 형태로 설정
+        // data: { token: token }, // 토큰을 바디로 보내기 위해 data 속성에 객체 형태로 설정
     });
     return response;
 };
@@ -121,7 +118,7 @@ export const deleteStudyMember = async (token: string, study_id: string, member_
 /** 8. 스터디 삭제 (장)  delete */
 export const deleteStudy = async (token: string, study_id: string) => {
     const response = await axiosInstance.delete(`study/${study_id}`, {
-        data: { token: token }, // 토큰을 바디로 보내기 위해 data 속성에 객체 형태로 설정
+        // data: { token: token }, // 토큰을 바디로 보내기 위해 data 속성에 객체 형태로 설정
     });
     return response;
 };
