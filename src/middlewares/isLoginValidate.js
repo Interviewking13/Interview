@@ -12,6 +12,7 @@ const bcrypt = require('bcrypt');
 
 const secretKey = process.env.SECRET_KEY;
 
+/** login 유무 판별 조회 */
 const isLoginValidate = async (req, res) => {     
     try {
 

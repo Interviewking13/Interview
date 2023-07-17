@@ -21,7 +21,19 @@ const userService = require('../services/userService');
 const userController = {
     async getUserIdInfo (req, res, next) {
         try {
+            const { user_id } = req.params;
+            console.log(user_id);
 
+            const findUser = await userService.getUserByIdInfo(user_id);
+
+            if (!findUser) {
+                return res.status(400).json({
+                    resultCode: "404",
+                    message: "해당 사용자를 찾을 수 없습니다."
+                });
+            }
+
+            console.log(findUser + 'userController');
             return res.status(200).json({
                 resultCode: "200", 
                 message: "사용자 정보 조회 성공",
@@ -35,35 +47,6 @@ const userController = {
                     file_name: findUser.file_name
                 }
             });
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({
-                resultCode: "500",
-                message: "서버오류"
-            });
-        }
-    },
-
-    async modifyUserInfo (req, res, next) {
-        try {
-            const { user_id } = req.user;
-            const { token, email, password, intro_yn, phone_number, file_key, file_name } = req.body;
-
-            const updatedUser = await userService.modifyUserInfo(user_id, email, password, intro_yn, phone_number, file_key, file_name);
-
-            return res.status(200).json({
-                resultCode: "200", 
-                message: "내 정보 수정 성공",
-                data: {
-                    user_id: updatedUser._id,
-                    user_name: updatedUser.user_name,
-                    email: updatedUser.email,
-                    intro_yn: updatedUser.intro_yn,
-                    phone_number: updatedUser.phone_number, 
-                    file_key: updatedUser.file_key, 
-                    file_name: updatedUser.file_name
-                }
-            }); 
         } catch (err) {
             console.error(err);
             res.status(500).json({

@@ -207,6 +207,7 @@ const userApi = {
 
             const token = jwt.sign(payload, secretKey, { expiresIn: "3d" }); 
 
+            console.log(token);
             res.status(200)
                 .set('Authorization', token)
                 .json({

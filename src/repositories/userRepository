@@ -1,4 +1,22 @@
-const { userSchema } = require('../models/schemas/user.js');
+const express = require('express');
+const app = express();
+
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
+
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
+const secretKey = process.env.SECRET_KEY;
+
+const validateEmail = require('../utils/user.js')
+
+// dts_insert, dts_update 필드에 삽입할 변수 값 설정
+const currentDate = new Date();
+const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, "");    // 현재 날짜를 "yyyymmdd" 형식으로 설정
+const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    // 현재 시간을 "hhmmss" 형식으로 설정
+
+const { User } = require('../models/index');
 
 const userRepository = {
 
@@ -7,84 +25,12 @@ const userRepository = {
             const findUser = await User.findOne({
                 "_id": user_id
             });
-
-            if (!findUser) {
-                return res.status(400).json({
-                    resultCode: "404",
-                    message: "해당 사용자를 찾을 수 없습니다."
-                });
-            }
-
+            console.log(findUser + 'userRepository');
+            return findUser;
         } catch (err) {
             console.error(err);
-            res.status(500).json({
-                resultCode: "500",
-                message: "Invalid Error"
-            });
+            throw new Error('Invalid Error');
         }
-    },
-
-    async findUserByEmail (email) {
-        try {
-            const findUser = await User.findOne({
-                "email": email
-            });
-
-            if (!findUser) {
-                return res.status(200).json({
-                    resultCode: "404",
-                    message: "사용자가 존재하지 않습니다."
-                })
-            }
-
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({
-                resultCode: "500",
-                message: "Invalid Error"
-            });
-        }
-    },
-
-    async updateUser(email, updateData) {
-        try {
-
-            const updateUserInfo = await User.updateOne({ "email": email }, { $set: { updateData } });
-
-            const updatedUser = await User.findOne(
-                { "_id": findUser._id },
-                {
-                    "_id": true,
-                    "user_name": true,
-                    "email": true,
-                    "intro_yn": true,
-                    "phone_number": true,
-                    "file_key": true, 
-                    "file_name": true
-                });
-
-            return res.status(200).json({
-                resultCode: "200", 
-                message: "내 정보 수정 성공",
-                data: {
-                    user_id: updatedUser._id,
-                    user_name: updatedUser.user_name,
-                    email: updatedUser.email,
-                    intro_yn: updatedUser.intro_yn,
-                    phone_number: updatedUser.phone_number, 
-                    file_key: updatedUser.file_key, 
-                    file_name: updatedUser.file_name
-                }
-                
-            }); 
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({
-                resultCode: "500",
-                message: "Invalid Error"
-            });
-        }
-
     }
 
 }
