@@ -337,7 +337,6 @@ const userApi = {
                 isModified = true;
             }
 
-
             // 변경사항이 없는 경우의 처리 로직
             if(!isModified) {
                 return res.status(200).json({
@@ -385,8 +384,7 @@ const userApi = {
                     phone_number: updatedUser.phone_number, 
                     file_key: updatedUser.file_key, 
                     file_name: updatedUser.file_name
-                }
-                
+                }                
             });
         } catch (err) {
             console.error(err);
@@ -396,7 +394,6 @@ const userApi = {
             });
         }
     },
-
 
     /** 회원탈퇴 */
     async deleteUser(req, res, next) {
@@ -413,8 +410,7 @@ const userApi = {
                     resultCode: "400",
                     message: "해당 사용자를 찾을 수 없습니다."
                 });
-            }
-            
+            }           
             // 비밀번호 검증
             const isPasswordValid = await bcrypt.compare(password, findUser.password);
 

@@ -92,12 +92,13 @@ const userRepository = {
         }
     },
 
-    async deleteUser (deleteUserInfo) {
+    async deleteUser(deleteUserInfo) {
         try {
-            // const deleteUser = await User.deleteOne({
-            //     "_id": user_id
-            // });
-            const deleteUser = await User.deleteOne(deletUserInfo);
+            const { user_id } = deleteUserInfo;
+
+            const deleteUser = await User.deleteOne({
+                "_id": user_id
+            });
             return deleteUser;
         } catch (err) {
             console.error(err);

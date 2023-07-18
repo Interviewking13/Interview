@@ -15,7 +15,6 @@ const secretKey = process.env.SECRET_KEY;
 /** login 유무 판별 조회 */
 const isLoginValidate = async (req, res) => {     
     try {
-
         // console.log('로그인 유효성 검사 테스트!');
         // const { token } = req.body;
         // console.log(token + '/ userAPI');

@@ -21,7 +21,7 @@ const userService = require('../services/userService');
 const userController = {
 
     /** 회원가입 */
-    async postSignup (req, res, next) {
+    async postSignUp (req, res, next) {
         try { 
             const { user_name, email, password, passwordCheck, phone_number } = req.body;
 
@@ -71,7 +71,7 @@ const userController = {
             // console.log(newUserInfo);
 
             // userService 함수에 회원가입 정보 전달
-            const newUser = await userService.postSignup(newUserInfo);
+            const newUser = await userService.postSignUp(newUserInfo);
 
             res.status(200).json({
                 resultCode: "200",
@@ -89,6 +89,69 @@ const userController = {
             });
         }
     },
+
+    /** 로그인 */
+    async postSignIn (req, res, next) {
+        try {
+            const { email, password } = req.body;
+            console.log(email, password);
+
+            // 입력값 검사
+            if (email === "" || password === "") {
+              return res.status(400).json({
+                resultCode: 400,
+                message: "정보를 모두 입력하세요."
+              });
+            }
+        
+            // 이메일 형식 유효성 검사
+            if (!validateEmail(email)) {
+              return res.status(400).json({
+                resultCode: "400",
+                message: "올바른 이메일 형식이 아닙니다."
+              });
+            }
+        
+            const findUser = await userService.getUserInfoByEmail(email);
+            if (!findUser) {
+              return res.status(404).json({
+                resultCode: "404",
+                message: "이메일을 조회할 수 없습니다."
+              });
+            }
+        
+            const isPasswordValid = await bcrypt.compare(password, findUser.password);
+            if (!isPasswordValid) {
+              return res.status(400).json({
+                resultCode: "400",
+                message: "비밀번호가 맞지 않습니다."
+              });
+            }
+        
+            // userService의 loginUser 함수 호출
+            const token = await userService.postSignIn(findUser);
+        
+            res.status(200)
+              .set('Authorization', token)
+              .json({
+                resultCode: "200",
+                message: "로그인 성공",
+                data: {
+                  user_id: findUser._id,
+                  user_name: findUser.user_name,
+                  email,
+                  token
+                }
+              });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                resultCode: "500",
+                message: "Internal Server Error"
+            });
+        }
+    },
+
 
     /** user ID 로 사용자 정보 조회 */
     async getUserInfoById (req, res, next) {
@@ -261,11 +324,12 @@ const userController = {
             if (!findUser) {
                 return res.status(400).json({
                     resultCode: "404",
-                    message: "내 정보를 조회할 수 없습니다."
+                    message: "이미 탈퇴한 회원입니다."
                 });
             }
 
             const deleteUserInfo = {
+                user_id,
                 email,
                 password,
             };

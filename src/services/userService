@@ -43,6 +43,21 @@ const userService = {
     }
   },
 
+  async postSignIn(userInfo) {
+    try {
+        // JWT 토큰 생성
+        const payload = {
+          user_id: findUser._id,          // 사용자의 MongoDB ObjectID
+      }
+      const token = jwt.sign(payload, secretKey, { expiresIn: "3d" }); 
+      console.log(token);
+      return token;
+    } catch (err) {
+      console.error(err);
+      throw new Error('Invalid Error');
+    }
+  },
+
   async getUserInfoById(user_id) {
     try {
       const findUser = await userRepository.findUserById(user_id);    
@@ -94,8 +109,7 @@ const userService = {
 
   async deleteUser(deleteUserInfo){
     try {
-      const { email, password } = deleteUserInfo;
-
+      const { user_id, email, password } = deleteUserInfo;
       // 비밀번호 암호화
       const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -111,8 +125,6 @@ const userService = {
       throw new Error('Invalid Error');
     }
   }
-
-
 }
 
 module.exports = userService;

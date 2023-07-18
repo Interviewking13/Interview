@@ -20,10 +20,12 @@ const isLoginValidate = require("../middlewares/isLoginValidate");
 // user API - Hierarchical Separation
 const userController = require("../controllers/userController");
 
+// router.get('/login', isLoginValidate, userController.getUserInfoById);   // 로그인. 로그아웃할 때 user find 도 같이 해주자!
 router.get('/login', isLoginValidate);
 router.get('/userInfo/:user_id', userTokenValidate, userController.getUserInfoById);
 router.get('/mypage', userTokenValidate, userController.getUserInfoByHeader);
-router.post('/signup', userController.postSignup);
+router.post('/signup', userController.postSignUp);
+router.post('/signin', userController.postSignIn);
 router.post('userInfo', userTokenValidate, userController.postUserInfo);
 router.get('/mypage', userTokenValidate, userController.deleteUser);
 // router.post('/modify', isLoginValidate, userController.modifyUserInfo);
