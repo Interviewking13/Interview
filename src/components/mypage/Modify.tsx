@@ -13,8 +13,6 @@ type UserData = {
   user_id: string;
   file_key: string;
   file_name: string;
-  password: string;
-  verPassword: string;
 };
 
 const Modify = () => {
@@ -33,9 +31,8 @@ const Modify = () => {
     user_id: "",
     file_key: "",
     file_name: "",
-    password: "",
-    verPassword: "",
   });
+  const [password, se];
   const handleChangeState = (e: any) => {
     setUserDataValue({
       ...userDataValue,
@@ -86,6 +83,7 @@ const Modify = () => {
           const user_id = userDataValue.user_id;
           const email = userDataValue.email;
           const password = userDataValue.password;
+
           const response = await deleteUser(user_id, email, password, token);
           console.log("User deleted successfully", response);
           alert("이용해주셔서 감사합니다.");
