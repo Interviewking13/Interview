@@ -28,7 +28,7 @@ const userController = {
             // 입력값 검사
             if (user_name === "" || email === "" || password === "" || passwordCheck === "" || phone_number === "") {
                 return res.status(400).json({
-                    resultCode: 400,
+                    resultCode: "400",
                     message: "정보를 모두 입력하세요."
                 });
             }
@@ -44,7 +44,7 @@ const userController = {
             // 비밀번호, 비밀번호 확인 값 검사
             if (password !== passwordCheck) {
                 return res.status(400).json({
-                resultCode: 400,
+                resultCode: "401",
                 message: "비밀번호가 일치하지 않습니다.",
                 });
             }
@@ -62,11 +62,16 @@ const userController = {
                 });
             }
             
+            // 비밀번호 암호화
+            const hashedPassword = await bcrypt.hash(password, 10);
+
             const newUserInfo = {
                 user_name,
                 email,
-                password,
+                password: hashedPassword,
                 phone_number,
+                dts_insert: dateString + timeString,
+                dts_update: null
             };
             // console.log(newUserInfo);
 
@@ -127,7 +132,7 @@ const userController = {
                 message: "비밀번호가 맞지 않습니다."
               });
             }
-        
+
             // userService의 loginUser 함수 호출
             const token = await userService.postSignIn(findUser);
         
@@ -157,10 +162,7 @@ const userController = {
     async getUserInfoById (req, res, next) {
         try {
             const { user_id } = req.params;
-            // console.log(user_id);
-
             const findUser = await userService.getUserInfoById(user_id);
-
             if (!findUser) {
                 return res.status(400).json({
                     resultCode: "404",
@@ -195,10 +197,7 @@ const userController = {
         try {
             // middleware token값 사용
             const { user_id } = req.user;
-            console.log(user_id);
-
             const findUser = await userService.getUserInfoById(user_id);
-
             if (!findUser) {
                 return res.status(400).json({
                     resultCode: "404",
@@ -234,9 +233,9 @@ const userController = {
         try {
             // 미들웨어에서 전달된 토큰값 사용
             const { user_id } = req.user;
-
+            console.log(user_id);
             // const { email, password, intro_yn, phone_number, file_key, file_name } = req.body;
-            const { password, intro_yn, phone_number, file_key, file_name } = req.body;
+            const { password, passwordCheck, intro_yn, phone_number, file_key, file_name } = req.body;
 
             // 사용자 정보 조회
             const findUser = await userService.getUserInfoById(user_id);
@@ -246,24 +245,64 @@ const userController = {
                     message: "내 정보를 조회할 수 없습니다."
                 });
             }
+            console.log(findUser);
+            
+            // 비밀번호, 비밀번호 확인 값 검사
+            if (password !== passwordCheck) {
+                return res.status(400).json({
+                    resultCode: "400",
+                    message: "비밀번호가 일치하지 않습니다."
+                });
+            }
+            
+            // 비밀번호 암호화
+            const hashedPassword = await bcrypt.hash(password, 10);
 
             // 변경사항이 있는지 확인
+            // 기존 사용자 정보
+            const findUserId = findUser._id;
+            const findUserEmail = findUser.email;
+            const findUserName = findUser.user_name;
+            const findUserPassword = findUser.password;
+            const findUserIntro_yn = findUser.intro_yn;
+            const findUserPhoneNumber = findUser.phone_number;
+            const findUserFileKey = findUser.file_key;
+            const findUserFileName = findUser.file_name;
+
+            // 변경사항 있는지 확인
             let isModified = false;
-            if (email !== findUser.email) {
+
+            if (password !== findUserPassword) {
+                findUser.password = password;
                 isModified = true;
             }
-            // 다른 필드도 변경사항 확인 로직 추가하기
+            if (intro_yn !== findUserIntro_yn) {
+                findUser.intro_yn = intro_yn;
+                isModified = true;
+            }
+            if (phone_number !== findUserPhoneNumber) {
+                findUser.phone_number = phone_number;
+                isModified = true;
+            }
+            if (file_key !== findUserFileKey) {
+                findUser.file_key = file_key;
+                isModified = true;
+            }
+            if (file_name !== findUserFileName) {
+                findUser.file_name = file_name;
+                isModified = true;
+            }
 
-            if (!isModified) {
+            // 변경사항이 없는 경우의 처리 로직
+            if(!isModified) {
                 return res.status(200).json({
-                    resultCode: "200",
+                    resultCode: "400", 
                     message: "변경사항이 없습니다."
                 });
             }
 
             // 변경사항이 있을 경우에만 업데이트
             const updateUserInfo = {
-                email,
                 password,
                 intro_yn,
                 phone_number,
@@ -271,14 +310,14 @@ const userController = {
                 file_name
             };
             const updatedUser = await userService.updateUserInfo(user_id, updateUserInfo);
-
+            
             return res.status(200).json({
                 resultCode: "200",
                 message: "내 정보 수정 성공",
                 data: {
-                    user_id: updatedUser._id,
-                    user_name: updatedUser.user_name,
-                    email: updatedUser.email,
+                    user_id: findUser._id,
+                    user_name: findUser.user_name,
+                    email: findUser.email,
                     intro_yn: updatedUser.intro_yn,
                     phone_number: updatedUser.phone_number,
                     file_key: updatedUser.file_key,
@@ -314,7 +353,8 @@ const userController = {
         }
     },
 
-    async deleteUser (req, res, next) {
+    /** 회원탈퇴(hard Delete) */
+    async deleteUserInfo (req, res, next) {
         try {
             const { user_id } = req.user;
             const { email, password } = req.body;
@@ -334,7 +374,7 @@ const userController = {
                 password,
             };
 
-            await userService.deleteUser(deleteUserInfo);
+            await userService.deleteUserInfo(deleteUserInfo);
 
             res.setHeader('Authorization', '');
             res.clearCookie('token');
@@ -350,7 +390,36 @@ const userController = {
                 message: "Internal Server Error"
             });
         }
-    } 
+    },
+
+    /** 로그아웃 */
+    async logoutUser (req, res, next) {
+        try {
+            const { user_id } = req.user;
+            console.log(user_id);
+
+            if (user_id) {
+                res.setHeader('Authorization', '');
+                res.clearCookie('token');
+
+                return res.status(200).json({
+                    resultCode: "200",
+                    message: "로그아웃 성공"
+                });
+            } else {
+                return res.status(400).json({
+                    resultCode: "404",
+                    message: "사용자 정보를 찾을 수 없습니다.",
+                });
+            }
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({
+                resultCode: "500",
+                message: "Internal Server Error"
+            });
+        }
+    }
 }
 
 module.exports = userController;

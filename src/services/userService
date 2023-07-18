@@ -20,22 +20,9 @@ const userRepository = require('../repositories/userRepository');
 
 const userService = {
 
-  async postSignup(newUserInfo) {
+  async postSignUp(newUserInfo) {
     try {
-      const { user_name, email, password, phone_number } = newUserInfo;
-
-      // 비밀번호 암호화
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      const newUser = await userRepository.createUser({
-        user_name,
-        email,
-        password: hashedPassword,
-        phone_number,
-        dts_insert: dateString + timeString,
-        dts_update: null
-      });
-
+      const newUser = await userRepository.createUser(newUserInfo);
       return newUser;
     } catch (err) {
       console.error(err);
@@ -43,11 +30,12 @@ const userService = {
     }
   },
 
-  async postSignIn(userInfo) {
+  async postSignIn(user) {
     try {
-        // JWT 토큰 생성
-        const payload = {
-          user_id: findUser._id,          // 사용자의 MongoDB ObjectID
+      console.log(user);
+      // JWT 토큰 생성
+      const payload = {
+        user_id: user._id,          // 사용자의 MongoDB ObjectID
       }
       const token = jwt.sign(payload, secretKey, { expiresIn: "3d" }); 
       console.log(token);
@@ -60,8 +48,7 @@ const userService = {
 
   async getUserInfoById(user_id) {
     try {
-      const findUser = await userRepository.findUserById(user_id);    
-      // console.log(findUser + 'userService');
+      const findUser = await userRepository.findUserById(user_id); 
       return findUser;
     } catch (err) {
       console.error(err);
@@ -71,8 +58,7 @@ const userService = {
 
   async getUserInfoByEmail(email) {
     try {
-      const findUser = await userRepository.findUserByEmail(email);    
-      // console.log(findUser + 'userService');
+      const findUser = await userRepository.findUserByEmail(email);  
       return findUser;
     } catch (err) {
       console.error(err);
@@ -80,36 +66,20 @@ const userService = {
     }
   },
 
-  async postUserInfo(updateUserInfo) {
+  async updateUserInfo(user_id, updateUserInfo) {
     try {
-      const updateUser = await userRepository.updateUser(updateUserInfo);
-      return updateUser;
-
-      // const { email, password,intro_yn, phone_number, file_key, file_name } = updateUserInfo;
-
-      // // 비밀번호 암호화
-      // const hashedPassword = await bcrypt.hash(password, 10);
-
-      // const updateUser = await userRepository.updateUser({
-      //   user_name,
-      //   email,
-      //   password: hashedPassword,
-      //   intro_yn,
-      //   phone_number,
-      //   dts_update: dateString + timeString,
-      //   file_key,
-      //   file_name
-      // });
-      // return updateUser;
+      const updatedUser = await userRepository.updateUser(user_id, updateUserInfo);
+      return updatedUser;
     } catch (err) {
       console.error(err);
       throw new Error('Invalid Error');
     }
   },
 
-  async deleteUser(deleteUserInfo){
+  async deleteUserInfo(deleteUserInfo){
     try {
       const { user_id, email, password } = deleteUserInfo;
+      
       // 비밀번호 암호화
       const hashedPassword = await bcrypt.hash(password, 10);
 

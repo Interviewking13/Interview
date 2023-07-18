@@ -22,6 +22,7 @@ const userTokenValidate = async (req, res, next) => {
     console.log(decoded);
     req.user = decoded;
     
+    // user_id가 존재하지 않거나 user_id와 일치하지 않을 경우 에러 처리
     if (!decoded) {
         return res.status(401).json({
         resultCode: "401",
@@ -31,9 +32,7 @@ const userTokenValidate = async (req, res, next) => {
     }
     
     // 클라이언트로부터 전달된 바디(토큰값) 사용
-    // const { token } = req.body;
-    // console.log(token);
-  
+    // const { token } = req.body;  
     // if (!token) {
     //   return res.status(401).json({
     //     resultCode: "401",
