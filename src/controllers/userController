@@ -73,7 +73,6 @@ const userController = {
                 dts_insert: dateString + timeString,
                 dts_update: null
             };
-            // console.log(newUserInfo);
 
             // userService 함수에 회원가입 정보 전달
             const newUser = await userService.postSignUp(newUserInfo);
@@ -204,7 +203,6 @@ const userController = {
                     message: "내 정보를 조회할 수 없습니다."
                 });
             }
-
             res.status(200).json({
                 resultCode: "200",
                 message: "내 정보 조회 성공",
@@ -233,7 +231,6 @@ const userController = {
         try {
             // 미들웨어에서 전달된 토큰값 사용
             const { user_id } = req.user;
-            console.log(user_id);
             // const { email, password, intro_yn, phone_number, file_key, file_name } = req.body;
             const { password, passwordCheck, intro_yn, phone_number, file_key, file_name } = req.body;
 
@@ -324,26 +321,6 @@ const userController = {
                     file_name: updatedUser.file_name
                 }
             });
-
-            // middleware token값 사용
-            // const { user_id } = req.user;
-            // console.log(user_id);
-            
-            // const findUser = await userService.postUserInfo(updateUserInfo);
-
-            // res.status(200).json({
-            //     resultCode: "200",
-            //     message: "내 정보 조회 성공",
-            //     data: {
-            //         user_id: findUser._id,
-            //         user_name: findUser.user_name,
-            //         email: findUser.email,
-            //         intro_yn: findUser.intro_yn,
-            //         phone_number: findUser.phone_number,
-            //         file_key: findUser.file_key, 
-            //         file_name: findUser.file_name
-            //     }
-            // });
         } catch (err) {
             console.error(err);
             res.status(500).json({
@@ -396,8 +373,7 @@ const userController = {
     async logoutUser (req, res, next) {
         try {
             const { user_id } = req.user;
-            console.log(user_id);
-
+            
             if (user_id) {
                 res.setHeader('Authorization', '');
                 res.clearCookie('token');

@@ -32,7 +32,6 @@ const userService = {
 
   async postSignIn(user) {
     try {
-      console.log(user);
       // JWT 토큰 생성
       const payload = {
         user_id: user._id,          // 사용자의 MongoDB ObjectID
@@ -79,7 +78,7 @@ const userService = {
   async deleteUserInfo(deleteUserInfo){
     try {
       const { user_id, email, password } = deleteUserInfo;
-      
+
       // 비밀번호 암호화
       const hashedPassword = await bcrypt.hash(password, 10);
 

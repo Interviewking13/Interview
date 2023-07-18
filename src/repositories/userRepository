@@ -13,8 +13,10 @@ const validateEmail = require('../utils/user.js')
 
 // dts_insert, dts_update 필드에 삽입할 변수 값 설정
 const currentDate = new Date();
-const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, "");    // 현재 날짜를 "yyyymmdd" 형식으로 설정
-const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    // 현재 시간을 "hhmmss" 형식으로 설정
+// const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, "");    // 현재 날짜를 "yyyymmdd" 형식으로 설정
+// const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    // 현재 시간을 "hhmmss" 형식으로 설정
+const dateString = currentDate.toLocaleDateString('ko-KR', options).replace(/-/g, ""); // "yyyymmdd" 형식
+const timeString = currentDate.toLocaleTimeString('ko-KR', options).replace(/:/g, "");   // "hhmmss" 형식
 
 const { User } = require('../models/index');
 
@@ -35,7 +37,6 @@ const userRepository = {
             const findUser = await User.findOne({
                 "_id": user_id
             });
-            // console.log(findUser + 'userRepository');
             return findUser;
         } catch (err) {
             console.error(err);
@@ -48,7 +49,6 @@ const userRepository = {
             const findUser = await User.findOne({
                 "email": email
             });
-            // console.log(findUser + 'userRepository');
             return findUser;
         } catch (err) {
             console.error(err);
@@ -58,44 +58,45 @@ const userRepository = {
 
     async updateUser(user_id, updateUserInfo) {
         try {
-            console.log('---------------------');
-
             // 비밀번호 암호화
             if (updateUserInfo.password) {
                 updateUserInfo.password = await bcrypt.hash(updateUserInfo.password, 10);
             }
-
-            // const updatedUser = await User.findByIdAndUpdate(
-            //     user_id,
-            //     { $set: { ...updateUserInfo, dts_update: new Date() } },
-            //     { new: true }
-            // );
-
-            // return updatedUser;
-            
             // 비밀번호 암호화
             const hashedPassword = await bcrypt.hash(updateUserInfo.password, 10);        
 
-            // const updateUser = await User.updateOne( { "email": email },
-            const updatedUser = await User.updateOne({
-                "_id": user_id
-            },
-            {
-                $set: {
-                    "password": hashedPassword,
-                    "intro_yn": updateUserInfo.intro_yn,
-                    "phone_number": updateUserInfo.phone_number,
-                    "dts_update": dateString + timeString,
-                    "file_key": updateUserInfo.file_key,
-                    "file_name": updateUserInfo.file_name
-                }
-            });
-            // console.log(updatedUser);
-            // return updatedUser;
+            // 1번 방식
+            // const updatedUser = await User.updateOne({
+            //     "_id": user_id
+            // },
+            // {
+            //     $set: {
+            //         "password": hashedPassword,
+            //         "intro_yn": updateUserInfo.intro_yn,
+            //         "phone_number": updateUserInfo.phone_number,
+            //         "dts_update": dateString + timeString,
+            //         "file_key": updateUserInfo.file_key,
+            //         "file_name": updateUserInfo.file_name
+            //     }
+            // });
+            // // 업데이트된 사용자 정보를 다시 조회하여 반환
+            // const findUpdatedUser = await User.findById(user_id);
+            // return findUpdatedUser;
 
-            // 업데이트된 사용자 정보를 다시 조회하여 반환
-            const findUpdatedUser = await User.findById(user_id);
-            return findUpdatedUser;
+            //2번방식
+            const updatedUser = await User.findByIdAndUpdate(
+                user_id,
+                {
+                    $set: {
+                        ...updateUserInfo,
+                        dts_update: dateString + timeString
+                    }
+                },
+                {
+                    new: true
+                }
+            );
+            return updatedUser;
         } catch (err) {
             console.error(err);
             throw new Error('Invalid Error');
@@ -105,7 +106,6 @@ const userRepository = {
     async deleteUser(deleteUserInfo) {
         try {
             const { user_id } = deleteUserInfo;
-
             const deleteUser = await User.deleteOne({
                 "_id": user_id
             });
