@@ -112,125 +112,125 @@
 **9. 폴더 구조**
 
 -   프론트 :
-    Interview
-    ├─ .gitignore
-    ├─ package-lock.json
-    ├─ package.json
-    ├─ public
-    │ ├─ cancel-button.png
-    │ ├─ download.png
-    │ ├─ download.svg
-    │ ├─ favicon.ico
-    │ ├─ index.html
-    │ ├─ logo192.png
-    │ ├─ logo512.png
-    │ ├─ manifest.json
-    │ ├─ robots.txt
-    │ ├─ sampledata.json
-    │ └─ study-icon-img.png
-    ├─ README.md
-    ├─ src
-    │ ├─ api
-    │ │ ├─ api-community.ts
-    │ │ ├─ api-study-feedback.ts
-    │ │ ├─ api-study.ts
-    │ │ ├─ api-user.ts
-    │ │ └─ axiosInstance.ts
-    │ ├─ App.css
-    │ ├─ App.test.tsx
-    │ ├─ App.tsx
-    │ ├─ components
-    │ │ ├─ auth
-    │ │ │ ├─ LeftSignContainer.tsx
-    │ │ │ └─ loginUtils.ts
-    │ │ ├─ layout
-    │ │ │ ├─ Applylist.tsx
-    │ │ │ ├─ Footer.tsx
-    │ │ │ ├─ Header.tsx
-    │ │ │ ├─ Img.tsx
-    │ │ │ └─ Layout.tsx
-    │ │ ├─ modal
-    │ │ │ ├─ StudyApplyList.tsx
-    │ │ │ ├─ StudyApplyModal.tsx
-    │ │ │ └─ UserInfoModal.tsx
-    │ │ ├─ mypage
-    │ │ │ ├─ Modify.tsx
-    │ │ │ ├─ StudyApply.tsx
-    │ │ │ ├─ TestGetUser.tsx
-    │ │ │ ├─ UserInfo.tsx
-    │ │ │ └─ UserStudy.tsx
-    │ │ ├─ study
-    │ │ │ ├─ manage
-    │ │ │ │ ├─ StudyApplicantList.tsx
-    │ │ │ │ ├─ StudyManageMain.tsx
-    │ │ │ │ ├─ StudyMemberManagement.tsx
-    │ │ │ │ └─ StudyModify.tsx
-    │ │ │ └─ StudyListItem.tsx
-    │ │ └─ UI
-    │ │ ├─ MenuTapBtn.tsx
-    │ │ └─ StudyManageList.tsx
-    │ ├─ constants
-    │ │ ├─ colors.ts
-    │ │ └─ fonts.ts
-    │ ├─ font.css
-    │ ├─ fonts
-    │ │ ├─ establishRetrosans.ttf
-    │ │ ├─ Pretendard-Light.ttf
-    │ │ └─ Pretendard-SemiBold.ttf
-    │ ├─ hooks
-    │ │ ├─ study.ts
-    │ │ └─ useAuth.tsx
-    │ ├─ img
-    │ │ ├─ carousel_hand_img.svg
-    │ │ ├─ carousel_mint.svg
-    │ │ ├─ carousel_navy.svg
-    │ │ ├─ pencil_mint.svg
-    │ │ ├─ people_navy.svg
-    │ │ └─ search_navy.svg
-    │ ├─ index.css
-    │ ├─ index.tsx
-    │ ├─ logo.svg
-    │ ├─ pages
-    │ │ ├─ community
-    │ │ │ ├─ CommunityCreatePage.tsx
-    │ │ │ ├─ CommunityEditPage.tsx
-    │ │ │ ├─ CommunityPage.tsx
-    │ │ │ ├─ components
-    │ │ │ │ ├─ BestBoardListItem.tsx
-    │ │ │ │ ├─ BestBoardListItemContainer.tsx
-    │ │ │ │ ├─ BoardListItem.tsx
-    │ │ │ │ └─ BoardListItemContainer.tsx
-    │ │ │ └─ ComunityDetailPage.tsx
-    │ │ ├─ home
-    │ │ │ ├─ Homepage.tsx
-    │ │ │ └─ slick
-    │ │ │ ├─ slick-theme.css
-    │ │ │ └─ slick.css
-    │ │ ├─ login
-    │ │ │ ├─ Login.tsx
-    │ │ │ └─ SignupPage.tsx
-    │ │ ├─ mypage
-    │ │ │ └─ Mypage.tsx
-    │ │ ├─ study
-    │ │ │ ├─ common
-    │ │ │ │ ├─ DetailTitle.tsx
-    │ │ │ │ ├─ StudyTap.tsx
-    │ │ │ │ └─ SubmitButton.tsx
-    │ │ │ ├─ Feedback.tsx
-    │ │ │ ├─ Information.tsx
-    │ │ │ └─ StudyManage.tsx
-    │ │ └─ studylist
-    │ │ ├─ CreateStudy.tsx
-    │ │ └─ StudyList.tsx
-    │ ├─ react-app-env.d.ts
-    │ ├─ reportWebVitals.ts
-    │ ├─ setupTests.ts
-    │ └─ utils
-    │ ├─ CommunitiEdit.ts
-    │ ├─ dateFomatting.ts
-    │ └─ getCurrentDate.ts
-    ├─ tsconfig.json
-    └─ webpack.config.js
+    Interview<br />
+    ├─ .gitignore<br />
+    ├─ package-lock.json<br />
+    ├─ package.json<br />
+    ├─ public<br />
+    │ ├─ cancel-button.png<br />
+    │ ├─ download.png<br />
+    │ ├─ download.svg<br />
+    │ ├─ favicon.ico<br />
+    │ ├─ index.html<br />
+    │ ├─ logo192.png<br />
+    │ ├─ logo512.png<br />
+    │ ├─ manifest.json<br />
+    │ ├─ robots.txt<br />
+    │ ├─ sampledata.json<br />
+    │ └─ study-icon-img.png<br />
+    ├─ README.md<br />
+    ├─ src<br />
+    │ ├─ api<br />
+    │ │ ├─ api-community.ts<br />
+    │ │ ├─ api-study-feedback.ts<br />
+    │ │ ├─ api-study.ts<br />
+    │ │ ├─ api-user.ts<br />
+    │ │ └─ axiosInstance.ts<br />
+    │ ├─ App.css<br />
+    │ ├─ App.test.tsx<br />
+    │ ├─ App.tsx<br />
+    │ ├─ components<br />
+    │ │ ├─ auth<br />
+    │ │ │ ├─ LeftSignContainer.tsx<br />
+    │ │ │ └─ loginUtils.ts<br />
+    │ │ ├─ layout<br />
+    │ │ │ ├─ Applylist.tsx<br />
+    │ │ │ ├─ Footer.tsx<br />
+    │ │ │ ├─ Header.tsx<br />
+    │ │ │ ├─ Img.tsx<br />
+    │ │ │ └─ Layout.tsx<br />
+    │ │ ├─ modal<br />
+    │ │ │ ├─ StudyApplyList.tsx<br />
+    │ │ │ ├─ StudyApplyModal.tsx<br />
+    │ │ │ └─ UserInfoModal.tsx<br />
+    │ │ ├─ mypage<br />
+    │ │ │ ├─ Modify.tsx<br />
+    │ │ │ ├─ StudyApply.tsx<br />
+    │ │ │ ├─ TestGetUser.tsx<br />
+    │ │ │ ├─ UserInfo.tsx<br />
+    │ │ │ └─ UserStudy.tsx<br />
+    │ │ ├─ study<br />
+    │ │ │ ├─ manage<br />
+    │ │ │ │ ├─ StudyApplicantList.tsx<br />
+    │ │ │ │ ├─ StudyManageMain.tsx<br />
+    │ │ │ │ ├─ StudyMemberManagement.tsx<br />
+    │ │ │ │ └─ StudyModify.tsx<br />
+    │ │ │ └─ StudyListItem.tsx<br />
+    │ │ └─ UI<br />
+    │ │ ├─ MenuTapBtn.tsx<br />
+    │ │ └─ StudyManageList.tsx<br />
+    │ ├─ constants<br />
+    │ │ ├─ colors.ts<br />
+    │ │ └─ fonts.ts<br />
+    │ ├─ font.css<br />
+    │ ├─ fonts<br />
+    │ │ ├─ establishRetrosans.ttf<br />
+    │ │ ├─ Pretendard-Light.ttf<br />
+    │ │ └─ Pretendard-SemiBold.ttf<br />
+    │ ├─ hooks<br />
+    │ │ ├─ study.ts<br />
+    │ │ └─ useAuth.tsx<br />
+    │ ├─ img<br />
+    │ │ ├─ carousel_hand_img.svg<br />
+    │ │ ├─ carousel_mint.svg<br />
+    │ │ ├─ carousel_navy.svg<br />
+    │ │ ├─ pencil_mint.svg<br />
+    │ │ ├─ people_navy.svg<br />
+    │ │ └─ search_navy.svg<br />
+    │ ├─ index.css<br />
+    │ ├─ index.tsx<br />
+    │ ├─ logo.svg<br />
+    │ ├─ pages<br />
+    │ │ ├─ community<br />
+    │ │ │ ├─ CommunityCreatePage.tsx<br />
+    │ │ │ ├─ CommunityEditPage.tsx<br />
+    │ │ │ ├─ CommunityPage.tsx<br />
+    │ │ │ ├─ components<br />
+    │ │ │ │ ├─ BestBoardListItem.tsx<br />
+    │ │ │ │ ├─ BestBoardListItemContainer.tsx<br />
+    │ │ │ │ ├─ BoardListItem.tsx<br />
+    │ │ │ │ └─ BoardListItemContainer.tsx<br />
+    │ │ │ └─ ComunityDetailPage.tsx<br />
+    │ │ ├─ home<br />
+    │ │ │ ├─ Homepage.tsx<br />
+    │ │ │ └─ slick<br />
+    │ │ │ ├─ slick-theme.css<br />
+    │ │ │ └─ slick.css<br />
+    │ │ ├─ login<br />
+    │ │ │ ├─ Login.tsx<br />
+    │ │ │ └─ SignupPage.tsx<br />
+    │ │ ├─ mypage<br />
+    │ │ │ └─ Mypage.tsx<br />
+    │ │ ├─ study<br />
+    │ │ │ ├─ common<br />
+    │ │ │ │ ├─ DetailTitle.tsx<br />
+    │ │ │ │ ├─ StudyTap.tsx<br />
+    │ │ │ │ └─ SubmitButton.tsx<br />
+    │ │ │ ├─ Feedback.tsx<br />
+    │ │ │ ├─ Information.tsx<br />
+    │ │ │ └─ StudyManage.tsx<br />
+    │ │ └─ studylist<br />
+    │ │ ├─ CreateStudy.tsx<br />
+    │ │ └─ StudyList.tsx<br />
+    │ ├─ react-app-env.d.ts<br />
+    │ ├─ reportWebVitals.ts<br />
+    │ ├─ setupTests.ts<br />
+    │ └─ utils<br />
+    │ ├─ CommunitiEdit.ts<br />
+    │ ├─ dateFomatting.ts<br />
+    │ └─ getCurrentDate.ts<br />
+    ├─ tsconfig.json<br />
+    └─ webpack.config.js<br />
     <br />
 
 -   백엔드 : 프론트 폴더 이외 src 폴더 내 전체<br />
