@@ -9,6 +9,10 @@ import React, { useState, useEffect } from 'react';
 import { dateFomatting, dateFomattingLine } from '../../../utils/dateFomatting';
 import { useQueryClient } from 'react-query';
 import { getCurrentDate } from '../../../utils/getCurrentDate';
+<<<<<<< HEAD
+=======
+import InfoMessage from '../../UI/InfoMessage';
+>>>>>>> c9398ff93cbb1400dd5b7530b24d44a0a751a160
 
 /** 스터디 수정 컴포넌트 타입지정 */
 type StudyModifyProps = {
@@ -148,12 +152,20 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
 
     if (isLoading) {
         // 로딩 상태를 표시
+<<<<<<< HEAD
         return <div>Loading...</div>;
+=======
+        return <InfoMessage message="Loading..." />;
+>>>>>>> c9398ff93cbb1400dd5b7530b24d44a0a751a160
     }
 
     if (isError) {
         // 에러 상태를 표시
+<<<<<<< HEAD
         return <div>Error occurred while fetching data</div>;
+=======
+        return <InfoMessage message="Error occurred while fetching data" />;
+>>>>>>> c9398ff93cbb1400dd5b7530b24d44a0a751a160
     }
 
     return (
