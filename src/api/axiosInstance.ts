@@ -1,10 +1,11 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL:
-    "https://port-0-interviewking13-7xwyjq992llj5sps0m.sel4.cloudtype.app/api/",
+  baseURL: "https://interviewking.onrender.com/api/",
+  headers: {
+    Authorization: String(localStorage.getItem("token")),
+  },
 });
-
 // export const axiosInstance = axios.create({
 //   baseURL:
 //     // 개발 환경에서는 proxy를 태우고 그렇지 않은 배포환경에서는 http://34.22.79.51로 api를 요청하게 하는 코드

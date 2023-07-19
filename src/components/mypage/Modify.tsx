@@ -16,9 +16,18 @@ type UserData = {
 };
 
 const Modify = () => {
+  const [password, setPassword] = useState("");
+  const [passwordc, setPasswordc] = useState("");
   const navigate = useNavigate();
   const writePassword = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<any>(null);
+
+  const onChangePassword = (e: any) => {
+    setPassword(e.target.value);
+  };
+  const onChangePassworda = (e: any) => {
+    setPasswordc(e.target.value);
+  };
 
   useEffect(() => {
     getData();
@@ -79,15 +88,15 @@ const Modify = () => {
     if (userDataValue.password === userDataValue.verPassword) {
       if (window.confirm("회원탈퇴를 하시겠습니까?")) {
         try {
-          const token = String(localStorage.getItem("token"));
+          // const token = String(localStorage.getItem("token"));
           const user_id = userDataValue.user_id;
           const email = userDataValue.email;
-          const password = userDataValue.password;
-
-          const response = await deleteUser(user_id, email, password, token);
+          password;
+          const response = await deleteUser(user_id, email, password);
           console.log("User deleted successfully", response);
           alert("이용해주셔서 감사합니다.");
           navigate("/");
+          localStorage.removeItem("token");
         } catch (err) {
           console.log(err);
         }
@@ -162,12 +171,12 @@ const Modify = () => {
           <StyledTextField
             ref={writePassword}
             type="password"
-            onChange={handleChangePassword}
+            onChange={onChangePassword}
           />
         </StyledLowContent>
         <StyledLowContent>
           <StyledInfoName>비밀번호확인</StyledInfoName>
-          <StyledTextField type="password" onChange={handleChangePassword} />
+          <StyledTextField type="password" onChange={onChangePassworda} />
         </StyledLowContent>
 
         {/* 파일첨부 부분 */}
