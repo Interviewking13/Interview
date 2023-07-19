@@ -11,10 +11,7 @@ import * as fonts from '../../constants/fonts';
 import { getInfoStudyData, postApplyStudy } from '../../api/api-study';
 import { useQuery } from 'react-query';
 import { useAuth } from '../../hooks/useAuth';
-<<<<<<< HEAD
-=======
 import InfoMessage from '../UI/InfoMessage';
->>>>>>> c9398ff93cbb1400dd5b7530b24d44a0a751a160
 
 /** 스터디 신청 모달에 전달되는 props 타입지정 */
 type StudyApplyModalProps = {
@@ -74,20 +71,12 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId, handleModalC
 
     if (isLoading) {
         // 로딩 상태를 표시
-<<<<<<< HEAD
-        return <div>Loading...</div>;
-=======
         return <InfoMessage message="Loading..." />;
->>>>>>> c9398ff93cbb1400dd5b7530b24d44a0a751a160
     }
 
     if (isError) {
         // 에러 상태를 표시
-<<<<<<< HEAD
-        return <div>Error occurred while fetching data</div>;
-=======
         return <InfoMessage message="Error occurred while fetching data" />;
->>>>>>> c9398ff93cbb1400dd5b7530b24d44a0a751a160
     }
 
     return (

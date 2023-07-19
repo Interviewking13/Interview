@@ -21,10 +21,11 @@ export const postSignUp = async (
 };
 
 /** 2. 로그인 POST */
-export const postSignIn = async (email: string, password: string) => {
+export const postSignIn = async (email: string, password: string, token: string) => {
   const response = await axiosInstance.post("user/login", {
     email,
     password,
+    token,
   });
   return response;
 };

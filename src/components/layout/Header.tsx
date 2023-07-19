@@ -6,6 +6,13 @@ import { TitleText, SubText, SubTextThinSmall } from '../../constants/fonts';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { userDataAtom } from '../../recoil/userDataAtom';
 
+// logout 함수
+const logout = () => {
+    localStorage.removeItem('token'); // 로컬 스토리지에서 토큰 제거
+    localStorage.removeItem('autoLogin'); // 자동로그인 초기화
+    window.sessionStorage.clear(); // 세션 스토리지 모든 데이터 삭제
+};
+
 const Header = (): JSX.Element => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
@@ -14,7 +21,8 @@ const Header = (): JSX.Element => {
     const displayName = userName ? `${userName}님` : '마이페이지';
     const handleLogout = () => {
         localStorage.removeItem('token'); // 토큰 삭제
-        navigate('/login');
+        logout(); // logout함수 호출하여 로그아웃 처리
+        navigate('/login'); // 로그인 페이지로 이동
     };
 
     const handleMyPageClick = () => {

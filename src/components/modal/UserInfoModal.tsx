@@ -7,10 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getUserData, getUserDataById } from '../../api/api-user';
 import { useAuth } from '../../hooks/useAuth';
-<<<<<<< HEAD
-=======
 import InfoMessage from '../UI/InfoMessage';
->>>>>>> c9398ff93cbb1400dd5b7530b24d44a0a751a160
 
 // 다운로드 이미지 링크
 const downImageSrc = '/download.png';
@@ -59,20 +56,12 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ userId, handleModalClose 
 
     if (isLoading) {
         // 로딩 상태를 표시
-<<<<<<< HEAD
-        return <div>Loading...</div>;
-=======
         return <InfoMessage message="Loading..." />;
->>>>>>> c9398ff93cbb1400dd5b7530b24d44a0a751a160
     }
 
     if (isError) {
         // 에러 상태를 표시
-<<<<<<< HEAD
-        return <div>Error occurred while fetching data</div>;
-=======
         return <InfoMessage message="Error occurred while fetching data" />;
->>>>>>> c9398ff93cbb1400dd5b7530b24d44a0a751a160
     }
 
     return (
