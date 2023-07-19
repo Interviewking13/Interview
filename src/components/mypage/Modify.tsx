@@ -88,11 +88,11 @@ const Modify = () => {
     if (userDataValue.password === userDataValue.verPassword) {
       if (window.confirm("회원탈퇴를 하시겠습니까?")) {
         try {
-          // const token = String(localStorage.getItem("token"));
+          const token = String(localStorage.getItem("token"));
           const user_id = userDataValue.user_id;
           const email = userDataValue.email;
           password;
-          const response = await deleteUser(user_id, email, password);
+          const response = await deleteUser(user_id, email, password, token);
           console.log("User deleted successfully", response);
           alert("이용해주셔서 감사합니다.");
           navigate("/");

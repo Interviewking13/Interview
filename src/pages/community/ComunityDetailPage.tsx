@@ -15,7 +15,8 @@ import { getUserData } from "../../api/api-user";
 import ClearIcon from "@mui/icons-material/Clear";
 import React from "react";
 import { useRecoilState } from "recoil";
-import { EditContent } from "../../utils/CommunitiEdit";
+import { EditContent } from "../../utils/recoil";
+import Dompurify from "dompurify";
 
 export const CommunityDetailPage: React.FC = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -156,7 +157,11 @@ export const CommunityDetailPage: React.FC = () => {
           )}
         </StyledCommunityInfo>
         <Divider />
-        <StyledContent>{a.content}</StyledContent>
+        <StyledContent
+          dangerouslySetInnerHTML={{
+            __html: Dompurify.sanitize(String(a?.content)),
+          }}
+        ></StyledContent>
 
         <StyledReplyInputContainer>
           <StyledReplyInput

@@ -5,7 +5,7 @@ import { TitleText, SubTextThin } from "../../constants/fonts";
 import { useLocation, useNavigate } from "react-router-dom";
 import { putCommunity } from "../../api/api-community";
 import { useRecoilState } from "recoil";
-import { EditContent } from "../../utils/CommunitiEdit";
+import { EditContent } from "../../utils/recoil";
 
 const CommunityEditPage: React.FC = ({}) => {
   const navigate = useNavigate();

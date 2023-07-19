@@ -49,20 +49,24 @@ export const putUserData = async (
   file_name: string,
   file_key: string
 ) => {
-  const response = await axiosInstance.put("user/mypage", {
-    data: {
-      token,
-      email,
-      password,
-      intro_yn,
-      phone_number,
-      file_name,
-      file_key,
+  const response = await axiosInstance.put(
+    "user/mypage",
+    {
+      data: {
+        email,
+        password,
+        intro_yn,
+        phone_number,
+        file_name,
+        file_key,
+      },
     },
-    headers: {
-      Authorization: `${token}`,
-    },
-  });
+    {
+      headers: {
+        Authorization: `${token}`,
+      },
+    }
+  );
   return response.data;
 };
 
@@ -70,10 +74,14 @@ export const putUserData = async (
 export const deleteUser = async (
   user_id: string,
   email: string,
-  password: string
+  password: string,
+  token: string
 ) => {
   const response = await axiosInstance.delete("user/mypage", {
     data: { user_id, email, password },
+    headers: {
+      Authorization: `${token}`,
+    },
   });
   return response;
 };
@@ -81,7 +89,9 @@ export const deleteUser = async (
 /** 6. 로그아웃 POST */
 export const postLogout = async (token: string) => {
   const response = await axiosInstance.post("user/logout", {
-    data: { token },
+    headers: {
+      Authorization: `${token}`,
+    },
   });
   return response;
 };
