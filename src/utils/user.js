@@ -4,4 +4,4 @@ function validateEmail (email) {
     return emailRegex.test(email);
 }
 
-module.exports = validateEmail;
+module.exports = { validateEmail };

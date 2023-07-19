@@ -6,6 +6,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { hashPassword, comparePassword } = require('../utils/encrypt/hashPassword.js');
 
 const secretKey = process.env.SECRET_KEY;
 
@@ -13,10 +14,8 @@ const validateEmail = require('../utils/user.js')
 
 // dts_insert, dts_update 필드에 삽입할 변수 값 설정
 const currentDate = new Date();
-// const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, "");    // 현재 날짜를 "yyyymmdd" 형식으로 설정
-// const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    // 현재 시간을 "hhmmss" 형식으로 설정
-const dateString = currentDate.toLocaleDateString('ko-KR', options).replace(/-/g, ""); // "yyyymmdd" 형식
-const timeString = currentDate.toLocaleTimeString('ko-KR', options).replace(/:/g, "");   // "hhmmss" 형식
+const dateString = currentDate.toISOString().slice(0, 10).replace(/-/g, "");    // 현재 날짜를 "yyyymmdd" 형식으로 설정
+const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    // 현재 시간을 "hhmmss" 형식으로 설정
 
 const { User } = require('../models/index');
 
@@ -59,12 +58,16 @@ const userRepository = {
     async updateUser(user_id, updateUserInfo) {
         try {
             // 비밀번호 암호화
-            if (updateUserInfo.password) {
-                updateUserInfo.password = await bcrypt.hash(updateUserInfo.password, 10);
-            }
-            // 비밀번호 암호화
-            const hashedPassword = await bcrypt.hash(updateUserInfo.password, 10);        
+            // if (updateUserInfo.password) {
+            //     updateUserInfo.password = await bcrypt.hash(updateUserInfo.password, 10);
+            // }
 
+            // const hashedPassword = await bcrypt.hash(updateUserInfo.password, 10);
+            
+            if (updateUserInfo.password) {
+                const hashedPassword = await hashPassword(updateUserInfo.password,);
+            }
+            
             // 1번 방식
             // const updatedUser = await User.updateOne({
             //     "_id": user_id

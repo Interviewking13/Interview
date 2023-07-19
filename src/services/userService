@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
+const { hashPassword, comparePassword } = require('../utils/encrypt/hashPassword.js');
 
 const secretKey = process.env.SECRET_KEY;
 
@@ -80,7 +81,8 @@ const userService = {
       const { user_id, email, password } = deleteUserInfo;
 
       // 비밀번호 암호화
-      const hashedPassword = await bcrypt.hash(password, 10);
+      // const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = await hashPassword(password);
 
       const deleteUser = await userRepository.deleteUser({
         user_id,

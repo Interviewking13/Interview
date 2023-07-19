@@ -5,11 +5,12 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
+const { hashPassword, comparePassword, isPasswordValid } = require('../utils/encrypt/hashPassword.js');
 
 const secretKey = process.env.SECRET_KEY;
 
-const validateEmail = require('../utils/user.js')
+const { validateEmail } = require('../utils/user.js')
 
 // dts_insert, dts_update 필드에 삽입할 변수 값 설정
 const currentDate = new Date();
@@ -42,12 +43,13 @@ const userController = {
             }
 
             // 비밀번호, 비밀번호 확인 값 검사
-            if (password !== passwordCheck) {
-                return res.status(400).json({
-                resultCode: "401",
-                message: "비밀번호가 일치하지 않습니다.",
-                });
-            }
+            // if (password !== passwordCheck) {
+            //     return res.status(400).json({
+            //     resultCode: "401",
+            //     message: "비밀번호가 일치하지 않습니다.",
+            //     });
+            // }
+            const comparedPassword = await comparePassword(password, passwordCheck); 
 
             const findUser = await userService.getUserInfoByEmail(email);
 
@@ -63,7 +65,8 @@ const userController = {
             }
             
             // 비밀번호 암호화
-            const hashedPassword = await bcrypt.hash(password, 10);
+            // const hashedPassword = await bcrypt.hash(password, 10);
+            const hashedPassword = await hashPassword(password);
 
             const newUserInfo = {
                 user_name,
@@ -98,7 +101,6 @@ const userController = {
     async postSignIn (req, res, next) {
         try {
             const { email, password } = req.body;
-            console.log(email, password);
 
             // 입력값 검사
             if (email === "" || password === "") {
@@ -124,13 +126,14 @@ const userController = {
               });
             }
         
-            const isPasswordValid = await bcrypt.compare(password, findUser.password);
-            if (!isPasswordValid) {
-              return res.status(400).json({
-                resultCode: "400",
-                message: "비밀번호가 맞지 않습니다."
-              });
-            }
+            // const isPasswordValid = await bcrypt.compare(password, findUser.password);
+            // if (!isPasswordValid) {
+            //   return res.status(400).json({
+            //     resultCode: "400",
+            //     message: "비밀번호가 맞지 않습니다."
+            //   });
+            // }
+            const validatedPassword = await isPasswordValid(password, findUser.password);
 
             // userService의 loginUser 함수 호출
             const token = await userService.postSignIn(findUser);
@@ -225,7 +228,6 @@ const userController = {
         }
     },
 
-
     /** 내 정보 수정 */
     async postUserInfo (req, res, next) {
         try {
@@ -245,21 +247,26 @@ const userController = {
             console.log(findUser);
             
             // 비밀번호, 비밀번호 확인 값 검사
-            if (password !== passwordCheck) {
-                return res.status(400).json({
-                    resultCode: "400",
-                    message: "비밀번호가 일치하지 않습니다."
-                });
+            // if (password !== passwordCheck) {
+            //     return res.status(400).json({
+            //         resultCode: "400",
+            //         message: "비밀번호가 일치하지 않습니다."
+            //     });
+            // }
+            const comparedPassword = await comparePassword(password, passwordCheck); 
+            if (comparedPassword) {
+                return res.status(400).json(comparedPassword);
             }
             
             // 비밀번호 암호화
-            const hashedPassword = await bcrypt.hash(password, 10);
+            // const hashedPassword = await bcrypt.hash(password, 10);
+            const hashedPassword = await hashPassword(password);
 
             // 변경사항이 있는지 확인
             // 기존 사용자 정보
-            const findUserId = findUser._id;
-            const findUserEmail = findUser.email;
-            const findUserName = findUser.user_name;
+            // const findUserId = findUser._id;
+            // const findUserEmail = findUser.email;
+            // const findUserName = findUser.user_name;
             const findUserPassword = findUser.password;
             const findUserIntro_yn = findUser.intro_yn;
             const findUserPhoneNumber = findUser.phone_number;
@@ -373,7 +380,7 @@ const userController = {
     async logoutUser (req, res, next) {
         try {
             const { user_id } = req.user;
-            
+
             if (user_id) {
                 res.setHeader('Authorization', '');
                 res.clearCookie('token');
