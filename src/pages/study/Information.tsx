@@ -19,6 +19,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useAuth } from '../../hooks/useAuth';
 import InfoMessage from '../../components/UI/InfoMessage';
 
+/** 스터디 정보 컴포넌트 */
 const Information: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
