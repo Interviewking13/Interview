@@ -338,6 +338,8 @@ router.post('/logout', userTokenValidate, userController.logoutUser);           
  *         schema:
  *           type: string
  *           format: Bearer [token]
+ *     security:
+ *       - JWT: []
  *     responses:
  *       200:
  *         description: 내 정보 조회 성공

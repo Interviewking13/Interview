@@ -126,7 +126,6 @@ const userController = {
                 message: "이메일을 조회할 수 없습니다."
               });
             }
-        
             // const isPasswordValid = await bcrypt.compare(password, findUser.password);
             // if (!isPasswordValid) {
             //   return res.status(400).json({
@@ -135,12 +134,16 @@ const userController = {
             //   });
             // }
             const validatedPassword = await isPasswordValid(password, findUser.password);
+            if (validatedPassword) {
+                return res.status(400).json(validatedPassword);
+            }
 
             // userService의 loginUser 함수 호출
             const token = await userService.postSignIn(findUser);
         
             return res.status(200)
                         .set('Authorization', token)
+                        // .set('Authorization', `Bearer ${token}`)
                         .json({
                             resultCode: "200",
                             message: "로그인 성공",
