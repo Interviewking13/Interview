@@ -36,6 +36,12 @@ const Information: React.FC = () => {
         isError: userDataError,
     } = useQuery('userData', () => getUserData(String(localStorage.getItem('token'))));
 
+    const {
+        data: studyData,
+        isLoading: studyDataLoading,
+        isError: studyDataError,
+    } = useQuery(['studyData'], () => getInfoStudyData(lastPathSegment).then((response) => response.data));
+
     useEffect(() => {
         if (!userDataLoading && !userDataError) {
             // 데이터가 로딩 중이거나 에러가 아닐 때에만 user_id를 설정합니다.
@@ -65,12 +71,6 @@ const Information: React.FC = () => {
     const handleStudyManageButtonClick = () => {
         navigate(`/management/${_id}`);
     };
-
-    const {
-        data: studyData,
-        isLoading: studyDataLoading,
-        isError: studyDataError,
-    } = useQuery(['studyData'], () => getInfoStudyData(lastPathSegment).then((response) => response.data));
 
     if (userDataLoading) {
         // userData로딩 상태를 표시
