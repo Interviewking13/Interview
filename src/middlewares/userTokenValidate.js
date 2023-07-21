@@ -26,7 +26,7 @@ const userTokenValidate = async (req, res, next) => {
     if (!decoded) {
         return res.status(401).json({
         resultCode: "401",
-        message: "유효하지 않은 토큰입니다.",
+        message: "Unauthorized token / 권한이 없습니다.",
         token: token
         });
     }
@@ -43,25 +43,34 @@ const userTokenValidate = async (req, res, next) => {
     // const decoded = jwt.verify(token, secretKey);
     // req.user = decoded;
 
+    return res.status(200).json({
+      resultCode: "200",
+      message: "유효한 토큰",
+      data: {
+          user_id: req.user.user_id,
+          // token: token
+      }
+    });
+
     next();
   } catch (err) {
     if (err.name === 'JsonWebTokenError') {
       // 토큰이 유효하지 않은 경우
       return res.status(401).json({
-        resultCode: "401",
-        message: "유효하지 않은 토큰입니다."
+        resultCode: "403",
+        message: "Invalid token / 유효하지 않은 토큰입니다."
       });
     } else if (err.name === 'TokenExpiredError') {
       // 토큰이 만료된 경우
       return res.status(401).json({
-        resultCode: "401",
-        message: "만료된 토큰입니다."
+        resultCode: "404",
+        message: "Expired token / 만료된 토큰입니다."
       });
     } else {
       // 기타 토큰 검증 실패
       return res.status(500).json({
         resultCode: "500",
-        message: "서버 오류"
+        message: "Invalid error"
       });
     }
   }

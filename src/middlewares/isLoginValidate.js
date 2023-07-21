@@ -47,13 +47,13 @@ const isLoginValidate = async (req, res) => {
         if (err.name === 'JsonWebTokenError') {
         // 토큰이 유효하지 않은 경우
         return res.status(401).json({
-            resultCode: "401",
+            resultCode: "403",
             message: "유효하지 않은 토큰입니다. / 로그아웃상태"
         });
         } else if (err.name === 'TokenExpiredError') {
         // 토큰이 만료된 경우
         return res.status(401).json({
-            resultCode: "401",
+            resultCode: "404",
             message: "만료된 토큰입니다. / 로그아웃상태"
         });
         } else {
