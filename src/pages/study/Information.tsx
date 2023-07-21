@@ -27,13 +27,21 @@ const Information: React.FC = () => {
     const lastPathSegment = path.substring(path.lastIndexOf('/') + 1);
     const [userInfoModalOpen, setUserInfoModalOpen] = useState(false);
     const [studyApplyModalOpen, setStudyApplyModalOpen] = useState(false);
-    const [useId, setUserId] = useState('1');
+    const [useId, setUserId] = useState('');
+
+    // 리액트 쿼리 훅으로 유저 데이터 가져오기
+    const {
+        data: userData,
+        isLoading: userDataLoading,
+        isError: userDataError,
+    } = useQuery('userData', () => getUserData(String(localStorage.getItem('token'))));
 
     useEffect(() => {
-        getUserData(String(localStorage.getItem('token'))).then((response) => {
-            setUserId(response.data.user_id); //현재 유저 id
-        });
-    }, []);
+        if (!userDataLoading && !userDataError) {
+            // 데이터가 로딩 중이거나 에러가 아닐 때에만 user_id를 설정합니다.
+            setUserId(userData.data.user_id);
+        }
+    }, [userDataLoading, userDataError, userData]);
 
     /** 모달창 오픈 */
     const handleOpenUserInfoModal = () => {
@@ -60,18 +68,28 @@ const Information: React.FC = () => {
 
     const {
         data: studyData,
-        isLoading,
-        isError,
+        isLoading: studyDataLoading,
+        isError: studyDataError,
     } = useQuery(['studyData'], () => getInfoStudyData(lastPathSegment).then((response) => response.data));
 
-    if (isLoading) {
-        // 로딩 상태를 표시
-        return <InfoMessage message="Loading..." />;
+    if (userDataLoading) {
+        // userData로딩 상태를 표시
+        return <InfoMessage message="UserDataLoading..." />;
     }
 
-    if (isError) {
-        // 에러 상태를 표시
-        return <InfoMessage message="Error occurred while fetching data" />;
+    if (userDataError) {
+        // userData에러 상태를 표시
+        return <InfoMessage message="UserDataError occurred while fetching data" />;
+    }
+
+    if (studyDataLoading) {
+        // studyData로딩 상태를 표시
+        return <InfoMessage message="StudyDataLoading..." />;
+    }
+
+    if (studyDataError) {
+        // studyData에러 상태를 표시
+        return <InfoMessage message="StudyDataError occurred while fetching data" />;
     }
 
     const { title, content, start, end, chat_link, headcount, acceptcount, leader_name, leader_id, _id } = studyData;
@@ -89,7 +107,7 @@ const Information: React.FC = () => {
                         <SettingsIcon fontSize="large"></SettingsIcon>
                     </StyledStudyManageButton>
                 ) : (
-                    <div></div>
+                    <></>
                 )}
             </StyeldTapContainer>
             <Title>{title}</Title>
