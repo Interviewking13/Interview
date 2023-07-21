@@ -14,6 +14,14 @@ const hashPassword = async function(password) {
 /** 비밀번호, 비밀번호 확인 값 검사 */
 const comparePassword = async function(password, passwordCheck) {
     try {
+        // 입력값 검사
+        if (password === "" || passwordCheck === "") {
+            return res.status(400).json({
+                resultCode: "400",
+                message: "정보를 모두 입력하세요."
+            });
+        }
+
         if (password !== passwordCheck) {
             return {
                 resultCode: "401",
