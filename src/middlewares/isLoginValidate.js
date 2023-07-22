@@ -9,6 +9,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { nextTick } = require('process');
 
 const secretKey = process.env.SECRET_KEY;
 
@@ -34,14 +35,16 @@ const isLoginValidate = async (req, res) => {
         // 토큰이 유효한 경우
         req.user = decoded;
 
-        return res.status(200).json({
-            resultCode: "200",
-            message: "로그인 상태",
-            data: {
-                user_id: req.user.user_id,
-                // token: token
-            }
-        });
+        next();
+
+        // return res.status(200).json({
+        //     resultCode: "200",
+        //     message: "로그인 상태",
+        //     data: {
+        //         user_id: req.user.user_id,
+        //         // token: token
+        //     }
+        // });
 
     } catch (err) {
         if (err.name === 'JsonWebTokenError') {

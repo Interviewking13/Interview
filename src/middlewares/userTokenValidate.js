@@ -31,6 +31,17 @@ const userTokenValidate = async (req, res, next) => {
         });
     }
     
+    // return res.status(200).json({
+    //   resultCode: "200",
+    //   message: "유효한 토큰",
+    //   data: {
+    //       user_id: req.user.user_id,
+    //       // token: token
+    //   }
+    // });
+
+    next();
+
     // 클라이언트로부터 전달된 바디(토큰값) 사용
     // const { token } = req.body;  
     // if (!token) {
@@ -43,16 +54,6 @@ const userTokenValidate = async (req, res, next) => {
     // const decoded = jwt.verify(token, secretKey);
     // req.user = decoded;
 
-    return res.status(200).json({
-      resultCode: "200",
-      message: "유효한 토큰",
-      data: {
-          user_id: req.user.user_id,
-          // token: token
-      }
-    });
-
-    next();
   } catch (err) {
     if (err.name === 'JsonWebTokenError') {
       // 토큰이 유효하지 않은 경우

@@ -70,6 +70,7 @@ const userController = {
             const hashedPassword = await hashPassword(password);
 
             const newUserInfo = {
+                user_id: new mongoose.Types.ObjectId(), // ObjectId로 user_id 필드에 값을 설정    
                 user_name,
                 email,
                 password: hashedPassword,
