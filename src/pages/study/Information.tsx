@@ -18,6 +18,7 @@ import { getUserData } from '../../api/api-user';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useAuth } from '../../hooks/useAuth';
 import InfoMessage from '../../components/UI/InfoMessage';
+import { FetchingSpinner, LoadingSpinner } from '../../components/common/Spinners';
 
 /** 스터디 정보 컴포넌트 */
 const Information: React.FC = () => {
@@ -34,17 +35,19 @@ const Information: React.FC = () => {
         data: userData,
         isLoading: userDataLoading,
         isError: userDataError,
+        isFetching: userDataFetching,
     } = useQuery('userData', () => getUserData(String(localStorage.getItem('token'))));
 
     const {
         data: studyData,
         isLoading: studyDataLoading,
         isError: studyDataError,
+        isFetching: studyDataFetching,
     } = useQuery(['studyData'], () => getInfoStudyData(lastPathSegment).then((response) => response.data));
 
     useEffect(() => {
-        if (!userDataLoading && !userDataError) {
-            // 데이터가 로딩 중이거나 에러가 아닐 때에만 user_id를 설정합니다.
+        if (!userDataLoading && !userDataError && userDataFetching) {
+            // 데이터가 로딩 중이 아니고, 패칭중 아니고, 에러가 아닐 때에만 user_id를 설정합니다.
             setUserId(userData.data.user_id);
         }
     }, [userDataLoading, userDataError, userData]);
@@ -74,7 +77,7 @@ const Information: React.FC = () => {
 
     if (userDataLoading) {
         // userData로딩 상태를 표시
-        return <InfoMessage message="UserDataLoading..." />;
+        return <LoadingSpinner />;
     }
 
     if (userDataError) {
@@ -84,7 +87,13 @@ const Information: React.FC = () => {
 
     if (studyDataLoading) {
         // studyData로딩 상태를 표시
-        return <InfoMessage message="StudyDataLoading..." />;
+        return <LoadingSpinner />;
+    }
+
+    if (studyDataFetching && !studyApplyModalOpen) {
+        console.log(studyApplyModalOpen);
+        // studyData패칭 상태를 표시
+        return <FetchingSpinner />;
     }
 
     if (studyDataError) {
