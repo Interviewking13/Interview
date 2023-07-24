@@ -6,6 +6,7 @@ type SpinnerProps = {
     message: string;
 };
 
+/** Spinner UI props : {message}  */
 const Spinner: React.FC<SpinnerProps> = ({ message }) => {
     return (
         <StyledSpinnerContainer>
