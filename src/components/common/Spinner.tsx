@@ -2,30 +2,19 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import InfoMessage from '../UI/InfoMessage';
 
-/** 로딩 스피너(Loading Spinner) 컴포넌트 */
-const LoadingSpinner: React.FC = () => {
+type SpinnerProps = {
+    message: string;
+};
+
+/** Spinner UI props : {message}  */
+const Spinner: React.FC<SpinnerProps> = ({ message }) => {
     return (
         <StyledSpinnerContainer>
-            <InfoMessage message="Loading..." />
+            <InfoMessage message={message} />
             <StyledSpinner />
         </StyledSpinnerContainer>
     );
 };
-
-/*
-
-로딩 스피너(Loading Spinner):
-로딩 스피너는 웹 애플리케이션이 데이터를 불러오거나 
-처리하는 동안 사용자에게 로딩 중임을 시각적으로 
-표시하는 UI 요소입니다. 일반적으로 동그란 모양으로 
-되어 있고 회전하는 애니메이션을 가지며, 사용자가 
-기다리는 동안 화면에 표시됩니다. 데이터가 로딩되는 
-동안 로딩 스피너를 보여줌으로써 사용자 경험을 향상시키고, 
-사용자가 애플리케이션의 반응성을 인지할 수 있도록 도와줍니다.
-
-*/
-
-export default LoadingSpinner;
 
 /** 회전 애니메이션 키프레임 */
 const rotateAnimation = keyframes`
@@ -56,3 +45,5 @@ const StyledSpinner = styled.div`
     height: 50px;
     animation: ${rotateAnimation} 1s linear infinite;
 `;
+
+export default Spinner;

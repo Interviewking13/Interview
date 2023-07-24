@@ -9,6 +9,7 @@ import { useQuery } from 'react-query';
 import { deleteStudyMember, getStudyAccept } from '../../../api/api-study';
 import { useQueryClient } from 'react-query';
 import InfoMessage from '../../UI/InfoMessage';
+import { FetchingSpinner, LoadingSpinner } from '../../common/Spinners';
 
 /** 스터디 맴버 관리 컴포넌트 타입지정 */
 type StudyMemberManagementProps = {
@@ -42,6 +43,7 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
         isLoading,
         isError,
         refetch,
+        isFetching,
     } = useQuery(['studyAcceptData'], () => getStudyAccept(studyId, accept).then((response) => response.data));
 
     const members = studyAcceptData;
@@ -77,7 +79,12 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
 
     if (isLoading) {
         // 로딩 상태를 표시
-        return <InfoMessage message="Loading..." />;
+        return <LoadingSpinner />;
+    }
+
+    if (isFetching) {
+        // 로딩 상태를 표시
+        return <FetchingSpinner />;
     }
 
     if (isError) {

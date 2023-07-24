@@ -8,6 +8,7 @@ import { useQuery } from 'react-query';
 import { getUserData, getUserDataById } from '../../api/api-user';
 import { useAuth } from '../../hooks/useAuth';
 import InfoMessage from '../UI/InfoMessage';
+import { FetchingSpinner, LoadingSpinner } from '../common/Spinners';
 
 // 다운로드 이미지 링크
 const downImageSrc = '/download.png';
@@ -28,6 +29,7 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ userId, handleModalClose 
         data: userData,
         isLoading,
         isError,
+        isFetching,
     } = useQuery(['userData'], () => getUserDataById(String(localStorage.getItem('token')), userId));
 
     // 유저 이름 상태 관리
@@ -56,7 +58,12 @@ const UserInfoModal: React.FC<UserInfoModalProps> = ({ userId, handleModalClose 
 
     if (isLoading) {
         // 로딩 상태를 표시
-        return <InfoMessage message="Loading..." />;
+        return <LoadingSpinner />;
+    }
+
+    if (isFetching) {
+        // 로딩 상태를 표시
+        return <FetchingSpinner />;
     }
 
     if (isError) {
