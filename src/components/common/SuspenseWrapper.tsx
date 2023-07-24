@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import LoadingSpinner from './LoadingSpinner';
+import { LoadingSpinner } from './Spinners';
 
 /** 서스펜스 래퍼(Suspense Wrapper): */
 const SuspenseWrapper = ({ children }: { children: React.ReactNode }) => {
