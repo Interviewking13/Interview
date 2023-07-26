@@ -243,6 +243,15 @@ const studyApi = {
       res.study_relation = deletedRelation;
       res.status(200).json(deletedRelation);
 
+      // to-do: 스터디 인원 -1 감소
+      const foundStudy = await Study.findOne({ _id: study_id });
+      console.log(foundStudy);
+      if(foundStudy.acceptcount > 0) {
+        foundStudy.acceptcount -= 1;
+      }
+      const updatedStudy = await foundStudy.save();
+      res.study = updatedStudy;
+
       const deletedFeedback = await StudyFeedback.deleteOne({ user_id: member_id }); // 특정 유저가 쓴 피드백을 삭제
       res.study_feedback = deletedFeedback;
     } catch (error) {
@@ -267,6 +276,15 @@ const studyApi = {
         res.Study = deletedStudy;
       }
 
+      // to-do: 스터디 인원 -1 감소
+      const foundStudy = await Study.findOne({ _id: study_id });
+      console.log(foundStudy);
+      if(foundStudy.acceptcount > 0) {
+        foundStudy.acceptcount -= 1;
+      }
+      const updatedStudy = await foundStudy.save();
+      res.study = updatedStudy;
+      
       // 해당 스터디 아이디 관계 모두 삭제
       if (user.is_leader === true || user.is_leader === false) {
         const deletedRelation = await StudyRelation.deleteMany({ user_id: leader_id });
