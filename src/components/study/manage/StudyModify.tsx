@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 import { dateFomatting, dateFomattingLine } from '../../../utils/dateFomatting';
 import { useQueryClient } from 'react-query';
 import { getCurrentDate } from '../../../utils/getCurrentDate';
+import InfoMessage from '../../UI/InfoMessage';
 
 /** 스터디 수정 컴포넌트 타입지정 */
 type StudyModifyProps = {
@@ -28,7 +29,6 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
         data: studyData,
         isLoading,
         isError,
-        refetch,
     } = useQuery(['studyData'], () => getInfoStudyData(studyId).then((response) => response.data));
 
     // 에러 메시지 상태 추가
@@ -49,16 +49,6 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
     const [recruitmentDeadline, setRecruitmentDeadline] = useState('');
     // 모집 인원 상태 추가
     const [recruitmentCount, setRecruitmentCount] = useState(0);
-
-    // // refetch 쓰는부분
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         refetch();
-    //     }, 500); // 5초마다 데이터 업데이트 및 새로고침
-    //     return () => {
-    //         clearInterval(interval);
-    //     };
-    // }, []);
 
     // studyData에서 불러온 값들을 상태관리 set함수로 넣어 줌.
     useEffect(() => {
@@ -148,12 +138,12 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
 
     if (isLoading) {
         // 로딩 상태를 표시
-        return <div>Loading...</div>;
+        return <InfoMessage message="Loading..." />;
     }
 
     if (isError) {
         // 에러 상태를 표시
-        return <div>Error occurred while fetching data</div>;
+        return <InfoMessage message="Error occurred while fetching data" />;
     }
 
     return (
