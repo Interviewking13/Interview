@@ -6,28 +6,19 @@ import * as fonts from "../../constants/fonts";
 import { colors } from "../../constants/colors";
 import { useNavigate } from "react-router-dom";
 
-type UserData = {
+import ModifyBtn from "../UI/ModifyBtn";
+export type UserData = {
   email: string;
   user_name: string;
   phone_number: string;
   user_id: string;
-  file_key: string;
-  file_name: string;
+  file_key: string | null;
+  file_name: string | null;
 };
 
 const Modify = () => {
-  const [password, setPassword] = useState("");
-  const [passwordc, setPasswordc] = useState("");
-  const navigate = useNavigate();
   const writePassword = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<any>(null);
-
-  const onChangePassword = (e: any) => {
-    setPassword(e.target.value);
-  };
-  const onChangePassworda = (e: any) => {
-    setPasswordc(e.target.value);
-  };
 
   useEffect(() => {
     getData();
@@ -38,23 +29,24 @@ const Modify = () => {
     user_name: "",
     phone_number: "",
     user_id: "",
-    file_key: "",
-    file_name: "",
+    file_key: null,
+    file_name: null,
   });
-  const [password, se];
+  const [password, setPassword] = useState<string>("");
+  const [verPassword, setVerPassword] = useState<string>("");
+
+  const onChangePassword = (e: any) => {
+    setPassword(e.target.value);
+  };
+  const onChangeVerPassword = (e: any) => {
+    setVerPassword(e.target.value);
+  };
   const handleChangeState = (e: any) => {
     setUserDataValue({
       ...userDataValue,
-      [e.target.name]: e.target.value, //내용이 적히는 요소의 이름===key,적히는 내용===value를 이용함
+      [e.target.name]: e.target.value, //내용이 적히는 key,value를 이용함
       //   // content: state.contant를 스프레드 연산자로 간단하게 복사가능
       //   //스프레드 연산자는 변경값 앞에 덧씌운다.
-    });
-  };
-
-  const handleChangePassword = (e: any) => {
-    setUserDataValue({
-      ...userDataValue,
-      [e.target.name]: String(e.target.value),
     });
   };
   const getData = async () => {
@@ -68,6 +60,7 @@ const Modify = () => {
     }
   };
 
+  /** 파일업로드 부분 */
   const onChangeFileInput = (e: React.FormEvent) => {
     e.preventDefault();
     fileInputRef.current?.click();
@@ -82,60 +75,6 @@ const Modify = () => {
       setUserDataValue({ ...userDataValue, file_name: file.name });
     }
   };
-  console.log(userDataValue);
-  const onSubmitDelete = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (userDataValue.password === userDataValue.verPassword) {
-      if (window.confirm("회원탈퇴를 하시겠습니까?")) {
-        try {
-          const token = String(localStorage.getItem("token"));
-          const user_id = userDataValue.user_id;
-          const email = userDataValue.email;
-          password;
-          const response = await deleteUser(user_id, email, password, token);
-          console.log("User deleted successfully", response);
-          alert("이용해주셔서 감사합니다.");
-          navigate("/");
-          localStorage.removeItem("token");
-        } catch (err) {
-          console.log(err);
-        }
-      } else {
-        alert("탈퇴가 취소되었습니다.");
-      }
-    } else {
-      alert("탈퇴를 위해 비밀번호를 작성해주세요");
-      writePassword.current?.focus();
-    }
-  };
-
-  // const onSubmitModify = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   if (
-  //     userDataValue.password &&
-  //    userDataValue.password.length > 1&&
-  //     userDataValue.password === userDataValue.verPassword
-  //   ) {
-  //     try {
-  //       const token = String(localStorage.getItem("token"));
-  //       const user_id = userDataValue.user_id;
-  //       const email = userDataValue.email;
-  //       const password = userDataValue.password;
-  //       // const response = await putUserData(user_id, email, password, token);
-  //       // console.log("User deleted successfully", response);
-  //       alert("정보가 수정되었습니다.");
-  //       navigate("/mypage/userInfo");
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   } else {
-  //     alert("정보수정을 위해 비밀번호를 작성해주세요");
-  //     writePassword.current?.focus();
-  //   }
-  // };
-  // const onSubmitUpload = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  // };
 
   return (
     <StyledContainer>
@@ -176,7 +115,7 @@ const Modify = () => {
         </StyledLowContent>
         <StyledLowContent>
           <StyledInfoName>비밀번호확인</StyledInfoName>
-          <StyledTextField type="password" onChange={onChangePassworda} />
+          <StyledTextField type="password" onChange={onChangeVerPassword} />
         </StyledLowContent>
 
         {/* 파일첨부 부분 */}
@@ -200,23 +139,12 @@ const Modify = () => {
           </StyledFindButton>
         </StyledLowContent>
 
-        {/* 회원탈퇴, 수정 버튼 */}
-        <StyledButtonContent>
-          <StyledDeleteButton
-            onClick={onSubmitDelete}
-            type="submit"
-            variant="contained"
-          >
-            회원탈퇴
-          </StyledDeleteButton>
-          <StyledModifyButton
-            // onClick={onSubmitModify}
-            variant="contained"
-            type="submit"
-          >
-            수정하기
-          </StyledModifyButton>
-        </StyledButtonContent>
+        {/* 회원탈퇴, 수정 버튼 컴포넌트*/}
+        <ModifyBtn
+          userDataValue={userDataValue}
+          password={password}
+          verPassword={verPassword}
+        />
       </form>
     </StyledContainer>
   );
@@ -285,48 +213,6 @@ const StyledFileFindTextField = styled.input`
   width: 960px;
   margin-right: 10px;
   padding-left: 20px;
-`;
-/** 버튼 배치 스타일 */
-const StyledButtonContent = styled.div`
-  margin-top: 15px;
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  width: 1269px;
-`;
-
-/** 수정하기버튼 스타일 */
-const StyledModifyButton = styled(Button)`
-  && {
-    margin-right: 10px;
-    border-radius: 10px;
-    width: 132px;
-    height: 45px;
-    ${fonts.SubText}
-    padding: auto;
-    background-color: ${colors.main_mint};
-    color: ${colors.main_navy};
-    &:hover {
-      background-color: ${colors.main_navy};
-      color: ${colors.main_mint};
-    }
-  }
-`;
-/** 회원탈퇴 버튼 스타일 */
-const StyledDeleteButton = styled(Button)`
-  && {
-    border-radius: 10px;
-    width: 132px;
-    height: 45px;
-    ${fonts.SubText}
-    padding: auto;
-    background-color: ${colors.main_red};
-    color: ${colors.back_navy};
-    &:hover {
-      background-color: ${colors.back_navy};
-      color: ${colors.main_red};
-    }
-  }
 `;
 /** 파일찾기버튼 스타일 */
 const StyledFindButton = styled(Button)`
