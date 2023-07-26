@@ -98,8 +98,9 @@ const HomePage = (): JSX.Element => {
                 </StyledItemNameArea>
 
                 <StudyListItemArea>
-                    {studyData &&
+                    {Array.isArray(studyData) ? (
                         studyData
+                            .slice()
                             .reverse()
                             .slice(0, 4)
                             .map((study: StudyData) => (
@@ -115,7 +116,10 @@ const HomePage = (): JSX.Element => {
                                         master={study.leader_name}
                                     />
                                 </StyledLink>
-                            ))}
+                            ))
+                    ) : (
+                        <InfoMessage message="Error occurred while fetching data" />
+                    )}
                 </StudyListItemArea>
 
                 <StyledMainStudyBtnArea>

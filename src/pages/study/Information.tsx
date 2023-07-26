@@ -19,6 +19,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useAuth } from '../../hooks/useAuth';
 import InfoMessage from '../../components/UI/InfoMessage';
 import { FetchingSpinner, LoadingSpinner } from '../../components/common/Spinners';
+import { isLogin } from '../../hooks/isLogin';
 
 /** 스터디 정보 컴포넌트 */
 const Information: React.FC = () => {
@@ -30,14 +31,20 @@ const Information: React.FC = () => {
     const [studyApplyModalOpen, setStudyApplyModalOpen] = useState(false);
     const [useId, setUserId] = useState('');
 
+    // 로그인 상태면 isUserLoggedIn===true
+    const isUserLoggedIn = isLogin();
+
     // 리액트 쿼리 훅으로 유저 데이터 가져오기
     const {
         data: userData,
         isLoading: userDataLoading,
         isError: userDataError,
         isFetching: userDataFetching,
-    } = useQuery('userData', () => getUserData(String(localStorage.getItem('token'))));
+    } = useQuery('userData', () => getUserData(String(localStorage.getItem('token'))), {
+        enabled: isUserLoggedIn, // 로그인 상태일 때만 useQuery 호출
+    });
 
+    // 리액트 쿼리 훅으로 스터디 데이터 가져오기
     const {
         data: studyData,
         isLoading: studyDataLoading,
@@ -45,27 +52,29 @@ const Information: React.FC = () => {
         isFetching: studyDataFetching,
     } = useQuery(['studyData'], () => getInfoStudyData(lastPathSegment).then((response) => response.data));
 
+    // 데이터가 로딩 중이 아니고, 패칭중 아니고, 에러가 아닐 때에만 user_id를 설정합니다.
     useEffect(() => {
         if (!userDataLoading && !userDataError && userDataFetching) {
-            // 데이터가 로딩 중이 아니고, 패칭중 아니고, 에러가 아닐 때에만 user_id를 설정합니다.
             setUserId(userData.data.user_id);
         }
     }, [userDataLoading, userDataError, userData]);
 
-    /** 모달창 오픈 */
+    /** 자기소개서 모달창 오픈 핸들러 */
     const handleOpenUserInfoModal = () => {
         setUserInfoModalOpen(true);
     };
 
-    /** 모달창 클로즈 */
+    /** 자기소개서 모달창 클로즈 핸들러 */
     const handleCloseUserInfoModal = () => {
         setUserInfoModalOpen(false);
     };
 
+    /** 스터디 신청 모달창 오픈 핸들러 */
     const handleOpenStudyApplyModal = () => {
         setStudyApplyModalOpen(true);
     };
 
+    /** 스터디 신청 모달창 클로즈 핸들러 */
     const handleCloseStudyApplyModal = () => {
         setStudyApplyModalOpen(false);
     };
@@ -91,7 +100,6 @@ const Information: React.FC = () => {
     }
 
     if (studyDataFetching && !studyApplyModalOpen) {
-        console.log(studyApplyModalOpen);
         // studyData패칭 상태를 표시
         return <FetchingSpinner />;
     }
@@ -101,6 +109,7 @@ const Information: React.FC = () => {
         return <InfoMessage message="StudyDataError occurred while fetching data" />;
     }
 
+    // 스터디 데이터 분해구조 할당
     const { title, content, start, end, chat_link, headcount, acceptcount, leader_name, leader_id, _id } = studyData;
 
     return (
@@ -111,6 +120,7 @@ const Information: React.FC = () => {
             </MystudyContainer>
             <StyeldTapContainer>
                 <StudyTaps />
+                {/* 로그인 유저가 스터디장이면 보이도록 */}
                 {useId === leader_id ? (
                     <StyledStudyManageButton onClick={handleStudyManageButtonClick}>
                         <SettingsIcon fontSize="large"></SettingsIcon>
@@ -146,6 +156,7 @@ const Information: React.FC = () => {
                 &nbsp;스터디 소개
             </StudyIntro>
             <InfoContent>{content}</InfoContent>
+            {/* 로그인 유저가 스터디장이 아니면 보이도록*/}
             {useId !== leader_id ? <SubmitButton onClick={handleOpenStudyApplyModal} /> : <></>}
             <Modal open={studyApplyModalOpen} onClose={handleCloseStudyApplyModal}>
                 <StudyApplyModal studyId={lastPathSegment} handleModalClose={handleCloseStudyApplyModal} />
