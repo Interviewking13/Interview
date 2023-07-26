@@ -37,7 +37,7 @@ const userService = {
       const payload = {
         user_id: user._id,          // 사용자의 MongoDB ObjectID
       }
-      const token = jwt.sign(payload, secretKey, { expiresIn: "3d" }); 
+      const token = jwt.sign(payload, secretKey, { expiresIn: "1h" }); 
       console.log(token);
       return token;
     } catch (err) {
