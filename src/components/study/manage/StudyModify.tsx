@@ -29,7 +29,6 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
         data: studyData,
         isLoading,
         isError,
-        refetch,
     } = useQuery(['studyData'], () => getInfoStudyData(studyId).then((response) => response.data));
 
     // 에러 메시지 상태 추가
@@ -50,16 +49,6 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
     const [recruitmentDeadline, setRecruitmentDeadline] = useState('');
     // 모집 인원 상태 추가
     const [recruitmentCount, setRecruitmentCount] = useState(0);
-
-    // // refetch 쓰는부분
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         refetch();
-    //     }, 500); // 5초마다 데이터 업데이트 및 새로고침
-    //     return () => {
-    //         clearInterval(interval);
-    //     };
-    // }, []);
 
     // studyData에서 불러온 값들을 상태관리 set함수로 넣어 줌.
     useEffect(() => {
