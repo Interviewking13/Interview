@@ -19,4 +19,89 @@ const studyController = require('../controllers/studyController');
 // 계층구조 분리
 router.get('/studyInfo/:study_id', studyController.getStudyInfoById);
 
+/**
+ * @swagger
+ * tags:
+ *   name: study-controller
+ *   description: Study API
+ */
+
+/**
+ * @swagger
+ * /api/study/studyInfo/:study_id:
+ *   post:
+ *     summary: 스터디 ID 찾기
+ *     tags: [study-controller]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             properties:
+ *               study_id:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: 스터디 ID 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 resultCode:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   properties:
+ *                     study_id:
+ *                       type: string
+ *                     leader_id:
+ *                       type: string
+ *                     study_name:
+ *                       type: string
+ *                     leader_name:
+ *                       type: string
+ *                     title:
+ *                       type: string
+ *                     content:
+ *                       type: string
+ *                     start:
+ *                       type: Date
+ *                     end:
+ *                       type: Date
+ *                     deadline:
+ *                       type: Date
+ *                     headcount:
+ *                       type: number
+ *                     acceptcount:
+ *                       type: number
+ *                     chat_link:
+ *                       type: string
+ *                     status:
+ *                       type: number
+ * 
+ *       404:
+ *         description: 해당 스터디를 찾을 수 없습니다.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 resultCode:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Invalid Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               properties:
+ *                 resultCode:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ */
+
+
+
 module.exports = router;

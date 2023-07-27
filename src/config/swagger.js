@@ -18,22 +18,26 @@ const options = {
         },
         },
         security: [ // 헤더의 Authorization안에 값을 넣어줄수 있는 기능
-        {
-            Authorization: [],
-        },
+            {
+                Authorization: [],
+            },
         ],
         servers: [
-            {
-                url: "https://interviewking.onrender.com",
-                description: "deploy Server",
-            },
             {
                 url: "http://localhost:5000",
                 description: "dev Server",
             },
+            {
+                url: "https://interviewking.onrender.com",
+                description: "deploy Server",
+            },
         ],
     },
-    apis: ["./src/routes/user.js"],     // api는 /routes 파일 아래 js 파일 내에 정의하고 있으며, /swagger 폴더 아래 swagger 설정을 정의하고 있다
+    // api는 /routes 파일 아래 js 파일 내에 정의하고 있으며, /swagger 폴더 아래 swagger 설정을 정의하고 있다
+    apis: [
+        "./src/routes/user.js",
+        "./src/routes/study.js"
+    ],
 };
 
 const specs = swaggerJsdoc(options);
