@@ -142,7 +142,7 @@ export default StudyList;
 const CommonContainer = styled.div`
     width: 1270px;
     margin: 0 auto;
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
         width: 100%; /* 모바일 화면에 딱 맞게 크기 설정 */
         margin: 0 auto;
     }
@@ -153,7 +153,7 @@ const StudyListTopArea = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -165,7 +165,7 @@ const StudyListInputArea = styled.div`
     width: 472px;
     display: flex;
     justify-content: space-between;
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
         width: 300px;
         margin: 0;
     }
@@ -176,7 +176,7 @@ const StyledTitleText = styled.p`
     ${fonts.TitleText}
     color: ${colors.main_navy};
     margin: 0 30px 0 0;
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
         margin: 0;
         text-align: center; /* 모바일 뷰에서 가운데 정렬 */
     }
@@ -189,7 +189,7 @@ const StyledSubTextThin = styled.p`
     color: ${colors.darkgray_navy};
     margin: 0;
     ${fonts.SubTextThin}
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
         width: 100%;
         text-align: center; /* 모바일 뷰에서 가운데 정렬 */
     }
@@ -204,7 +204,7 @@ const CommonButton = styled.div`
     border-radius: 10px;
     background-color: ${colors.main_mint};
     ${fonts.SubText}
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
         display: none; /* 모바일 화면에서 숨기기 */
     }
 `;
@@ -226,7 +226,7 @@ const StudyListItemArea = styled.div`
     grid-row-gap: 30px;
     grid-column-gap: 25px;
 
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
         width: 100%;
         height: auto;
         margin: 10px 0;
@@ -246,7 +246,7 @@ const StyledInput = styled.input`
     padding-left: 15px;
     color: ${colors.main_navy};
     ${fonts.SubTextThin}
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
         width: 100%;
     }
 `;
@@ -273,7 +273,7 @@ const StyledLink = styled(Link)`
         transform: scale(1.007);
         transition: 0.3s;
     }
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
         display: flex;
         justify-content: center;
     }

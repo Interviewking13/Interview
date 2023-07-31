@@ -67,7 +67,7 @@ const StudyManage = () => {
                     <StudyManageMain {...studyManageMainProps} />
                 ) : (
                     <>
-                        <Grid item xs={12}>
+                        <GridContainer item xs={12} activePage={activePage}>
                             <Grid container spacing={1} justifyContent="flex-start">
                                 <MenuTapBtn onClick={onClickStudyModify}>
                                     <Create />
@@ -82,7 +82,7 @@ const StudyManage = () => {
                                     신청목록
                                 </MenuTapBtn>
                             </Grid>
-                        </Grid>
+                        </GridContainer>
                     </>
                 )}
                 {activePage === 'modify' && <StudyModify studyId={studyId} />}
@@ -100,6 +100,10 @@ const CommonContainer = styled.div`
     width: 1270px;
     margin: 0 auto;
     font-family: ${fonts.SubTextThinSmall};
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        margin-right: 10px;
+    }
 `;
 
 /** 스터디 관리 탭 부분 div */
@@ -107,6 +111,18 @@ const StyledManageTapArea = styled.div`
     margin: 50px 0 0 0;
     display: flex;
     align-items: baseline;
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        align-items: left;
+    }
+`;
+
+/** Grid 컨테이너 */
+const GridContainer = styled(Grid)<{ activePage: string }>`
+    @media screen and (max-width: 768px) {
+        justify-content: center;
+        width: 100%;
+    }
 `;
 
 /** 타이틀 p */
@@ -116,6 +132,9 @@ const StyledTitleText = styled.p`
     ${fonts.TitleText}
     color: ${colors.main_mint};
     margin: 0 30px 10px 0;
+    @media screen and (max-width: 768px) {
+        margin: 0;
+    }
 `;
 
 /** 서브 텍스트 p */
@@ -126,4 +145,8 @@ const StyledSubTextThin = styled.p`
     font-weight: light;
     color: ${colors.main_gray};
     margin: 0;
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        text-align: left;
+    }
 `;
