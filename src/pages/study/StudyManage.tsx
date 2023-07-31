@@ -112,6 +112,7 @@ const StyledManageTapArea = styled.div`
     display: flex;
     align-items: baseline;
     @media screen and (max-width: 768px) {
+        margin: 10px 0 0 0;
         flex-direction: column;
         align-items: left;
     }

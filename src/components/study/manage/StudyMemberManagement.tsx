@@ -132,7 +132,8 @@ const CardContainer = styled.div`
     margin-top: 20px;
     color: ${colors.main_navy};
     @media screen and (max-width: 768px) {
-        margin: 10px;
+        width: calc(100% - 20px);
+        margin-top: 5px;
     }
 `;
 
@@ -159,6 +160,8 @@ const StyledName = styled.p`
     @media screen and (max-width: 768px) {
         width: 50px;
         font-size: 12px;
+        margin-right: 10px;
+        margin-left: 10px;
         min-width: 50px;
     }
 `;

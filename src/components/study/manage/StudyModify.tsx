@@ -276,6 +276,11 @@ const StyledStudyCreateText = styled.p`
     font-family: ${fonts.SubText};
     padding: 10px 0;
     color: ${colors.main_gray};
+    @media screen and (max-width: 768px) {
+        width: calc(100% - 20px);
+        height: 30px;
+        padding: 0;
+    }
 `;
 
 /** 스터디 이름, 회의주소 input */
@@ -289,7 +294,6 @@ const StyledStudyInput = styled.input`
     font-family: ${fonts.SubTextThinSmall};
     @media screen and (max-width: 768px) {
         width: calc(100% - 20px);
-
         height: 45px;
     }
 `;
@@ -447,5 +451,7 @@ const StyledErrorMessage = styled.p`
     margin: 0 15px 0 0;
     @media screen and (max-width: 768px) {
         margin: 10px 0;
+        max-width: 72px;
+        font-size: 10px;
     }
 `;
