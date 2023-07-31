@@ -254,7 +254,7 @@ const StyledStudyCreateInputArea = styled.div`
         flex-direction: column;
         align-items: flex-start;
         width: calc(100% - 20px);
-        height: 90px;
+        height: 71px;
     }
 `;
 
