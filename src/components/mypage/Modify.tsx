@@ -157,6 +157,9 @@ const StyledContainer = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 /** 각 요소 가로배열 */
 const StyledLowContent = styled.div`
@@ -164,7 +167,10 @@ const StyledLowContent = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 1269px;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 /** title :내 정보수정*/
 const StyledTitle = styled(Typography)`
