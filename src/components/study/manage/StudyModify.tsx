@@ -236,6 +236,7 @@ const StyledStudyCreateArea = styled.div`
     align-content: space-between;
     gap: 20px;
     @media screen and (max-width: 768px) {
+        width: 100%;
         flex-direction: column;
         justify-content: space-between;
         align-items: flex-start;
@@ -252,7 +253,7 @@ const StyledStudyCreateInputArea = styled.div`
     @media screen and (max-width: 768px) {
         flex-direction: column;
         align-items: flex-start;
-        width: 100%;
+        width: calc(100% - 20px);
         height: 90px;
     }
 `;
@@ -264,7 +265,7 @@ const StyledStudyCreateInputAreaBig = styled.div`
     @media screen and (max-width: 768px) {
         flex-direction: column;
         align-items: flex-start;
-        width: 100%;
+        width: calc(100% - 20px);
     }
 `;
 
@@ -384,7 +385,7 @@ const StyledStudyCreateBtnArea = styled.div`
     @media screen and (max-width: 768px) {
         width: 100%;
         justify-content: center;
-        gap: 10px;
+        gap: 5px;
     }
 `;
 

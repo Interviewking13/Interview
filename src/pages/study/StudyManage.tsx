@@ -102,7 +102,7 @@ const CommonContainer = styled.div`
     font-family: ${fonts.SubTextThinSmall};
     @media screen and (max-width: 768px) {
         width: 100%;
-        margin-right: 10px;
+        margin: 10px;
     }
 `;
 
