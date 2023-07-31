@@ -131,6 +131,9 @@ const CardContainer = styled.div`
     justify-content: space-between;
     margin-top: 20px;
     color: ${colors.main_navy};
+    @media screen and (max-width: 768px) {
+        margin: 10px;
+    }
 `;
 
 /** 내용 div */
@@ -140,6 +143,9 @@ const CardContent = styled.div`
     flex-grow: 1;
     background-color: ${colors.back_navy}; /* 수정된 부분 */
     border-radius: 10px; /* 수정된 부분 */
+    @media screen and (max-width: 768px) {
+        min-width: 270px;
+    }
 `;
 
 /** Name p */
@@ -149,13 +155,23 @@ const StyledName = styled.p`
     margin-right: 20px;
     margin-left: 20px;
     cursor: pointer;
+    min-width: 150px;
+    @media screen and (max-width: 768px) {
+        width: 50px;
+        font-size: 12px;
+        min-width: 50px;
+    }
 `;
 
 /** 한줄소개 p */
 const StyledDescription = styled.p`
     flex-grow: 1;
     margin-right: 10px;
-    margin-left: 100px;
+    margin-left: 10px;
+    @media screen and (max-width: 768px) {
+        margin-left: 10px;
+        font-size: 12px;
+    }
 `;
 
 /** StyledCommonButton 타입지정 */
@@ -181,4 +197,11 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
         color: white;
     }
     ${fonts.SubText}
+    @media screen and (max-width: 768px) {
+        width: 70px;
+        height: 35px;
+        font-size: 12px;
+        margin-left: 5px;
+        min-width: 40px;
+    }
 `;
