@@ -61,6 +61,7 @@ const UserStudy = () => {
     </StyledContainer>
   );
 };
+export default UserStudy;
 
 const StyledTitle = styled(Typography)`
   && {
@@ -68,11 +69,13 @@ const StyledTitle = styled(Typography)`
     color:${colors.main_navy}
   }
 `;
-export default UserStudy;
 
 const StyledContainer = styled.div`
   width: 1270px;
   margin-bottom: 200px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 const StyledContent = styled.div`
   margin-top: 20px;

@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-import { Typography, Grid, Box, Divider, IconButton } from "@mui/material";
+import {
+  Typography,
+  Grid,
+  Box,
+  Divider,
+  IconButton,
+  Icon,
+} from "@mui/material";
 
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
@@ -54,12 +61,12 @@ const UserInfo = () => {
   return (
     <StyledDiv>
       <StyledLowContent>
-        <StyledWelcome noWrap>
+        <StyledWelcome>
           면접왕 {userDataValue.user_name} 님, 어서오세요.
         </StyledWelcome>
-        <IconButton onClick={onClickModify}>
+        <StyledSettingBtn onClick={onClickModify}>
           <SettingsIcon />
-        </IconButton>
+        </StyledSettingBtn>
       </StyledLowContent>
 
       {/* 구분선 */}
@@ -86,20 +93,36 @@ const UserInfo = () => {
 };
 
 export default UserInfo;
+/** 배경 테두리 */
+const StyledDiv = styled.div`
+  border: 1px solid ${colors.main_navy};
+  border-radius: 7px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`;
 /** 인삿말 스타일:===님 환영합니다. */
 const StyledWelcome = styled(Typography)`
   && {
     ${fonts.SubTextBig};
     color: ${colors.main_navy};
-    margin: 22px;
-    margin-right: 1000px;
+    margin: 20px;
+    white-space: nowrap;
+    width: 100%;
+    @media screen and (max-width: 768px) {
+      margin: 20px 0;
+    }
   }
 `;
-/** 배경 테두리 */
-const StyledDiv = styled.div`
-  border: 1px solid ${colors.main_navy};
-  border-radius: 7px;
+const StyledSettingBtn = styled(IconButton)`
+  && {
+    margin-right: 20px;
+    @media screen and (max-width: 768px) {
+      margin-right: 10px;
+    }
+  }
 `;
+
 /** 구분선 */
 const StyledLine = styled(Divider)`
   && {
@@ -109,6 +132,10 @@ const StyledLine = styled(Divider)`
 /** 테두리 내 여백 */
 const StyledInfo = styled.div`
   margin: 10px 0 22px 22px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin: 10px 0px;
+  }
 `;
 
 /** 각 요소 가로배열 */
@@ -118,6 +145,10 @@ const StyledLowContent = styled.div`
   flex-direction: low;
   align-items: center;
   width: 1269px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin: 10px 10px;
+  }
 `;
 
 /** 회원정보 요소 텍스트 스타일 */

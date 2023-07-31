@@ -46,6 +46,8 @@ const CardContainer = styled.div`
   justify-content: space-between;
   margin-top: 20px;
   color: ${colors.main_navy};
+  @media screen and (max-width: 768px) {
+  }
 `;
 
 const CardContent = styled.div`
@@ -54,12 +56,20 @@ const CardContent = styled.div`
   flex-grow: 1;
   background-color: ${colors.back_navy}; /* 수정된 부분 */
   border-radius: 10px; /* 수정된 부분 */
+  @media screen and (max-width: 768px) {
+    width: 70%;
+    height: 100%;
+  }
 `;
 
 const StyledName = styled.p`
   ${fonts.SubTextBig}
   margin-right: 10px;
   margin-left: 20px;
+  @media screen and (max-width: 768px) {
+    white-space: nowrap;
+    overflow: hidden;
+  }
 `;
 
 const StyledDescription = styled.p`
@@ -85,6 +95,9 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
     color: white;
   }
   ${fonts.SubText}
+  @media screen and (max-width: 768px) {
+    width: 30%;
+  }
 `;
 
 export default StudyManageList;
