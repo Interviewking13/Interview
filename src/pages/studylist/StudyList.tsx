@@ -106,7 +106,7 @@ const StudyList = (): JSX.Element => {
                     </StyledLink>
                 </StudyListInputArea>
             </StudyListTopArea>
-
+            {studyData && studyData.length > 0 ? ( 
             <StudyListItemArea>
                 {getDisplayedStudyData().map((study) => (
                     <StyledLink to={`/study/${study._id}`} key={study._id}>
@@ -122,7 +122,9 @@ const StudyList = (): JSX.Element => {
                         />
                     </StyledLink>
                 ))}
-            </StudyListItemArea>
+            </StudyListItemArea>) : (
+                <p>스터디 데이터가 없습니다.</p>
+            )}
 
             <PaginationArea>
                 <PaginationButton disabled={currentPage === 1} onClick={() => goToPage(currentPage - 1)}>
