@@ -14,18 +14,10 @@ import { FetchingSpinner, LoadingSpinner } from '../../common/Spinners';
 /** 스터디 맴버 관리 컴포넌트 타입지정 */
 type StudyMemberManagementProps = {
   studyId: string;
-  studyId: string;
 };
 
 /** 스터디 신청 데이터 타입지정 */
 type StudyAcceptData = {
-  _id: string;
-  study_id: string;
-  user_id: string;
-  user_name: string;
-  is_leader: boolean;
-  goal: string;
-  accept: number;
   _id: string;
   study_id: string;
   user_id: string;
@@ -129,30 +121,6 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
       ))}
     </>
   );
-  return (
-    <>
-      {/* members(studyAcceptData)를 index로 뿌림 */}
-      {members.map((member: StudyAcceptData, index: number) => (
-        <CardContainer key={index}>
-          <CardContent>
-            <StyledName onClick={() => handleOpenUserInfoModal(member.user_id)}>
-              {member.user_name}
-            </StyledName>
-            <Modal open={userInfoModalOpen.open} onClose={handleCloseUserInfoModal}>
-              <UserInfoModal
-                userId={userInfoModalOpen.userId}
-                handleModalClose={handleCloseUserInfoModal}
-              />
-            </Modal>
-            <StyledDescription>{member.goal}</StyledDescription>
-          </CardContent>
-          <StyledCommonButton backgroundColor={colors.main_red} onClick={() => onDeleteMember(index)}>
-            회원 삭제
-          </StyledCommonButton>
-        </CardContainer>
-      ))}
-    </>
-  );
 };
 export default StudyMemberManagement;
 
@@ -192,7 +160,6 @@ const StyledDescription = styled.p`
 
 /** StyledCommonButton 타입지정 */
 interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
-  backgroundColor?: string;
   backgroundColor?: string;
 }
 
