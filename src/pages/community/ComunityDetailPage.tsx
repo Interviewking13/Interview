@@ -327,6 +327,10 @@ const StyledContent = styled.div`
   margin: 25px 0 40px;
   width: 1270px;
   overflow-wrap: break-word;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    width: 95%;
+  }
 `;
 
 /** 커뮤니티상세 댓글 내용 컨테이너 */

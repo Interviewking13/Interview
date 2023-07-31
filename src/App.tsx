@@ -58,7 +58,7 @@ function App() {
                                     }
                                 >
                                     <Route
-                                        path="userstudy"
+                                        path=""
                                         element={
                                             <>
                                                 <Helmet>
@@ -220,6 +220,7 @@ function App() {
             </Router>
         </RecoilRoot>
     );
+
 }
 
 export default App;
