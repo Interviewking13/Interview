@@ -180,6 +180,9 @@ export const StyledPostTitle = styled.div`
   ${SubText};
   color: ${colors.main_black};
   margin: 0;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 const StyledPostListItemBox = styled.div`
@@ -196,6 +199,9 @@ export const StyledPostItem = styled.div`
   color: ${colors.main_black};
   ${SubTextThinSmall};
   width: 100px;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const StyledPageBtn = styled.button<{ isActive: boolean }>`
@@ -207,4 +213,7 @@ const StyledPageBtn = styled.button<{ isActive: boolean }>`
   cursor: pointer;
   padding: 5px 10px;
   margin: 0 5px;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+  }
 `;

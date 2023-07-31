@@ -5,7 +5,8 @@ const getToken = () => {
 };
 
 export const axiosInstance = axios.create({
-  baseURL: "https://interviewking.onrender.com/api/",
+  baseURL:
+    "https://port-0-interviewking13-7xwyjq992llj5sps0m.sel4.cloudtype.app/api/",
 });
 
 // export const axiosInstance = axios.create({
