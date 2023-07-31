@@ -231,8 +231,13 @@ const StudyListItemArea = styled.div`
         height: auto;
         margin: 10px 0;
         display: grid;
-        grid-template-columns: 1fr; /* 1행으로 표시하도록 변경 */
-        gap: 5px; /* 간격 설정 추가 */
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    @media screen and (max-width: 500px) {
+        /* 500px 이하일 때 2행으로 표시 */
+        grid-template-columns: 2fr; /* 1행으로 표시하도록 변경 */
     }
 `;
 
