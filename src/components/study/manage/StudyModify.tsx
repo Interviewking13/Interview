@@ -230,11 +230,19 @@ export default StudyModify;
 
 /** 스터디 수정 컨테이너 div */
 const StyledStudyCreateArea = styled.div`
-    height: 760px;
     margin: 20px 0 20px 0;
     display: flex;
     flex-wrap: wrap;
     align-content: space-between;
+    gap: 20px;
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 5px;
+        margin: 0px;
+    }
 `;
 
 /** 스터디 수정 input 컨테이너 div */
@@ -242,12 +250,24 @@ const StyledStudyCreateInputArea = styled.div`
     height: 45px;
     display: flex;
     align-items: center;
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        width: calc(100% - 20px);
+        height: 71px;
+    }
 `;
 
 /** 스터디 소개, 설명 컨테이너 div */
 const StyledStudyCreateInputAreaBig = styled.div`
     height: 400px;
     display: flex;
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        width: calc(100% - 20px);
+        height: 240px;
+    }
 `;
 
 /** 스터디 모집마감, 인원 p */
@@ -257,6 +277,12 @@ const StyledStudyCreateText = styled.p`
     font-family: ${fonts.SubText};
     padding: 10px 0;
     color: ${colors.main_gray};
+    @media screen and (max-width: 768px) {
+        width: calc(100% - 20px);
+        height: 26px;
+        padding: 0;
+        font-size: 16px;
+    }
 `;
 
 /** 스터디 이름, 회의주소 input */
@@ -268,6 +294,10 @@ const StyledStudyInput = styled.input`
     margin: 0;
     padding-left: 20px;
     font-family: ${fonts.SubTextThinSmall};
+    @media screen and (max-width: 768px) {
+        width: calc(100% - 20px);
+        height: 45px;
+    }
 `;
 
 /** 스터디 모집인원 input */
@@ -280,6 +310,9 @@ const StyledStudyInputNumber = styled.input`
     padding: 0 20px 0 20px;
     font-family: sans-serif;
     font-size: 16px;
+    @media screen and (max-width: 768px) {
+        width: calc(100% - 40px);
+    }
 `;
 
 /** 스터디 기간 div */
@@ -288,6 +321,10 @@ const StyledDateArea = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media screen and (max-width: 768px) {
+        width: 100%;
+    }
 `;
 
 /** 스터디 기간 ~표시 p */
@@ -307,6 +344,9 @@ const StyledStudyDate = styled.input`
     padding: 0 20px 0 20px;
     font-family: sans-serif;
     font-size: 16px;
+    @media screen and (max-width: 768px) {
+        width: calc(100% - 40px);
+    }
 `;
 
 /** 스터디 설명을 입력 컨테이너 textarea */
@@ -337,6 +377,10 @@ const StyledStudyInputBig = styled.textarea`
         background-color: none; /* 스크롤바 트랙 색상 */
         border-radius: 4px; /* 스크롤바 트랙 둥글게 */
     }
+    @media screen and (max-width: 768px) {
+        width: calc(100% - 10px);
+        padding: 10px 0 0 10px;
+    }
 `;
 
 /** 스터디 버튼 전체 컨테이너 div */
@@ -345,6 +389,11 @@ const StyledStudyCreateBtnArea = styled.div`
     display: flex;
     flex-direction: row-reverse;
     gap: 20px;
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        justify-content: center;
+        gap: 5px;
+    }
 `;
 
 /** 스터디 버튼 컨테이너 div */
@@ -353,6 +402,10 @@ const StyledBtnContainer = styled.div`
     color: ${colors.main_black};
     display: flex;
     align-items: center;
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+    }
 `;
 
 /** 스터디 버튼 타입지정 */
@@ -376,18 +429,33 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
         color: white;
     }
     ${fonts.SubText}
+    @media screen and (max-width: 768px) {
+        width: 90px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
 `;
 
 /** 스터디 취소 버튼 p*/
 const StyledButtonTextDelete = styled.p`
     font-family: ${fonts.SubTextBig};
     color: ${colors.back_navy};
+    @media screen and (max-width: 768px) {
+        font-size: 16px;
+    }
 `;
 
 /** 스터디 버튼 서브 컨테이너 div*/
 const SubButtonContainer = styled.div`
     display: flex;
     justify-content: flex-end;
+    @media screen and (max-width: 768px) {
+        display: flex;
+        justify-content: flex-end;
+    }
 `;
 
 /** 에러 메세지 p */
@@ -395,4 +463,9 @@ const StyledErrorMessage = styled.p`
     color: red;
     font-size: 14px;
     margin: 0 15px 0 0;
+    @media screen and (max-width: 768px) {
+        margin: 10px 0;
+        max-width: 120px;
+        font-size: 12px;
+    }
 `;
