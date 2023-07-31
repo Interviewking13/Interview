@@ -40,7 +40,7 @@ const BestBoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
   };
 
   return (
-    <div>
+    <Container>
       <StyledPostListItem>
         {tap === 1 ? (
           bestPosts.map((post) => (
@@ -64,7 +64,7 @@ const BestBoardListItem: React.FC<BoardListItemProps> = ({ tap }) => {
           <div></div>
         )}
       </StyledPostListItem>
-    </div>
+    </Container>
   );
 };
 interface BoardListItemProps {
@@ -81,6 +81,8 @@ const App: React.FC<BoardListItemProps> = ({ tap }) => {
 };
 
 export default BestBoardListItem;
+
+const Container = styled.div``;
 
 const StyledPostListItem = styled.ul`
   list-style-type: none;
@@ -102,4 +104,7 @@ const StyledPostTitle = styled.div`
   ${SubText};
   color: ${colors.main_navy};
   margin: 0;
+  @media screen and (max-width: 360px) {
+    font-size: 12px;
+  }
 `;

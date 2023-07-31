@@ -39,6 +39,9 @@ const StyledBestTitle = styled.div`
   width: 430px;
   color: ${colors.main_mint};
   padding: 10px 20px;
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const StyledPostItems = styled.div`
@@ -50,6 +53,9 @@ const StyledPostItems = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  @media screen and (max-width: 768px) {
+    width: 350px;
+  }
 `;
 
 const StyledBestPostListItemBox = styled.div`
@@ -57,6 +63,9 @@ const StyledBestPostListItemBox = styled.div`
   border-radius: 5px;
   margin-bottom: 15px;
   border-top: none;
+  @media screen and (max-width: 768px) {
+    width: 350px;
+  }
 `;
 
 const StyledRightPostItem = styled.div`
@@ -79,4 +88,12 @@ const StyledPostItem = styled.div`
   &:nth-child(4) {
     margin-right: 16px;
   }
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+  font-size: 16px;
 `;
+
+// @media screen and (max-width: 360px) {
+//   display: ${({ className }) => (className === "hidden" ? "none" : "block")};
+// }

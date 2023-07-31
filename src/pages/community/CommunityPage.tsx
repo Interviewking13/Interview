@@ -41,7 +41,7 @@ const CommunityPage: React.FC<BoardListItemContainerProps> = ({ tap }) => {
       </StyledHeadContainer>
       <StydyTapContainer>
         <StydyTap onClick={onClickTotalTap}>
-          <CreateIcon />
+          <PenIcon />
           &nbsp;전체
         </StydyTap>
         <StydyTap onClick={onClickMyTap}>
@@ -56,10 +56,17 @@ const CommunityPage: React.FC<BoardListItemContainerProps> = ({ tap }) => {
   );
 };
 
+const PenIcon = styled(CreateIcon)``;
 /** 커뮤니티페이지 전체 컨테이너*/
 const StyledCommonContainer = styled.div`
   width: 1270px;
   margin: 0px auto;
+  justify-content: center;
+  align-items: center;
+  @media screen and (max-width: 768px) {
+    width: 350px;
+    padding: 10px;
+  }
 `;
 
 /** 커뮤니티페이지 상단바*/
@@ -67,15 +74,21 @@ const StyledHeadContainer = styled.div`
   margin: 50px 0 0 0;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  width: 100%;
+  @media screen and (max-width: 768px) {
+    justify-content: space-around;
+  }
 `;
 
 /** 커뮤니티페이지 타이틀*/
 const StyledTitle = styled.div`
-  height: fit-content;
   ${fonts.TitleText}
   color: ${colors.main_navy};
   margin: 0 30px 0 0;
+  @media screen and (max-width: 768px) {
+    font-size: 20px;
+    white-space: nowrap;
+  }
 `;
 
 /** 커뮤니티페이지 타이틀 텍스트*/
@@ -86,6 +99,9 @@ const StyledText = styled.div`
   color: ${colors.darkgray_navy};
   margin: 0;
   ${fonts.SubTextThin}
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 /** 커뮤니티텝 컨테이너*/
@@ -107,6 +123,9 @@ const StydyTap = styled.div`
   &:hover {
     color: skyblue; /* 호버 시 변경할 색상 */
   }
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 /** 커뮤니티페이지 버튼*/
@@ -123,12 +142,6 @@ const StyledInputBtn = styled.button`
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${colors.main_black};
-  transition: 0.3s;
-
-  :hover {
-    transform: scale(1.007);
-    transition: 0.3s;
-  }
 `;
 
 /** 커뮤니티페이지 목록전체컨테이너*/
@@ -144,10 +157,14 @@ const CommonButton = styled.div`
   height: 45px;
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;
   border-radius: 10px;
   background-color: ${colors.main_mint};
   ${fonts.SubText}
+  @media screen and (max-width: 768px) {
+    width: 60px;
+    height: 25px;
+  }
 `;
 
 /** 버튼텍스트*/
@@ -155,6 +172,9 @@ const ButtonText = styled.p`
   font-size: 18px;
   margin-top: 11px;
   border-radius: 10px;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 export default CommunityPage;

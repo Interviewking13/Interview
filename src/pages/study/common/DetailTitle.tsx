@@ -14,7 +14,7 @@ export const DetailTitle = (props: DetailTitleProps) => {
   return (
     <SubContainer>
       <SubContentTitle>
-        <PeopleAltIcon />
+        <Peopleicon />
         {props.name}
       </SubContentTitle>
       <SubContentContent>{props.content}</SubContentContent>
@@ -26,7 +26,7 @@ export const DetailButton = (props: DetailButtonProps) => {
   return (
     <SubContainer>
       <SubContentTitle>
-        <PeopleAltIcon />
+        <Peopleicon />
         {props.name}
       </SubContentTitle>
       <SubContentContentButton onClick={onClick}>
@@ -39,6 +39,9 @@ export const DetailButton = (props: DetailButtonProps) => {
 const SubContentContent = styled.span`
   margin-top: 10px;
   ${SubTextSmall};
+  @media screen and (max-width: 360px) {
+    font-size: 12px;
+  }
 `;
 const SubContentTitle = styled.span`
   ${SubTextSmall};
@@ -53,6 +56,11 @@ const SubContentTitle = styled.span`
   &:not(:first-child) {
     margin-left: 30px;
   }
+
+  @media screen and (max-width: 360px) {
+    font-size: 12px;
+    margin-right: 10px;
+  }
 `;
 const SubContainer = styled.div`
   display: flex;
@@ -65,4 +73,10 @@ const SubContentContentButton = styled.div`
   &.cursor-style {
     cursor: pointer;
   }
+  @media screen and (max-width: 360px) {
+    font-size: 12px;
+  }
+`;
+const Peopleicon = styled(PeopleAltIcon)`
+  font-size: 10px;
 `;

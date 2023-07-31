@@ -31,6 +31,11 @@ const SubButton = styled.button`
     color: white;
   }
   ${SubText}
+  @media screen and (max-width: 360px) {
+    width: 70px;
+    height: 30px;
+    font-size: 12px;
+  }
 `;
 
 const SubButtonContainer = styled.div`

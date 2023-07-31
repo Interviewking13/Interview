@@ -200,6 +200,10 @@ export const CommunityDetailPage: React.FC = () => {
 const StyledCommonContainer = styled.div`
   width: 1270px;
   margin: 0px auto;
+  @media screen and (max-width: 768px) {
+    padding: 10px;
+    width: 350px;
+  }
 `;
 
 /** 커뮤니티상세 전체 박스 */
@@ -261,12 +265,19 @@ const StyledTitle = styled.div`
   ${fonts.TitleText};
   color: ${colors.main_navy};
   margin-right: 20px;
+  @media screen and (max-width: 768px) {
+    font-size: 20px;
+    white-space: nowrap;
+  }
 `;
 
 /** 커뮤니티상세 내용 */
 const StyledText = styled.div`
   ${fonts.SubTextThin};
   color: ${colors.darkgray_navy};
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const DividerNavy = styled.div`
@@ -282,6 +293,10 @@ const StyledCommunityTitle = styled.div`
   color: ${colors.main_navy};
   ${fonts.SubTextBig};
   margin: 15px 0 10px;
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+    white-space: nowrap;
+  }
 `;
 
 /** 커뮤니티상세 정보 */
@@ -302,6 +317,9 @@ const StyledCommunitySunInfo = styled.div`
   &:last-child {
     border-right: none;
   }
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 /** 커뮤니티상세 수정버튼 */
@@ -309,6 +327,10 @@ const StyledContent = styled.div`
   margin: 25px 0 40px;
   width: 1270px;
   overflow-wrap: break-word;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    width: 95%;
+  }
 `;
 
 /** 커뮤니티상세 댓글 내용 컨테이너 */
@@ -335,6 +357,11 @@ const StyledReplyInput = styled.input`
   &::placeholder {
     color: ${colors.gray_navy};
   }
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+
+    width: 300px;
+  }
 `;
 
 /** 커뮤니티상세 댓글 등록버튼 */
@@ -350,6 +377,10 @@ const StyledReplyAddButton = styled.label`
   color: #fff;
   cursor: pointer;
   margin-left: 15px;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    width: 70px;
+  }
 `;
 
 /** 커뮤니티상세 댓글 컨테이너 Wrapper */
