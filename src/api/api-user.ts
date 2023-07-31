@@ -45,10 +45,11 @@ export const putUserData = async (
   token: string,
   email: string,
   password: string,
+  passwordCheck: string,
   intro_yn: string,
   phone_number: string,
-  file_name: string,
-  file_key: string
+  file_name: string | null,
+  file_key: string | null
 ) => {
   const response = await axiosInstance.put(
     "user/mypage",
@@ -56,6 +57,7 @@ export const putUserData = async (
       data: {
         email,
         password,
+        passwordCheck,
         intro_yn,
         phone_number,
         file_name,

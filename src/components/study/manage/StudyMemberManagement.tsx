@@ -9,14 +9,23 @@ import { useQuery } from 'react-query';
 import { deleteStudyMember, getStudyAccept } from '../../../api/api-study';
 import { useQueryClient } from 'react-query';
 import InfoMessage from '../../UI/InfoMessage';
+import { FetchingSpinner, LoadingSpinner } from '../../common/Spinners';
 
 /** 스터디 맴버 관리 컴포넌트 타입지정 */
 type StudyMemberManagementProps = {
+  studyId: string;
   studyId: string;
 };
 
 /** 스터디 신청 데이터 타입지정 */
 type StudyAcceptData = {
+  _id: string;
+  study_id: string;
+  user_id: string;
+  user_name: string;
+  is_leader: boolean;
+  goal: string;
+  accept: number;
   _id: string;
   study_id: string;
   user_id: string;
@@ -42,6 +51,7 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
     isLoading,
     isError,
     refetch,
+    isFetching,
   } = useQuery(['studyAcceptData'], () => getStudyAccept(studyId, accept).then((response) => response.data));
 
   const members = studyAcceptData;
@@ -77,7 +87,12 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
 
   if (isLoading) {
     // 로딩 상태를 표시
-    return <InfoMessage message="Loading..." />;
+    return <LoadingSpinner />;
+  }
+
+  if (isFetching) {
+    // 로딩 상태를 표시
+    return <FetchingSpinner />;
   }
 
   if (isError) {
@@ -90,6 +105,30 @@ const StudyMemberManagement = ({ studyId }: StudyMemberManagementProps) => {
     return <InfoMessage message="스터디 인원이 없습니다." />;
   }
 
+  return (
+    <>
+      {/* members(studyAcceptData)를 index로 뿌림 */}
+      {members.map((member: StudyAcceptData, index: number) => (
+        <CardContainer key={index}>
+          <CardContent>
+            <StyledName onClick={() => handleOpenUserInfoModal(member.user_id)}>
+              {member.user_name}
+            </StyledName>
+            <Modal open={userInfoModalOpen.open} onClose={handleCloseUserInfoModal}>
+              <UserInfoModal
+                userId={userInfoModalOpen.userId}
+                handleModalClose={handleCloseUserInfoModal}
+              />
+            </Modal>
+            <StyledDescription>{member.goal}</StyledDescription>
+          </CardContent>
+          <StyledCommonButton backgroundColor={colors.main_red} onClick={() => onDeleteMember(index)}>
+            회원 삭제
+          </StyledCommonButton>
+        </CardContainer>
+      ))}
+    </>
+  );
   return (
     <>
       {/* members(studyAcceptData)를 index로 뿌림 */}
@@ -153,6 +192,7 @@ const StyledDescription = styled.p`
 
 /** StyledCommonButton 타입지정 */
 interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
+  backgroundColor?: string;
   backgroundColor?: string;
 }
 

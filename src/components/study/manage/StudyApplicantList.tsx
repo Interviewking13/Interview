@@ -9,6 +9,7 @@ import { useQuery } from 'react-query';
 import { getStudyAccept, putAcceptStudy } from '../../../api/api-study';
 import { useQueryClient } from 'react-query';
 import InfoMessage from '../../UI/InfoMessage';
+import { FetchingSpinner, LoadingSpinner } from '../../common/Spinners';
 
 /** 스터디 신청 리스트 타입 */
 type StudyApplicantListProps = {
@@ -60,6 +61,7 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
   const {
     data: studyAcceptData,
     isLoading,
+    isFetching,
     isError,
   } = useQuery(['studyAcceptData'], () => getStudyAccept(studyId, apply).then((response) => response.data));
 
@@ -83,7 +85,12 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
 
   if (isLoading) {
     // 로딩 상태를 표시
-    return <InfoMessage message="Loading..." />;
+    return <LoadingSpinner />;
+  }
+
+  if (isFetching) {
+    // 로딩 상태를 표시
+    return <FetchingSpinner />;
   }
 
   if (isError) {

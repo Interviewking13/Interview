@@ -77,10 +77,26 @@ export const putAcceptStudy = async (token: string, study_id: string, member_id:
     return response;
 };
 
+/** getInfoAllStudyData 반환 타입 지정 */
+type StudyData = {
+    _id: string;
+    title: string;
+    acceptcount: number;
+    headcount: number;
+    start: string;
+    end: string;
+    deadline: string;
+    leader_name: string;
+};
+
 /** 4. 스터디 정보 조회 (전체)  get */
-export const getInfoAllStudyData = async () => {
-    const response = await axiosInstance.get('study/info');
-    return response;
+export const getInfoAllStudyData = async (): Promise<StudyData[]> => {
+    try {
+        const response = await axiosInstance.get('study/info');
+        return response.data; // 응답 데이터만 반환
+    } catch (error) {
+        throw new Error('Error occurred while fetching data');
+    }
 };
 
 /** 5. 스터디 정보 조회 (개별)  get */
