@@ -49,23 +49,8 @@ const StydyTapText = styled.button`
   &:hover {
     color: skyblue; /* 호버 시 변경할 색상 */
   }
-`;
 
-const StydyTapTextS = styled.p`
-  cursor: pointer;
-  display: flex;
-  font-size: 20px;
-  font-weight: 800;
-  border: none;
-  background: none;
-  ${TitleText}
-  font-family: "TitleText";
-  &:not(:first-child) {
-    margin-left: 30px;
-  }
-
-  color: ${colors.main_mint};
-  &:hover {
-    color: #00e595; /* 호버 시 변경할 색상 */
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
   }
 `;

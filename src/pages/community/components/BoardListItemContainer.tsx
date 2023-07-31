@@ -20,4 +20,8 @@ const BoardListItemContainer: React.FC<BoardListItemContainerProps> = ({
 
 export default BoardListItemContainer;
 
-const StyledPostListItemBox = styled.div``;
+const StyledPostListItemBox = styled.div`
+  @media screen and (max-width: 768px) {
+    width: 350px;
+  }
+`;
