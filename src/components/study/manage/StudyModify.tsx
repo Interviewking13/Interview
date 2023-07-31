@@ -266,6 +266,7 @@ const StyledStudyCreateInputAreaBig = styled.div`
         flex-direction: column;
         align-items: flex-start;
         width: calc(100% - 20px);
+        height: 240px;
     }
 `;
 
@@ -278,8 +279,9 @@ const StyledStudyCreateText = styled.p`
     color: ${colors.main_gray};
     @media screen and (max-width: 768px) {
         width: calc(100% - 20px);
-        height: 30px;
+        height: 26px;
         padding: 0;
+        font-size: 16px;
     }
 `;
 
@@ -376,7 +378,8 @@ const StyledStudyInputBig = styled.textarea`
         border-radius: 4px; /* 스크롤바 트랙 둥글게 */
     }
     @media screen and (max-width: 768px) {
-        width: calc(100% - 20px);
+        width: calc(100% - 10px);
+        padding: 10px 0 0 10px;
     }
 `;
 
@@ -426,12 +429,23 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
         color: white;
     }
     ${fonts.SubText}
+    @media screen and (max-width: 768px) {
+        width: 90px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
 `;
 
 /** 스터디 취소 버튼 p*/
 const StyledButtonTextDelete = styled.p`
     font-family: ${fonts.SubTextBig};
     color: ${colors.back_navy};
+    @media screen and (max-width: 768px) {
+        font-size: 16px;
+    }
 `;
 
 /** 스터디 버튼 서브 컨테이너 div*/
@@ -451,7 +465,7 @@ const StyledErrorMessage = styled.p`
     margin: 0 15px 0 0;
     @media screen and (max-width: 768px) {
         margin: 10px 0;
-        max-width: 72px;
-        font-size: 10px;
+        max-width: 120px;
+        font-size: 12px;
     }
 `;
