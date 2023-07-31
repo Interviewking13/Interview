@@ -40,7 +40,7 @@ const userTokenValidate = async (req, res, next) => {
     // TO-DO: 현재 사용자 검사 (isLoginValidate 의 user_id 와 비교해서 안되면 팅겨버리는 로직 추가하자)
 
     // 현재 사용자 검사(기본) -> 이렇게 하면 다른곳에서도 currentUser 정보를 사용할 수 있겠네.. !
-    // response값을 더 줘서 값을 활용 많이하계끔해야하나?
+    // response값을 더 줘서 값을 활용 많이하계끔해야하나? 세진님 화이팅
     // const currentUser = await User.findOne({ "_id": user_id });
 
     // if (!currentUser) {

@@ -1,5 +1,6 @@
 # // 백엔드 코드
 .DS_Store
+.env
 /node_modules/**
 /.cache/**
 /build/**

@@ -9,22 +9,6 @@
       name="description"
       content="Web site created using create-react-app"
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
     <title>면접왕</title>
   </head>
   <body>
@@ -44,17 +28,78 @@
         <p id="download">파일 다운로드 : filename.md</p>
       </div>
     </div>
+    <div>
+      <span id="btn_google"><a href='/api/auth/google'><img src="./btn_google.png" width="15%"></a></span>
+      <span id="btn_naver"><a href='/api/auth/naver'><img src="./btn_naver.png" width="15%"></a></span>
+      <span id="btn_kakao"><a href='/api/auth/kakao'><img src="./btn_kakao.png" width="15%"></a></span>
+    </div>
     <script type="module" src="./index.js"></script>
+    <script>
+
+      /** Google 로그인 */
+      const btn_google = document.querySelector('#btn_google');
+      btn_google.addEventListener('click', async () => {
+        try {
+          const response = await fetch('/api/auth/google', {
+            credentials: 'include',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            console.log('client data: ', data);
+          } 
+        } catch (err) {
+          console.log(err);
+        }
+      });
+
+      /** Naver 로그인 */
+      const btn_naver = document.querySelector('#btn_naver');
+      btn_naver.addEventListener('click', async () => {
+        try {
+          const response = await fetch('/api/auth/naver', {
+            credentials: 'include',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            console.log('client data: ', data);
+          } 
+        } catch (err) {
+          console.log(err);
+        }
+      });
+
+      /** Kakao 로그인 */
+      const btn_kakao = document.querySelector('#btn_kakao');
+      btn_kakao.addEventListener('click', async () => {
+        try {
+          const response = await fetch('/api/auth/kakao', {
+            credentials: 'include',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            console.log('client data: ', data);
+          } 
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    </script>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+    <!-- kakao Login -->
+    <script src='https://t1.kakaocdn.net/kakao_js_sdk/2.3.0/kakao.min.js' integrity='sha384-70k0rrouSYPWJt7q9rSTKpiTfX6USlMYjZUtr1Du+9o4cGvhPAWxngdtVZDdErlh' crossorigin='anonymous'></script>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <!-- naver Login -->
+    <script type='text/javascript' src='https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js' charset='utf-8'></script>
+    <script type='text/javascript' src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
   </body>
 </html>
