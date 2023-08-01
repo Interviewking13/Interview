@@ -11,7 +11,7 @@ const secretKey = process.env.SECRET_KEY;
 
 router.use(express.json());
 router.use(cors({
-    origin: 'http://localhost:3000', // 접근 가능한 도메인
+    origin: 'https://port-0-interviewking13-7xwyjq992llj5sps0m.sel4.cloudtype.app', // 접근 가능한 도메인
     credentials: 'true', // 응답 헤더 Access-Control-Allow-Credentials
     optionsSuccessStatus: 200,
 }));
@@ -82,7 +82,7 @@ router.get('/',
 
 router.get('/callback',
     passport.authenticate('google', {
-        failureRedirect: 'http://localhost:3000',
+        failureRedirect: 'https://port-0-interviewking13-7xwyjq992llj5sps0m.sel4.cloudtype.app',
     }), 
     async (req, res) => {
         const findUser = await User.findOne({ sns_id: req.user.id });
