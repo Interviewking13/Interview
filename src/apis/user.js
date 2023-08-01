@@ -1,7 +1,6 @@
 const { User }  = require('../models/index');
 
 const express = require('express');
-const bodyParser = require('body-parser');
 const app = express();
 
 const mongoose = require('mongoose');
@@ -12,7 +11,7 @@ const bcrypt = require('bcrypt');
 
 const secretKey = process.env.SECRET_KEY;
 
-const validateEmail = require('../utils/user.js')
+const validateEmail = require('../utils/user.js');
 
 // dts_insert, dts_update 필드에 삽입할 변수 값 설정
 const currentDate = new Date();
@@ -21,79 +20,35 @@ const timeString = currentDate.toTimeString().slice(0, 8).replace(/:/g, "");    
 
 const userApi = {
 
-    /** 로그인 유효성 검사 테스트 */
-    async userApiIsLoginValidate(req, res) {
-        console.log('로그인 유효성 검사 테스트!');
-        const { token } = req.body;
-        console.log(token + '/ userAPI');
-        
-        if (!token) {
-            return res.status(401).json({
-                resultCode: "401",
-                message: "토큰이 없습니다. / 로그아웃상태"
-            });
-        }
-
+    /** user 정보 전체 DB 조회 테스트 */
+    async getAllUserInfo(req, res, next) {
         try {
-            const decoded = jwt.verify(token, secretKey);
+            const findAllUser = await User.find({});
 
-            // 토큰이 유효한 경우
-            req.user = decoded;
+            if (!findAllUser) {
+                return res.status(400).json({
+                    resultCode: "400",
+                    message: "조회 실패"
+                });
+            }
 
-            return res.status(200).json({
+            res.status(200).json({
                 resultCode: "200",
-                message: "로그인 상태"
-            });
+                message: "조회 성공",
+            })
 
         } catch (err) {
-            if (err.name === 'JsonWebTokenError') {
-            // 토큰이 유효하지 않은 경우
-            return res.status(401).json({
-                resultCode: "401",
-                message: "유효하지 않은 토큰입니다. / 로그아웃상태"
-            });
-            } else if (err.name === 'TokenExpiredError') {
-            // 토큰이 만료된 경우
-            return res.status(401).json({
-                resultCode: "401",
-                message: "만료된 토큰입니다. / 로그아웃상태"
-            });
-            } else {
-            // 기타 토큰 검증 실패
-            return res.status(500).json({
+            console.error(err);
+            res.status(500).json({
                 resultCode: "500",
-                message: "서버 오류 / 로그아웃상태"
+                message: "서버오류"
             });
-            }
         }
-
-    },
-
-    /** user API middleware 테스트 */
-    async userMiddlewareApiTest(req, res, next) {
-        console.log('미들웨어 실행! userApi 도착!');
-        // 미들웨어 로직 처리
-        console.log(req.cookies.token);
-        next();
     },
     
     /** user_id 로 사용자 정보 조회 */
     async getUserIdInfo(req, res, next) {
         try {
-            // 클라이언트로부터 전달된 헤더(토큰값) 사용 - token header로 로그인 유무 판단
-            const token = req.headers.authorization;    
-            console.log(token + '/ userAPI - getUserInfo - getUserIdInfo');
-            
-            const decoded = jwt.verify(token, secretKey);
-            
-            if (!decoded) {
-                return res.status(401).json({
-                resultCode: "401",
-                message: "유효하지 않은 토큰입니다.",
-                token: token
-                });
-            }
-
             const { user_id } = req.params;
 
             const findUser = await User.findOne({ "_id": user_id });    //나중에 user_id 값 사용가능하면? 사용가능할듯.
@@ -250,30 +205,21 @@ const userApi = {
                 user_id: findUser._id,          // 사용자의 MongoDB ObjectID
             }
 
-            const token = jwt.sign(payload, secretKey, { expiresIn: "3d" });   // 토큰 만료시간 
-            
-            // JWT 토큰 쿠키에 담아주기 - 주석 처리
-            // res.cookie('token', token, {
-            //     httpOnly: true,
-            //     maxAge: 3 * 24 * 60 * 60 * 1000,    // 3일 (단위: 밀리초) // 3600000(=1시간) (단위: 밀리초)
-            //     sameSite: 'none'
-            //     // secure: true,
-            // });
-    
-            // 설정된 쿠키 값 출력
-            // console.log('로그인' + req.cookies.token);
+            const token = jwt.sign(payload, secretKey, { expiresIn: "3d" }); 
 
-            res.status(200).json({
-                resultCode: "200",
-                message: "로그인 성공",
-                data: {
-                    user_id: findUser._id,
-                    user_name: findUser.user_name,
-                    email,
-                    token
-                }
-            });
-
+            res.status(200)
+                .set('Authorization', token)
+                .json({
+                    resultCode: "200",
+                    message: "로그인 성공",
+                    data: {
+                        user_id: findUser._id,
+                        user_name: findUser.user_name,
+                        email,
+                        token
+                    }
+                });
+ 
         } catch (err) {
             console.error(err);
             return res.status(500).json({
@@ -284,33 +230,10 @@ const userApi = {
     },
 
     /** 내 정보 조회 */
-    async getUserInfo(req, res) {
-        // 쿠키값 사용 주석 처리
-        // const token = req.cookies.token;
-        // console.log('미들웨어 실행 -> userApi getUserInfo 도착!');
-        // console.log('내정보조회' + req.cookies.token);
-
-        // json body (localStorage 값 사용)
-        // const { token } = req.body;
-        
-        // 클라이언트로부터 전달된 헤더(토큰값) 사용
-        const token = req.headers.authorization;    
-        console.log(token + '/ userAPI - getUserInfo - header');
-            
+    async getUserInfo(req, res) {    
         try {
-            const decoded = jwt.verify(token, secretKey);
-            
-            if (!decoded) {
-                return res.status(401).json({
-                resultCode: "401",
-                message: "유효하지 않은 토큰입니다.",
-                token: token
-                });
-            }
-
-            // req.user = decoded;
-            // const { user_id } = req.user;    // 왜 안되지?
-            const { user_id } = decoded;
+            const { user_id } = req.user;
+            console.log(user_id);
 
             const findUser = await User.findOne(
                 { "_id": user_id },
@@ -343,7 +266,6 @@ const userApi = {
                     phone_number: findUser.phone_number,
                     file_key: findUser.file_key, 
                     file_name: findUser.file_name
-                    // token: token
                 }
             });
         } catch (err) {
@@ -353,29 +275,11 @@ const userApi = {
 
     /** 내 정보 수정 */
     async modifyUserInfo(req, res, next) {
-        // 쿠키값 사용 주석 처리
-        // const token = req.cookies.token;
-        // console.log('미들웨어 실행 -> userApi modifyUserInfo 도착!');
-        // console.log('내정보수정' + req.cookies.token);
-
-        // json body (localStorage 값 사용)
-        // const { token } = req.body.token;
-
         try {
-            const { token } = req.body;
-            
-            // middleware 이용 테스트
             const { user_id } = req.user;
-            // console.log(user_id);
-            // console.log('middleware 에서 불러온 decoded값' + user_id);
-            
-            // middleware 이용 테스트
-            // const { decodedUserId } = req.user;
-            // console.log(decodedUserId);
-            // console.log('middleware 에서 불러온 decoded값' + decodedUserId);
+            console.log(user_id);
 
-            // const { user_id, email, password, intro_yn, phone_number } = req.body;
-            const { email, password, intro_yn, phone_number, file_key, file_name } = req.body;
+            const { email, password, passwordCheck, intro_yn, phone_number, file_key, file_name } = req.body;
 
             const findUser = await User.findOne({ "_id": user_id });    //나중에 user_id 값 사용가능하면? 사용가능할듯.
             // const findUser = await User.findOne({ "email": email });
@@ -387,6 +291,14 @@ const userApi = {
                 });
             }
 
+            // 비밀번호, 비밀번호 확인 값 검사
+            if (password !== passwordCheck) {
+                return res.status(400).json({
+                    resultCode: 400,
+                    message: "비밀번호가 일치하지 않습니다."
+                });
+            }
+            
             // 기존 사용자 정보
             const findUserId = findUser._id;
             const findUserEmail = findUser.email;
@@ -472,7 +384,6 @@ const userApi = {
                     phone_number: updatedUser.phone_number, 
                     file_key: updatedUser.file_key, 
                     file_name: updatedUser.file_name
-                    // token: token
                 }
                 
             });
@@ -488,22 +399,10 @@ const userApi = {
 
     /** 회원탈퇴 */
     async deleteUser(req, res, next) {
-        // 쿠키값 사용 주석 처리
-        // const token = req.cookies.token;
-        // console.log('미들웨어 실행 -> userApi deleteUser 도착!');
-        // console.log('회원탈퇴' + req.cookies.token);
-
-        // json body (localStorage 값 사용)
-        // const { token } = req.body.token;
-        const { token } = req.body;
-
         try {
-            // middleware 이용 테스트
             const { user_id } = req.user;
-            // console.log(user_id);
-            // console.log('middleware 에서 불러온 decoded값' + user_id);
-            
-            // const { user_id, email, password } = req.body;
+            console.log(user_id);
+
             const { email, password } = req.body;
 
             const findUser = await User.findOne({ "_id": user_id });
@@ -516,7 +415,7 @@ const userApi = {
             }
             
             // 비밀번호 검증
-            const isPasswordValid = await bcrypt.compare(password, findUser.password);      // 평문값과 암호화값 비교
+            const isPasswordValid = await bcrypt.compare(password, findUser.password);
 
             if (!isPasswordValid) {
                 return res.status(200).json({
@@ -527,12 +426,8 @@ const userApi = {
 
             // 회원 탈퇴
             await User.deleteOne({ "_id": user_id });
-                        
-            // 회원탈퇴시 토큰도 지워주자
-            // 헤더에 저장된 토큰 삭제
-            res.setHeader('Authorization', '');
 
-            // 토큰 쿠키 삭제
+            res.setHeader('Authorization', '');
             res.clearCookie('token');
 
             res.status(200).json({
@@ -551,35 +446,24 @@ const userApi = {
 
     /** 로그아웃 */
     async logoutUser (req, res, next) {
-        // 쿠키값 사용 주석 처리
-        // const token = req.cookies.token;
-        // console.log('미들웨어 실행 -> userApi logoutUser 도착!');
-        // console.log('로그아웃' + req.cookies.token);
-
-        // json body (localStorage 값 사용)
-        // const { token } = req.body;
-        let { token } = req.body;
-        console.log(token + '/ userAPI - logoutUser');
-
         try {
-            // middleware 이용 테스트
             const { user_id } = req.user;
-            // console.log(user_id);
-            // console.log('middleware 에서 불러온 decoded값' + user_id);
-            
-            // 쿠키 삭제 - 주석처리
-            // res.clearCookie('token');
+            console.log(user_id);
 
-            // 클라이언트에서 localStorage 값 제거 필요
-            
-            if (user_id) {    
+            if (user_id) {
+                res.setHeader('Authorization', '');
+                res.clearCookie('token');
+
                 return res.status(200).json({
                     resultCode: "200",
-                    message: "로그아웃 성공",
-                    // token
+                    message: "로그아웃 성공"
+                });
+            } else {
+                return res.status(400).json({
+                    resultCode: "400",
+                    message: "사용자 정보를 찾을 수 없습니다.",
                 });
             }
-
         } catch (err) {
             console.error(err);
             res.status(500).json({

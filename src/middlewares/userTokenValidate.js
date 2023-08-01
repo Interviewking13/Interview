@@ -1,7 +1,7 @@
 const { User }  = require('../models/index');
 
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const app = express();
 
 const mongoose = require('mongoose');
@@ -13,52 +13,37 @@ const bcrypt = require('bcrypt');
 const secretKey = process.env.SECRET_KEY;
 
 const userTokenValidate = async (req, res, next) => {
-  // console.log('미들웨어 실행!');
-
-  // 쿠키값 사용 주석 처리
-  // const token = req.cookies.token;
-
-  // json body (localStorage 값 사용)
-  const { token } = req.body;
-  console.log(token);
-
-  if (!token) {
-    return res.status(401).json({
-      resultCode: "401",
-      message: "토큰이 없습니다."
-    });
-  }
-
   try {
+    // 클라이언트로부터 전달된 헤더(토큰값) 사용 - token header로 로그인 유무 판단
+    const token = req.headers.authorization;
+    // console.log(token + '/ userAPI - getUserInfo - getUserIdInfo');
+    
     const decoded = jwt.verify(token, secretKey);
-
-    // 토큰이 유효한 경우
+    console.log(decoded);
     req.user = decoded;
-    // console.log(decoded.user_id);
-    // console.log(req.user.user_id);
-
-    // TO-DO: 현재 사용자 검사 (isLoginValidate 의 user_id 와 비교해서 안되면 팅겨버리는 로직 추가하자)
-
-    // 현재 사용자 검사(기본) -> 이렇게 하면 다른곳에서도 currentUser 정보를 사용할 수 있겠네.. !
-    // response값을 더 줘서 값을 활용 많이하계끔해야하나? 세진님 화이팅
-    // const currentUser = await User.findOne({ "_id": user_id });
-
-    // if (!currentUser) {
-    //   return res.status(400).json({
-    //       resultCode: "400",
-    //       message: "해당 사용자를 찾을 수 없습니다."
+    
+    if (!decoded) {
+        return res.status(401).json({
+        resultCode: "401",
+        message: "유효하지 않은 토큰입니다.",
+        token: token
+        });
+    }
+    
+    // 클라이언트로부터 전달된 바디(토큰값) 사용
+    // const { token } = req.body;
+    // console.log(token);
+  
+    // if (!token) {
+    //   return res.status(401).json({
+    //     resultCode: "401",
+    //     message: "토큰이 없습니다."
     //   });
     // }
+  
+    // const decoded = jwt.verify(token, secretKey);
+    // req.user = decoded;
 
-    // if (currentUser) {
-    //     return res.status(400).json({
-    //         resultCode: "400",
-    //         message: "사용자 정보가 존재합니다.",
-    //         data: {
-    //             user_id: currentUser._id
-    //         }
-    //     });
-    // }    
     next();
   } catch (err) {
     if (err.name === 'JsonWebTokenError') {
