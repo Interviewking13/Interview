@@ -104,7 +104,7 @@ const StyledPostTitle = styled.div`
   ${SubText};
   color: ${colors.main_navy};
   margin: 0;
-  @media screen and (max-width: 360px) {
+  @media screen and (max-width: 768px) {
     font-size: 12px;
   }
 `;

@@ -64,7 +64,7 @@ const StyledCommonContainer = styled.div`
   justify-content: center;
   align-items: center;
   @media screen and (max-width: 768px) {
-    width: 350px;
+    width: 100%;
     padding: 10px;
   }
 `;
@@ -164,6 +164,8 @@ const CommonButton = styled.div`
   @media screen and (max-width: 768px) {
     width: 60px;
     height: 25px;
+
+    margin-right: 30px;
   }
 `;
 

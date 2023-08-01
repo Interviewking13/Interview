@@ -54,7 +54,7 @@ const StyledPostItems = styled.div`
   justify-content: flex-start;
   align-items: center;
   @media screen and (max-width: 768px) {
-    width: 350px;
+    width: 100%;
   }
 `;
 
@@ -64,7 +64,7 @@ const StyledBestPostListItemBox = styled.div`
   margin-bottom: 15px;
   border-top: none;
   @media screen and (max-width: 768px) {
-    width: 350px;
+    width: 90%;
   }
 `;
 
