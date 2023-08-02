@@ -9,22 +9,35 @@ import { getUserData } from "../../api/api-user";
 import { useAuth } from "../../hooks/useAuth";
 
 // 커뮤니티 글 작성을 위한 API 호출
-const postCommunity = async (data: {
-  title: string;
-  content: string;
-  attach: string;
-  user_id: string;
-  community_id: number;
-}) => {
+const postCommunity = async (formData: FormData) => {
   try {
-    console.log("Posted Data:", data);
-    const response = await axiosInstance.post("/community/detl", data);
+    console.log("Posted Data:", formData);
+    const response = await axiosInstance.post("/community/detl", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // 필수: 파일 업로드 시 반드시 설정
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error:", error);
     throw error;
   }
 };
+// const postCommunity = async (data: {
+//   title: string;
+//   content: string;
+//   user_id: string;
+//   file_name: string;
+// }) => {
+//   try {
+//     console.log("Posted Data:", data);
+//     const response = await axiosInstance.post("/community/detl", data);
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error:", error);
+//     throw error;
+//   }
+// };
 
 // CommunityCreatePage 컴포넌트 선언
 const CommunityCreatePage: React.FC = () => {
@@ -47,8 +60,8 @@ const CommunityCreatePage: React.FC = () => {
   useEffect(() => {
     getUserData(String(localStorage.getItem("token"))).then((response) => {
       setUserId(response.data.user_id);
-      console.log(response.data.user_id);
-      console.log(response.data);
+      // console.log(response.data.user_id);
+      // console.log(response.data);
     });
   });
 
@@ -74,6 +87,7 @@ const CommunityCreatePage: React.FC = () => {
       const selectedFile = selectedFiles[0];
       setFile(selectedFile);
     }
+    console.log(selectedFiles);
   };
 
   // postCommunity api service함수 가져와서 사용
@@ -93,14 +107,20 @@ const CommunityCreatePage: React.FC = () => {
 
   /** 글쓰기 버튼 클릭 시 동작 */
   const handleSubmit = () => {
-    // postCommunityMutate 함수를 호출하여 글 작성을 서버로 전송
-    postCommunityMutate({
-      title: title,
-      content: content,
-      attach: "",
-      user_id: useId,
-      community_id: 0,
-    });
+    const formData = new FormData();
+
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("user_id", useId);
+    formData.append("community_id", "0");
+    if (file) {
+      formData.append("image", file, file.name);
+    }
+    console.log(formData.get("title"));
+    console.log(formData.get("content"));
+    console.log(formData.get("image"));
+
+    // postCommunityMutate(formData);
   };
 
   /** 삭제 버튼 클릭 시 동작 */
@@ -113,7 +133,9 @@ const CommunityCreatePage: React.FC = () => {
       <StyledCreatePageContainer>
         <StyledPageTitleWrapper>
           <StyledCreatePageTitle>커뮤니티 글 쓰기</StyledCreatePageTitle>
-          <StyledCreatePageSubtitle>회원들과 정보를 공유해보세요.</StyledCreatePageSubtitle>
+          <StyledCreatePageSubtitle>
+            회원들과 정보를 공유해보세요.
+          </StyledCreatePageSubtitle>
         </StyledPageTitleWrapper>
         <StyledCommonWrapper>
           <StyledTitle>제목</StyledTitle>
@@ -167,6 +189,9 @@ const StyledCommonContainer = styled.div`
   width: 100%;
   max-width: 1270px;
   margin: 0 auto;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 /** 글쓰기 페이지 컨테이너 div */
@@ -183,6 +208,9 @@ const StyledPageTitleWrapper = styled.div`
   width: 1270px;
   display: flex;
   align-items: flex-end; /* 폰트를 바닥에 같은 높이로 위치 */
+  @media screen and (max-width: 768px) {
+    width: 95%;
+  }
 `;
 
 /** 페이지 타이틀 p */
@@ -191,6 +219,9 @@ const StyledCreatePageTitle = styled.p`
   color: ${colors.main_mint};
   margin: 0;
   margin-right: 40px;
+  @media screen and (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 /** 페이지 서브타이틀 p */
@@ -198,6 +229,9 @@ const StyledCreatePageSubtitle = styled.p`
   margin: 0;
   color: ${colors.darkgray_navy};
   ${SubTextThin}
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 /** 왼쪽 타이틀 div */
@@ -206,6 +240,11 @@ const StyledTitle = styled.div`
   height: fit-content;
   font-size: 20px;
   font-weight: 600;
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+
+    display: none;
+  }
 `;
 
 /** 오른쪽 인풋 레이아웃 input */
@@ -222,6 +261,11 @@ const StyledInput = styled.input`
 
   &::placeholder {
     color: ${colors.gray_navy};
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 95%;
+    font-size: 12px;
   }
 `;
 
@@ -254,6 +298,12 @@ const StyledTextarea = styled.textarea`
     background-color: none; /* 스크롤바 트랙 색상 */
     border-radius: 4px; /* 스크롤바 트랙 둥글게 */
   }
+
+  @media screen and (max-width: 768px) {
+    width: 95%;
+
+    font-size: 12px;
+  }
 `;
 
 /** 좌/우 공통 레이아웃 div */
@@ -273,6 +323,9 @@ const StyledCommonWrapper = styled.div`
       left: 0;
     }
   }
+  @media screen and (max-width: 768px) {
+    width: 95%;
+  }
 `;
 
 /** 파일첨부 전체를 감싸는 div */
@@ -286,6 +339,9 @@ const StyledFileInputWrapper = styled.div`
     margin-right: 77px;
     width: max-content;
     display: inline-block;
+  }
+  @media screen and (max-width: 768px) {
+    width: 95%;
   }
 `;
 
@@ -309,6 +365,9 @@ const StyledSubtitle = styled.p`
   box-sizing: border-box;
   line-height: 45px;
   padding-left: 20px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 /** 글쓰기 버튼 컨테이너 div */
@@ -316,6 +375,9 @@ const StyledCreateButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 1270px;
+  @media screen and (max-width: 768px) {
+    width: 95%;
+  }
 `;
 
 /** 글쓰기 버튼 button */
@@ -330,6 +392,9 @@ const StyledCreateButton = styled.button`
   cursor: pointer;
   margin-left: auto;
   margin-bottom: 80px;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 /** 파일첨부 리스트 컨테이너 div */
@@ -339,6 +404,9 @@ const StyledAttachedFileListContainer = styled.div`
   justify-content: flex-end;
   align-items: center;
   margin: 20px 0;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 /** 파일첨부 input */
@@ -359,6 +427,9 @@ const StyledFileButton = styled.label`
   color: #fff;
   cursor: pointer;
   margin-left: 15px;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 /** 파일첨부 리스트 div */
@@ -369,6 +440,9 @@ const FileList = styled.div`
   color: ${colors.darkgray_navy};
   ${SubTextSmall};
   width: 1060px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 /** 파일첨부 다운로드 링크 a */
@@ -380,7 +454,7 @@ const FileAttachment = styled.a`
 
 /** 파일첨부 삭제 버튼 button */
 const StyledDelButton = styled.button`
-  color: #FF4F4F;
+  color: #ff4f4f;
   font-size: 16px;
   font-weight: 300;
   border: none;
@@ -388,6 +462,9 @@ const StyledDelButton = styled.button`
   display: flex;
   justify-content: flex-end;
   width: 1270px;
-`
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`;
 
 export default CommunityCreatePage;

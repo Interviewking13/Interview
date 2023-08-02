@@ -202,7 +202,7 @@ const StyledCommonContainer = styled.div`
   margin: 0px auto;
   @media screen and (max-width: 768px) {
     padding: 10px;
-    width: 350px;
+    width: 90%;
   }
 `;
 
@@ -360,7 +360,7 @@ const StyledReplyInput = styled.input`
   @media screen and (max-width: 768px) {
     font-size: 12px;
 
-    width: 300px;
+    width: 90%;
   }
 `;
 
