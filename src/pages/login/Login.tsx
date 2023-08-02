@@ -179,7 +179,7 @@ const StyledPageContainer = styled.div`
     background-color: ${colors.back_navy};
     
     @media (max-width: 768px) {
-        padding: 10px;
+        padding: 0 20px;
     }
 `;
 
@@ -249,7 +249,10 @@ const StyledLoginInput = styled.input`
         font-size: 16px;
     }
     @media (max-width: 500px) {
-        width: calc(100% - 20px);
+        width: calc(100% - 25px);
+        border-radius: 5px;
+        height: 35px;
+        font-size: 14px;
     }
 `;
 
@@ -327,6 +330,10 @@ const StyledSignupCopyright = styled.div`
     text-align: center;
     font-size: 14px;
     color: ${colors.gray_navy};
+
+    @media (max-width: 768px) {
+        font-size: 12px; 
+  }
 `;
 
 /** 아이디/비밀번호 찾기 container div */

@@ -173,7 +173,6 @@ const StyledCommonContainer = styled.div`
 
     @media (max-width: 768px) {
         width: 100%;
-        padding: 0 15px;
     }
 `;
 
@@ -185,6 +184,7 @@ const StyledCarouselArea = styled.div`
     @media (max-width: 768px) {
         width: 100%;
         height: 100%;
+        margin-top: 10px;
     }
 `;
 const StyledCarouselContainer = styled.div`
@@ -205,7 +205,7 @@ const StyledCarouselTextArea = styled.div`
         text-align: center;
         margin: 0 auto;
         margin-top: 40px;
-        padding: 0 10px;
+        padding: 0 20px;
     }
 `;
 const StyledCarouselImg = styled.img`

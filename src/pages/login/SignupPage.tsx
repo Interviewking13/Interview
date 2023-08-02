@@ -217,7 +217,7 @@ const StyledPageContainer = styled.div`
   background-color: ${colors.back_navy};
 
   @media (max-width: 768px) {
-        padding: 10px;
+        padding: 0 20px;
     }
 `;
 
@@ -288,7 +288,10 @@ const StyledSignupInput = styled.input`
         font-size: 16px;
   }
   @media (max-width: 500px) {
-        width: calc(100% - 20px);
+        width: calc(100% - 25px);
+        border-radius: 5px;
+        height: 35px;
+        font-size: 14px;
   }
 `;
 
@@ -336,6 +339,10 @@ const StyledSignupCopyright = styled.div`
   text-align: center;
   font-size: 14px;
   color: #c0c3e5;
+  
+  @media (max-width: 768px) {
+        font-size: 12px; 
+  }
 `;
 
 export default SignupPage;
