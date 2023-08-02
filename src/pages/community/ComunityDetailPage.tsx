@@ -11,7 +11,7 @@ import { getUserData } from '../../api/api-user';
 import ClearIcon from '@mui/icons-material/Clear';
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { EditContent } from '../../utils/recoil';
+import { EditContentAtom } from '../../recoil/EditContentAtom';
 import Dompurify from 'dompurify';
 
 export const CommunityDetailPage: React.FC = () => {
@@ -27,7 +27,7 @@ export const CommunityDetailPage: React.FC = () => {
         read_users: [],
         file_name: '',
     });
-    const [data, setData] = useRecoilState(EditContent);
+    const [data, setData] = useRecoilState(EditContentAtom);
     const [b, setB] = useState<any[]>([]);
     const [text, setText] = useState('');
     const [useId, setUserId] = useState('1');

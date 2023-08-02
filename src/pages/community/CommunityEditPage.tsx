@@ -5,11 +5,11 @@ import { TitleText, SubTextThin } from '../../constants/fonts';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { putCommunity } from '../../api/api-community';
 import { useRecoilState } from 'recoil';
-import { EditContent } from '../../utils/recoil';
+import { EditContentAtom } from '../../recoil/EditContentAtom';
 
 const CommunityEditPage: React.FC = ({}) => {
     const navigate = useNavigate();
-    const [data, setData] = useRecoilState(EditContent);
+    const [data, setData] = useRecoilState(EditContentAtom);
     const [title, setTitle] = useState<string>(data.title);
     const [content, setContent] = useState<string>(data.content);
     const location = useLocation();
