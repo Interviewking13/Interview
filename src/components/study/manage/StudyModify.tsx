@@ -127,6 +127,19 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
         navigate(`/study/${studyId}`);
     };
 
+    // 스터디 기간 변경 핸들러
+    const onChangeStartDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // 현재 날짜 불러오기
+        const currentDate = getCurrentDate();
+
+        if (startDate <= currentDate) {
+            alert('이미 시작한 스터디는 시작날짜를 변경할 수 없습니다.');
+            return;
+        }
+
+        setStartDate(e.target.value);
+    };
+
     /** 스터디 삭제 핸들러 */
     const handleDeleteClick: React.MouseEventHandler<HTMLDivElement> = () => {
         // 스터디 삭제 api 요청
@@ -178,7 +191,7 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
                 <StyledStudyCreateInputArea>
                     <StyledStudyCreateText>진행 기간</StyledStudyCreateText>
                     <StyledDateArea>
-                        <StyledStudyDate type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                        <StyledStudyDate type="date" value={startDate} onChange={onChangeStartDateHandler} />
                         <StyledStudyDateText>~</StyledStudyDateText>
                         <StyledStudyDate type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                     </StyledDateArea>
