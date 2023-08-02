@@ -106,23 +106,24 @@ const StudyList = (): JSX.Element => {
                     </StyledLink>
                 </StudyListInputArea>
             </StudyListTopArea>
-            {studyData && studyData.length > 0 ? ( 
-            <StudyListItemArea>
-                {getDisplayedStudyData().map((study) => (
-                    <StyledLink to={`/study/${study._id}`} key={study._id}>
-                        <StudyListItem
-                            id={study._id}
-                            title={study.title}
-                            currentParticipants={study.acceptcount}
-                            maxParticipants={study.headcount}
-                            startDate={dateSplice(study.start)}
-                            endDate={dateSplice(study.end)}
-                            recruitDeadline={dateSplice(study.deadline)}
-                            master={study.leader_name}
-                        />
-                    </StyledLink>
-                ))}
-            </StudyListItemArea>) : (
+            {studyData && studyData.length > 0 ? (
+                <StudyListItemArea>
+                    {getDisplayedStudyData().map((study) => (
+                        <StyledLink to={`/study/${study._id}`} key={study._id}>
+                            <StudyListItem
+                                id={study._id}
+                                title={study.title}
+                                currentParticipants={study.acceptcount}
+                                maxParticipants={study.headcount}
+                                startDate={dateSplice(study.start)}
+                                endDate={dateSplice(study.end)}
+                                recruitDeadline={dateSplice(study.deadline)}
+                                master={study.leader_name}
+                            />
+                        </StyledLink>
+                    ))}
+                </StudyListItemArea>
+            ) : (
                 <p>스터디 데이터가 없습니다.</p>
             )}
 
