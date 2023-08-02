@@ -18,10 +18,15 @@ const Divider = styled.div`
 
 const StyledFooterContainer = styled.div`
   margin: 0 auto; /* 가운데 정렬을 위한 수정 */
-  width: 1270px;
+  width: 100%;
+  max-width: 1270px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const StyledFooterLogoContainer = styled.div`
@@ -35,6 +40,10 @@ const StyledFooterLogo = styled.div`
 
 const StyledFooterInfoContainer = styled.div`
   display: flex;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const StyledFooterInfo = styled.div`
@@ -53,7 +62,24 @@ const StyledFooterCopyright = styled.div`
   color: #909090;
   margin-left: 80px;
   text-align: right;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
+
+const StyledCopyright = styled.div`
+  display: none;
+  font-size: 14px;
+  font-weight: 300;
+  color: #909090;
+  text-align: center;
+  margin-top: 20px;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`
 
 const Footer = () => {
   return (
@@ -87,6 +113,7 @@ const Footer = () => {
           <br />
           Copyright ⓒ 2023 EliceSw4Team13 Inc. All Rights Reserved.
         </StyledFooterCopyright>
+        <StyledCopyright>Copyright ⓒ 2023 EliceSw4Team13 Inc. All Rights Reserved.</StyledCopyright>
       </StyledFooterContainer>
     </StyledFooterWrapper>
   );
