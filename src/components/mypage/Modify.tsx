@@ -122,21 +122,23 @@ const Modify = () => {
 
         <StyledLowContent>
           <StyledInfoName>자기소개서첨부</StyledInfoName>
-          <StyledFileFindTextField placeholder="파일을 선택하세요" />
-          <input
-            type="file"
-            style={{ display: "none" }}
-            onChange={handleFileUpload}
-            ref={fileInputRef}
-          />
-          <StyledFindButton
-            // onSubmit={onSubmitUpload}
-            type="submit"
-            variant="contained"
-            onClick={onChangeFileInput}
-          >
-            파일찾기
-          </StyledFindButton>
+          <StyledFindMobileContainer>
+            <StyledFileFindTextField placeholder="파일을 선택하세요" />
+            <input
+              type="file"
+              style={{ display: "none" }}
+              onChange={handleFileUpload}
+              ref={fileInputRef}
+            />
+            <StyledFindButton
+              // onSubmit={onSubmitUpload}
+              type="submit"
+              variant="contained"
+              onClick={onChangeFileInput}
+            >
+              파일찾기
+            </StyledFindButton>
+          </StyledFindMobileContainer>
         </StyledLowContent>
 
         {/* 회원탈퇴, 수정 버튼 컴포넌트*/}
@@ -170,6 +172,8 @@ const StyledLowContent = styled.div`
   @media screen and (max-width: 768px) {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    padding-left: 10px;
   }
 `;
 /** title :내 정보수정*/
@@ -189,6 +193,9 @@ const StyledSubTitle = styled(Typography)`
     padding: 0;
     margin-left: 30px;
     line-height: 50px;
+    @media screen and (max-width: 768px) {
+      margin-left: 0px;
+    }
   }
 `;
 /** 각 요소 텍스트*/
@@ -197,6 +204,9 @@ const StyledInfoName = styled.div`
     ${fonts.SubTextBig}
     color:${colors.main_black};
     width: 160px;
+    @media screen and (max-width: 768px) {
+      margin-bottom: 10px;
+    }
   }
 `;
 /** MUI input 입력란 스타일*/
@@ -208,6 +218,9 @@ const StyledTextField = styled.input`
   border: 1px #00057d solid;
   width: 1100px;
   padding-left: 20px;
+  @media screen and (max-width: 768px) {
+    width: 80%;
+  }
 `;
 /** MUI input 파일찾기  */
 const StyledFileFindTextField = styled.input`
@@ -219,7 +232,18 @@ const StyledFileFindTextField = styled.input`
   width: 960px;
   margin-right: 10px;
   padding-left: 20px;
+  @media screen and (max-width: 768px) {
+    width: 50%;
+  }
 `;
+const StyledFindMobileContainer = styled.div`
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+`;
+
 /** 파일찾기버튼 스타일 */
 const StyledFindButton = styled(Button)`
   && {
@@ -233,6 +257,9 @@ const StyledFindButton = styled(Button)`
     &:hover {
       background-color: ${colors.back_navy};
       color: ${colors.dark_navy};
+    }
+    @media screen and (max-width: 768px) {
+      width: 30%;
     }
   }
 `;

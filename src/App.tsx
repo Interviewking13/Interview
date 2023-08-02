@@ -6,7 +6,7 @@ import HomePage from "./pages/home/Homepage";
 import Mypage from "./pages/mypage/Mypage";
 import StudyList from "./pages/studylist/StudyList";
 import CreateStudy from "./pages/studylist/CreateStudy";
-import Layout from "./components/layout/Layout";
+// import Layout from "./components/layout/Layout";
 import LoginPage from "./pages/login/Login";
 import SignupPage from "./pages/login/SignupPage";
 import StudyApply from "./components/mypage/StudyApply";
@@ -30,192 +30,192 @@ function App() {
     <RecoilRoot>
       <Router>
         <QueryClientProvider client={queryClient}>
-          <Layout>
-            <SuspenseWrapper>
-              {" "}
-              {/* SuspenseWrapper로 감싸기 */}
-              <Routes>
+          {/* <Layout> */}
+          <SuspenseWrapper>
+            {" "}
+            {/* SuspenseWrapper로 감싸기 */}
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Helmet>
+                      <title>면접왕</title>
+                    </Helmet>
+                    <HomePage />
+                  </>
+                }
+              />
+              <Route
+                path="/mypage"
+                element={
+                  <>
+                    <Helmet>
+                      <title>마이페이지</title>
+                    </Helmet>
+                    <Mypage />
+                  </>
+                }
+              >
                 <Route
-                  path="/"
+                  path=""
                   element={
                     <>
                       <Helmet>
-                        <title>면접왕</title>
+                        <title>나의 스터디</title>
                       </Helmet>
-                      <HomePage />
+                      <UserStudy />
                     </>
                   }
                 />
                 <Route
-                  path="/mypage"
+                  path="studyapply"
                   element={
                     <>
                       <Helmet>
-                        <title>마이페이지</title>
+                        <title>스터디 신청</title>
                       </Helmet>
-                      <Mypage />
-                    </>
-                  }
-                >
-                  <Route
-                    path=""
-                    element={
-                      <>
-                        <Helmet>
-                          <title>나의 스터디</title>
-                        </Helmet>
-                        <UserStudy />
-                      </>
-                    }
-                  />
-                  <Route
-                    path="studyapply"
-                    element={
-                      <>
-                        <Helmet>
-                          <title>스터디 신청</title>
-                        </Helmet>
-                        <StudyApply />
-                      </>
-                    }
-                  />
-                  <Route
-                    path="userinfo"
-                    element={
-                      <>
-                        <Helmet>
-                          <title>내 정보</title>
-                        </Helmet>
-                        <UserInfo />
-                      </>
-                    }
-                  />
-                </Route>
-                <Route path="/mypage/userinfo/modify" element={<Modify />} />
-                <Route
-                  path="/login"
-                  element={
-                    <>
-                      <Helmet>
-                        <title>로그인</title>
-                      </Helmet>
-                      <LoginPage />
+                      <StudyApply />
                     </>
                   }
                 />
                 <Route
-                  path="/login/signup"
+                  path="userinfo"
                   element={
                     <>
                       <Helmet>
-                        <title>회원가입</title>
+                        <title>내 정보</title>
                       </Helmet>
-                      <SignupPage />
+                      <UserInfo />
                     </>
                   }
                 />
-                <Route
-                  path="/study"
-                  element={
-                    <>
-                      <Helmet>
-                        <title>스터디 찾기</title>
-                      </Helmet>
-                      <StudyList />
-                    </>
-                  }
-                />
-                <Route
-                  path="/study/feedback/:id"
-                  element={
-                    <>
-                      <Helmet>
-                        <title>스터디 피드백</title>
-                      </Helmet>
-                      <Feedback />
-                    </>
-                  }
-                />
-                <Route
-                  path="/study/:id"
-                  element={
-                    <>
-                      <Helmet>
-                        <title>스터디 정보</title>
-                      </Helmet>
-                      <Information />
-                    </>
-                  }
-                />
-                <Route
-                  path="/study/create"
-                  element={
-                    <>
-                      <Helmet>
-                        <title>스터디 개설하기</title>
-                      </Helmet>
-                      <CreateStudy />
-                    </>
-                  }
-                />
-                <Route
-                  path="/management/:studyId"
-                  element={
-                    <>
-                      <Helmet>
-                        <title>스터디 관리</title>
-                      </Helmet>
-                      <StudyManage />
-                    </>
-                  }
-                />
-                <Route
-                  path="/Community/CommunityPage"
-                  element={
-                    <>
-                      <Helmet>
-                        <title>커뮤니티</title>
-                      </Helmet>
-                      <CommunityPage tap={1} />
-                    </>
-                  }
-                />
-                <Route
-                  path="/Community/CommunityCreatePage"
-                  element={
-                    <>
-                      <Helmet>
-                        <title>커뮤니티 글 쓰기</title>
-                      </Helmet>
-                      <CommunityCreatePage />
-                    </>
-                  }
-                />
-                <Route
-                  path="/Community/CommunityEditPage/:community_id"
-                  element={
-                    <>
-                      <Helmet>
-                        <title>커뮤니티 글 수정</title>
-                      </Helmet>
-                      <CommunityEditPage />
-                    </>
-                  }
-                />
-                <Route
-                  path="/Community/CommunityDetailPage/:community_id"
-                  element={
-                    <>
-                      <Helmet>
-                        <title>커뮤니티 상세페이지</title>
-                      </Helmet>
-                      <CommunityDetailPage />
-                    </>
-                  }
-                />
-              </Routes>
-            </SuspenseWrapper>
-          </Layout>
+              </Route>
+              <Route path="/mypage/userinfo/modify" element={<Modify />} />
+              <Route
+                path="/login"
+                element={
+                  <>
+                    <Helmet>
+                      <title>로그인</title>
+                    </Helmet>
+                    <LoginPage />
+                  </>
+                }
+              />
+              <Route
+                path="/login/signup"
+                element={
+                  <>
+                    <Helmet>
+                      <title>회원가입</title>
+                    </Helmet>
+                    <SignupPage />
+                  </>
+                }
+              />
+              <Route
+                path="/study"
+                element={
+                  <>
+                    <Helmet>
+                      <title>스터디 찾기</title>
+                    </Helmet>
+                    <StudyList />
+                  </>
+                }
+              />
+              <Route
+                path="/study/feedback/:id"
+                element={
+                  <>
+                    <Helmet>
+                      <title>스터디 피드백</title>
+                    </Helmet>
+                    <Feedback />
+                  </>
+                }
+              />
+              <Route
+                path="/study/:id"
+                element={
+                  <>
+                    <Helmet>
+                      <title>스터디 정보</title>
+                    </Helmet>
+                    <Information />
+                  </>
+                }
+              />
+              <Route
+                path="/study/create"
+                element={
+                  <>
+                    <Helmet>
+                      <title>스터디 개설하기</title>
+                    </Helmet>
+                    <CreateStudy />
+                  </>
+                }
+              />
+              <Route
+                path="/management/:studyId"
+                element={
+                  <>
+                    <Helmet>
+                      <title>스터디 관리</title>
+                    </Helmet>
+                    <StudyManage />
+                  </>
+                }
+              />
+              <Route
+                path="/Community/CommunityPage"
+                element={
+                  <>
+                    <Helmet>
+                      <title>커뮤니티</title>
+                    </Helmet>
+                    <CommunityPage tap={1} />
+                  </>
+                }
+              />
+              <Route
+                path="/Community/CommunityCreatePage"
+                element={
+                  <>
+                    <Helmet>
+                      <title>커뮤니티 글 쓰기</title>
+                    </Helmet>
+                    <CommunityCreatePage />
+                  </>
+                }
+              />
+              <Route
+                path="/Community/CommunityEditPage/:community_id"
+                element={
+                  <>
+                    <Helmet>
+                      <title>커뮤니티 글 수정</title>
+                    </Helmet>
+                    <CommunityEditPage />
+                  </>
+                }
+              />
+              <Route
+                path="/Community/CommunityDetailPage/:community_id"
+                element={
+                  <>
+                    <Helmet>
+                      <title>커뮤니티 상세페이지</title>
+                    </Helmet>
+                    <CommunityDetailPage />
+                  </>
+                }
+              />
+            </Routes>
+          </SuspenseWrapper>
+          {/* </Layout> */}
         </QueryClientProvider>
       </Router>
     </RecoilRoot>
