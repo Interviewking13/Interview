@@ -246,7 +246,7 @@ const StyledItemNameArea = styled.div`
     align-items: flex-end;
 
     @media (max-width: 768px) {
-        margin: 50px 0 35px;
+        margin: 20px 0;
     }
 `;
 const StyledTitleText = styled.p<{ hideOnSmallScreen?: boolean }>`
