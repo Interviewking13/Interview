@@ -10,6 +10,8 @@ import { getStudyAccept, putAcceptStudy } from '../../../api/api-study';
 import { useQueryClient } from 'react-query';
 import InfoMessage from '../../UI/InfoMessage';
 import { FetchingSpinner, LoadingSpinner } from '../../common/Spinners';
+// 체크 기호와 X 기호를 위한 Unicode 기호 import
+import { FaCheck, FaTimes } from 'react-icons/fa';
 
 /** 스터디 신청 리스트 타입 */
 type StudyApplicantListProps = {
@@ -121,10 +123,16 @@ const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
             <StyledDescription>{member.goal}</StyledDescription>
           </CardContent>
           <StyledCommonButton backgroundColor={colors.main_mint} onClick={() => onAcceptButton(index)}>
-            신청 수락
+            <StyledIconContainer>
+              <FaCheck />
+            </StyledIconContainer>
+            <span>신청 수락</span>
           </StyledCommonButton>
           <StyledCommonButton backgroundColor={colors.main_red} onClick={() => onDeleteButton(index)}>
-            회원 거절
+            <StyledIconContainer>
+              <FaTimes />
+            </StyledIconContainer>
+            <span>회원 거절</span>
           </StyledCommonButton>
         </CardContainer>
       ))}
@@ -140,6 +148,10 @@ const CardContainer = styled.div`
     justify-content: space-between;
     margin-top: 20px;
     color: ${colors.main_navy};
+    @media screen and (max-width: 768px) {
+        width: calc(100% - 20px);
+        margin-top: 5px;
+    }
 `;
 
 /** 내용 div */
@@ -149,6 +161,9 @@ const CardContent = styled.div`
     flex-grow: 1;
     background-color: ${colors.back_navy};
     border-radius: 10px;
+    @media screen and (max-width: 768px) {
+        min-width: 270px;
+    }
 `;
 
 /** Name p */
@@ -158,13 +173,25 @@ const StyledName = styled.p`
     margin-right: 20px;
     margin-left: 20px;
     cursor: pointer;
+    min-width: 150px;
+    @media screen and (max-width: 768px) {
+        width: 50px;
+        margin-right: 10px;
+        margin-left: 10px;
+        font-size: 12px;
+        min-width: 50px;
+    }
 `;
 
 /** 한줄소개 p */
 const StyledDescription = styled.p`
     flex-grow: 1;
     margin-right: 10px;
-    margin-left: 100px;
+    margin-left: 10px;
+    @media screen and (max-width: 768px) {
+        margin-left: 10px;
+        font-size: 12px;
+    }
 `;
 
 /** StyledCommonButton 타입지정 */
@@ -185,9 +212,32 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
     justify-content: center;
     border: none;
     border-radius: 10px;
+    min-width: 132px;
     &:hover {
         background-color: ${colors.main_navy};
         color: white;
     }
     ${fonts.SubText}
+    @media screen and (max-width: 768px) {
+        width: 35px;
+        height: 35px;
+        font-size: 12px;
+        margin-left: 5px;
+        min-width: 40px;
+        /* 모바일 화면에서 텍스트 숨김 */
+        span {
+            display: none;
+        }
+    }
+`;
+
+/** StyledIconContainer: 모바일 화면에서 아이콘만 표시하기 위한 div */
+const StyledIconContainer = styled.div`
+    display: none;
+    @media screen and (max-width: 768px) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
 `;

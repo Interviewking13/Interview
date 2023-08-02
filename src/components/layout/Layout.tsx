@@ -42,5 +42,5 @@ const Wrap = styled.div<{ isShow: boolean }>`
     css`
       padding-bottom: 0px;
       background-color: ${colors.back_navy};
-  `}
+    `}
 `;

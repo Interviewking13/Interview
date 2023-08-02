@@ -106,23 +106,26 @@ const StudyList = (): JSX.Element => {
                     </StyledLink>
                 </StudyListInputArea>
             </StudyListTopArea>
-
-            <StudyListItemArea>
-                {getDisplayedStudyData().map((study) => (
-                    <StyledLink to={`/study/${study._id}`} key={study._id}>
-                        <StudyListItem
-                            id={study._id}
-                            title={study.title}
-                            currentParticipants={study.acceptcount}
-                            maxParticipants={study.headcount}
-                            startDate={dateSplice(study.start)}
-                            endDate={dateSplice(study.end)}
-                            recruitDeadline={dateSplice(study.deadline)}
-                            master={study.leader_name}
-                        />
-                    </StyledLink>
-                ))}
-            </StudyListItemArea>
+            {studyData && studyData.length > 0 ? (
+                <StudyListItemArea>
+                    {getDisplayedStudyData().map((study) => (
+                        <StyledLink to={`/study/${study._id}`} key={study._id}>
+                            <StudyListItem
+                                id={study._id}
+                                title={study.title}
+                                currentParticipants={study.acceptcount}
+                                maxParticipants={study.headcount}
+                                startDate={dateSplice(study.start)}
+                                endDate={dateSplice(study.end)}
+                                recruitDeadline={dateSplice(study.deadline)}
+                                master={study.leader_name}
+                            />
+                        </StyledLink>
+                    ))}
+                </StudyListItemArea>
+            ) : (
+                <p>스터디 데이터가 없습니다.</p>
+            )}
 
             <PaginationArea>
                 <PaginationButton disabled={currentPage === 1} onClick={() => goToPage(currentPage - 1)}>
@@ -142,6 +145,10 @@ export default StudyList;
 const CommonContainer = styled.div`
     width: 1270px;
     margin: 0 auto;
+    @media screen and (max-width: 768px) {
+        width: 100%; /* 모바일 화면에 딱 맞게 크기 설정 */
+        margin: 0 auto;
+    }
 `;
 
 const StudyListTopArea = styled.div`
@@ -149,12 +156,22 @@ const StudyListTopArea = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 10px 0 10px 0;
+    }
 `;
 
 const StudyListInputArea = styled.div`
     width: 472px;
     display: flex;
     justify-content: space-between;
+    @media screen and (max-width: 768px) {
+        width: 300px;
+        margin: 0;
+    }
 `;
 
 const StyledTitleText = styled.p`
@@ -162,6 +179,10 @@ const StyledTitleText = styled.p`
     ${fonts.TitleText}
     color: ${colors.main_navy};
     margin: 0 30px 0 0;
+    @media screen and (max-width: 768px) {
+        margin: 0;
+        text-align: center; /* 모바일 뷰에서 가운데 정렬 */
+    }
 `;
 
 const StyledSubTextThin = styled.p`
@@ -171,6 +192,10 @@ const StyledSubTextThin = styled.p`
     color: ${colors.darkgray_navy};
     margin: 0;
     ${fonts.SubTextThin}
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        text-align: center; /* 모바일 뷰에서 가운데 정렬 */
+    }
 `;
 
 const CommonButton = styled.div`
@@ -182,6 +207,9 @@ const CommonButton = styled.div`
     border-radius: 10px;
     background-color: ${colors.main_mint};
     ${fonts.SubText}
+    @media screen and (max-width: 768px) {
+        display: none; /* 모바일 화면에서 숨기기 */
+    }
 `;
 
 const ButtonText = styled.p`
@@ -200,6 +228,20 @@ const StudyListItemArea = styled.div`
     grid-template-columns: 298px 298px 298px 298px;
     grid-row-gap: 30px;
     grid-column-gap: 25px;
+
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        height: auto;
+        margin: 10px 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    @media screen and (max-width: 500px) {
+        /* 500px 이하일 때 2행으로 표시 */
+        grid-template-columns: 2fr; /* 1행으로 표시하도록 변경 */
+    }
 `;
 
 const StyledInput = styled.input`
@@ -212,6 +254,9 @@ const StyledInput = styled.input`
     padding-left: 15px;
     color: ${colors.main_navy};
     ${fonts.SubTextThin}
+    @media screen and (max-width: 768px) {
+        width: 100%;
+    }
 `;
 
 const StyledInputBtn = styled.button`
@@ -235,6 +280,10 @@ const StyledLink = styled(Link)`
     :hover {
         transform: scale(1.007);
         transition: 0.3s;
+    }
+    @media screen and (max-width: 768px) {
+        display: flex;
+        justify-content: center;
     }
 `;
 

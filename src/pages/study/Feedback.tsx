@@ -12,16 +12,28 @@ import {
 import { colors } from "../../constants/colors";
 import { useLocation } from "react-router-dom";
 import { SubTextThin } from "../../constants/fonts";
+import { getUserData } from "../../api/api-user";
+import { useQuery } from "react-query";
 
 export const Feedback = () => {
   const location = useLocation();
   const path = location.pathname;
-  const [feedbackInput, setFeedbackInput] = useState("");
   const lastPathSegment = path.substring(path.lastIndexOf("/") + 1);
+  const studyId = lastPathSegment;
+  const [feedbackInput, setFeedbackInput] = useState("");
   const [feedbackData, setFeedbackData] = useState<any[]>([]); // 게시글 데이터를 저장할 상태
 
+  const {
+    data: userData,
+    isLoading: userDataLoading,
+    isError: userDataError,
+    isFetching: userDataFetching,
+  } = useQuery("userData", () =>
+    getUserData(String(localStorage.getItem("token")))
+  );
+  console.log(userData);
   useEffect(() => {
-    getFeedbackDataByStudyId(lastPathSegment)
+    getFeedbackDataByStudyId(studyId)
       .then((response) => {
         console.log(response.data);
         setFeedbackData(response.data);
@@ -59,6 +71,7 @@ export const Feedback = () => {
 
   const DeleteFeedbackBtn = async () => {
     try {
+      alert("삭제하시겠습니까?");
       const deleteFeedback = await deleteFeedbackByUserId(
         lastPathSegment,
         String(localStorage.getItem("token"))
@@ -90,7 +103,9 @@ export const Feedback = () => {
           placeholder="피드백을 입력해주세요"
           onChange={onChangeArea}
         ></InputArea>
-        <FeedbackBtn onClick={postFeedbackBtn}>등록</FeedbackBtn>
+        <BtnContainer>
+          <FeedbackBtn onClick={postFeedbackBtn}>등록</FeedbackBtn>
+        </BtnContainer>
       </FeedbackContainer>
       {feedbackData.map((post, index) => (
         <FeedbackContainer key={post._id} id={post.user_id}>
@@ -101,9 +116,14 @@ export const Feedback = () => {
             </FeedbackUserContainer>
             <FeedbackContentContainer>{post.content}</FeedbackContentContainer>
           </FeedbackContainerContent>
-          <FeedbackCancleBtn onClick={DeleteFeedbackBtn}>
-            삭제
-          </FeedbackCancleBtn>
+          <FeedbackBtnContainer>
+            <FeedbackCancleBtn onClick={DeleteFeedbackBtn}>
+              수정
+            </FeedbackCancleBtn>
+            <FeedbackCancleBtn onClick={DeleteFeedbackBtn}>
+              삭제
+            </FeedbackCancleBtn>
+          </FeedbackBtnContainer>
         </FeedbackContainer>
       ))}
     </Container>
@@ -111,9 +131,9 @@ export const Feedback = () => {
 };
 
 const InputArea = styled.textarea`
-  height: 100px;
-  width: 85%;
-  margin-left: 10px;
+  height: 120px;
+  width: 1250px;
+  margin: 5px 0;
   font-size: 18px;
   border: 1px solid ${colors.main_navy};
   border-radius: 10px;
@@ -127,20 +147,20 @@ const InputArea = styled.textarea`
     font-weight: bold;
     font-size: 16px;
   }
-  ::-webkit-scrollbar {
-    width: 20px; /* 스크롤바 너비 */
+
+  @media screen and (max-width: 768px) {
+    width: 90%;
+
+    font-size: 12px;
   }
-  ::-webkit-scrollbar-thumb {
-    background-color: ${colors.darkgray_navy}; /* 스크롤바 색상 */
-    border-radius: 20px; /* 스크롤바 둥글게 */
-    margin-right: 20px;
-    border: solid 6px white;
-  }
-  ::-webkit-scrollbar-track {
-    width: 14px;
-    background-color: none; /* 스크롤바 트랙 색상 */
-    border-radius: 4px; /* 스크롤바 트랙 둥글게 */
-  }
+`;
+const BtnContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+const FeedbackBtnContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const FeedbackCancleBtn = styled.button`
@@ -150,13 +170,15 @@ const FeedbackCancleBtn = styled.button`
   font-weight: 700;
   color: ${colors.main_red};
   border-radius: 20px;
-  margin-right: 20px;
   border: 1px solid 2px;
-  width: 90px;
-  height: 70px;
+  width: 50;
+  height: 30px;
   cursor: pointer;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 const FeedbackBtn = styled.button`
   border: none;
@@ -165,12 +187,15 @@ const FeedbackBtn = styled.button`
   font-weight: 700;
   color: ${colors.main_navy};
   border-radius: 20px;
-  margin-right: 20px;
-  width: 90px;
-  height: 70px;
+  margin-right: 10px;
+  width: 50px;
+  height: 30px;
   cursor: pointer;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 const SubContainer = styled.div`
   margin-top: 10px;
@@ -183,31 +208,43 @@ const Container = styled.div`
   width: 1270px;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 768px) {
+    width: 100vw;
+    padding: 10px;
+  }
 `;
 const FeedbackContainerContent = styled.div`
+  margin: 10px 0;
+  height: 120px;
   display: flex;
 `;
 //피드백 개별 박스
 const FeedbackContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  /* align-items: center; */
+  flex-direction: column;
   background-color: ${colors.back_navy};
-  align-items: center;
+
   padding: 8px;
-  height: 100px;
+  height: 140px;
   border: 1px solid black;
   border-radius: 5px;
   display: flex;
-  width: 90%;
+  width: 1270px;
   margin-top: 15px;
+  @media screen and (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const FeedbackUserContainer = styled.div`
   display: flex;
   color: ${colors.main_navy};
   font-size: 16px;
-  margin: 0px 30px;
+  margin: 0px 20px;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    margin: 0px 5px;
+  }
 `;
 
 const FeedbackContentContainer = styled.div`
@@ -215,4 +252,8 @@ const FeedbackContentContainer = styled.div`
   margin-left: 30px;
   color: ${colors.darkgray_navy};
   font-size: 18px;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    margin-left: 5px;
+  }
 `;

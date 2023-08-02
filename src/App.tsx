@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import HomePage from './pages/home/Homepage';
 import Mypage from './pages/mypage/Mypage';
-import StudyList from './pages/studylist/StudyList';
-import CreateStudy from './pages/studylist/CreateStudy';
+import StudyList from './pages/study/StudyList';
+import CreateStudy from './pages/study/CreateStudy';
 import Layout from './components/layout/Layout';
 import LoginPage from './pages/login/Login';
 import SignupPage from './pages/login/SignupPage';
@@ -220,7 +220,6 @@ function App() {
             </Router>
         </RecoilRoot>
     );
-
 }
 
 export default App;

@@ -20,6 +20,7 @@ import { useAuth } from '../../hooks/useAuth';
 import InfoMessage from '../../components/UI/InfoMessage';
 import { FetchingSpinner, LoadingSpinner } from '../../components/common/Spinners';
 import { isLogin } from '../../hooks/isLogin';
+import { getCurrentDate } from '../../utils/getCurrentDate';
 
 /** 스터디 정보 컴포넌트 */
 const Information: React.FC = () => {
@@ -54,10 +55,10 @@ const Information: React.FC = () => {
 
   // 데이터가 로딩 중이 아니고, 패칭중 아니고, 에러가 아닐 때에만 user_id를 설정합니다.
   useEffect(() => {
-    if (!userDataLoading && !userDataError && userDataFetching) {
+    if (!userDataLoading && !userDataError && !userDataFetching) {
       setUserId(userData.data.user_id);
     }
-  }, [userDataLoading, userDataError, userData]);
+  }, [userDataLoading, userDataError, userDataFetching, userData]);
 
   /** 자기소개서 모달창 오픈 핸들러 */
   const handleOpenUserInfoModal = () => {
@@ -110,7 +111,15 @@ const Information: React.FC = () => {
   }
 
   // 스터디 데이터 분해구조 할당
-  const { title, content, start, end, chat_link, headcount, acceptcount, leader_name, leader_id, _id } = studyData;
+  const { title, content, start, end, chat_link, headcount, acceptcount, leader_name, leader_id, _id, deadline } =
+    studyData;
+  const currentDate = getCurrentDate();
+  const fommattedEndDate = `20${dateSplice(end)}`.replaceAll('.', '-');
+  const fommattedDeadlineDate = `20${dateSplice(deadline)}`.replaceAll('.', '-');
+  // 스터디 종료 = true
+  const isStudyClosed = fommattedEndDate < currentDate;
+  // 모집 종료 = true
+  const isRecruitmentClosed = fommattedDeadlineDate < currentDate;
 
   return (
     <Container>
@@ -120,8 +129,8 @@ const Information: React.FC = () => {
       </MystudyContainer>
       <StyeldTapContainer>
         <StudyTaps />
-        {/* 로그인 유저가 스터디장이면 보이도록 */}
-        {useId === leader_id ? (
+        {/* 로그인 유저가 스터디장이면서 종료일이 안됐을 경우 보이도록 */}
+        {useId === leader_id && !isStudyClosed ? (
           <StyledStudyManageButton onClick={handleStudyManageButtonClick}>
             <SettingsIcon fontSize="large"></SettingsIcon>
           </StyledStudyManageButton>
@@ -156,8 +165,8 @@ const Information: React.FC = () => {
         &nbsp;스터디 소개
       </StudyIntro>
       <InfoContent>{content}</InfoContent>
-      {/* 로그인 유저가 스터디장이 아니면 보이도록*/}
-      {useId !== leader_id ? <SubmitButton onClick={handleOpenStudyApplyModal} /> : <></>}
+      {/* 로그인 유저가 스터디장이 아니면서 모집마감일이 지나지 않았을 경우 보이도록*/}
+      {useId !== leader_id && !isRecruitmentClosed ? <SubmitButton onClick={handleOpenStudyApplyModal} /> : <></>}
       <Modal open={studyApplyModalOpen} onClose={handleCloseStudyApplyModal}>
         <StudyApplyModal studyId={lastPathSegment} handleModalClose={handleCloseStudyApplyModal} />
       </Modal>
@@ -171,6 +180,10 @@ const Container = styled.div`
     width: 1270px;
     display: flex;
     flex-direction: column;
+    @media screen and (max-width: 768px) {
+        width: 350px;
+        padding: 10px;
+    }
 `;
 
 /** 스터디 정보 컨테이너 */
@@ -187,16 +200,30 @@ export const Mystudy = styled.div`
     color: ${colors.main_navy};
     font-size: 32px;
     margin-right: 30px;
+    @media screen and (max-width: 768px) {
+        font-size: 20px;
+        white-space: nowrap;
+    }
+    /* @media screen and (max-width: 360px) {
+    font-size: 20px;
+    white-space: nowrap;
+  } */
 `;
 
 /** 스터디 정보 세부 타이틀 */
 const MystudySubtitle = styled.div`
     ${SubTextThin};
     color: ${colors.darkgray_navy};
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
 `;
 const InfoContent = styled.p`
     font-size: 20px;
     padding: 10px;
+    @media screen and (max-width: 768px) {
+        font-size: 12px;
+    }
 `;
 
 /** 스터디 정보탭 컨테이너 */
@@ -217,6 +244,10 @@ export const Title = styled.span`
     ${TitleText};
     color: ${colors.main_navy};
     font-size: 48px;
+
+    @media screen and (max-width: 768px) {
+        font-size: 24px;
+    }
 `;
 
 const SubTitle = styled.div`
