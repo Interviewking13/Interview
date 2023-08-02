@@ -127,12 +127,15 @@ const Header = (): JSX.Element => {
 export default Header;
 
 const Divider = styled.div`
-    margin-top: 15px;
+    /* margin-top: 15px; */
     border-bottom: 1px solid ${colors.gray_stroke};
+    @media (max-width: 768px) {
+        margin-top: 10px;
+    }
 `;
 const StyledContainer = styled.div`
     margin: 0 auto; /* 가운데 정렬을 위한 수정 */
-    padding-top: 40px;
+    padding-top: 30px;
     width: 100%;
     max-width: 1270px;
     display: flex;
@@ -141,7 +144,8 @@ const StyledContainer = styled.div`
 
     @media (max-width: 768px) {
         width: 100%;
-        padding: 20px 0 0 20px;
+        padding-top: 20px;
+        justify-content: space-between;
     }
 `;
 
@@ -149,6 +153,10 @@ const StyledLogoContainer = styled.div`
     min-width: 100px;
     margin-right: 40px;
     ${TitleText}
+
+    @media (max-width: 768px) {
+        margin: 0 40px 0 20px;
+    }
 `;
 
 const StyledLogo = styled(Link)`
@@ -182,6 +190,7 @@ const StyledMenuIcon = styled.div`
     @media (max-width: 768px) {
         display: block; /* 화면이 줄어들 때 표시 */
         cursor: pointer;
+        margin-right: 20px;
     }
 `;
 
@@ -236,4 +245,8 @@ const StyledLogOutButton = styled(Link)`
     margin-left: 35px;
     text-decoration: none;
     cursor: pointer;
+
+    @media (max-width: 768px) {
+        margin: 20px 20px 20px 0;
+    }
 `;

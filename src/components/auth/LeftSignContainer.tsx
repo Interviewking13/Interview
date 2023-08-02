@@ -71,4 +71,13 @@ const StyledSubText = styled.div`
       margin-top: 30px;
     }
   }
+
+  @media (max-width: 500px) {
+      font-size: 32px;
+
+      &:nth-of-type(3) {
+        font-size: 14px;
+        margin-top: 20px;
+      }
+  }
 `;

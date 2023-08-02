@@ -32,6 +32,10 @@ const StyledFooterContainer = styled.div`
 const StyledFooterLogoContainer = styled.div`
   ${TitleText}
   white-space: nowrap;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
 `;
 
 const StyledFooterLogo = styled.div`
@@ -74,10 +78,11 @@ const StyledCopyright = styled.div`
   font-weight: 300;
   color: #909090;
   text-align: center;
-  margin-top: 20px;
+  margin: 10px 20px 0 20px;
 
   @media (max-width: 768px) {
     display: block;
+    font-size: 14px;
   }
 `
 
