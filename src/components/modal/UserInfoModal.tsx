@@ -120,6 +120,11 @@ const StyledBox = styled(Box)`
     transform: translate(-50%, -50%);
     border-radius: 15px;
     display: flex;
+    @media screen and (max-width: 768px) {
+        width: calc(100% - 20px);
+        min-width: 320px;
+        height: auto; /* 모바일 화면에서 자동 높이 조정 */
+    }
 `;
 
 /** 전체 컨테이너 div */
@@ -150,6 +155,9 @@ const StyledTitleText = styled.p`
     color: ${(props) => props.color};
     display: inline-block;
     padding-right: 10px;
+    @media screen and (max-width: 768px) {
+        font-size: 24px;
+    }
 `;
 
 /** 취소버튼 button */

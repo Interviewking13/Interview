@@ -66,7 +66,6 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId, handleModalC
         postApplyStudy(String(localStorage.getItem('token')), studyId, goal);
         alert('스터디가 신청되었습니다!');
         handleModalClose();
-        //information에서 정보 재랜더링 해야함 쿼리로.
     };
 
     if (isLoading) {
@@ -84,12 +83,12 @@ const StudyApplyModal: React.FC<StudyApplyModalProps> = ({ studyId, handleModalC
             <StyledBox>
                 <StyledContainer>
                     <StyledTopContainer>
-                        <StyledTitleText>스터디 신청하기</StyledTitleText>
+                        <StyledTitleText color={colors.main_mint}>스터디 신청하기</StyledTitleText>
                         <StyledCancelButton onClick={handleCloseModal}>
                             <CancelButtonImage src={imageSrc} alt="Cancel Button" />
                         </StyledCancelButton>
                     </StyledTopContainer>
-                    <StyledTitleTextNavy>{title}</StyledTitleTextNavy>
+                    <StyledTitleTextNavy color={colors.main_navy}>{title}</StyledTitleTextNavy>
                     <StudyApplyList
                         period={`${dateSplice(start)} ~ ${dateSplice(end)}`}
                         deadline={dateFomatting(deadline)}
@@ -135,6 +134,11 @@ const StyledBox = styled(Box)`
     transform: translate(-50%, -50%);
     border-radius: 15px;
     display: flex;
+    @media screen and (max-width: 768px) {
+        width: calc(100% - 20px);
+        min-width: 320px;
+        height: auto; /* 모바일 화면에서 자동 높이 조정 */
+    }
 `;
 
 /** 상단 컨테이너 div */
@@ -155,6 +159,10 @@ const StyledContainer = styled.div`
     margin: 40px;
     display: flex;
     flex-direction: column;
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        margin: 30px;
+    }
 `;
 
 /** 신청하기 제목 개요 p */
@@ -162,7 +170,11 @@ const StyledTitleText = styled.p`
     margin: 0px;
     margin-bottom: 22px;
     ${TitleText}
-    color: ${colors.main_mint}
+    color: ${(props) => props.color};
+    @media screen and (max-width: 768px) {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
 `;
 
 /** 신청하기 제목 p */
@@ -170,7 +182,11 @@ const StyledTitleTextNavy = styled.p`
     margin: 0px;
     margin-bottom: 22px;
     ${TitleText}
-    color: ${colors.main_navy}
+    color: ${(props) => props.color};
+    @media screen and (max-width: 768px) {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
 `;
 
 /** 입력란 textarea */
@@ -180,6 +196,11 @@ const TextInput = styled.textarea`
     height: 172px;
     border-radius: 10px;
     font-size: 18px;
+    @media screen and (max-width: 768px) {
+        width: calc(100%);
+        height: 80px;
+        font-size: 14px;
+    }
 `;
 
 /** 자기소개서 설명 개요 p */
@@ -187,6 +208,10 @@ const StyledP = styled.p`
     font-size: 14px;
     margin: 0;
     margin-right: 10px;
+    @media screen and (max-width: 768px) {
+        font-size: 12px;
+        display: none; /* 모바일 화면에서 숨기기 */
+    }
 `;
 
 /** 자기소개서 링크 mul(link) */
@@ -195,6 +220,9 @@ const StyledA = styled(Link)`
     text-decoration: none;
     color: #000;
     text-decoration: underline;
+    @media screen and (max-width: 768px) {
+        font-size: 12px;
+    }
 `;
 
 /** 취소 버튼 button */
@@ -206,6 +234,10 @@ const StyledCancelButton = styled.button`
     padding: 0;
     margin-left: auto;
     cursor: pointer; /* 클릭 커서 스타일 추가 */
+    @media screen and (max-width: 768px) {
+        width: 18px;
+        height: 18px;
+    }
 `;
 
 /** 취소 버튼 img */
@@ -222,6 +254,11 @@ const StyledBottom = styled.div`
     display: flex;
     flex-direction: row;
     font-family: ${fonts.SubTextThinSmall};
+    @media screen and (max-width: 768px) {
+        margin-top: 10px;
+        align-items: center;
+        justify-content: space-between;
+    }
 `;
 
 /** 신청 버튼 컨테이너 타입지정 */
@@ -247,9 +284,18 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
         color: ${colors.main_white};
     }
     ${fonts.SubText}
+    @media screen and (max-width: 768px) {
+        margin-left: 5px;
+        width: 70px;
+        min-width: 70px;
+        height: 35px;
+    }
 `;
 
 /** 신청하기 텍스트 p */
 const StyledButtonTextField = styled.p`
     font-family: ${fonts.SubTextBig};
+    @media screen and (max-width: 768px) {
+        font-size: 12px;
+    }
 `;
