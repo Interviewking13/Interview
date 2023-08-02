@@ -86,7 +86,7 @@ const StyledTitle = styled.div`
   color: ${colors.main_navy};
   margin: 0 30px 0 0;
   @media screen and (max-width: 768px) {
-    font-size: 20px;
+    font-size: 30px;
     white-space: nowrap;
   }
 `;
@@ -162,10 +162,10 @@ const CommonButton = styled.div`
   background-color: ${colors.main_mint};
   ${fonts.SubText}
   @media screen and (max-width: 768px) {
-    width: 60px;
-    height: 25px;
+    width: 100px;
+    height: 40px;
 
-    margin-right: 30px;
+    margin-right: 50px;
   }
 `;
 
@@ -175,7 +175,7 @@ const ButtonText = styled.p`
   margin-top: 11px;
   border-radius: 10px;
   @media screen and (max-width: 768px) {
-    font-size: 12px;
+    font-size: 14px;
   }
 `;
 

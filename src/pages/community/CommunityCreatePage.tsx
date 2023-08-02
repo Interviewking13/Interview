@@ -9,22 +9,35 @@ import { getUserData } from "../../api/api-user";
 import { useAuth } from "../../hooks/useAuth";
 
 // 커뮤니티 글 작성을 위한 API 호출
-const postCommunity = async (data: {
-  title: string;
-  content: string;
-  attach: string;
-  user_id: string;
-  community_id: number;
-}) => {
+const postCommunity = async (formData: FormData) => {
   try {
-    console.log("Posted Data:", data);
-    const response = await axiosInstance.post("/community/detl", data);
+    console.log("Posted Data:", formData);
+    const response = await axiosInstance.post("/community/detl", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // 필수: 파일 업로드 시 반드시 설정
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error:", error);
     throw error;
   }
 };
+// const postCommunity = async (data: {
+//   title: string;
+//   content: string;
+//   user_id: string;
+//   file_name: string;
+// }) => {
+//   try {
+//     console.log("Posted Data:", data);
+//     const response = await axiosInstance.post("/community/detl", data);
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error:", error);
+//     throw error;
+//   }
+// };
 
 // CommunityCreatePage 컴포넌트 선언
 const CommunityCreatePage: React.FC = () => {
@@ -47,8 +60,8 @@ const CommunityCreatePage: React.FC = () => {
   useEffect(() => {
     getUserData(String(localStorage.getItem("token"))).then((response) => {
       setUserId(response.data.user_id);
-      console.log(response.data.user_id);
-      console.log(response.data);
+      // console.log(response.data.user_id);
+      // console.log(response.data);
     });
   });
 
@@ -74,6 +87,7 @@ const CommunityCreatePage: React.FC = () => {
       const selectedFile = selectedFiles[0];
       setFile(selectedFile);
     }
+    console.log(selectedFiles);
   };
 
   // postCommunity api service함수 가져와서 사용
@@ -93,14 +107,20 @@ const CommunityCreatePage: React.FC = () => {
 
   /** 글쓰기 버튼 클릭 시 동작 */
   const handleSubmit = () => {
-    // postCommunityMutate 함수를 호출하여 글 작성을 서버로 전송
-    postCommunityMutate({
-      title: title,
-      content: content,
-      attach: "",
-      user_id: useId,
-      community_id: 0,
-    });
+    const formData = new FormData();
+
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("user_id", useId);
+    formData.append("community_id", "0");
+    if (file) {
+      formData.append("image", file, file.name);
+    }
+    console.log(formData.get("title"));
+    console.log(formData.get("content"));
+    console.log(formData.get("image"));
+
+    // postCommunityMutate(formData);
   };
 
   /** 삭제 버튼 클릭 시 동작 */

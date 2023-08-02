@@ -35,11 +35,11 @@ const Mypage = () => {
       <StyledTapbuttonContainer>
         <MenuTapBtn onClick={onClickUserStudy}>
           <Create />
-          나의 스터디
+          개설 스터디
         </MenuTapBtn>
         <MenuTapBtn onClick={onClickStudyApply}>
           <Checklist />
-          스터디 신청
+          참가 스터디
         </MenuTapBtn>
         <MenuTapBtn onClick={onClickUserInfo}>
           <Person />내 정보
@@ -56,6 +56,11 @@ const StyledContainer = styled.div`
   width: 1270px;
   margin: 0 auto;
   padding-top: 40px;
+  @media screen and (max-width: 768px) {
+    margin: 0;
+    width: 100%;
+    padding: 0 10px;
+  }
 `;
 
 /** 타이틀 컨테이너 */
@@ -63,6 +68,11 @@ const StyledTitleContainer = styled.div`
   display: flex;
   flex-direction: low;
   align-items: center;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 /** 마이페이지 타이틀 텍스트 버튼 */
@@ -71,6 +81,10 @@ const StyledTitle = styled(Button)`
     ${fonts.TitleText}
     color: ${colors.main_navy};
     margin-right: 15px;
+    @media screen and (max-width: 768px) {
+      /** mui버튼이 가지고있는 고유여백제거 */
+      padding: 0;
+    }
   }
 `;
 
@@ -86,4 +100,8 @@ const StyledTapbuttonContainer = styled.div`
   display: flex;
   flex-direction: low;
   margin-bottom: 20px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    white-space: nowrap;
+  }
 `;
