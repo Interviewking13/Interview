@@ -31,6 +31,10 @@ const StyledTitleContainer = styled.a`
   display: flex;
   flex-direction: column;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    align-items: center;
+  }
 `;
 
 /** 서브 텍스트 div */
@@ -52,5 +56,19 @@ const StyledSubText = styled.div`
     font-size: 18px;
     font-weight:300;
     margin-top: 50px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 48px;
+    text-align: center;
+
+    &:nth-of-type(2) {
+      margin-top: 10px;
+    }
+
+    &:nth-of-type(3) {
+      font-size: 16px;
+      margin-top: 30px;
+    }
   }
 `;
