@@ -153,7 +153,7 @@ const HomePage = (): JSX.Element => {
                 </StyledMainStudyBtnArea>
 
                 <StyledItemNameArea>
-                    <StyledTitleText>커뮤니티 소식</StyledTitleText>
+                    <StyledTitleText hideOnSmallScreen>커뮤니티 소식</StyledTitleText>
                 </StyledItemNameArea>
 
                 <StyledMainCommunityArea>
@@ -249,11 +249,9 @@ const StyledItemNameArea = styled.div`
         margin: 50px 0 35px;
     }
 `;
-const StyledTitleText = styled.p`
-    /* height: fit-content; */
+const StyledTitleText = styled.p<{ hideOnSmallScreen?: boolean }>`
     line-height: 0;
     color: ${colors.main_navy};
-    /* margin-right: 30px; */
     ${fonts.TitleText}
 
     @media (max-width: 768px) {
@@ -261,10 +259,7 @@ const StyledTitleText = styled.p`
         text-align: center;
         font-size: 24px;
         margin: 0;
-
-        &:last-child {
-            display: none;
-        }
+        ${({ hideOnSmallScreen }) => hideOnSmallScreen && 'display: none;'}
     }
 `;
 const StyledCarouselTitleTextNavy = styled.p`
@@ -363,16 +358,30 @@ const StyeldBtnTitleArea = styled.div`
     height: fit-content;
     display: flex;
     margin: 0;
+
+    @media (max-width: 635px) {
+        justify-content: center;
+        /* align-items: flex-start; */
+    }
 `;
 const StyledIcon = styled.img`
     width: 27px;
     height: 27px;
+
+    @media (max-width: 768px) {
+        width: 19px;
+        height: 19px;
+    }
 `;
 const StyledMainBtnTitle = styled.p`
     margin: 2px 0 20px 20px;
     ${fonts.SubText}
     font-size: 20px;
     color: ${colors.main_black};
+
+    @media (max-width: 768px) {
+        margin: 0 0 15px 10px;
+    }
 `;
 const StyledMainBtnSub = styled.p`
     ${fonts.SubTextThinSmall}
