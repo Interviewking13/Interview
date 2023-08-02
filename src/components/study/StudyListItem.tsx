@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import StyledIcon from '../layout/Img';
 import PeopleIconSrc from '../../img/people_navy.svg';
@@ -43,20 +43,27 @@ const StudyListItem: React.FC<StudyListProps> = ({
     const currentDate = getCurrentDate();
     // 같은 형식으로 포멧팅
     const formattedRecruitDeadline = `20${recruitDeadline}`.replaceAll('.', '-');
+    const formattedRecruitEndDate = `20${endDate}`.replaceAll('.', '-');
 
     useEffect(() => {
-        if (formattedRecruitDeadline < currentDate) {
+        // 현재 스터디가 종료된 경우
+        if (formattedRecruitEndDate < currentDate) {
+            setRecruitmentStatus('종료');
+        } else if (formattedRecruitDeadline < currentDate) {
+            // 모집이 마감된 경우
             setRecruitmentStatus('모집 마감');
+        } else {
+            setRecruitmentStatus('모집 중');
         }
-    }, []);
+    }, [formattedRecruitEndDate, formattedRecruitDeadline, currentDate]);
 
     const isRecruitmentClosed = recruitmentStatus === '모집 마감';
-
+    const isStudyClosed = recruitmentStatus === '종료';
     return (
         <StyledStudyListContainer key={id}>
             <StyledStudyListNavyArea>
                 <StyledStudyTagArea>
-                    <StyledStudyRecruitTag isClosed={isRecruitmentClosed}>{recruitmentStatus}</StyledStudyRecruitTag>
+                    <StyledStudyRecruitTag status={recruitmentStatus}>{recruitmentStatus}</StyledStudyRecruitTag>
                 </StyledStudyTagArea>
                 <StyledStudyName>{title}</StyledStudyName>
             </StyledStudyListNavyArea>
@@ -105,16 +112,36 @@ const StyledStudyTagArea = styled.div`
     font-size: 12px;
     margin: 35px 0 0 35px;
 `;
-/** 마감시 isClosed 가 true 이므로 색상 변경 */
-const StyledStudyRecruitTag = styled.div<{ isClosed: boolean }>`
+/** 모집 상태에 따른 색상 props 로 전달   */
+const StyledStudyRecruitTag = styled.div<{ status: string }>`
     width: fit-content;
     height: fit-content;
     display: inline;
-    color: ${(props) => (props.isClosed ? colors.main_red : colors.main_mint)};
-    border: solid 1px ${(props) => (props.isClosed ? colors.main_red : colors.main_mint)};
+    color: #fff;
     border-radius: 15px;
     padding: 1px 10px;
     margin-right: 8px;
+
+    ${(props) =>
+        props.status === '종료' &&
+        css`
+            color: ${colors.main_red};
+            border: solid 1px ${colors.main_red};
+        `};
+
+    ${(props) =>
+        props.status === '모집 마감' &&
+        css`
+            color: ${colors.main_yellow};
+            border: solid 1px ${colors.main_yellow};
+        `};
+
+    ${(props) =>
+        props.status === '모집 중' &&
+        css`
+            color: ${colors.main_mint};
+            border: solid 1px ${colors.main_mint};
+        `};
 `;
 const StyledStudyName = styled.p`
     width: 225px;
