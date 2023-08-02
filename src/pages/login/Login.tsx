@@ -398,18 +398,13 @@ const StyledAutoLoginCheckbox = styled.input`
         display: block;
         position: absolute;
         top: 5px;
-        left: 10px;
+        left: 11px;
         width: 5px;
         height: 10px;
         border: solid ${colors.main_black};
         border-width: 0 2px 2px 0;
         transform: rotate(45deg);
         z-index: 1;
-    }
-
-    @media (max-width: 768px) {
-        width: 16px;
-        height: 16px;
     }
 `;
 

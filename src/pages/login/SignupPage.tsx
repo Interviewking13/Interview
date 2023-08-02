@@ -281,10 +281,14 @@ const StyledSignupInput = styled.input`
     box-shadow: none;
   }
 
-  @media screen and (max-width: 768px) {
-    width: calc(100% - 20px);
-    height: 45px;
-    font-size: 16px;
+  @media (max-width: 768px) {
+        width: 100%; 
+        max-width: 457px;
+        height: 40px;
+        font-size: 16px;
+  }
+  @media (max-width: 500px) {
+        width: calc(100% - 20px);
   }
 `;
 
@@ -307,9 +311,10 @@ const StyledSignupBtn = styled(Button)`
   }
 
   @media (max-width: 768px) {
-        width: 110px !important;
-        height: 40px !important;
-        font-size: 14px !important;
+    margin-left: 0 !important;
+    width: 110px !important;
+    height: 40px !important;
+    font-size: 14px !important;
   }
 `;
 
