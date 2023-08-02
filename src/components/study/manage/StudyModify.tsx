@@ -82,11 +82,6 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
         // 현재 날짜 불러오기
         const currentDate = getCurrentDate();
 
-        if (startDate < currentDate) {
-            setError(`시작일은 ${currentDate}일 이후로 지정해 주세요.`);
-            return;
-        }
-
         if (endDate <= startDate) {
             setError(`종료일은 ${startDate}일 이후로 지정해 주세요.`);
             return;
