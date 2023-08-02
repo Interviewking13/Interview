@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import StudyListItem from '../../components/study/StudyListItem';
-import BestBoardListItemContainer from '../community/components/BestBoardListItemContainer';
+import BestBoardListItemContainer from '../../components/community/BestBoardListItemContainer';
 import { colors } from '../../constants/colors';
 import * as fonts from '../../constants/fonts';
 import PencilIconSrc from '../../img/pencil_mint.svg';
