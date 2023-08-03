@@ -66,7 +66,8 @@ const ModalContent = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    padding: 10px;
+    margin: 10px;
+    padding: 20px;
   }
 `;
 
@@ -148,7 +149,7 @@ const ModalInput = styled.input`
   }
 
   @media (max-width: 768px) {
-    width: 100%;
+    width: 90%;
     height: 40px;
     font-size: 14px;
   }
