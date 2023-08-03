@@ -258,8 +258,9 @@ const StyledTitleText = styled.p<{ hideOnSmallScreen?: boolean }>`
         width: 100%;
         text-align: center;
         font-size: 24px;
-        margin: 0;
+        margin: ${({ hideOnSmallScreen }) => (hideOnSmallScreen ? '0' : '20px 0')};
         ${({ hideOnSmallScreen }) => hideOnSmallScreen && 'display: none;'}
+        /* ${({ hideOnSmallScreen }) => hideOnSmallScreen && 'display: none;'} */
     }
 `;
 const StyledCarouselTitleTextNavy = styled.p`
