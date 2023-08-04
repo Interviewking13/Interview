@@ -30,12 +30,11 @@ async function fileUpload(req, res, next) {
             }
         
             const fileStream = Readable.from(req.file.buffer);
-            console.log('fileStream: ', fileStream);
             const datetime = moment().format('YYYYMMDDHHmmss');
             const key = `${req.body.dir}/${datetime}_${req.file.originalname}`;
   
             const params = {
-              Bucket: '13team',
+              Bucket: 'interview-king-13',
               Key: key,
               Body: fileStream,
               ContentLength: req.file.size,

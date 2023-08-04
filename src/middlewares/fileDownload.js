@@ -35,6 +35,7 @@ async function fileDownload(req, res, next) {
         response.Body.on('error', reject);
       });
 
+      console.log('fileData : ', fileData);
       /** 클라이언트에 전달할 파일 구성 */
       const contentType = response.ContentType;
       const contentDisposition = `attachment; filename=${response.Metadata.filename}`;

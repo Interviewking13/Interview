@@ -36,6 +36,7 @@ const fileUpload = async (uploadFile, dir) => {
     const formData = new FormData();
     formData.append('dir', dir);
     formData.append('file', uploadFile);
+    formData.append('user_id', '648d18ac7015df4b1d73ebc6')
 
     console.log('formData:', formData);
     try {
@@ -127,6 +128,3 @@ async function downloadFile() {
     console.error('클라이언트 파일 다운로드 실패:', err);
   }
 }
-
-
-

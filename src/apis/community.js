@@ -42,11 +42,14 @@ const communityApi = {
     
         try {
             const { user_id, title, content } = req.body;
+            console.log('req.body: ', req.body);
+            
             const findUser = await User.findOne({ _id: user_id }).populate("_id").exec();
             const user_name = findUser.user_name;
 
-            const file_name = req.body.file_name;
-            const file_key = req.body.file_key;
+            const file_etag = req.file_etag;
+            const file_name = req.file_name;
+            const file_key = req.file_key;
 
             /** 게시글번호 순차부여 */
             async function getLastCommunityId() {
@@ -59,7 +62,7 @@ const communityApi = {
             };  
 
             /** 게시글번호 생성 */
-	    const lastCommunityId = await getLastCommunityId();
+	        const lastCommunityId = await getLastCommunityId();
             const newCommunityId = lastCommunityId + 1;
     
             const newContent = await Community.create({
@@ -69,6 +72,7 @@ const communityApi = {
                 title,
                 content,
                 file_key,
+                file_etag,
                 file_name,
                 reply_count: 0,
             });
@@ -117,31 +121,31 @@ const communityApi = {
     },
 
     /** 첨부파일 다운로드 : 프론트 구현 확인 후 삭제예정 */
-    // async fileDownload(req, res) {
-    //     try {
+    async fileDownload(req, res) {
+        try {
 
-    //         const fileStream = req.fileStream;        
-    //         const findContent = await Community.find({ community_id: req.query.community_id });
+            const fileStream = req.fileStream;        
+            const findContent = await Community.find({ community_id: req.query.community_id });
 
-    //         if (!findContent) {
-    //             return res.status(400).json({ message: "파일 다운로드 실패" });
-    //         }
+            if (!findContent) {
+                return res.status(400).json({ message: "파일 다운로드 실패" });
+            }
         
-    //         /** 클라이언트에게 다운로드 파일 전달 */
-    //         if (fileStream) {
-    //             res.set('Content-Type', fileStream.contentType);
-    //             res.set('Content-Disposition', fileStream.contentDisposition);
-    //             fileStream.fileStream.pipe(res);
+            /** 클라이언트에게 다운로드 파일 전달 */
+            if (fileStream) {
+                res.set('Content-Type', fileStream.contentType);
+                res.set('Content-Disposition', fileStream.contentDisposition);
+                fileStream.fileStream.pipe(res);
 
-    //             return res.status(200).json({
-    //                 message: "파일 다운로드 성공"
-    //             });
-    //         }
-    //     } catch (err) {
-    //     console.log(err);
-    //     throw new Error(err);
-    //     }
-    // },
+                return res.status(200).json({
+                    message: "파일 다운로드 성공"
+                });
+            }
+        } catch (err) {
+        console.log(err);
+        throw new Error(err);
+        }
+    },
 
     /** 게시글수정 */
     async modifyContent(req, res) {
