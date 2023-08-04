@@ -34,9 +34,11 @@ const fileUpload = async (uploadFile, dir) => {
 
   if (uploadFile) {
     const formData = new FormData();
+    formData.append('title', '파일첨부테스트 : 제목');
+    formData.append('content', '파일첨부테스트 : 내용');
+    formData.append('user_id', '648d18ac7015df4b1d73ebc6');
     formData.append('dir', dir);
     formData.append('file', uploadFile);
-    formData.append('user_id', '648d18ac7015df4b1d73ebc6')
 
     console.log('formData:', formData);
     try {
