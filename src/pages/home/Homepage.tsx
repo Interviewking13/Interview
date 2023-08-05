@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import StudyListItem from '../../components/study/StudyListItem';
-import BestBoardListItemContainer from '../community/components/BestBoardListItemContainer';
+import BestBoardListItemContainer from '../../components/community/BestBoardListItemContainer';
 import { colors } from '../../constants/colors';
 import * as fonts from '../../constants/fonts';
 import PencilIconSrc from '../../img/pencil_mint.svg';
@@ -153,10 +153,11 @@ const HomePage = (): JSX.Element => {
                 </StyledMainStudyBtnArea>
 
                 <StyledItemNameArea>
-                    <StyledTitleText>커뮤니티 소식</StyledTitleText>
+                    <StyledTitleText hideOnSmallScreen>커뮤니티 소식</StyledTitleText>
                 </StyledItemNameArea>
 
                 <StyledMainCommunityArea>
+                    {/* <BestBoardListItemContainer tap={1} /> */}
                     <BestBoardListItemContainer tap={1} />
                 </StyledMainCommunityArea>
             </StyledCommonContainer>
@@ -169,24 +170,52 @@ export default HomePage;
 const StyledCommonContainer = styled.div`
     width: 1270px;
     margin: 0 auto;
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
 `;
 
 const StyledCarouselArea = styled.div`
     overflow: hidden;
     height: 346px;
     margin-top: 25px;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        height: 100%;
+        margin-top: 10px;
+    }
 `;
 const StyledCarouselContainer = styled.div`
     width: 1270px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        flex-direction: column;
+    }
 `;
 const StyledCarouselTextArea = styled.div`
     margin-top: 87px;
+
+    @media (max-width: 768px) {
+        text-align: center;
+        margin: 0 auto;
+        margin-top: 40px;
+        padding: 0 20px;
+    }
 `;
 const StyledCarouselImg = styled.img`
     margin-top: 44px;
+    
+    @media (max-width: 768px) {
+        width: 80%;
+        margin: 20px 0 40px;
+        padding-left: calc(100% - 85%);
+    }
 `;
 const StyledCarouselOne = styled.div`
     width: 1920px;
@@ -194,6 +223,10 @@ const StyledCarouselOne = styled.div`
     margin: 0 auto;
     background-color: ${colors.back_navy};
     cursor: pointer;
+
+    @media (max-width: 768px) {
+        height: 100%;
+    }
 `;
 const StyledCarouselTwo = styled.div`
     width: 1920px;
@@ -201,18 +234,34 @@ const StyledCarouselTwo = styled.div`
     margin: 0 auto;
     cursor: pointer;
     background-color: #f2fffa;
+
+    @media (max-width: 768px) {
+        height: 100%;
+    }
 `;
 const StyledItemNameArea = styled.div`
-    margin: 50px 0 30px 0;
+    margin: 45px 0 15px 0;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+
+    @media (max-width: 768px) {
+        margin: 20px 0;
+    }
 `;
-const StyledTitleText = styled.p`
-    height: fit-content;
+const StyledTitleText = styled.p<{ hideOnSmallScreen?: boolean }>`
+    line-height: 0;
     color: ${colors.main_navy};
-    margin: 0 30px 0 0;
     ${fonts.TitleText}
+
+    @media (max-width: 768px) {
+        width: 100%;
+        text-align: center;
+        font-size: 24px;
+        margin: ${({ hideOnSmallScreen }) => (hideOnSmallScreen ? '0' : '20px 0')};
+        ${({ hideOnSmallScreen }) => hideOnSmallScreen && 'display: none;'}
+        /* ${({ hideOnSmallScreen }) => hideOnSmallScreen && 'display: none;'} */
+    }
 `;
 const StyledCarouselTitleTextNavy = styled.p`
     width: 322px;
@@ -221,6 +270,12 @@ const StyledCarouselTitleTextNavy = styled.p`
     margin: 0 30px 0 0;
     ${fonts.TitleText}
     font-size: 56px;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        font-size: 32px;
+        margin: 0;
+    }
 `;
 const StyledCarouselTitleTextMint = styled.p`
     width: 322px;
@@ -229,51 +284,105 @@ const StyledCarouselTitleTextMint = styled.p`
     margin: 0 30px 0 0;
     ${fonts.TitleText}
     font-size: 56px;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        font-size: 32px;
+        margin: 0;
+    }
 `;
 const StyledCarouselSubText = styled.p`
     ${fonts.SubTextThinSmall}
-    margin: 34 0 0 0;
+    /* margin: 34px 0 0 0; */
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+        margin-top: 20px;
+    }
 `;
+
 const StudyListItemArea = styled.div`
     width: 1270px;
     height: 295px;
     margin: 0 0 40px 0;
-    display: grid;
-    grid-auto-rows: 295px;
-    grid-template-columns: 298px 298px 298px 298px;
-    grid-row-gap: 30px;
-    grid-column-gap: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 25px;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        gap: 25px;
+    }
 `;
 
 const StyledMainStudyBtnArea = styled.div`
     display: flex;
     justify-content: space-between;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 `;
 const StyledMainStudyBtn = styled.div`
     width: 620px;
     height: 134px;
     border: solid 1px ${colors.main_mint};
     border-radius: 15px;
+
+    @media (max-width: 768px) {
+        width: 550px;
+        height: 100%;
+        padding: 0 35px 0 35px;
+        margin-bottom: 20px;
+    }
+    @media (max-width: 635px) {
+        width: 275px;
+        padding: 0 10px 0 10px;
+    }
 `;
 const StyeldBtnTextArea = styled.div`
     width: fit-content;
     height: fit-content;
     margin: 35px 0 0 40px;
+
+    @media (max-width: 768px) {
+        margin: 20px 0;
+        text-align: center;
+    }
 `;
 const StyeldBtnTitleArea = styled.div`
     height: fit-content;
     display: flex;
     margin: 0;
+
+    @media (max-width: 635px) {
+        justify-content: center;
+        /* align-items: flex-start; */
+    }
 `;
 const StyledIcon = styled.img`
     width: 27px;
     height: 27px;
+
+    @media (max-width: 768px) {
+        width: 19px;
+        height: 19px;
+    }
 `;
 const StyledMainBtnTitle = styled.p`
     margin: 2px 0 20px 20px;
     ${fonts.SubText}
     font-size: 20px;
     color: ${colors.main_black};
+
+    @media (max-width: 768px) {
+        margin: 0 0 15px 10px;
+    }
 `;
 const StyledMainBtnSub = styled.p`
     ${fonts.SubTextThinSmall}
@@ -282,7 +391,14 @@ const StyledMainBtnSub = styled.p`
 `;
 
 const StyledMainCommunityArea = styled.div`
+    width: 100%;
+    max-width: 1270px;
     height: 300px;
+
+    @media (max-width: 768px) {
+        display: none;
+        width: calc(100% - 20px);
+    }
 `;
 const StyledLink = styled(Link)`
     text-decoration: none;

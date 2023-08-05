@@ -82,11 +82,6 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
         // 현재 날짜 불러오기
         const currentDate = getCurrentDate();
 
-        if (startDate < currentDate) {
-            setError(`시작일은 ${currentDate}일 이후로 지정해 주세요.`);
-            return;
-        }
-
         if (endDate <= startDate) {
             setError(`종료일은 ${startDate}일 이후로 지정해 주세요.`);
             return;
@@ -125,6 +120,19 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
         });
         // 링크 이동
         navigate(`/study/${studyId}`);
+    };
+
+    // 스터디 기간 변경 핸들러
+    const onChangeStartDateHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // 현재 날짜 불러오기
+        const currentDate = getCurrentDate();
+
+        if (startDate <= currentDate) {
+            alert('이미 시작한 스터디는 시작날짜를 변경할 수 없습니다.');
+            return;
+        }
+
+        setStartDate(e.target.value);
     };
 
     /** 스터디 삭제 핸들러 */
@@ -178,7 +186,7 @@ const StudyModify: React.FC<StudyModifyProps> = ({ studyId }) => {
                 <StyledStudyCreateInputArea>
                     <StyledStudyCreateText>진행 기간</StyledStudyCreateText>
                     <StyledDateArea>
-                        <StyledStudyDate type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                        <StyledStudyDate type="date" value={startDate} onChange={onChangeStartDateHandler} />
                         <StyledStudyDateText>~</StyledStudyDateText>
                         <StyledStudyDate type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                     </StyledDateArea>
