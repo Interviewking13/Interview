@@ -79,19 +79,19 @@ const Modify = () => {
   return (
     <StyledContainer>
       {/* 타이틀 */}
-      <StyledLowContent>
+      <StyledRowContent>
         <StyledTitle>내 정보 수정</StyledTitle>
         <StyledSubTitle variant="subtitle1">
           나의 회원 정보를 수정합니다.
         </StyledSubTitle>
-      </StyledLowContent>
+      </StyledRowContent>
       {/* 회원정보 입력 */}
       <form>
-        <StyledLowContent>
+        <StyledRowContent>
           <StyledInfoName>이름</StyledInfoName>
           <StyledTextField defaultValue={userDataValue.user_name} readOnly />
-        </StyledLowContent>
-        <StyledLowContent>
+        </StyledRowContent>
+        <StyledRowContent>
           <StyledInfoName>연락처</StyledInfoName>
 
           <StyledTextField
@@ -99,28 +99,28 @@ const Modify = () => {
             onChange={handleChangeState}
             // defaultValue="01023445678"
           />
-        </StyledLowContent>
-        <StyledLowContent>
+        </StyledRowContent>
+        <StyledRowContent>
           <StyledInfoName>아이디</StyledInfoName>
 
           <StyledTextField defaultValue={userDataValue.email} readOnly />
-        </StyledLowContent>
-        <StyledLowContent>
+        </StyledRowContent>
+        <StyledRowContent>
           <StyledInfoName>비밀번호</StyledInfoName>
           <StyledTextField
             ref={writePassword}
             type="password"
             onChange={onChangePassword}
           />
-        </StyledLowContent>
-        <StyledLowContent>
+        </StyledRowContent>
+        <StyledRowContent>
           <StyledInfoName>비밀번호확인</StyledInfoName>
           <StyledTextField type="password" onChange={onChangeVerPassword} />
-        </StyledLowContent>
+        </StyledRowContent>
 
         {/* 파일첨부 부분 */}
 
-        <StyledLowContent>
+        <StyledRowContent>
           <StyledInfoName>자기소개서첨부</StyledInfoName>
           <StyledFindMobileContainer>
             <StyledFileFindTextField placeholder="파일을 선택하세요" />
@@ -139,7 +139,7 @@ const Modify = () => {
               파일찾기
             </StyledFindButton>
           </StyledFindMobileContainer>
-        </StyledLowContent>
+        </StyledRowContent>
 
         {/* 회원탈퇴, 수정 버튼 컴포넌트*/}
         <ModifyBtn
@@ -164,7 +164,7 @@ const StyledContainer = styled.div`
   }
 `;
 /** 각 요소 가로배열 */
-const StyledLowContent = styled.div`
+const StyledRowContent = styled.div`
   margin-top: 15px;
   display: flex;
   flex-direction: row;
@@ -229,7 +229,7 @@ const StyledFileFindTextField = styled.input`
   height: 45px;
   border-radius: 10px;
   border: 1px #00057d solid;
-  width: 960px;
+  width: 940px;
   margin-right: 10px;
   padding-left: 20px;
   @media screen and (max-width: 768px) {
@@ -237,6 +237,8 @@ const StyledFileFindTextField = styled.input`
   }
 `;
 const StyledFindMobileContainer = styled.div`
+  display: flex;
+  flex-direction: row;
   @media screen and (max-width: 768px) {
     width: 100%;
     display: flex;
@@ -261,21 +263,5 @@ const StyledFindButton = styled(Button)`
     @media screen and (max-width: 768px) {
       width: 30%;
     }
-  }
-`;
-/**업로드된 파일 삭제 텍스트버튼  */
-const StyledFileDeleteButton = styled(Button)`
-  && {
-    color: ${colors.main_red};
-    ${fonts.SubTextThinSmall}
-    cursor: pointer;
-  }
-`;
-/**업로드된 파일 다운로드 텍스트버튼 */
-const StyledFileDownButton = styled(Button)`
-  && {
-    color: ${colors.darkgray_navy};
-    ${fonts.SubTextSmall}
-    cursor: pointer;
   }
 `;
