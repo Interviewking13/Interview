@@ -160,7 +160,10 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   @media screen and (max-width: 768px) {
+    box-sizing: border-box;
     width: 100%;
+    margin: 0;
+    padding: 0 10px;
   }
 `;
 /** 각 요소 가로배열 */
@@ -173,7 +176,6 @@ const StyledRowContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-left: 10px;
   }
 `;
 /** title :내 정보수정*/
@@ -219,7 +221,9 @@ const StyledTextField = styled.input`
   width: 1100px;
   padding-left: 20px;
   @media screen and (max-width: 768px) {
-    width: 80%;
+    box-sizing: border-box;
+    padding-left: 20px;
+    width: 100%;
   }
 `;
 /** MUI input 파일찾기  */
@@ -233,13 +237,14 @@ const StyledFileFindTextField = styled.input`
   margin-right: 10px;
   padding-left: 20px;
   @media screen and (max-width: 768px) {
-    width: 50%;
+    width: 70%;
   }
 `;
 const StyledFindMobileContainer = styled.div`
   display: flex;
   flex-direction: row;
   @media screen and (max-width: 768px) {
+    box-sizing: border-box;
     width: 100%;
     display: flex;
     flex-direction: row;

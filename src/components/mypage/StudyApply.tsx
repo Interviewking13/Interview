@@ -61,7 +61,7 @@ const StyledContainer = styled.div`
   width: 1270px;
   margin-bottom: 200px;
   @media screen and (max-width: 768px) {
-    width: 100vw;
+    width: 100%;
   }
 `;
 const StyledContent = styled.div`

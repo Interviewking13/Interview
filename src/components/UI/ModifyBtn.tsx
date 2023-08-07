@@ -130,7 +130,7 @@ const StyledModifyButton = styled(Button)`
       color: ${colors.main_mint};
     }
     @media screen and (max-width: 768px) {
-      width: 42%;
+      width: 50%;
     }
   }
 `;
@@ -149,7 +149,7 @@ const StyledDeleteButton = styled(Button)`
       color: ${colors.main_red};
     }
     @media screen and (max-width: 768px) {
-      width: 42%;
+      width: 50%;
       margin-right: 10px;
     }
   }

@@ -218,8 +218,9 @@ const CommonContainer = styled.div`
   margin: 0 auto;
   font-family: ${fonts.SubTextThinSmall};
   @media screen and (max-width: 768px) {
+    box-sizing: border-box;
     width: 100%;
-    margin: 0 10px;
+    padding: 0 10px;
   }
 `;
 const StyledStudyListTopArea = styled.div`
@@ -227,6 +228,7 @@ const StyledStudyListTopArea = styled.div`
   display: flex;
   align-items: baseline;
   @media screen and (max-width: 768px) {
+    margin: 10px 0 0 0;
     flex-direction: column;
   }
 `;
@@ -243,6 +245,9 @@ const StyledSubTextThin = styled.p`
   font-weight: light;
   color: ${colors.main_gray};
   margin: 0;
+  @media screen and (max-width: 768px) {
+    margin-top: 10px;
+  }
 `;
 const StyledStudyCreateArea = styled.div`
   height: 760px;
@@ -250,14 +255,21 @@ const StyledStudyCreateArea = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-content: space-between;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    height: 100%;
+    margin: 10px 0 10px 0;
+  }
 `;
 const StyledStudyCreateInputArea = styled.div`
   height: 45px;
   display: flex;
   align-items: center;
   @media screen and (max-width: 768px) {
-    width: 100%;
+    height: 100%;
+    display: flex;
     flex-direction: column;
+    align-items: flex-start;
   }
 `;
 const StyledStudyCreateInputAreaBig = styled.div`
@@ -265,6 +277,7 @@ const StyledStudyCreateInputAreaBig = styled.div`
   display: flex;
   @media screen and (max-width: 768px) {
     flex-direction: column;
+    height: 250px;
   }
 `;
 const StyledStudyCreateText = styled.p`
@@ -273,6 +286,9 @@ const StyledStudyCreateText = styled.p`
   font-family: ${fonts.SubText};
   padding: 10px 0;
   color: ${colors.main_gray};
+  @media screen and (max-width: 768px) {
+    display: flex;
+  }
 `;
 
 const StyledStudyInput = styled.input`
@@ -283,6 +299,10 @@ const StyledStudyInput = styled.input`
   margin: 0;
   padding-left: 20px;
   font-family: ${fonts.SubTextThinSmall};
+  @media screen and (max-width: 768px) {
+    box-sizing: border-box;
+    width: 100%;
+  }
 `;
 const StyledStudyInputNumber = styled.input`
   width: 447px;
@@ -293,6 +313,10 @@ const StyledStudyInputNumber = styled.input`
   padding: 0 20px 0 20px;
   font-family: sans-serif;
   font-size: 16px;
+  @media screen and (max-width: 768px) {
+    box-sizing: border-box;
+    width: 100%;
+  }
 `;
 const StyledDateArea = styled.div`
   width: 1103px;
@@ -300,6 +324,7 @@ const StyledDateArea = styled.div`
   justify-content: space-between;
   align-items: center;
   @media screen and (max-width: 768px) {
+    box-sizing: border-box;
     width: 100%;
   }
 `;
@@ -307,6 +332,8 @@ const StyledStudyDateText = styled.p`
   margin: 0;
   font-family: ${fonts.SubText};
   color: ${colors.main_gray};
+  @media screen and (max-width: 768px) {
+  }
 `;
 const StyledStudyDate = styled.input`
   width: 447px;
@@ -317,6 +344,10 @@ const StyledStudyDate = styled.input`
   padding: 0 20px 0 20px;
   font-family: sans-serif;
   font-size: 16px;
+  @media screen and (max-width: 768px) {
+    box-sizing: border-box;
+    width: 100%;
+  }
 `;
 const StyledStudyInputBig = styled.textarea`
   width: 1082px;
@@ -328,6 +359,10 @@ const StyledStudyInputBig = styled.textarea`
   font-family: sans-serif;
   font-size: 16px;
   resize: none;
+  @media screen and (max-width: 768px) {
+    box-sizing: border-box;
+    width: 100%;
+  }
 
   ::-webkit-scrollbar {
     width: 20px; /* 스크롤바 너비 */
@@ -352,6 +387,10 @@ const StyledStudyCreateBtnArea = styled.div`
   display: flex;
   flex-direction: row-reverse;
   align-items: baseline;
+  @media screen and (max-width: 768px) {
+    margin-top: 10px;
+    width: 100%;
+  }
 `;
 const StyledLink = styled(Link)`
   text-decoration: none;
