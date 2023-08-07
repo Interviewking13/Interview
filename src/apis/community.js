@@ -41,6 +41,8 @@ const communityApi = {
     async postContent(req, res) {
     
         try {
+            const uploaded_file = req.body.file;
+
             const { user_id, title, content } = req.body;
             console.log('req.body: ', req.body);
             
@@ -48,7 +50,7 @@ const communityApi = {
             const user_name = findUser.user_name;
 
             const file_etag = req.file_etag;
-            const file_name = req.file_name;
+            const file_name = uploaded_file.originalname;
             const file_key = req.file_key;
 
             /** 게시글번호 순차부여 */

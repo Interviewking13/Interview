@@ -33,6 +33,9 @@ fileModifyBtn.addEventListener('click', async () => {
 const fileUpload = async (uploadFile, dir) => {
 
   if (uploadFile) {
+    const uploadFile = fileInputModify.files[0];
+    await fileModify(uploadFile, 'community');
+    
     const formData = new FormData();
     formData.append('title', '파일첨부테스트 : 제목');
     formData.append('content', '파일첨부테스트 : 내용');
