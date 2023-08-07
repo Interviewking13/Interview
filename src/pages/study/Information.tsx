@@ -55,7 +55,7 @@ const Information: React.FC = () => {
 
     // 데이터가 로딩 중이 아니고, 패칭중 아니고, 에러가 아닐 때에만 user_id를 설정합니다.
     useEffect(() => {
-        if (!userDataLoading && !userDataError && !userDataFetching) {
+        if (!userDataLoading && !userDataError && !userDataFetching && userData?.data) {
             setUserId(userData.data.user_id);
         }
     }, [userDataLoading, userDataError, userDataFetching, userData]);
