@@ -250,6 +250,7 @@ const StyledStudyCreateArea = styled.div`
         align-items: flex-start;
         gap: 5px;
         margin: 0px;
+        min-width: 350px;
     }
 `;
 
@@ -262,7 +263,7 @@ const StyledStudyCreateInputArea = styled.div`
         flex-direction: column;
         align-items: flex-start;
         width: calc(100% - 20px);
-        height: 71px;
+        height: 100%;
     }
 `;
 
@@ -289,6 +290,7 @@ const StyledStudyCreateText = styled.p`
         width: calc(100% - 20px);
         height: 26px;
         padding: 0;
+        margin: 10px 0 10px 0;
         font-size: 16px;
     }
 `;
@@ -354,6 +356,7 @@ const StyledStudyDate = styled.input`
     font-size: 16px;
     @media screen and (max-width: 768px) {
         width: calc(100% - 40px);
+        min-height: 45px;
     }
 `;
 

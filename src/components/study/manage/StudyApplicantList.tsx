@@ -15,129 +15,129 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 
 /** 스터디 신청 리스트 타입 */
 type StudyApplicantListProps = {
-  studyId: string;
+    studyId: string;
 };
 
 /** 스터디 데이터 타입 지정 */
 type StudyAcceptData = {
-  _id: string;
-  study_id: string;
-  user_id: string;
-  user_name: string;
-  is_leader: boolean;
-  goal: string;
-  accept: number;
+    _id: string;
+    study_id: string;
+    user_id: string;
+    user_name: string;
+    is_leader: boolean;
+    goal: string;
+    accept: number;
 };
 
 /** 스터디 신청 리스트 컴포넌트 props: (studyId) */
 const StudyApplicantList = ({ studyId }: StudyApplicantListProps) => {
-  const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
 
-  // 신청한 상태 (기본)
-  const apply = 0;
-  // 신청 수락
-  const accept = 1;
-  // 신청 거절
-  const unAccept = 2;
+    // 신청한 상태 (기본)
+    const apply = 0;
+    // 신청 수락
+    const accept = 1;
+    // 신청 거절
+    const unAccept = 2;
 
-  /** 신청 수락 버튼 핸들러 */
-  const onAcceptButton = async (index: number) => {
-    // studyAcceptData의 해당 index의 유저아이디를 userId에 저장.
-    const userId = studyAcceptData[index].user_id;
-    // 스터디 신청 api 요청
-    await putAcceptStudy(String(localStorage.getItem('token')), studyId, userId, accept);
-    // studyAcceptData 키를 통해 초기화, 랜더링
-    queryClient.invalidateQueries(['studyAcceptData']);
-  };
+    /** 신청 수락 버튼 핸들러 */
+    const onAcceptButton = async (index: number) => {
+        // studyAcceptData의 해당 index의 유저아이디를 userId에 저장.
+        const userId = studyAcceptData[index].user_id;
+        // 스터디 신청 api 요청
+        await putAcceptStudy(String(localStorage.getItem('token')), studyId, userId, accept);
+        // studyAcceptData 키를 통해 초기화, 랜더링
+        queryClient.invalidateQueries(['studyAcceptData']);
+    };
 
-  /** 신청 거절 버튼 핸들러 */
-  const onDeleteButton = async (index: number) => {
-    // studyAcceptData의 해당 index의 유저아이디를 userId에 저장.
-    const userId = studyAcceptData[index].user_id;
-    // 스터디 거절 api 요청
-    await putAcceptStudy(String(localStorage.getItem('token')), studyId, userId, unAccept);
-    queryClient.invalidateQueries(['studyAcceptData']);
-  };
+    /** 신청 거절 버튼 핸들러 */
+    const onDeleteButton = async (index: number) => {
+        // studyAcceptData의 해당 index의 유저아이디를 userId에 저장.
+        const userId = studyAcceptData[index].user_id;
+        // 스터디 거절 api 요청
+        await putAcceptStudy(String(localStorage.getItem('token')), studyId, userId, unAccept);
+        queryClient.invalidateQueries(['studyAcceptData']);
+    };
 
-  // 리액트 쿼리를 통해 studyAcceptData에 신청인원 데이터 저장
-  const {
-    data: studyAcceptData,
-    isLoading,
-    isFetching,
-    isError,
-  } = useQuery(['studyAcceptData'], () => getStudyAccept(studyId, apply).then((response) => response.data));
+    // 리액트 쿼리를 통해 studyAcceptData에 신청인원 데이터 저장
+    const {
+        data: studyAcceptData,
+        isLoading,
+        isFetching,
+        isError,
+    } = useQuery(['studyAcceptData'], () => getStudyAccept(studyId, apply).then((response) => response.data));
 
-  const members = studyAcceptData;
+    const members = studyAcceptData;
 
-  // 자기소개서 모달 open 상태관리
-  const [userInfoModalOpen, setUserInfoModalOpen] = React.useState<{
-    open: boolean;
-    userId: string;
-  }>({ open: false, userId: '' });
+    // 자기소개서 모달 open 상태관리
+    const [userInfoModalOpen, setUserInfoModalOpen] = React.useState<{
+        open: boolean;
+        userId: string;
+    }>({ open: false, userId: '' });
 
-  /** 자기소개서 모달 open 핸들러 */
-  const handleOpenUserInfoModal = (userId: string) => {
-    setUserInfoModalOpen({ open: true, userId });
-  };
+    /** 자기소개서 모달 open 핸들러 */
+    const handleOpenUserInfoModal = (userId: string) => {
+        setUserInfoModalOpen({ open: true, userId });
+    };
 
-  /** 자기소개서 모달 Close 핸들러 */
-  const handleCloseUserInfoModal = () => {
-    setUserInfoModalOpen({ open: false, userId: '' });
-  };
+    /** 자기소개서 모달 Close 핸들러 */
+    const handleCloseUserInfoModal = () => {
+        setUserInfoModalOpen({ open: false, userId: '' });
+    };
 
-  if (isLoading) {
-    // 로딩 상태를 표시
-    return <LoadingSpinner />;
-  }
+    if (isLoading) {
+        // 로딩 상태를 표시
+        return <LoadingSpinner />;
+    }
 
-  if (isFetching) {
-    // 로딩 상태를 표시
-    return <FetchingSpinner />;
-  }
+    if (isFetching) {
+        // 로딩 상태를 표시
+        return <FetchingSpinner />;
+    }
 
-  if (isError) {
-    // 에러 상태를 표시
-    return <InfoMessage message="Error occurred while fetching data" />;
-  }
+    if (isError) {
+        // 에러 상태를 표시
+        return <InfoMessage message="Error occurred while fetching data" />;
+    }
 
-  // 신청인원 없을 시 안내문구 보여줌
-  if (members.length === 0) {
-    return <InfoMessage message="신청한 인원이 없습니다." />;
-  }
+    // 신청인원 없을 시 안내문구 보여줌
+    if (members.length === 0) {
+        return <InfoMessage message="신청한 인원이 없습니다." />;
+    }
 
-  return (
-    <>
-      {/* members(studyAcceptData)를 index로 뿌림 */}
-      {members.map((member: StudyAcceptData, index: number) => (
-        <CardContainer key={index}>
-          <CardContent>
-            <StyledName onClick={() => handleOpenUserInfoModal(member.user_id)}>
-              {member.user_name}
-            </StyledName>
-            <Modal open={userInfoModalOpen.open} onClose={handleCloseUserInfoModal}>
-              <UserInfoModal
-                userId={userInfoModalOpen.userId}
-                handleModalClose={handleCloseUserInfoModal}
-              />
-            </Modal>
-            <StyledDescription>{member.goal}</StyledDescription>
-          </CardContent>
-          <StyledCommonButton backgroundColor={colors.main_mint} onClick={() => onAcceptButton(index)}>
-            <StyledIconContainer>
-              <FaCheck />
-            </StyledIconContainer>
-            <span>신청 수락</span>
-          </StyledCommonButton>
-          <StyledCommonButton backgroundColor={colors.main_red} onClick={() => onDeleteButton(index)}>
-            <StyledIconContainer>
-              <FaTimes />
-            </StyledIconContainer>
-            <span>회원 거절</span>
-          </StyledCommonButton>
-        </CardContainer>
-      ))}
-    </>
-  );
+    return (
+        <>
+            {/* members(studyAcceptData)를 index로 뿌림 */}
+            {members.map((member: StudyAcceptData, index: number) => (
+                <CardContainer key={index}>
+                    <CardContent>
+                        <StyledName onClick={() => handleOpenUserInfoModal(member.user_id)}>
+                            {member.user_name}
+                        </StyledName>
+                        <Modal open={userInfoModalOpen.open} onClose={handleCloseUserInfoModal}>
+                            <UserInfoModal
+                                userId={userInfoModalOpen.userId}
+                                handleModalClose={handleCloseUserInfoModal}
+                            />
+                        </Modal>
+                        <StyledDescription>{member.goal}</StyledDescription>
+                    </CardContent>
+                    <StyledCommonButton backgroundColor={colors.main_mint} onClick={() => onAcceptButton(index)}>
+                        <StyledIconContainer>
+                            <FaCheck />
+                        </StyledIconContainer>
+                        <span>신청 수락</span>
+                    </StyledCommonButton>
+                    <StyledCommonButton backgroundColor={colors.main_red} onClick={() => onDeleteButton(index)}>
+                        <StyledIconContainer>
+                            <FaTimes />
+                        </StyledIconContainer>
+                        <span>회원 거절</span>
+                    </StyledCommonButton>
+                </CardContainer>
+            ))}
+        </>
+    );
 };
 export default StudyApplicantList;
 
@@ -151,6 +151,7 @@ const CardContainer = styled.div`
     @media screen and (max-width: 768px) {
         width: calc(100% - 20px);
         margin-top: 5px;
+        min-width: 340px;
     }
 `;
 
@@ -196,7 +197,7 @@ const StyledDescription = styled.p`
 
 /** StyledCommonButton 타입지정 */
 interface StyledCommonButtonProps extends HTMLAttributes<HTMLDivElement> {
-  backgroundColor?: string;
+    backgroundColor?: string;
 }
 
 /** 신청 수락 및 거절 버튼 div */
@@ -212,7 +213,6 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
     justify-content: center;
     border: none;
     border-radius: 10px;
-    min-width: 132px;
     &:hover {
         background-color: ${colors.main_navy};
         color: white;
