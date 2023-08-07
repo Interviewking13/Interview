@@ -8,18 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../api/api-user";
 import { useAuth } from "../../hooks/useAuth";
 
-// const response = await axiosInstance.post("/community/detl", formData, {
-// withCredentials: true,
-// });
-// headers: {
-//   "Content-Type": "multipart/form-data", // 필수: 파일 업로드 시 반드시 설정
-// },
-// 커뮤니티 글 작성을 위한 API 호출
 const postCommunity = async (formData: FormData) => {
   try {
     console.log("Posted Data:", formData);
     const response = await axiosInstance.post("community/detl", formData, {
-      withCredentials: true,
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8", // 필수: 파일 업로드 시 반드시 설정
+      },
     });
     return response.data;
   } catch (error) {
@@ -73,6 +68,7 @@ const CommunityCreatePage: React.FC = () => {
       setFile(selectedFile);
     }
     console.log(selectedFiles);
+    console.log(file);
   };
 
   // postCommunity api service함수 가져와서 사용
@@ -99,20 +95,10 @@ const CommunityCreatePage: React.FC = () => {
     formData.append("user_id", useId);
     formData.append("dir", "community");
     if (file) {
-      formData.append("image", file, file.name);
+      formData.append("file", file, encodeURIComponent(file.name));
     }
     postCommunityMutate(formData);
   };
-
-  // const uploadFile = fileInputModify.files[0];
-  // await fileModify(uploadFile, 'community');
-  // ...
-  // const formData = new FormData();
-  // formData.append('title', '파일첨부테스트 : 제목');
-  // formData.append('content', '파일첨부테스트 : 내용');
-  // formData.append('user_id', '648d18ac7015df4b1d73ebc6');
-  // formData.append('dir', dir);
-  // formData.append('file', uploadFile);
 
   /** 삭제 버튼 클릭 시 동작 */
   const handleDelete = () => {
