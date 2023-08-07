@@ -123,6 +123,7 @@ const GridContainer = styled(Grid)<{ activePage: string }>`
     @media screen and (max-width: 768px) {
         justify-content: center;
         width: 100%;
+        min-width: 370px;
     }
 `;
 
