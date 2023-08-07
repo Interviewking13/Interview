@@ -5,6 +5,5 @@ const getToken = () => {
 };
 
 export const axiosInstance = axios.create({
-  baseURL:
-    "https://port-0-interviewking13-7xwyjq992llj5sps0m.sel4.cloudtype.app/api/",
+  baseURL: "https://port-0-interview-3prof2lll0yg90q.sel3.cloudtype.app/api/",
 });
