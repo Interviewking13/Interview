@@ -106,6 +106,12 @@ const StyledButtonContent = styled.div`
   flex-direction: row-reverse;
   align-items: center;
   width: 1269px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    flex-direction: row;
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
 `;
 
 /** 수정하기버튼 스타일 */
@@ -123,6 +129,9 @@ const StyledModifyButton = styled(Button)`
       background-color: ${colors.main_navy};
       color: ${colors.main_mint};
     }
+    @media screen and (max-width: 768px) {
+      width: 50%;
+    }
   }
 `;
 /** 회원탈퇴 버튼 스타일 */
@@ -138,6 +147,10 @@ const StyledDeleteButton = styled(Button)`
     &:hover {
       background-color: ${colors.back_navy};
       color: ${colors.main_red};
+    }
+    @media screen and (max-width: 768px) {
+      width: 50%;
+      margin-right: 10px;
     }
   }
 `;

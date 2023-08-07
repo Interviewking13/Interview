@@ -60,33 +60,33 @@ const UserInfo = () => {
 
   return (
     <StyledDiv>
-      <StyledLowContent>
+      <StyledRowContent>
         <StyledWelcome>
           면접왕 {userDataValue.user_name} 님, 어서오세요.
         </StyledWelcome>
         <StyledSettingBtn onClick={onClickModify}>
           <SettingsIcon />
         </StyledSettingBtn>
-      </StyledLowContent>
+      </StyledRowContent>
 
       {/* 구분선 */}
       <StyledLine></StyledLine>
       {/* 회원정보부분 */}
       <StyledInfo>
-        <StyledLowContent>
+        <StyledRowContent>
           <StyledInfoText>아이디</StyledInfoText>
           <StyledInfoValue>{userDataValue.email}</StyledInfoValue>
-        </StyledLowContent>
+        </StyledRowContent>
 
-        <StyledLowContent>
+        <StyledRowContent>
           <StyledInfoText>연락처</StyledInfoText>
           <StyledInfoValue> {userDataValue.phone_number} </StyledInfoValue>
-        </StyledLowContent>
+        </StyledRowContent>
 
-        <StyledLowContent>
+        <StyledRowContent>
           <StyledInfoText>자기소개서</StyledInfoText>
           <button>{userDataValue.file_name}</button>
-        </StyledLowContent>
+        </StyledRowContent>
       </StyledInfo>
     </StyledDiv>
   );
@@ -139,10 +139,10 @@ const StyledInfo = styled.div`
 `;
 
 /** 각 요소 가로배열 */
-const StyledLowContent = styled.div`
+const StyledRowContent = styled.div`
   margin-top: 10px;
   display: flex;
-  flex-direction: low;
+  flex-direction: row;
   align-items: center;
   width: 1269px;
   @media screen and (max-width: 768px) {

@@ -47,18 +47,22 @@ const CardContainer = styled.div`
   margin-top: 20px;
   color: ${colors.main_navy};
   @media screen and (max-width: 768px) {
+    width: 100%;
+    box-sizing: border-box;
   }
 `;
 
 const CardContent = styled.div`
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
+  width: 1123px;
+  height: 45px;
   background-color: ${colors.back_navy}; /* 수정된 부분 */
   border-radius: 10px; /* 수정된 부분 */
   @media screen and (max-width: 768px) {
     width: 70%;
-    height: 100%;
+    height: 45px;
+    align-items: center;
   }
 `;
 
@@ -67,6 +71,7 @@ const StyledName = styled.p`
   margin-right: 10px;
   margin-left: 20px;
   @media screen and (max-width: 768px) {
+    width: 70%;
     white-space: nowrap;
     overflow: hidden;
   }
@@ -96,7 +101,7 @@ const StyledCommonButton = styled.div<StyledCommonButtonProps>`
   }
   ${fonts.SubText}
   @media screen and (max-width: 768px) {
-    width: 30%;
+    width: 25%;
   }
 `;
 
