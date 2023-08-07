@@ -8,14 +8,18 @@ import { useNavigate } from "react-router-dom";
 import { getUserData } from "../../api/api-user";
 import { useAuth } from "../../hooks/useAuth";
 
+// const response = await axiosInstance.post("/community/detl", formData, {
+// withCredentials: true,
+// });
+// headers: {
+//   "Content-Type": "multipart/form-data", // 필수: 파일 업로드 시 반드시 설정
+// },
 // 커뮤니티 글 작성을 위한 API 호출
 const postCommunity = async (formData: FormData) => {
   try {
     console.log("Posted Data:", formData);
-    const response = await axiosInstance.post("/community/detl", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data", // 필수: 파일 업로드 시 반드시 설정
-      },
+    const response = await axiosInstance.post("community/detl", formData, {
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
@@ -23,23 +27,7 @@ const postCommunity = async (formData: FormData) => {
     throw error;
   }
 };
-// const postCommunity = async (data: {
-//   title: string;
-//   content: string;
-//   user_id: string;
-//   file_name: string;
-// }) => {
-//   try {
-//     console.log("Posted Data:", data);
-//     const response = await axiosInstance.post("/community/detl", data);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error:", error);
-//     throw error;
-//   }
-// };
 
-// CommunityCreatePage 컴포넌트 선언
 const CommunityCreatePage: React.FC = () => {
   // 제목 상태 추가
   const [title, setTitle] = useState("");
@@ -49,8 +37,7 @@ const CommunityCreatePage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   // 사용자 아이디 상태 추가
   const [useId, setUserId] = useState("");
-  // queryClient 사용 (쿼리 데이터 관리를 위한 객체)
-  const queryClient = useQueryClient();
+
   // navigate 훅 사용 (라우터 이동을 위한 함수)
   const navigate = useNavigate();
 
@@ -60,8 +47,6 @@ const CommunityCreatePage: React.FC = () => {
   useEffect(() => {
     getUserData(String(localStorage.getItem("token"))).then((response) => {
       setUserId(response.data.user_id);
-      // console.log(response.data.user_id);
-      // console.log(response.data);
     });
   });
 
@@ -112,16 +97,22 @@ const CommunityCreatePage: React.FC = () => {
     formData.append("title", title);
     formData.append("content", content);
     formData.append("user_id", useId);
-    formData.append("community_id", "0");
+    formData.append("dir", "community");
     if (file) {
       formData.append("image", file, file.name);
     }
-    console.log(formData.get("title"));
-    console.log(formData.get("content"));
-    console.log(formData.get("image"));
-
-    // postCommunityMutate(formData);
+    postCommunityMutate(formData);
   };
+
+  // const uploadFile = fileInputModify.files[0];
+  // await fileModify(uploadFile, 'community');
+  // ...
+  // const formData = new FormData();
+  // formData.append('title', '파일첨부테스트 : 제목');
+  // formData.append('content', '파일첨부테스트 : 내용');
+  // formData.append('user_id', '648d18ac7015df4b1d73ebc6');
+  // formData.append('dir', dir);
+  // formData.append('file', uploadFile);
 
   /** 삭제 버튼 클릭 시 동작 */
   const handleDelete = () => {
