@@ -107,20 +107,19 @@
 {
     position: absolute;
     top: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
 
-    display: flex;
-
-    width: fit-content;
-    height: fit-content;
+    width: 1270px;
     padding: 0;
-    margin: 0 auto;
+    text-align: right;
     margin-top: 45px;
-
     list-style: none;
 }
+
 .slick-dots li
 {
+    display: inline-block;
     position: relative;
 
     width: fit-content;
@@ -129,6 +128,7 @@
     padding: 0;
 
     cursor: pointer;
+    margin-left: auto;
 }
 .slick-dots li button
 {
@@ -139,7 +139,6 @@
 
     width: fit-content;
     height: 0;
-    padding: 0 0 5px 6px;
 
     cursor: pointer;
 

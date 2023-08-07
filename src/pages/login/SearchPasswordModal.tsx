@@ -58,10 +58,17 @@ const Container = styled.div`
 `;
 
 const ModalContent = styled.div`
-  width: 923px;
+  width: 100%;
+  max-width: 923px;
   padding: 40px;
   background-color: ${colors.back_navy};
   border-radius: 5px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 10px;
+    padding: 20px;
+  }
 `;
 
 /** 상단 컨테이너 div */
@@ -69,6 +76,10 @@ const StyledTopContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 768px) {
+    margin: 20px 0;
+  }
 `;
 
 /** 취소 버튼 button */
@@ -80,6 +91,11 @@ const StyledCancelButton = styled.button`
   padding: 0;
   margin-left: auto;
   cursor: pointer; /* 클릭 커서 스타일 추가 */
+
+  @media (max-width: 768px) {
+    width: 20px !important;
+    height: 20px !important;
+  }
 `;
 
 /** 취소 버튼 img */
@@ -98,6 +114,10 @@ const ModalText = styled.p`
   margin: 20px 0;
   color: ${colors.main_black};
   ${SubTextThin}
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const ModalInputContainer = styled.div`
@@ -112,11 +132,12 @@ const ModalInput = styled.input`
   border: 1px solid ${colors.gray_navy};
   border-radius: 10px;
   padding: 0;
+  margin-top: 15px;
   padding-left: 18px;
   font-weight: 300;
   font-size: 18px;
-  &:last-of-type {
-    margin-top: 15px;
+  &:first-of-type {
+    margin-top: 0;
   }
   &::placeholder {
     color: ${colors.gray_navy};
@@ -126,11 +147,21 @@ const ModalInput = styled.input`
     border: 1px solid ${colors.gray_navy};
     box-shadow: none;
   }
+
+  @media (max-width: 768px) {
+    width: 90%;
+    height: 40px;
+    font-size: 14px;
+  }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-start;
+
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -145,4 +176,10 @@ const SubmitButton = styled.button`
     background-color: ${colors.dark_navy};
   }
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 110px !important;
+    height: 40px !important;
+    font-size: 14px !important;
+  }
 `;

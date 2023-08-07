@@ -215,6 +215,10 @@ const SignupPage = () => {
 /** 페이지 컨테이너 div (로그인 페이지 전체 배경색 지정) */
 const StyledPageContainer = styled.div`
   background-color: ${colors.back_navy};
+
+  @media (max-width: 768px) {
+        padding: 0 20px;
+    }
 `;
 
 /** 공통 컨테이너 div (가운데 정렬 및 레이아웃 크기 지정) */
@@ -223,6 +227,10 @@ const StyledCommonContainer = styled.div`
   max-width: 1270px;
   margin: 0 auto;
   padding-bottom: 30px;
+
+  @media (max-width: 768px) {
+        padding-top: 100px;
+  }
 `;
 
 /** 회원가입 컨테이너 div (좌/우 컴포넌트 가운데 정렬) */
@@ -231,6 +239,11 @@ const StyledSignupContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 768px) {
+        display: block;
+        height: 100%;
+  }
 `;
 
 /** 오른쪽 컴포넌트 컨테이너 div */
@@ -239,6 +252,10 @@ const StyledRightSignContainer = styled.form`
   flex-direction: column;
   align-items: center;
   margin-left: auto;
+
+  @media (max-width: 768px) {
+        margin: 60px auto;
+  }
 `;
 
 /** 이름, 전화번호, 이메일, 비밀번호, 비밀번호 확인 input */
@@ -263,6 +280,19 @@ const StyledSignupInput = styled.input`
     border: 1px solid ${colors.gray_navy};
     box-shadow: none;
   }
+
+  @media (max-width: 768px) {
+        width: 100%; 
+        max-width: 457px;
+        height: 40px;
+        font-size: 16px;
+  }
+  @media (max-width: 500px) {
+        width: calc(100% - 25px);
+        border-radius: 5px;
+        height: 35px;
+        font-size: 14px;
+  }
 `;
 
 /** 회원가입 버튼 */
@@ -282,6 +312,13 @@ const StyledSignupBtn = styled(Button)`
       background-color: ${colors.dark_navy};
     }
   }
+
+  @media (max-width: 768px) {
+    margin-left: 0 !important;
+    width: 110px !important;
+    height: 40px !important;
+    font-size: 14px !important;
+  }
 `;
 
 /** 에러 메세지 */
@@ -291,6 +328,10 @@ const StyledErrorMessage = styled.p`
   margin-left: auto;
   margin-top: 5px;
   margin-bottom: 0;
+
+  @media (max-width: 768px) {
+        font-size: 12px; 
+  }
 `;
 
 /** 카피라이터 */
@@ -298,6 +339,10 @@ const StyledSignupCopyright = styled.div`
   text-align: center;
   font-size: 14px;
   color: #c0c3e5;
+  
+  @media (max-width: 768px) {
+        font-size: 12px; 
+  }
 `;
 
 export default SignupPage;
