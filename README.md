@@ -112,45 +112,60 @@
 **9. 폴더 구조**
 
 -   프론트 :
-    Interview<br />
-    ├─ .gitignore<br />
-    ├─ package-lock.json<br />
-    ├─ package.json<br />
-    ├─ public<br />
-    ├─ README.md<br />
-    ├─ src<br />
-    │ ├─ api<br />
-    │ ├─ App.css<br />
-    │ ├─ App.test.tsx<br />
-    │ ├─ App.tsx<br />
-    │ ├─ components<br />
-    │ │ ├─ auth<br />
-    │ │ ├─ layout<br />
-    │ │ ├─ modal<br />
-    │ │ ├─ mypage<br />
-    │ │ ├─ study<br />
-    │ │ │ ├─ manage<br />
-    │ │ └─ UI<br />
-    │ ├─ constants<br />
-    │ ├─ fonts<br />
-    │ ├─ hooks<br />
-    │ ├─ img<br />
-    │ ├─ pages<br />
-    │ │ ├─ community<br />
-    │ │ │ ├─ components<br />
-    │ │ ├─ home<br />
-    │ │ ├─ login<br />
-    │ │ ├─ mypage<br />
-    │ │ ├─ study<br />
-    │ │ │ ├─ common<br />
-    │ │ └─ studylist<br />
-    │ ├─ react-app-env.d.ts<br />
-    │ ├─ reportWebVitals.ts<br />
-    │ ├─ setupTests.ts<br />
-    │ └─ utils<br />
-    ├─ tsconfig.json<br />
-    └─ webpack.config.js<br />
-    <br />
+```
+Interview
+├─ .git
+│  ├─ COMMIT_EDITMSG
+│  ├─ config
+│  ├─ description
+│  ├─ FETCH_HEAD
+│  ├─ HEAD
+│  ├─ hooks
+│  ├─ index
+│  ├─ info
+│  ├─ logs
+│  ├─ ORIG_HEAD
+│  ├─ packed-refs
+│  └─ refs
+├─ .gitignore
+├─ package-lock.json
+├─ package.json
+├─ public
+├─ README.md
+├─ src
+│  ├─ api
+│  ├─ App.css
+│  ├─ App.test.tsx
+│  ├─ App.tsx
+│  ├─ components
+│  │  ├─ auth
+│  │  ├─ common
+│  │  ├─ community
+│  │  ├─ layout
+│  │  ├─ modal
+│  │  ├─ mypage
+│  │  ├─ study
+│  │  │  ├─ manage
+│  │  └─ UI
+│  ├─ constants
+│  ├─ fonts
+│  ├─ hooks
+│  ├─ img
+│  ├─ pages
+│  │  ├─ community
+│  │  ├─ home
+│  │  │  └─ slick
+│  │  ├─ login
+│  │  ├─ mypage
+│  │  └─ study
+│  │     ├─ common
+│  ├─ recoil
+│  └─ utils
+├─ tsconfig.json
+├─ webpack.config.js
+└─ yarn.lock
+
+```
 
 -   백엔드 : 프론트 폴더 이외 src 폴더 내 전체<br />
     <br />
@@ -253,3 +268,4 @@ AWS_REGION = { 지역 };
 본 프로젝트에서 제공하는 모든 코드 등은 저작권법에 의해 보호 받고 있으며, 엘리스 SW4기 13팀 및 (주)엘리스의 자산입니다.<br />
 무단 사용 및 도용, 복제 및 배포를 금합니다.<br />
 Copyright 2023 엘리스 Inc. All rights reserved.<br />
+
