@@ -12,7 +12,8 @@ const s3 = new S3Client({
       accessKeyId: process.env.AWS_ACCESS,
       secretAccessKey: process.env.AWS_SECRET,
     },
-    endpoint: 'https://s3.ap-northeast-2.amazonaws.com'
+    // endpoint: 'https://s3.ap-northeast-2.amazonaws.com'
+    endpoint : 'https://ax6izwmsuv9c.compat.objectstorage.ap-osaka-1.oraclecloud.com'
   });
   
 module.exports = s3;
