@@ -34,7 +34,7 @@ async function fileUpload(req, res, next) {
             const key = `${req.body.dir}/${datetime}_${req.file.originalname}`;
   
             const params = {
-              Bucket: 'tripsketch',
+              Bucket: 'interview-king-13',
               Key: key,
               Body: fileStream,
               ContentLength: req.file.size,
